@@ -74,7 +74,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.CYBERBILL, "Chưa cấu hình địa chỉ cổng hóa đơn điện tử (Webservice URL)");
                         return result;
                     }
                     if (configArr.Count() >= 5 && configArr[4] == "1")
@@ -92,7 +92,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     {
 
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => login), login));
-                        ElectronicBillResultUtil.Set(ref result, false, login.error.details);
+                        ElectronicBillResultUtil.SetLoginError(ref result, ProviderType.CYBERBILL, login != null && login.error != null ? login.error.details : null);
                         return result;
                     }
                     switch (electronicBillType)
@@ -134,6 +134,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CYBERBILL); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -152,6 +153,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                throw; // de Run phan loai nguon loi (ket noi / thiet lap tai khoan / NCC) thay vi tra null khong ro ly do
             }
             return result;
         }
@@ -307,6 +309,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             {
                 dschitiet = new List<DanhSachChiTiet>();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (DSCT)");
             }
             return dschitiet;
         }
@@ -331,18 +334,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, OEBill.result != null ? OEBill.result.motaketqua : "Gửi hóa đơn gốc thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OEBill.result != null ? OEBill.result.motaketqua : null, "Gửi hóa đơn gốc thất bại");
                     }
                 }
                 else if (OEBill == null || (OEBill != null && OEBill.error != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, OEBill != null && OEBill.error != null ? OEBill.error.details : "Gửi hóa đơn gốc thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OEBill != null && OEBill.error != null ? OEBill.error.details : null, "Gửi hóa đơn gốc thất bại");
                 }
 
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CYBERBILL); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
@@ -381,17 +385,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, OEBill.result != null ? OEBill.result.motaketqua : "Ký hóa đơn gốc thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OEBill.result != null ? OEBill.result.motaketqua : null, "Ký hóa đơn gốc thất bại");
                     }
                 }
                 else if (OSEBill == null || (OSEBill != null && OSEBill.error != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, OSEBill != null && OSEBill.error != null ? OSEBill.error.details : "Ký hóa đơn HSM thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OSEBill != null && OSEBill.error != null ? OSEBill.error.details : null, "Ký hóa đơn HSM thất bại");
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CYBERBILL); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
@@ -418,18 +423,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, OSASEBill.result != null ? OSASEBill.result.motaketqua : "Gửi và ký hóa đơn gốc HSM thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OSASEBill.result != null ? OSASEBill.result.motaketqua : null, "Gửi và ký hóa đơn gốc HSM thất bại");
                     }
                 }
                 else if (OSASEBill == null || (OSASEBill != null && OSASEBill.error != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, OSASEBill != null && OSASEBill.error != null ? OSASEBill.error.details : "Gửi và ký hóa đơn gốc HSM thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OSASEBill != null && OSASEBill.error != null ? OSASEBill.error.details : null, "Gửi và ký hóa đơn gốc HSM thất bại");
                 }
 
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CYBERBILL); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -525,17 +531,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, ORPEBill.result != null ? ORPEBill.result.motaketqua : "Gửi hóa đơn thay thế thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, ORPEBill.result != null ? ORPEBill.result.motaketqua : null, "Gửi hóa đơn thay thế thất bại");
                     }
                 }
                 else if (ORPEBill == null || (ORPEBill != null && ORPEBill.error != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, ORPEBill != null && ORPEBill.error != null ? ORPEBill.error.details : "Gửi hóa đơn thay thế thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, ORPEBill != null && ORPEBill.error != null ? ORPEBill.error.details : null, "Gửi hóa đơn thay thế thất bại");
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CYBERBILL); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -579,17 +586,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, OCoEBill.result != null ? OCoEBill.result.motaketqua : "Chuyển đổi hóa đơn thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OCoEBill.result != null ? OCoEBill.result.motaketqua : null, "Chuyển đổi hóa đơn thất bại");
                     }
                 }
                 else if (OCoEBill == null || (OCoEBill != null && OCoEBill.error != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, OCoEBill != null && OCoEBill.error != null ? OCoEBill.error.details : "Chuyển đổi hóa đơn thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OCoEBill != null && OCoEBill.error != null ? OCoEBill.error.details : null, "Chuyển đổi hóa đơn thất bại");
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CYBERBILL); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
@@ -627,17 +635,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, OEBill.result != null ? OEBill.result.motaketqua : "Chuyển đổi hóa đơn thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OEBill.result != null ? OEBill.result.motaketqua : null, "Chuyển đổi hóa đơn thất bại");
                     }
                 }
                 else if (OCoEBill == null || (OCoEBill != null && OCoEBill.error != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, OCoEBill != null && OCoEBill.error != null ? OCoEBill.error.details : "Chuyển đổi hóa đơn thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OCoEBill != null && OCoEBill.error != null ? OCoEBill.error.details : null, "Chuyển đổi hóa đơn thất bại");
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CYBERBILL); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
@@ -681,17 +690,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, OCaEBill.result != null ? OCaEBill.result.motaketqua : "Hủy hóa đơn thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OCaEBill.result != null ? OCaEBill.result.motaketqua : null, "Hủy hóa đơn thất bại");
                     }
                 }
                 else if (OCaEBill == null || (OCaEBill != null && OCaEBill.error != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, OCaEBill != null && OCaEBill.error != null ? OCaEBill.error.details : "Hủy hóa đơn thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CYBERBILL, OCaEBill != null && OCaEBill.error != null ? OCaEBill.error.details : null, "Hủy hóa đơn thất bại");
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CYBERBILL); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
@@ -726,7 +736,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.CYBERBILL);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;

@@ -49,14 +49,20 @@ namespace HIS.Desktop.Plugins.Register.Run
                 var _addressConnectHrm = (AddressConnectHrm)Newtonsoft.Json.JsonConvert.DeserializeObject<AddressConnectHrm>(HisConfigCFG.AddressConnectHrm);
                 HIS.Desktop.Plugins.Library.RegisterConnectHrm.RegisterConnectHrmProcessor _RegisterConnectHrmProcessor = new Library.RegisterConnectHrm.RegisterConnectHrmProcessor();
                 _PatientSDOByHrm = await _RegisterConnectHrmProcessor.GetDataHrm1(_addressConnectHrm.Address, _addressConnectHrm.Loginname, _addressConnectHrm.Password, _addressConnectHrm.GrantType, _addressConnectHrm.ClientId, _addressConnectHrm.ClientSecret, valueSearch);//"000017"
+                string hrmError = _RegisterConnectHrmProcessor.LastErrorMessage; // vCong 62522
                 this.Invoke(new MethodInvoker(delegate()
                                     {
+                                        if (!String.IsNullOrEmpty(hrmError))
+                                            DevExpress.XtraEditors.XtraMessageBox.Show(hrmError, "Thông báo");
                                         this.ProcessPatientCodeKeydown(_PatientSDOByHrm);
                                     }));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // vCong 62522: vd cau hinh AddressConnectHrm sai dinh dang JSON
+                string msg = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống nhân sự HRM"), "tra cứu nhân viên");
+                this.BeginInvoke(new MethodInvoker(delegate() { DevExpress.XtraEditors.XtraMessageBox.Show(msg, "Thông báo"); }));
             }
         }
     }

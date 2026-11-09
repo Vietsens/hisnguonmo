@@ -66,9 +66,14 @@
     <Compile Include="Provider\VIETTINBANK\ConfigADO.cs" />
     <Compile Include="Provider\VIETTINBANK\VietinBankProcessor.cs" />
     <Compile Include="ProvinceType.cs" />
+    <Compile Include="QrCodeErrorUtil.cs" />
     <Compile Include="QrCodeUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.csproj">
+      <Project>{7C3E2A61-4D2B-4F0E-9B8A-62522E0B1A01}</Project>
+      <Name>Inventec.Common.IntegrationError</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Inventec.Common.Logging\Inventec.Common.Logging.csproj">
       <Project>{4859008d-a40d-47bb-a185-019c8b140569}</Project>
       <Name>Inventec.Common.Logging</Name>

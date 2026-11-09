@@ -38,6 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.BankQrCode\Inventec.Common.BankQrCode.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.IntegrationError">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>

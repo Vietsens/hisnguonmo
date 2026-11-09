@@ -27,11 +27,13 @@ namespace Inventec.Fss.Client
         /// </returns>
         public static List<FileUploadInfo> UploadFile(string clientCode, string fileStoreLocation, List<FileHolder> files, bool keepOriginalFile)
         {
+            FssErrorHelper.Reset();
+            string uploadUri = FssErrorHelper.Combine(FssConstant.BASE_URI, FssConstant.UPLOAD_URI);
             try
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(FssConstant.BASE_URI);
+                    client.BaseAddress = FssErrorHelper.ParseBaseUri(FssConstant.BASE_URI, "tải file lên máy chủ lưu trữ");
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.Timeout = new TimeSpan(0, 0, FssConstant.TIME_OUT);
                     client.DefaultRequestHeaders.Add(FssConstant.HEADER_CLIENT_CODE, clientCode);
@@ -46,7 +48,19 @@ namespace Inventec.Fss.Client
                             content.Add(new StreamContent(file.Content), "file", file.FileName);
                         }
 
-                        using (HttpResponseMessage message = client.PostAsync(string.Format("{0}?keepOriginalFileName={1}", FssConstant.UPLOAD_URI, keepOriginalFile), content).Result)
+                        HttpResponseMessage message = null;
+                        try
+                        {
+                            message = client.PostAsync(string.Format("{0}?keepOriginalFileName={1}", FssConstant.UPLOAD_URI, keepOriginalFile), content).Result;
+                        }
+                        catch (Exception exCall)
+                        {
+                            // vCong 62522: timeout/khong ket noi toi FSS -> FileUploadException co thong bao phan loai nguon
+                            string msg;
+                            Inventec.Common.IntegrationError.IntegrationException ie = FssErrorHelper.Wrap(exCall, uploadUri, "tải file lên máy chủ lưu trữ", out msg);
+                            throw new FileUploadException(msg, ie);
+                        }
+                        using (message)
                         {
                             if (message.IsSuccessStatusCode)
                             {
@@ -55,7 +69,9 @@ namespace Inventec.Fss.Client
                             }
                             else
                             {
-                                throw new FileUploadException(message.StatusCode, message.ReasonPhrase);
+                                string msg;
+                                Inventec.Common.IntegrationError.IntegrationException ie = FssErrorHelper.FromStatus(message, uploadUri, "tải file lên máy chủ lưu trữ", out msg);
+                                throw new FileUploadException(message.StatusCode, msg, ie);
                             }
                         }
                     }
@@ -67,7 +83,9 @@ namespace Inventec.Fss.Client
             }
             catch (Exception ex)
             {
-                throw new FileUploadException("Exception when uploading file", ex);
+                string msg;
+                Inventec.Common.IntegrationError.IntegrationException ie = FssErrorHelper.Wrap(ex, uploadUri, "tải file lên máy chủ lưu trữ", out msg);
+                throw new FileUploadException(msg, ie);
             }
         }
 
@@ -184,11 +202,13 @@ namespace Inventec.Fss.Client
         /// </returns>
         public static List<FileUploadInfo> UploadFile(string clientCode, string fileStoreLocation, List<FileHolder> files, bool keepOriginalFile, string baseUri)
         {
+            FssErrorHelper.Reset();
+            string uploadUri = FssErrorHelper.Combine(baseUri, FssConstant.UPLOAD_URI);
             try
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(baseUri);
+                    client.BaseAddress = FssErrorHelper.ParseBaseUri(baseUri, "tải file lên máy chủ lưu trữ");
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.Timeout = new TimeSpan(0, 0, FssConstant.TIME_OUT);
                     client.DefaultRequestHeaders.Add(FssConstant.HEADER_CLIENT_CODE, clientCode);
@@ -203,7 +223,19 @@ namespace Inventec.Fss.Client
                             content.Add(new StreamContent(file.Content), "file", file.FileName);
                         }
 
-                        using (HttpResponseMessage message = client.PostAsync(string.Format("{0}?keepOriginalFileName={1}", FssConstant.UPLOAD_URI, keepOriginalFile), content).Result)
+                        HttpResponseMessage message = null;
+                        try
+                        {
+                            message = client.PostAsync(string.Format("{0}?keepOriginalFileName={1}", FssConstant.UPLOAD_URI, keepOriginalFile), content).Result;
+                        }
+                        catch (Exception exCall)
+                        {
+                            // vCong 62522: timeout/khong ket noi toi FSS -> FileUploadException co thong bao phan loai nguon
+                            string msg;
+                            Inventec.Common.IntegrationError.IntegrationException ie = FssErrorHelper.Wrap(exCall, uploadUri, "tải file lên máy chủ lưu trữ", out msg);
+                            throw new FileUploadException(msg, ie);
+                        }
+                        using (message)
                         {
                             if (message.IsSuccessStatusCode)
                             {
@@ -212,7 +244,9 @@ namespace Inventec.Fss.Client
                             }
                             else
                             {
-                                throw new FileUploadException(message.StatusCode, message.ReasonPhrase);
+                                string msg;
+                                Inventec.Common.IntegrationError.IntegrationException ie = FssErrorHelper.FromStatus(message, uploadUri, "tải file lên máy chủ lưu trữ", out msg);
+                                throw new FileUploadException(message.StatusCode, msg, ie);
                             }
                         }
                     }
@@ -224,7 +258,9 @@ namespace Inventec.Fss.Client
             }
             catch (Exception ex)
             {
-                throw new FileUploadException("Exception when uploading file", ex);
+                string msg;
+                Inventec.Common.IntegrationError.IntegrationException ie = FssErrorHelper.Wrap(ex, uploadUri, "tải file lên máy chủ lưu trữ", out msg);
+                throw new FileUploadException(msg, ie);
             }
         }
 

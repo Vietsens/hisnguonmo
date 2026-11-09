@@ -38,7 +38,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.MINVOICE, "Chưa cấu hình địa chỉ cổng hóa đơn điện tử (Webservice URL)");
                         return result;
                     }
                     string[] accountConfigArr = accountConfig.Split('|');
@@ -52,7 +52,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                     {
 
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => loginResult), loginResult));
-                        ElectronicBillResultUtil.Set(ref result, false, loginResult.error);
+                        ElectronicBillResultUtil.SetLoginError(ref result, ProviderType.MINVOICE, loginResult != null ? loginResult.error : null);
                         return result;
                     }
                     switch (electronicBillType)
@@ -89,19 +89,22 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                         case ElectronicBillType.ENUM.GET_INVOICE_INFO:
                         //break;
                         default:
-                            ElectronicBillResultUtil.Set(ref result, false, "Chưa tích hợp tính năng");
+                            ElectronicBillResultUtil.SetSoftwareError(ref result, ProviderType.MINVOICE, "Phần mềm chưa hỗ trợ: Chưa tích hợp tính năng", null);
                             break;
                     }
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
         }
         private void DeleteInvoice(ref ElectronicBillResult result, string serviceUrl, LoginDataMinvoice adoLogin, ApiDataResult loginResult)
         {
+            bool deleted = false;
+            string deleteError = null;
             try
             {
                 DeleteInvoiceData deleteInvoiceData = new DeleteInvoiceData
@@ -123,6 +126,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
 
                 if (deleteInvoiceResult != null && deleteInvoiceResult.ok && deleteInvoiceResult.code == "00")
                 {
+                    deleted = true;
                     Inventec.Common.Logging.LogSystem.Info(
                         string.Format("Xóa hóa đơn thành công: inv_invoiceSeries={0}, inv_invoiceAuth_Id={1}",
                             deleteInvoiceData.data[0].inv_invoiceSeries,
@@ -132,6 +136,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                 else
                 {
                     string message = deleteInvoiceResult != null ? deleteInvoiceResult.message ?? "Xóa hóa đơn thất bại" : "Xóa hóa đơn thất bại";
+                    deleteError = message;
                     Inventec.Common.Logging.LogSystem.Error(
                         string.Format("Xóa hóa đơn thất bại: {0}", message)
                     );
@@ -139,11 +144,20 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
             }
             catch (Exception ex)
             {
+                deleteError = ex.Message;
                 Inventec.Common.Logging.LogSystem.Error(
                     string.Format("Lỗi khi gọi API xóa hóa đơn: {0}", ex.Message)
                 );
             }
-            ElectronicBillResultUtil.Set(ref result, false, "Ký hóa đơn thất bại và đã xóa hóa đơn");
+            if (deleted)
+            {
+                ElectronicBillResultUtil.Set(ref result, false, "Ghi chú: do ký hóa đơn thất bại, phần mềm đã xóa hóa đơn nháp vừa tạo trên cổng M-Invoice. Có thể phát hành lại sau khi xử lý lỗi ký ở trên.");
+            }
+            else
+            {
+                ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MINVOICE, deleteError,
+                    string.Format("Ký hóa đơn thất bại và phần mềm KHÔNG xóa được hóa đơn nháp vừa tạo trên cổng (id {0}). Phải vào cổng M-Invoice kiểm tra, xóa hóa đơn này trước khi phát hành lại để tránh trùng hóa đơn", result.hoadon68_id));
+            }
         }
 
         private void KyHoaDonDienTu(ref ElectronicBillResult result, string serviceUrl, LoginDataMinvoice adoLogin, ApiDataResult loginResult, TemplateEnum.TYPE templateType)
@@ -160,13 +174,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                 catch (Exception ex)
                 {
                     LogSystem.Error("Lỗi khi gọi API ký hóa đơn: " + ex);
+                    ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MINVOICE, "ký hóa đơn");
                     DeleteInvoice(ref result, serviceUrl, adoLogin, loginResult);
                     return;
                 }
                 if (signResult == null || signResult.code != "00" || signResult.data == null)
                 {
                     string message = signResult != null ? signResult.message : "Ký hóa đơn thất bại";
-                    ElectronicBillResultUtil.Set(ref result, false, message);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MINVOICE, message, null);
                     Inventec.Common.Logging.LogSystem.Error(string.Format("Ký hóa đơn thất bại: {0}", message));
                     DeleteInvoice(ref result, serviceUrl, adoLogin, loginResult);
                     return;
@@ -174,13 +189,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
 
                 if (signResult.data.data == null || signResult.data.data.tthai != "Đã gửi")
                 {
-                    ElectronicBillResultUtil.Set(ref result, false, "Hóa đơn chưa được gửi CQT");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MINVOICE, "Trạng thái hóa đơn trên cổng: " + (signResult.data.data != null ? signResult.data.data.tthai : "(trống)"), "Hóa đơn đã ký nhưng cổng báo chưa gửi cơ quan thuế");
                     Inventec.Common.Logging.LogSystem.Error("Hóa đơn chưa được gửi CQT");
                     return;
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex.Message);
             }
         }
@@ -208,18 +224,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                     {
                         result.Success = false;
                         string message = createInvoiceResult != null ? createInvoiceResult.error ?? createInvoiceResult.message : "Gửi hóa đơn gốc thất bại";
-                        ElectronicBillResultUtil.Set(ref result, false, message);
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MINVOICE, message, null);
                     }
                 }
                 else if (createInvoiceResult == null || !String.IsNullOrWhiteSpace(createInvoiceResult.error) || !String.IsNullOrWhiteSpace(createInvoiceResult.message))
                 {
                     result.Success = false;
                     string message = createInvoiceResult != null ? createInvoiceResult.error ?? createInvoiceResult.message : "Gửi hóa đơn gốc thất bại";
-                    ElectronicBillResultUtil.Set(ref result, false, message);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MINVOICE, message, null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -268,6 +285,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (CreateInvoice)");
             }
             return result;
         }
@@ -352,6 +370,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetDetail)");
             }
             return result;
         }
@@ -378,13 +397,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                 }
                 else
                 {
-                    ElectronicBillResultUtil.Set(ref result, false, "Không nhận được dữ liệu PDF từ API");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MINVOICE, null, "Không nhận được dữ liệu PDF từ cổng hóa đơn điện tử");
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                ElectronicBillResultUtil.Set(ref result, false, "Lỗi khi gọi API in hóa đơn: " + ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MINVOICE, "in hóa đơn");
             }
         }
         #endregion
@@ -442,18 +461,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
                     {
                         result.Success = false;
                         string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.error ?? ReplaceInvoiceResult.message : "Gửi hóa đơn gốc thất bại";
-                        ElectronicBillResultUtil.Set(ref result, false, message);
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MINVOICE, message, null);
                     }
                 }
                 else if (ReplaceInvoiceResult == null || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.error) || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.message))
                 {
                     result.Success = false;
                     string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.error ?? ReplaceInvoiceResult.message : "Gửi hóa đơn gốc thất bại";
-                    ElectronicBillResultUtil.Set(ref result, false, message);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MINVOICE, message, null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -470,6 +490,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                throw; // de Run phan loai nguon loi (ket noi / thiet lap tai khoan / NCC) thay vi tra null khong ro ly do
             }
             return result;
         }
@@ -502,7 +523,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MInvoice
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.MINVOICE);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;

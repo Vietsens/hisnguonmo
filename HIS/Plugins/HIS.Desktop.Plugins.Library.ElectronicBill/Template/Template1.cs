@@ -268,6 +268,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dòng hàng/dịch vụ của hóa đơn theo mẫu (Template1)");
             }
             return products;
         }
@@ -289,6 +290,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
             {
                 sereServCfgs = new List<HIS_SERE_SERV_BILL>();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetListSereServByConfig)");
             }
             return sereServCfgs;
         }

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using Inventec.Common.IntegrationError;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,13 +38,32 @@ namespace HIS.Desktop.Plugins.TestServiceExecute.PACS
             {
                 string requestedUrl = "";
                 this.HttpRequestBuilder(client, uri, ref requestedUrl, userTimeout, listParam);
-                HttpResponseMessage resp = client.PostAsJsonAsync(requestedUrl, data).Result;
-                if (!resp.IsSuccessStatusCode)
+                // vCong 62522: loi goi PACS mang nguon loi (ket noi / PACS tra loi / cau hinh dia chi)
+                IntegrationPartner partner = IntegrationPartner.Pacs("hệ thống PACS");
+                string fullUri = (client.BaseAddress != null ? client.BaseAddress.AbsoluteUri : "") + uri;
+                HttpResponseMessage resp = null;
+                try
                 {
-                    Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}. Input: {3}.", client.BaseAddress.AbsoluteUri, uri, resp.StatusCode.GetHashCode(), JsonConvert.SerializeObject(data)));
+                    resp = client.PostAsJsonAsync(requestedUrl, data).Result;
                 }
-                string responseData = resp.Content.ReadAsStringAsync().Result;
-                result = JsonConvert.DeserializeObject<T>(responseData);
+                catch (Exception ex)
+                {
+                    throw IntegrationHttpError.WrapCall(ex, partner, fullUri);
+                }
+                if (resp == null || !resp.IsSuccessStatusCode)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}. Input: {3}.", client.BaseAddress.AbsoluteUri, uri, resp != null ? resp.StatusCode.GetHashCode() : 0, JsonConvert.SerializeObject(data)));
+                    throw IntegrationHttpError.FromStatus(partner, fullUri, resp);
+                }
+                string responseData = IntegrationHttpError.ReadBody(resp);
+                try
+                {
+                    result = JsonConvert.DeserializeObject<T>(responseData);
+                }
+                catch (Exception ex)
+                {
+                    throw IntegrationHttpError.ParseError(partner, fullUri, responseData, ex);
+                }
             }
             return result;
         }

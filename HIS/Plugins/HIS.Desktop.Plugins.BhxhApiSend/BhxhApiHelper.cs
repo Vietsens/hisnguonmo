@@ -108,6 +108,10 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                     {
                         string responseBody = await response.Content.ReadAsStringAsync();
                         result = JsonConvert.DeserializeObject<BhxhTokenResultADO>(responseBody);
+                        if (result != null && (result.maKetQua != "200" || result.APIKey == null))
+                        {
+                            result.ErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "Cổng BHXH trả mã kết quả " + (result.maKetQua ?? "(trống)") + " khi lấy mã phiên (token)");
+                        }
 
                         // Cache token
                         cachedToken = result;
@@ -117,6 +121,7 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                     {
                         LogSystem.Error("BhxhApiHelper.Authenticate - Dang nhap that bai. StatusCode: " + response.StatusCode);
                         result = new BhxhTokenResultADO { maKetQua = ((int)response.StatusCode).ToString() };
+                        result.ErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "api/token/take", response), Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "đăng nhập cổng BHXH");
                     }
                 }
             }
@@ -124,6 +129,7 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
             {
                 LogSystem.Error("BhxhApiHelper.Authenticate - Exception: ", ex);
                 result = new BhxhTokenResultADO { maKetQua = "500" };
+                result.ErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "đăng nhập cổng BHXH");
             }
             return result;
         }
@@ -205,7 +211,7 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                             result = new BhxhCategoryResultADO
                             {
                                 maKetQua = ((int)response.StatusCode).ToString(),
-                                thongDiep = "Loi ket noi den Cong BHXH. StatusCode: " + response.StatusCode
+                                thongDiep = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, categoryType.EndpointPath, (int)response.StatusCode, response.ReasonPhrase, responseBody), Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "gửi dữ liệu")
                             };
                         }
                     }
@@ -217,7 +223,7 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                 result = new BhxhCategoryResultADO
                 {
                     maKetQua = "500",
-                    thongDiep = "Timeout khi gửi dữ liệu đến Cổng BHXH. Vui lòng thử lại."
+                    thongDiep = Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Connection, Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "Hết thời gian chờ phản hồi từ cổng BHXH khi gửi dữ liệu", null)
                 };
             }
             catch (Exception ex)
@@ -226,7 +232,7 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                 result = new BhxhCategoryResultADO
                 {
                     maKetQua = "500",
-                    thongDiep = "Lỗi khi gửi dữ liệu: " + ex.Message
+                    thongDiep = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "gửi dữ liệu")
                 };
             }
             return result;

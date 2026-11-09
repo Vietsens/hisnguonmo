@@ -25,6 +25,12 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Popup
         // ---- Kết quả sau khi đăng nhập ----
         /// <summary>Token nhận được sau đăng nhập thành công. Null nếu chưa/thất bại.</summary>
         public TokenResponse TokenResult { get; private set; }
+
+        /// <summary>
+        /// (vCong 62522) Lỗi đã phân loại nguồn khi đăng nhập thất bại (form đã hiện thông báo và tự đóng).
+        /// Null nếu thành công hoặc người dùng tự đóng.
+        /// </summary>
+        public string ErrorMessage { get; private set; }
         private readonly string _bankCode;
         private readonly Action<HIS_BANK_OAUTH> _getToken;
 
@@ -48,14 +54,17 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Popup
                 // Bước 1: Tạo PKCE session
                 _pkceSession = _authService.CreatePkceSession();
 
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => _pkceSession), _pkceSession));
+                // (vCong 62522) không log code_verifier (bí mật PKCE), chỉ log URL đăng nhập
+                Inventec.Common.Logging.LogSystem.Debug("BankHub LoginUrl: " + _pkceSession.LoginUrl);
                 // Load URL đăng nhập vào WebView
                 webView1.Url = _pkceSession.LoginUrl;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                MessageBox.Show("Không thể khởi tạo đăng nhập:\n" + ex.Message,
+                // (vCong 62522) phân loại nguồn (thường là cấu hình MBBInfo thiếu/sai)
+                ErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, HisConfigData.GetPartner(_bankCode), "khởi tạo đăng nhập ngân hàng");
+                MessageBox.Show("Không thể khởi tạo đăng nhập:\n" + ErrorMessage,
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -78,7 +87,9 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Popup
                 e.Cancel = true;
                 InvokeOnUiThread(() =>
                 {
-                    MessageBox.Show("Đăng nhập thất bại:\n" + error,
+                    // (vCong 62522) access_denied (người dùng bấm Hủy), login_required... do Keycloak ngân hàng trả về
+                    ErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(HisConfigData.GetPartner(_bankCode), error);
+                    MessageBox.Show("Đăng nhập thất bại:\n" + ErrorMessage,
                         "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     this.DialogResult = DialogResult.Cancel;
                     this.Close();
@@ -130,7 +141,20 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Popup
             }
             catch (BankHubException ex)
             {
-                MessageBox.Show("Không thể lấy access token:\n" + ex.Message,
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                // (vCong 62522) BankHubException đã gắn nguồn lỗi (kết nối / thiết lập tại viện / ngân hàng)
+                ErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, _authService != null ? _authService.Partner : HisConfigData.GetPartner(_bankCode), "lấy access token ngân hàng");
+                MessageBox.Show("Không thể lấy access token:\n" + ErrorMessage,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = DialogResult.Cancel;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                // (vCong 62522) lỗi khác (lưu token lên MOS...) trước đây không được bắt
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                ErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, HisConfigData.GetPartner(_bankCode), "lưu thông tin đăng nhập ngân hàng");
+                MessageBox.Show("Không thể lấy access token:\n" + ErrorMessage,
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = DialogResult.Cancel;
                 this.Close();

@@ -82,7 +82,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.MISA, "Chưa cấu hình địa chỉ cổng hóa đơn điện tử (Webservice URL)");
                         return result;
                     }
 
@@ -90,7 +90,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                     if (String.IsNullOrEmpty(appId))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong co thong tin id ung dung");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không có thông tin id ứng dụng");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.MISA, "Chưa cấu hình mã ứng dụng (AppID) của nhà cung cấp");
                         return result;
                     }
 
@@ -98,7 +98,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                     if (String.IsNullOrEmpty(signUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong co thong tin dia chi may chu ky so");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không có thông tin địa chỉ máy chủ ký số");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.MISA, "Chưa cấu hình địa chỉ máy chủ ký số");
                         return result;
                     }
 
@@ -160,6 +160,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MISA); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -201,11 +202,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                     result.Success = false;
                     result.InvoiceSys = ProviderType.MISA;
                     Inventec.Common.Logging.LogSystem.Error("Huy hoa don dien tu that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dInvoice), dInvoice));
-                    ElectronicBillResultUtil.Set(ref result, false, response.description);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MISA, response != null ? response.description : null, null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MISA); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -254,11 +256,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                     result.Success = false;
                     result.InvoiceSys = ProviderType.MISA;
                     Inventec.Common.Logging.LogSystem.Error("lay file chuyen doi that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoices), invoices));
-                    ElectronicBillResultUtil.Set(ref result, false, response.description);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MISA, response != null ? response.description : null, null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MISA); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -289,7 +292,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.MISA);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
@@ -303,7 +306,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                 {
                     result.Success = false;
                     result.InvoiceSys = ProviderType.MISA;
-                    ElectronicBillResultUtil.Set(ref result, false, "Chưa hỗ trợ xuất hóa đơn gộp!");
+                    ElectronicBillResultUtil.SetSoftwareError(ref result, ProviderType.MISA, "Phần mềm chưa hỗ trợ: Chưa hỗ trợ xuất hóa đơn gộp", null);
                     throw new Exception("Chưa hỗ trợ xuất hóa đơn gộp!");
                 }
 
@@ -346,7 +349,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                         }
                         else
                         {
-                            ElectronicBillResultUtil.Set(ref result, false, error);
+                            ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MISA, error, null);
                         }
                     }
                     else if (String.IsNullOrWhiteSpace(responsePreview.description) && (responsePreview.fileToBytes != null || !String.IsNullOrWhiteSpace(responsePreview.fileDownload)))//không cấu hình thì hiển thị cửa sổ ký
@@ -375,7 +378,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                         result.Success = false;
                         result.InvoiceSys = ProviderType.MISA;
                         Inventec.Common.Logging.LogSystem.Error("tao hoa doi dien tu that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.InvoiceCreate), this.InvoiceCreate) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoices), invoices));
-                        ElectronicBillResultUtil.Set(ref result, false, this.InvoiceCreate != null ? this.InvoiceCreate.description : (responsePreview != null ? responsePreview.description : ""));
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MISA, this.InvoiceCreate != null ? this.InvoiceCreate.description : (responsePreview != null ? responsePreview.description : null), "Tạo hóa đơn thất bại");
                     }
                 }
                 else
@@ -383,12 +386,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                     result.Success = false;
                     result.InvoiceSys = ProviderType.MISA;
                     Inventec.Common.Logging.LogSystem.Error("tao hoa doi dien tu that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.InvoiceCreate), this.InvoiceCreate) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoices), invoices));
-                    ElectronicBillResultUtil.Set(ref result, false, this.InvoiceCreate != null ? this.InvoiceCreate.description : "");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MISA, this.InvoiceCreate != null ? this.InvoiceCreate.description : null, "Tạo hóa đơn thất bại");
                 }
             }
             catch (Exception ex)
             {
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MISA);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -456,6 +459,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
             catch (Exception ex)
             {
                 result = false;
+                errorMessage = HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.BuildFromException(ex, ProviderType.MISA, "ký và phát hành hóa đơn");
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -835,6 +839,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetInvoiceType)");
             }
             return result;
         }
@@ -856,12 +861,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                 {
                     result = "";
                     Inventec.Common.Logging.LogSystem.Error(ex);
+                    HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
                 }
             }
             catch (Exception ex)
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
             }
             return result;
         }
@@ -880,6 +887,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
             {
                 result = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
             }
             return result;
         }

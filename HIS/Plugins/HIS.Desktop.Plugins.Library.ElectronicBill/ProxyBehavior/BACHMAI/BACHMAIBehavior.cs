@@ -71,7 +71,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.BACH_MAI, "Chưa cấu hình địa chỉ cổng hóa đơn điện tử (Webservice URL)");
                         return result;
                     }
 
@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
                             result = PrcessCreateInvoice(templateType);
                             break;
                         case ElectronicBillType.ENUM.GET_INVOICE_LINK:
-                            ElectronicBillResultUtil.Set(ref result, false, "Chưa tích hợp tính năng này");
+                            ElectronicBillResultUtil.SetSoftwareError(ref result, ProviderType.BACH_MAI, "Phần mềm chưa hỗ trợ: Chưa tích hợp tính năng này", null);
                             break;
                         case ElectronicBillType.ENUM.DELETE_INVOICE:
                         case ElectronicBillType.ENUM.CANCEL_INVOICE:
@@ -94,7 +94,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
             }
             catch (Exception ex)
             {
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.BACH_MAI);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -170,7 +170,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
             catch (Exception ex)
             {
                 valid = false;
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.BACH_MAI);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return valid;
@@ -219,6 +219,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.BACH_MAI); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
@@ -377,13 +378,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
                 }
                 else
                 {
-                    ElectronicBillResultUtil.Set(ref result, false, "");
+                    ElectronicBillResultUtil.SetNoResponse(ref result, ProviderType.BACH_MAI, null);
                     LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoice), invoice));
                 }
             }
             catch (Exception ex)
             {
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.BACH_MAI);
                 LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoice), invoice));
             }
 
@@ -444,6 +445,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (ProccessRoom)");
             }
         }
 
@@ -576,6 +578,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
             {
                 result = new List<Chitiet_TT78>();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetEinvoiceLineV2)");
             }
             return result;
         }
@@ -692,7 +695,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
                         }
                         else
                         {
-                            ElectronicBillResultUtil.Set(ref result, false, string.Join(",", apiresult));
+                            ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.BACH_MAI, string.Join(",", apiresult), null);
                             LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoice), invoice));
                             //gọi api xóa hóa đơn
                             List<object> delData = new List<object> { invoice.id_master };
@@ -702,19 +705,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
                     }
                     else
                     {
-                        ElectronicBillResultUtil.Set(ref result, false, string.Join(",", apiresult));
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.BACH_MAI, string.Join(",", apiresult), null);
                         LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoice), invoice));
                     }
                 }
                 else
                 {
-                    ElectronicBillResultUtil.Set(ref result, false, "");
+                    ElectronicBillResultUtil.SetNoResponse(ref result, ProviderType.BACH_MAI, null);
                     LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoice), invoice));
                 }
             }
             catch (Exception ex)
             {
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.BACH_MAI);
                 LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoice), invoice));
             }
 
@@ -737,6 +740,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (ProcessToObject)");
             }
             return result;
         }
@@ -890,6 +894,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
             {
                 result = new List<E_BM_InvoiceDetail>();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetEinvoiceLine)");
             }
             return result;
         }
@@ -951,6 +956,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (ProcessTongTien)");
             }
         }
 
@@ -969,6 +975,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.BACHMAI
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetDate)");
             }
             return result;
         }

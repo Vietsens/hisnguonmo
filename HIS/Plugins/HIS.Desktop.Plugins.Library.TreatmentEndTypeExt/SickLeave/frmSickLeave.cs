@@ -1169,6 +1169,11 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                                 MessageManager.Show(this.ParentForm, param, resultData != null);
                             }
                         }
+                        else if (rsData.IsCallFailed || (string.IsNullOrEmpty(rsData.ghiChu) && !string.IsNullOrEmpty(rsData.message)))
+                        {
+                            // Gọi cổng BHXH thất bại / cổng trả mã lỗi: báo lý do đã phân loại (vCong 62522)
+                            DevExpress.XtraEditors.XtraMessageBox.Show(rsData.message, "Kiểm tra thẻ BHYT");
+                        }
                         else if (!string.IsNullOrEmpty(rsData.ghiChu))
                         {
                             DevExpress.XtraEditors.XtraMessageBox.Show(rsData.ghiChu, "Thông báo");
@@ -1178,12 +1183,14 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
+                    DevExpress.XtraEditors.XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "Chưa cấu hình tài khoản/địa chỉ cổng BHXH (HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS, HIS.CHECK_HEIN_CARD.BHXH__ADDRESS)"), "Kiểm tra thẻ BHYT");
                 }
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                DevExpress.XtraEditors.XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "kiểm tra thẻ BHYT"), "Kiểm tra thẻ BHYT");
             }
         }
     }

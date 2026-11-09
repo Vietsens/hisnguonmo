@@ -48,10 +48,13 @@ namespace Inventec.VoiceCommand
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                // vCong 62522: ghi loi co phan loai nguon vao ket qua + log (truoc day nuot hoan toan)
+                resultTDO.messageError = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Ai("Rikkei AI"), "nhận dạng giọng nói");
+                Inventec.Common.Logging.LogSystem.Warn(resultTDO.messageError);
             }
 
-            Inventec.Common.Logging.LogSystem.Debug("ProcessSpeechRikkie" + Inventec.Common.Logging.LogUtil.TraceData("RikkeiAccessToken", CommandCFG.RikkeiAccessToken)
-                + Inventec.Common.Logging.LogUtil.TraceData("resultTDO", resultTDO));
+            // vCong 62522: khong log access token
+            Inventec.Common.Logging.LogSystem.Debug("ProcessSpeechRikkie" + Inventec.Common.Logging.LogUtil.TraceData("resultTDO", resultTDO));
 
             return resultTDO;
         }

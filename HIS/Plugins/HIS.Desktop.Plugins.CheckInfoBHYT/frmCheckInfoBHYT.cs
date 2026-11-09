@@ -487,7 +487,7 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                     }
 
                     //Tách chuỗi trả về thành các dòng thông tin 
-                    string ghichu = data.ResultDataADO.ResultHistoryLDO.ghiChu;
+                    string ghichu = data.ResultDataADO.ResultHistoryLDO.ghiChu ?? "";
 
                     string text = "";
                     string[] listNote = ghichu.Split(new char[] { ')', '(', '.', '!' }, StringSplitOptions.RemoveEmptyEntries);
@@ -498,7 +498,9 @@ namespace HIS.Desktop.Plugins.CheckInfoBHYT
                             text = text + note + " !\r\n";
                     }
 
-                    if (data.ResultDataADO.ResultHistoryLDO.maKetQua == "101")
+                    // Gọi cổng thất bại / cổng trả mã lỗi không kèm ghi chú: hiện lý do đã phân loại (vCong 62522)
+                    if (data.ResultDataADO.ResultHistoryLDO.maKetQua == "101" || data.ResultDataADO.ResultHistoryLDO.IsCallFailed
+                        || (String.IsNullOrWhiteSpace(text) && !String.IsNullOrWhiteSpace(data.ResultDataADO.ResultHistoryLDO.message)))
                         text = String.Format("{0} - {1}", data.ResultDataADO.ResultHistoryLDO.message, text);
                     txtViewInfoCheck.Text = text;
 

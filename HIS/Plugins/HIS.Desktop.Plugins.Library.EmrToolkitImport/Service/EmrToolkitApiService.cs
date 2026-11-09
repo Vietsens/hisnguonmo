@@ -40,6 +40,19 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
         private const string URI_MA_HOA_JSON = "/api/EMR/MaHoaJson";
         private const string URI_IMPORT = "/api/EMR/v2/Import";
 
+        /// <summary>(vCong 62522) Lỗi đã phân loại nguồn của bước HTTP gần nhất (các bước trả null khi lỗi)</summary>
+        private string lastError;
+
+        internal static Inventec.Common.IntegrationError.IntegrationPartner Partner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.Emr("EMR Toolkit"); }
+        }
+
+        private void SetError(string message)
+        {
+            if (string.IsNullOrWhiteSpace(this.lastError)) this.lastError = message;
+        }
+
         /// <summary>
         /// Thực hiện đầy đủ 3 bước: CreateToken -> MaHoaJson -> Import.
         /// </summary>
@@ -56,14 +69,14 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
                 if (model == null)
                 {
                     result.Success = false;
-                    result.Message = "Dữ liệu gửi đi (model) đang null.";
+                    result.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.SoftwareError(Partner, "Dữ liệu gửi đi (model) đang null", null); // vCong 62522
                     return result;
                 }
 
                 if (!EmrToolkitConfigCFG.HasConnectionInfo)
                 {
                     result.Success = false;
-                    result.Message = "Chưa cấu hình kết nối EMRTOOLKIT (key " + EmrToolkitConfigCFG.CONFIG_KEY__CONNECTION_INFO + ").";
+                    result.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Partner, "Chưa cấu hình kết nối EMRTOOLKIT (key " + EmrToolkitConfigCFG.CONFIG_KEY__CONNECTION_INFO + ")"); // vCong 62522
                     return result;
                 }
 
@@ -77,11 +90,13 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
 
                 // ----- Bước 1: Lấy token (đăng nhập bằng ConnectionInfo) -----
                 result.Step = EmrToolkitImportStep.CreateToken;
+                this.lastError = null;
                 TokenResultADO tokenData = CreateToken();
                 if (tokenData == null || string.IsNullOrEmpty(tokenData.Token))
                 {
                     result.Success = false;
-                    result.Message = "Không lấy được token từ EMRTOOLKIT (CreateToken).";
+                    // (vCong 62522) lý do thật: kết nối / sai tài khoản / EMR Toolkit trả lỗi
+                    result.Message = this.lastError ?? Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(Partner, "Không lấy được token từ EMRTOOLKIT (CreateToken)");
                     return result;
                 }
                 string token = tokenData.Token;
@@ -99,13 +114,14 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
 
                 // ----- Bước 2: Mã hóa JSON -----
                 result.Step = EmrToolkitImportStep.MaHoaJson;
+                this.lastError = null;
                 MaHoaJsonResultADO encrypted = MaHoaJson(model, token);
                 if (encrypted == null
                     || string.IsNullOrEmpty(encrypted.DuLieu)
                     || string.IsNullOrEmpty(encrypted.KeyGiaiMa))
                 {
                     result.Success = false;
-                    result.Message = "Mã hóa JSON thất bại (MaHoaJson).";
+                    result.Message = this.lastError ?? Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Partner, "Kết quả mã hóa thiếu DuLieu/KeyGiaiMa", "Mã hóa JSON thất bại (MaHoaJson)"); // vCong 62522
                     return result;
                 }
 
@@ -120,19 +136,22 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
                 };
 
                 string importRawResponse;
+                this.lastError = null;
                 EmrOutput<object> importOutput = Import(importRequest, token, out importRawResponse);
                 result.RawResponseJson = importRawResponse;
 
                 if (importOutput == null)
                 {
                     result.Success = false;
-                    result.Message = "API Import không trả về dữ liệu hợp lệ.";
+                    result.Message = this.lastError ?? Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Partner, importRawResponse, "API Import không trả về dữ liệu hợp lệ"); // vCong 62522
                     return result;
                 }
 
                 result.Success = importOutput.Success;
                 result.ImportData = importOutput.Data;
                 result.Message = importOutput.Message;
+                if (!importOutput.Success)
+                    result.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Partner, importOutput.Message, "EMR Toolkit từ chối import"); // vCong 62522
                 if (importOutput.Success)
                     result.Step = EmrToolkitImportStep.Completed;
 
@@ -141,7 +160,7 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
             catch (Exception ex)
             {
                 result.Success = false;
-                result.Message = ex.Message;
+                result.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "gửi dữ liệu sang EMR Toolkit"); // vCong 62522
                 LogSystem.Error(
                     "EmrToolkitApiService.ImportEmr thất bại."
                     + LogUtil.TraceData(LogUtil.GetMemberName(() => model), model),
@@ -174,11 +193,13 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
                     return output.Data;
 
                 LogSystem.Error("CreateToken EMRTOOLKIT thất bại. Response: " + raw);
+                SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(Partner, output != null && !string.IsNullOrWhiteSpace(output.Message) ? output.Message : raw)); // vCong 62522
                 return null;
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "lấy token")); // vCong 62522
                 return null;
             }
         }
@@ -198,11 +219,13 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
                     return output.Data;
 
                 LogSystem.Error("MaHoaJson EMRTOOLKIT thất bại. Response: " + raw);
+                SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Partner, output != null && !string.IsNullOrWhiteSpace(output.Message) ? output.Message : raw, "Mã hóa JSON thất bại (MaHoaJson)")); // vCong 62522
                 return null;
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "mã hóa dữ liệu")); // vCong 62522
                 return null;
             }
         }
@@ -222,6 +245,7 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "import dữ liệu")); // vCong 62522
                 return null;
             }
         }
@@ -253,6 +277,7 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
             catch (Exception ex)
             {
                 LogSystem.Error("DeserializeOutput lỗi. Raw=" + raw, ex);
+                SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(Partner, "EMR Toolkit", raw, ex), Partner, null)); // vCong 62522
                 return null;
             }
         }
@@ -280,7 +305,16 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
                         if (!string.IsNullOrEmpty(token))
                             requestMessage.Headers.TryAddWithoutValidation(HEADER_TOKEN_CODE, token);
 
-                        HttpResponseMessage response = client.SendAsync(requestMessage).Result;
+                        HttpResponseMessage response;
+                        try
+                        {
+                            response = client.SendAsync(requestMessage).Result;
+                        }
+                        catch (Exception ex)
+                        {
+                            // (vCong 62522) timeout / DNS / từ chối kết nối / SSL
+                            throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(ex, Partner, url);
+                        }
                         rawResponse = response.Content != null ? response.Content.ReadAsStringAsync().Result : null;
 
                         if (!response.IsSuccessStatusCode)
@@ -288,6 +322,8 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
                             LogSystem.Error(string.Format(
                                 "POST {0} lỗi HTTP {1}. Response: {2}",
                                 url, (int)response.StatusCode, rawResponse));
+                            // (vCong 62522) 401/403 = tài khoản, 404 = địa chỉ, 5xx = phía EMR Toolkit/kết nối
+                            SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Partner, url, (int)response.StatusCode, response.ReasonPhrase, rawResponse), Partner, null));
                             return false;
                         }
                         return true;
@@ -297,6 +333,7 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport.Service
             catch (Exception ex)
             {
                 LogSystem.Error("PostJson lỗi. Url=" + url, ex);
+                SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, null)); // vCong 62522
                 return false;
             }
         }

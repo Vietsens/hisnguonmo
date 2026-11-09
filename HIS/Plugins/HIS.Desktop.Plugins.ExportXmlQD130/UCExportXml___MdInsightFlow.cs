@@ -1045,12 +1045,50 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
+        /// <summary>
+        /// Lý do không soát lỗi được → thông báo có nguồn lỗi + liên hệ (vCong 62522).
+        /// Chưa khai kết nối/tài khoản, sai xác thực = thiết lập tại viện; không xuất được XML = dữ liệu hồ sơ;
+        /// quá thời gian / lỗi mạng = kết nối; hệ thống ngoài báo lỗi / quá hạn chờ kết quả = phía đối tác.
+        /// </summary>
+        private static string ClassifyMdInsightReason(EnumMdInsightFailReason reason, string message)
+        {
+            try
+            {
+                Inventec.Common.IntegrationError.IntegrationPartner partner = Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống soát lỗi hồ sơ (MdInsight)");
+                if (Inventec.Common.IntegrationError.IntegrationErrorMessage.IsBuilt(message)) return message;
+                switch (reason)
+                {
+                    case EnumMdInsightFailReason.NotConfigured:
+                    case EnumMdInsightFailReason.NoAccountForMediOrg:
+                        return Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(partner, message);
+                    case EnumMdInsightFailReason.Unauthorized:
+                        return Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(partner, message);
+                    case EnumMdInsightFailReason.ExportFailed:
+                        return Inventec.Common.IntegrationError.IntegrationErrorMessage.BusinessError(partner, message);
+                    case EnumMdInsightFailReason.Timeout:
+                        return Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Connection, partner, "Quá thời gian chờ hệ thống soát lỗi trả lời", message);
+                    case EnumMdInsightFailReason.PendingExpired:
+                        return Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(partner, message, "Hệ thống soát lỗi chưa trả kết quả quá thời hạn chờ");
+                    case EnumMdInsightFailReason.UploadFailed:
+                    case EnumMdInsightFailReason.SystemError:
+                        return Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(partner, message, "Hệ thống soát lỗi không xử lý được hồ sơ");
+                    default:
+                        return message;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return message;
+            }
+        }
+
         private void SetCheckFailed(
             MdInsightResultADO result, EnumMdInsightFailReason reason, string message, long now)
         {
             result.Status = EnumXmlPrecheckStatus.CheckFailed;
             result.FailReason = reason;
-            result.Reason = message;
+            result.Reason = ClassifyMdInsightReason(reason, message);
             result.CheckTime = now;
             result.ErrorNum = null;
             result.CriticalNum = null;

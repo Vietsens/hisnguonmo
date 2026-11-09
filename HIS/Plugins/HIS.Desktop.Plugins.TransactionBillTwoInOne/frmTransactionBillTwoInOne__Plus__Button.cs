@@ -456,11 +456,31 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         catch (Exception ex)
                         {
                             success = false;
-                            XtraMessageBox.Show("Kiểm tra lại cấu hình NetTcpBinding_IService1", "Thông báo");
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "Không khởi tạo được kết nối tới dịch vụ máy POS: kiểm tra lại cấu hình NetTcpBinding_IService1 trong file cấu hình phần mềm", ex.Message), "Thông báo"); // vCong 62522
                             Inventec.Common.Logging.LogSystem.Error(ex);
                             return;
                         }
-                        var result = cll.Sale(System.Convert.ToBase64String(plainTextBytes));
+                        WcfRequest result = null;
+                        try
+                        {
+                            result = cll.Sale(System.Convert.ToBase64String(plainTextBytes));
+                        }
+                        catch (Exception exPos)
+                        {
+                            // (vCong 62522) dịch vụ POS trên máy trạm không chạy / mất kết nối: báo rõ nguồn lỗi rồi giữ nguyên luồng xử lý lỗi cũ
+                            if (cll != null)
+                            {
+                                WaitingManager.Hide();
+                                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exPos, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "gửi lệnh thanh toán tới máy POS"), "Thông báo");
+                            }
+                            throw;
+                        }
+                        if (result == null)
+                        {
+                            // (vCong 62522) trước đây không báo gì khi máy POS không trả kết quả
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "thanh toán qua máy POS"), "Thông báo");
+                        }
 
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
                         if (result != null && result.RESPONSE_CODE == "00")
@@ -491,7 +511,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                                 Inventec.Common.Logging.LogSystem.Info("1_____________");
                                 WaitingManager.Hide();
                                 if (DevExpress.XtraEditors.XtraMessageBox.
-                               Show("Lỗi thanh toán. " + "(Mã lỗi: " + result.ERROR + ")", "Thông báo", System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
+                               Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Bank("ngân hàng quản lý máy POS"), "Mã lỗi: " + result.ERROR, "Lỗi thanh toán. "), "Thông báo", System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
                                     SetEnableButtonSave(true);
                                 return;
                             }

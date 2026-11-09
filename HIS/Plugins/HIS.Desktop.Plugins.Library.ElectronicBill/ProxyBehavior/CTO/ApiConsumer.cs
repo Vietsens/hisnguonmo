@@ -47,20 +47,45 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.CTO
                     fullrequestUri = extension + requestUri;
                 }
 
-                resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
+                try
+                {
+                    resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    throw Base.ElectronicBillErrorUtil.WrapHttpCall(ex, Base.ProviderType.CTO, requestUri);
+                }
 
-                if (resp == null || !resp.IsSuccessStatusCode)
+                if (resp == null)
+                {
+                    throw Base.ElectronicBillErrorUtil.NoResponse(Base.ProviderType.CTO, "gọi " + requestUri);
+                }
+                if (!resp.IsSuccessStatusCode)
                 {
                     int statusCode = resp.StatusCode.GetHashCode();
-                    throw new Exception(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}", baseUri, requestUri, statusCode));
+                    string errorData = "";
+                    try { errorData = resp.Content != null ? resp.Content.ReadAsStringAsync().Result : ""; }
+                    catch (Exception exRead) { Inventec.Common.Logging.LogSystem.Warn(exRead); }
+                    Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}. Response: {3}", baseUri, requestUri, statusCode, errorData));
+                    throw Base.ElectronicBillErrorUtil.HttpStatusError(Base.ProviderType.CTO, requestUri, statusCode, resp.ReasonPhrase, errorData);
                 }
 
                 string responseData = resp.Content.ReadAsStringAsync().Result;
 
-                T data = JsonConvert.DeserializeObject<T>(responseData);
+                T data = default(T);
+                try
+                {
+                    data = JsonConvert.DeserializeObject<T>(responseData);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    throw Base.ElectronicBillErrorUtil.ParseError(Base.ProviderType.CTO, requestUri, responseData, ex);
+                }
                 if (data == null)
                 {
-                    throw new Exception(string.Format("Loi khi goi API: {0}{1}. Response {2}:", baseUri, requestUri, responseData));
+                    throw Base.ElectronicBillErrorUtil.ParseError(Base.ProviderType.CTO, requestUri, responseData, null);
                 }
                 return data;
             }

@@ -2834,7 +2834,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     }
                     if (this.clienttManager == null)
                         this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager();
-                    this.clienttManager.RecallNumOrderString(txtGateNumber.Text.Trim(), int.Parse(txtStepNumber.Text));
+                    if (!this.clienttManager.RecallNumOrderString(txtGateNumber.Text.Trim(), int.Parse(txtStepNumber.Text)))
+                        ShowCpaCallError(this.clienttManager.LastErrorMessage); // vCong 62522
                     long[] id = this.clienttManager.GetCurrentPatientCall(txtGateNumber.Text.Trim(), false);
                     Inventec.Common.Logging.LogSystem.Info("This.clienttManager.GetCurrentPatientCall ____Goi F7: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => id), id));
                     txtCallPatientCPA.ForeColor = Color.Black;

@@ -66,7 +66,7 @@ namespace Inventec.Common.BankQrCode.Provider.LPBANK
             catch (Exception ex)
             {
                 result = new ResultQrCode();
-                result.Message = "Run Exception: " + ex.Message;
+                result.Message = QrCodeErrorUtil.RunError("LPBank", ex); // vCong 62522
             }
             return result;
         }

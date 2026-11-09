@@ -24,5 +24,12 @@ namespace Inventec.Fss.Client
         {
             this.StatusCode = statusCode;
         }
+
+        /// <summary>vCong 62522: kèm exception gốc đã phân loại nguồn lỗi (IntegrationException) để lớp trên không phải đoán lại.</summary>
+        public FileDownloadException(HttpStatusCode statusCode, string message, Exception inner)
+            : base(message, inner)
+        {
+            this.StatusCode = statusCode;
+        }
     }
 }

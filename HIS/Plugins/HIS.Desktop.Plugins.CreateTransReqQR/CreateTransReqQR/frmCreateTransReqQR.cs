@@ -1096,6 +1096,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // (vCong 62522) trước đây chỉ ghi log
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Bank(GetBankNameForError()), "tạo yêu cầu thanh toán QR"), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
         }
@@ -1167,10 +1169,10 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                         string msgCancel = param.GetMessage();
                         Inventec.Common.Logging.LogSystem.Error("Huy ma QR tai ngan hang that bai. Bank=" + bankCode
                             + ", TransReqId=" + currentTransReq.ID + ", Message=" + msgCancel);
+                        // (vCong 62522) phân loại nguồn: ngân hàng từ chối hủy / không phản hồi
                         XtraMessageBox.Show(
-                            string.IsNullOrWhiteSpace(msgCancel)
-                                ? "Hủy mã QR tại ngân hàng không thành công. Vui lòng kiểm tra lại trạng thái giao dịch trước khi tạo yêu cầu mới."
-                                : msgCancel,
+                            Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Bank(bankCode), msgCancel,
+                                "Hủy mã QR tại ngân hàng không thành công. Vui lòng kiểm tra lại trạng thái giao dịch trước khi tạo yêu cầu mới"),
                             "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
@@ -1191,8 +1193,24 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // (vCong 62522) trước đây chỉ ghi log, thu ngân không biết mã QR cũ đã hủy hay chưa
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Bank(GetBankNameForError()), "hủy mã QR"), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
+        }
+
+        /// <summary>Tên ngân hàng cho thông báo lỗi, không ném lỗi (vCong 62522)</summary>
+        private string GetBankNameForError()
+        {
+            try
+            {
+                string bankCode = GetCurrentBankCode();
+                return String.IsNullOrWhiteSpace(bankCode) ? "thanh toán QR" : bankCode;
+            }
+            catch
+            {
+                return "thanh toán QR";
+            }
         }
 
         public void DeleteTransaction()
@@ -1281,8 +1299,17 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             {
                 if (currentTransReq == null)
                     return;
-                var data = HIS.Desktop.Common.BankQrCode.QrCodeProcessor.CreateQrImage(currentTransReq, new List<HIS_CONFIG>() { inputTransReq.ConfigValue }).FirstOrDefault();
+                var qrImages = HIS.Desktop.Common.BankQrCode.QrCodeProcessor.CreateQrImage(currentTransReq, new List<HIS_CONFIG>() { inputTransReq.ConfigValue });
+                var data = qrImages != null ? qrImages.FirstOrDefault() : default(KeyValuePair<string, object>);
                 this.qr = data;
+                if (!(data.Value is byte[]))
+                {
+                    // (vCong 62522) trước đây NullReference rồi chỉ ghi log → người dùng chỉ thấy ô QR trống
+                    string qrError = HIS.Desktop.Common.BankQrCode.QrCodeProcessor.LastErrorMessage;
+                    if (!String.IsNullOrWhiteSpace(qrError))
+                        XtraMessageBox.Show(qrError, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 using (var ms = new MemoryStream((byte[])data.Value))
                 {
                     pbQr.Image = Image.FromStream(ms);
@@ -1298,6 +1325,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // (vCong 62522) báo lý do không hiện được mã QR
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Bank(GetBankNameForError()), "hiển thị mã QR"), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
         }

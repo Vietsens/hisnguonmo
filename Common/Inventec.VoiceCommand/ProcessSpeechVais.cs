@@ -72,6 +72,9 @@ namespace Inventec.VoiceCommand
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                // vCong 62522: ghi loi co phan loai nguon vao ket qua + log (truoc day nuot hoan toan)
+                resultTDO.messageError = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Ai("VAIS"), "nhận dạng giọng nói");
+                Inventec.Common.Logging.LogSystem.Warn(resultTDO.messageError);
             }
 
             return resultTDO;

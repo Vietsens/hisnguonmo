@@ -4854,7 +4854,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         string errorCode = syncResult.ErrorCode;
                                         if ((errorCode == "01" || errorCode == "02" || errorCode == "03") && !isAutoSync)
                                         {
-                                            XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.Message), Resources.ResourceMessageLang.ThongBao);
+                                            XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.FullMessage ?? syncResult.Message), Resources.ResourceMessageLang.ThongBao);
                                             return;
                                         }
                                         else
@@ -4862,11 +4862,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                             callSyncSuccess = true;
                                             if (!syncResult.Success)
                                             {
-                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.Message));
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.FullMessage ?? syncResult.Message));
                                             }
                                             if (!syncResult12.Success)
                                             {
-                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult12.ErrorCode, syncResult12.Message));
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult12.ErrorCode, syncResult12.FullMessage ?? syncResult12.Message));
                                             }
                                             if (!((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || isSendCollinearXml))
                                             {
@@ -4876,7 +4876,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                 HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
                                                 xmlResultSDO.TreatmentId = treatment.ID;
                                                 xmlResultSDO.XmlResult = syncResult.Success && syncResult12.Success ? 2 : 1;
-                                                xmlResultSDO.Description = String.Join(". ", xmlDescription.Where(o => !String.IsNullOrEmpty(o)).Distinct());
+                                                xmlResultSDO.Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.TruncateUtf8(String.Join(". ", xmlDescription.Where(o => !String.IsNullOrEmpty(o)).Distinct()), 2000); // XML130_DESC 2000 byte (vCong 62522)
                                                 xmlResultSDO.CheckCode = String.Join(";", xmlCheckCode.Where(o => !String.IsNullOrEmpty(o)).Distinct());
                                                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
                                                 var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
@@ -4949,13 +4949,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     {
                                         if (!syncResult.Success && !isAutoSync)
                                         {
-                                            XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
+                                            XtraMessageBox.Show("Ký số thất bại: " + (syncResult.FullMessage ?? syncResult.Message), Resources.ResourceMessageLang.ThongBao);
                                             return;
                                         }
                                         string errorCode = syncResult.ErrorCode;
                                         if ((errorCode == "01" || errorCode == "02" || errorCode == "03") && !isAutoSync)
                                         {
-                                            XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.Message), Resources.ResourceMessageLang.ThongBao);
+                                            XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.FullMessage ?? syncResult.Message), Resources.ResourceMessageLang.ThongBao);
                                             return;
                                         }
                                         else
@@ -4969,14 +4969,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                             callSyncSuccess = true;
                                             if (!syncResult.Success)
                                             {
-                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.Message));
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.FullMessage ?? syncResult.Message));
                                             }
 
 
                                             HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
                                             xmlResultSDO.TreatmentId = treatment.ID;
                                             xmlResultSDO.XmlResult = syncResult.Success ? 2 : 1;
-                                            xmlResultSDO.Description = syncResult.Message;
+                                            xmlResultSDO.Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.TruncateUtf8(syncResult.Message, 2000); // XML130_DESC 2000 byte (vCong 62522)
                                             xmlResultSDO.CheckCode = syncResult.CheckCode;
                                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
                                             var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
@@ -5128,7 +5128,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     {
                                                         TreatmentId = kcbTreatmentId,
                                                         FinishResult = kcbSuccess ? 3 : 4,   //3=gửi thành công, 4=gửi thất bại
-                                                        Description = kcbMessage,
+                                                        Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.ToShort(kcbMessage, 3900), // CSDL4750_FINISH_DESC 4000 byte (vCong 62522)
                                                         FinishUrl = kcbFileUrl
                                                     });
                                                 }
@@ -5155,7 +5155,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                             {
                                                                 TreatmentId = kcbTreatmentId,
                                                                 FinishResult = vlgSuccess ? 3 : 4,
-                                                                Description = vlgMessage,
+                                                                Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.ToShort(vlgMessage, 3900),
                                                                 FinishUrl = kcbFileUrl
                                                             });
                                                         }
@@ -5170,7 +5170,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     Inventec.Common.Logging.LogSystem.Error(exVlg);
                                                     lock (kcb4750Lock)
                                                     {
-                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - VLG: " + exVlg.Message);
+                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exVlg, Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng tiếp nhận KDLYT Vĩnh Long"), "gửi hồ sơ"));
                                                     }
                                                 }
                                             }
@@ -5205,7 +5205,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     Inventec.Common.Logging.LogSystem.Error(exHoc);
                                                     lock (kcb4750Lock)
                                                     {
-                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - HOC: " + exHoc.Message);
+                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exHoc, Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("Trung tâm điều hành y tế (HOC)"), "gửi hồ sơ"));
                                                     }
                                                 }
                                             }
@@ -5229,7 +5229,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                             {
                                                                 TreatmentId = kcbTreatmentId,
                                                                 FinishResult = ctSuccess ? 3 : 4,
-                                                                Description = ctMessage,
+                                                                Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.ToShort(ctMessage, 3900),
                                                                 FinishUrl = kcbFileUrl
                                                             });
                                                         }
@@ -5244,7 +5244,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     Inventec.Common.Logging.LogSystem.Error(exCt);
                                                     lock (kcb4750Lock)
                                                     {
-                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - CT: " + exCt.Message);
+                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exCt, Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng CSDL Y tế Cần Thơ"), "gửi hồ sơ"));
                                                     }
                                                 }
                                             }
@@ -5260,11 +5260,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     {
                                                         TreatmentId = kcbTreatmentId,
                                                         FinishResult = 4,
-                                                        Description = "Lỗi khi gửi: " + exKcb.Message,
+                                                        Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.ToShort(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exKcb, Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng CSDL 4750"), "gửi hồ sơ"), 3900),
                                                         FinishUrl = null
                                                     });
                                                 }
-                                                kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + exKcb.Message);
+                                                kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exKcb, Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng CSDL 4750"), "gửi hồ sơ"));
                                             }
                                         }
                                         finally
@@ -5448,7 +5448,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         //                }
         //                if (!isAutoSync)
         //                {
-        //                    XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
+        //                    XtraMessageBox.Show("Ký số thất bại: " + (syncResult.FullMessage ?? syncResult.Message), Resources.ResourceMessageLang.ThongBao);
         //                    return;
         //                }
         //            }

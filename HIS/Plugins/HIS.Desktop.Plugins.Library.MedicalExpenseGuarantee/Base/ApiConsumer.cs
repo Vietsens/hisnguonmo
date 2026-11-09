@@ -55,9 +55,18 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
         }
 
 
+        /// <summary>vCong 62522: hệ thống bảo lãnh viện phí.</summary>
+        public static Inventec.Common.IntegrationError.IntegrationPartner Partner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống bảo lãnh viện phí"); }
+        }
+
         public T CreateRequest<T>(string requestUri, object sendData)
         {
-            _httpClient.BaseAddress = new Uri(hasUri);
+            Uri baseAddress;
+            if (string.IsNullOrWhiteSpace(hasUri) || !Uri.TryCreate(hasUri, UriKind.Absolute, out baseAddress))
+                throw new Inventec.Common.IntegrationError.IntegrationException(Inventec.Common.IntegrationError.ErrorSource.Config, Partner, "Địa chỉ hệ thống bảo lãnh viện phí trong cấu hình chưa có hoặc sai định dạng: " + hasUri);
+            _httpClient.BaseAddress = baseAddress;
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.Timeout = TimeSpan.FromSeconds(180);
             _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
@@ -65,7 +74,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
             try
             {
                 string token = this.EmrConsumerWrapper.GetTokenCode();
-                LogSystem.Info("TokenCode" + token);
+                // vCong 62522: khong log TokenCode
+                LogSystem.Info("TokenCode " + (string.IsNullOrEmpty(token) ? "(rong)" : "(da lay)"));
                 if (!string.IsNullOrEmpty(token))
                 {
                     if (_httpClient.DefaultRequestHeaders.Contains("TokenCode"))
@@ -93,6 +103,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
             LogSystem.Info("requestUri " + requestUri);
             
             HttpResponseMessage resp = null;
+            string fullUri = hasUri.TrimEnd('/') + "/" + (requestUri ?? "").TrimStart('/');
 
             try
             {
@@ -100,13 +111,16 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
             }
             catch (Exception ex)
             {
-                throw ex;
+                // vCong 62522: timeout/DNS/SSL/khong ket noi -> exception co nguon
+                throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(ex, Partner, fullUri);
             }
-            
-            string responseData = resp.Content.ReadAsStringAsync().Result;
+            if (resp == null)
+                throw Inventec.Common.IntegrationError.IntegrationHttpError.NoResponse(Partner, "gọi " + fullUri);
+
+            string responseData = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(resp);
             LogSystem.Info("responseData " + responseData);
 
-            if (resp == null || !resp.IsSuccessStatusCode)
+            if (!resp.IsSuccessStatusCode)
             {
                 int statusCode = resp.StatusCode.GetHashCode();
                 Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}", this.hasUri, requestUri, statusCode));
@@ -114,10 +128,23 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
                 Inventec.Common.Logging.LogSystem.Error("_______________________responseData: " + responseData);
             }
 
-            T data = JsonConvert.DeserializeObject<T>(responseData);
+            T data = default(T);
+            try
+            {
+                data = JsonConvert.DeserializeObject<T>(responseData);
+            }
+            catch (Exception ex)
+            {
+                // HTTP loi va body khong phai JSON nghiep vu -> bao theo ma HTTP; HTTP 200 -> du lieu sai dinh dang
+                if (!resp.IsSuccessStatusCode)
+                    throw Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Partner, fullUri, (int)resp.StatusCode, resp.ReasonPhrase, responseData);
+                throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(Partner, fullUri, responseData, ex);
+            }
             if (data == null)
             {
-                throw new Exception(string.Format("Loi khi goi API. Response :{0}", responseData ?? "null"));
+                if (!resp.IsSuccessStatusCode)
+                    throw Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Partner, fullUri, (int)resp.StatusCode, resp.ReasonPhrase, responseData);
+                throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(Partner, fullUri, responseData ?? "null", null);
             }
             return data;
         }

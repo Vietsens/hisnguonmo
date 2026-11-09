@@ -663,6 +663,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             {
                                 XtraMessageBox.Show(this, result.Results, "Thông báo", DevExpress.Utils.DefaultBoolean.True);
                             }
+                            else if (!string.IsNullOrEmpty(UCServiceExecute.LastAiErrorMessage))
+                            {
+                                XtraMessageBox.Show(this, UCServiceExecute.LastAiErrorMessage, "Thông báo", DevExpress.Utils.DefaultBoolean.True); // vCong 62522
+                            }
                             break;
                         default:
                             break;

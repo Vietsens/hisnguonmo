@@ -9,6 +9,30 @@ namespace HIS.Desktop.MIMS.Integration.Core
 {
     public static class MimsClient
     {
+        [ThreadStatic]
+        private static string lastErrorMessage;
+
+        /// <summary>
+        /// vCong 62522: thông báo lỗi (đã phân loại nguồn) của lần gọi PostXml gần nhất trên luồng hiện tại; null nếu thành công.
+        /// </summary>
+        public static string LastErrorMessage
+        {
+            get { return lastErrorMessage; }
+        }
+
+        public static Inventec.Common.IntegrationError.IntegrationPartner Partner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.Ai("MIMS"); }
+        }
+
+        /// <summary>
+        /// Thông báo cho người dùng khi PostXml trả về null/rỗng: dùng lỗi đã phân loại nếu có, không thì "không nhận được phản hồi".
+        /// </summary>
+        public static string BuildErrorMessage()
+        {
+            if (!String.IsNullOrEmpty(lastErrorMessage)) return lastErrorMessage;
+            return Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Partner, "tra cứu cảnh báo thuốc");
+        }
         /// <summary>
         /// Gửi request tới MIMS (đơn giản, không phân biệt timeout).
         /// </summary>
@@ -35,6 +59,7 @@ namespace HIS.Desktop.MIMS.Integration.Core
             Dictionary<string, string> extraFormParams, out bool isTimeoutOrConnectionError)
         {
             isTimeoutOrConnectionError = false;
+            lastErrorMessage = null;
             var sw = System.Diagnostics.Stopwatch.StartNew();
 
             try
@@ -111,6 +136,8 @@ namespace HIS.Desktop.MIMS.Integration.Core
                     isTimeoutOrConnectionError = true;
                 }
 
+                // vCong 62522: 401 (sai tai khoan MIMS) = thiet lap; timeout/DNS = ket noi; HTTP khac = phia MIMS (kem body)
+                lastErrorMessage = BuildMessage(Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(ex, Partner, url));
                 return null;
             }
             catch (Exception ex)
@@ -119,6 +146,22 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 Inventec.Common.Logging.LogSystem.Error(string.Format(
                     "MimsClient.PostXml Exception - elapsed={0}ms, url={1}",
                     sw.ElapsedMilliseconds, url), ex);
+                lastErrorMessage = BuildMessage(ex is UriFormatException || ex is NotSupportedException || ex is ArgumentNullException
+                    ? new Inventec.Common.IntegrationError.IntegrationException(Inventec.Common.IntegrationError.ErrorSource.Config, Partner, "Địa chỉ MIMS trong cấu hình không hợp lệ: " + url, ex)
+                    : ex);
+                return null;
+            }
+        }
+
+        private static string BuildMessage(Exception ex)
+        {
+            try
+            {
+                return Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "tra cứu cảnh báo thuốc");
+            }
+            catch (Exception exx)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(exx);
                 return null;
             }
         }

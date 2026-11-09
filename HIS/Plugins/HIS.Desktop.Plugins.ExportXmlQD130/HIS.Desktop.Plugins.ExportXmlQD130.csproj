@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Inventec.Common.IntegrationError">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.dll</HintPath>
+    </Reference>
     <Reference Include="Aspose.Cells">
       <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Aspose.Cells.dll</HintPath>
     </Reference>
@@ -262,6 +265,7 @@
     <Compile Include="ADO\FilterTypeADO.cs" />
     <Compile Include="ADO\ConfigSyncADO.cs" />
     <Compile Include="ADO\TienGiamDinhADO.cs" />
+    <Compile Include="Base\PortalErrorHelper.cs" />
     <Compile Include="Base\TienGiamDinhWorker.cs" />
     <Compile Include="ADO\MdInsightADO.cs" />
     <Compile Include="ADO\XmlBuildContextADO.cs" />

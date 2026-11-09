@@ -1277,13 +1277,16 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             {
                 if (string.IsNullOrEmpty(currentBankCode))
                 {
-                    MessageBox.Show("Chưa cấu hình ngân hàng kiểm tra tài khoản. Vui lòng kiểm tra cấu hình hệ thống.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    // (vCong 62522) phân loại: thiết lập tại viện
+                    MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Inventec.Common.IntegrationError.IntegrationPartner.Bank("kiểm tra tài khoản (BankHub)"),
+                        "Chưa cấu hình ngân hàng kiểm tra tài khoản (HIS.Desktop.Plugins.RefundByTransfer.MBBInfo/PVCBInfo). Vui lòng kiểm tra cấu hình hệ thống"), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return false;
                 }
                 string data = BankHubProcess.GetAccessToken(currentBankCode);
                 if (string.IsNullOrEmpty(data))
                 {
-                    MessageBox.Show("Không thể kết nối đến hệ thống ngân hàng, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    // (vCong 62522) hiện lý do thật (kết nối / thiết lập / ngân hàng) thay cho "Không thể kết nối đến hệ thống ngân hàng"
+                    BankHubProcess.ShowLastError();
                     return false;
                 }
                 CommonParam param = new CommonParam();
@@ -1301,7 +1304,16 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 }
 
                 #region Hien thi message thong bao
-                MessageManager.Show(this, param, result);
+                if (!result && bankAccountResultSDO != null && !String.IsNullOrWhiteSpace(bankAccountResultSDO.Message) && (param.Messages == null || param.Messages.Count == 0))
+                {
+                    // (vCong 62522) ngân hàng trả Status = false kèm mô tả → hiện mô tả thay cho "Xử lý thất bại"
+                    MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(BankHubProcess.GetPartner(currentBankCode),
+                        bankAccountResultSDO.Message, "Kiểm tra tài khoản thụ hưởng không thành công"), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else
+                {
+                    MessageManager.Show(this, param, result);
+                }
                 #endregion
 
                 #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
@@ -1312,6 +1324,9 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             {
                 LogSystem.Error(ex);
                 result = false;
+                // (vCong 62522) trước đây chỉ ghi log, người dùng không biết lý do
+                MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, BankHubProcess.GetPartner(currentBankCode), "kiểm tra tài khoản ngân hàng"),
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             return result;
         }

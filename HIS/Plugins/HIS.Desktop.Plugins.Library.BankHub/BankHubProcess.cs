@@ -16,6 +16,34 @@ namespace HIS.Desktop.Plugins.Library.BankHub
 {
     public class BankHubProcess
     {
+        /// <summary>
+        /// (vCong 62522) Thông báo lỗi đã phân loại nguồn (kết nối / ngân hàng / thiết lập tại viện...) của lần GetAccessToken gần nhất.
+        /// Null nếu thành công hoặc người dùng tự đóng cửa sổ đăng nhập. Nơi gọi nhận token rỗng thì hiển thị chuỗi này.
+        /// </summary>
+        public static string LastErrorMessage { get; private set; }
+
+        /// <summary>LastErrorMessage đã được hiện cho người dùng (VD cửa sổ đăng nhập MB Bank đã báo) → nơi gọi không hiện lại</summary>
+        private static bool lastErrorShown;
+
+        /// <summary>
+        /// (vCong 62522) Gọi khi GetAccessToken trả rỗng: hiện lý do thật (đã phân loại nguồn lỗi) thay cho câu chung chung
+        /// "Không thể kết nối đến hệ thống ngân hàng". Không hiện lại nếu cửa sổ đăng nhập đã báo.
+        /// </summary>
+        /// <summary>Đối tác ngân hàng theo mã (MBB → MB Bank, PVCB → PVcomBank) để dựng thông báo lỗi (vCong 62522)</summary>
+        public static Inventec.Common.IntegrationError.IntegrationPartner GetPartner(string bankCode)
+        {
+            return HisConfigData.GetPartner(bankCode);
+        }
+
+        public static void ShowLastError()
+        {
+            if (lastErrorShown) return;
+            string message = String.IsNullOrWhiteSpace(LastErrorMessage)
+                ? "Không lấy được mã xác thực (token) ngân hàng nên chưa thể thực hiện. Vui lòng đăng nhập lại tài khoản ngân hàng hoặc thử lại sau."
+                : LastErrorMessage;
+            MessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+
         public static bool CheckExpiry(string bankCode)
         {
             try
@@ -41,6 +69,9 @@ namespace HIS.Desktop.Plugins.Library.BankHub
         public static string GetAccessToken(string bankCode)
         {
             string accessToken = null;
+            LastErrorMessage = null;
+            lastErrorShown = false;
+            Inventec.Common.IntegrationError.IntegrationPartner partner = HisConfigData.GetPartner(bankCode);
             try
             {
                 CommonParam param = new CommonParam();
@@ -65,6 +96,15 @@ namespace HIS.Desktop.Plugins.Library.BankHub
                                 accessToken = token.ACCESS_TOKEN;
                             });
                             bankLogin.ShowDialog();
+                            if (String.IsNullOrEmpty(accessToken))
+                            {
+                                // (vCong 62522) cửa sổ đăng nhập đã hiện lỗi (nếu có); người dùng tự đóng → báo chưa đăng nhập
+                                LastErrorMessage = bankLogin.ErrorMessage;
+                                lastErrorShown = !String.IsNullOrEmpty(bankLogin.ErrorMessage);
+                                if (String.IsNullOrEmpty(LastErrorMessage))
+                                    LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.BusinessError(partner,
+                                        "Chưa đăng nhập tài khoản ngân hàng " + Inventec.Common.IntegrationError.IntegrationErrorMessage.GetName(partner) + " (cửa sổ đăng nhập đã đóng) nên chưa thể thực hiện");
+                            }
                         }
                         break;
                     case "PVCB":
@@ -78,6 +118,10 @@ namespace HIS.Desktop.Plugins.Library.BankHub
                             PvcbTokenManager tokenManager = new PvcbTokenManager(configPvcb.AuthUrl, configPvcb.ClientId, configPvcb.ClientSecret);
 
                             accessToken = Task.Run(() => tokenManager.GetAccessTokenAsync()).GetAwaiter().GetResult();
+                            if (String.IsNullOrEmpty(accessToken))
+                            {
+                                LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(partner, null);
+                            }
                             if (accessToken != null)
                             {
                                 CommonParam paramOauth = new CommonParam();
@@ -95,7 +139,9 @@ namespace HIS.Desktop.Plugins.Library.BankHub
                         }
                         break;
                     default:
-                        MessageBox.Show("Ngân hàng không được hỗ trợ!");
+                        // (vCong 62522) thay MessageBox "Ngân hàng không được hỗ trợ!" bằng LastErrorMessage để nơi gọi hiển thị 1 lần
+                        LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(partner,
+                            string.Format("Ngân hàng mã \"{0}\" chưa được hỗ trợ kết nối BankHub (chỉ hỗ trợ MBB, PVCB): kiểm tra mã ngân hàng của cấu hình hoàn tiền/kiểm tra tài khoản", bankCode));
                         return null;
                 }
 
@@ -104,6 +150,9 @@ namespace HIS.Desktop.Plugins.Library.BankHub
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // (vCong 62522) trước đây chỉ log → nơi gọi chỉ báo "Không thể kết nối đến hệ thống ngân hàng"; nay giữ lý do thật
+                if (String.IsNullOrEmpty(accessToken))
+                    LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, partner, "lấy mã xác thực (token) ngân hàng");
             }
             return accessToken;
         }

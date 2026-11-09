@@ -65,7 +65,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.VIETTEL, "Chưa cấu hình địa chỉ cổng hóa đơn điện tử (Webservice URL)");
                         return result;
                     }
 
@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                         if (IsTemp && _electronicBillTypeEnum != ElectronicBillType.ENUM.CREATE_INVOICE)
                         {
                             Inventec.Common.Logging.LogSystem.Error("Tính năng không được hỗ trợ khi phát hành hóa đơn nháp!");
-                            ElectronicBillResultUtil.Set(ref result, false, "Tính năng không được hỗ trợ khi phát hành hóa đơn nháp!");
+                            ElectronicBillResultUtil.SetSoftwareError(ref result, ProviderType.VIETTEL, "Phần mềm chưa hỗ trợ: Tính năng không được hỗ trợ khi phát hành hóa đơn nháp", null);
                             return result;
                         }
                     }
@@ -130,6 +130,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             }
             catch (Exception ex)
             {
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VIETTEL);
                 result.Success = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
@@ -162,11 +163,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                 }
                 else
                 {
-                    ElectronicBillResultUtil.Set(ref result, false, "Không có đường dẫn lưu file");
+                    ElectronicBillResultUtil.SetBusinessError(ref result, ProviderType.VIETTEL, "Không có đường dẫn lưu file");
                 }
             }
             catch (Exception ex)
             {
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VIETTEL);
                 result.Success = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -223,18 +225,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                     result.InvoiceSys = ProviderType.VIETTEL;
                     if (response != null)
                     {
-                        result.Messages = new List<string>() { response.description };
                         Inventec.Common.Logging.LogSystem.Error("Huy hoa don dien tu that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoiceData), invoiceData));
-                        ElectronicBillResultUtil.Set(ref result, false, response.description);
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VIETTEL, response != null ? response.description : null, null);
                     }
                     else
                     {
-                        ElectronicBillResultUtil.Set(ref result, false, "");
+                        ElectronicBillResultUtil.SetNoResponse(ref result, ProviderType.VIETTEL, null);
                     }
                 }
             }
             catch (Exception ex)
             {
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VIETTEL);
                 result.Success = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -399,7 +401,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                         result.Success = false;
                         result.InvoiceSys = ProviderType.VIETTEL;
                         Inventec.Common.Logging.LogSystem.Error("lay file chuyen doi that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoiceData), invoiceData));
-                        ElectronicBillResultUtil.Set(ref result, false, response.description);
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VIETTEL, response != null ? response.description : null, null);
                     }
                 }
                 else
@@ -407,7 +409,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                     result.Success = false;
                     result.InvoiceSys = ProviderType.VIETTEL;
                     Inventec.Common.Logging.LogSystem.Error("lay file chuyen doi that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoiceData), invoiceData));
-                    ElectronicBillResultUtil.Set(ref result, false, response.description);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VIETTEL, response != null ? response.description : null, null);
                 }
 
                 //update với V2
@@ -422,6 +424,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             }
             catch (Exception ex)
             {
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VIETTEL);
                 result.Success = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -465,6 +468,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetExchangeUser)");
             }
             return result;
         }
@@ -512,11 +516,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                     result.Success = false;
                     result.InvoiceSys = ProviderType.VIETTEL;
                     Inventec.Common.Logging.LogSystem.Error("lay file that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoiceData), invoiceData));
-                    ElectronicBillResultUtil.Set(ref result, false, response.description);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VIETTEL, response != null ? response.description : null, null);
                 }
             }
             catch (Exception ex)
             {
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VIETTEL);
                 result.Success = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -651,12 +656,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                 {
                     result = "";
                     Inventec.Common.Logging.LogSystem.Error(ex);
+                    HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
                 }
             }
             catch (Exception ex)
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
             }
             return result;
         }
@@ -675,6 +682,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
             }
             return result;
         }
@@ -757,11 +765,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Error("Tao hoa don dien tu that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoiceData), invoiceData));
-                    ElectronicBillResultUtil.Set(ref result, false, response.description);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VIETTEL, response != null ? response.description : null, null);
                 }
             }
             catch (Exception ex)
             {
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VIETTEL);
                 result.Success = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -866,6 +875,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (CreateInvoice)");
             }
             return result;
         }
@@ -1056,6 +1066,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = new List<Inventec.Common.ElectronicBillViettel.Model.Metadata>();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetMetadata)");
             }
             return result;
         }
@@ -1110,6 +1121,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = new List<TaxBreakdowns>();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetTaxBreakdowns)");
             }
             return result;
         }
@@ -1161,6 +1173,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetSummarizeInfo)");
             }
             return result;
         }
@@ -1194,6 +1207,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng thông tin người bán");
             }
             return result;
         }
@@ -1223,6 +1237,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetPayments)");
             }
             return result;
         }
@@ -1525,6 +1540,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetGeneralInvoiceInfo)");
             }
             return result;
         }
@@ -1554,6 +1570,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetInvoiceType)");
             }
             return result;
         }
@@ -1640,6 +1657,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng thông tin người mua");
             }
             return result;
         }
@@ -1661,6 +1679,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lấy thông tin bệnh nhân từ HIS");
             }
             return result;
         }
@@ -1723,7 +1742,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.VIETTEL);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;

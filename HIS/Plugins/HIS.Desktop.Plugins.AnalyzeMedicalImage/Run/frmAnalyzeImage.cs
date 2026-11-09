@@ -465,6 +465,10 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
         }
         private void btnImageAnalysis_Click(object sender, EventArgs e)
         {
+            // vCong 62522: biet loi xay ra o buoc nao (tai file FSS / goi dich vu AI) de bao dung nguon
+            Inventec.Common.IntegrationError.IntegrationPartner aiPartner = Inventec.Common.IntegrationError.IntegrationPartner.Ai("dịch vụ AI phân tích hình ảnh");
+            Inventec.Common.IntegrationError.IntegrationPartner currentPartner = null;
+            string currentAction = "chuẩn bị dữ liệu phân tích hình ảnh";
             try
             {
                 List<string> FileContent = new List<string>();
@@ -482,6 +486,8 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                 var lstdataFss = lstData.Where(o => o.IsFss).ToList();
                 if (lstdataFss != null && lstdataFss.Count > 0)
                 {
+                    currentPartner = Inventec.Common.IntegrationError.IntegrationPartner.FileStorage;
+                    currentAction = "tải ảnh từ máy chủ lưu trữ file";
                     foreach (var item in lstdataFss)
                     {
                         using (MemoryStream memoryStream = new MemoryStream())
@@ -494,6 +500,8 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                     }
                 }
 
+                currentPartner = null;
+                currentAction = "chuẩn bị dữ liệu phân tích hình ảnh";
                 var lstdataNotFss = lstData.Where(o => !o.IsFss).ToList();
                 foreach (var item in lstdataNotFss)
                 {
@@ -543,36 +551,34 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
                         var content = new StringContent(stringPayload, Encoding.UTF8, "application/json");
 
                         Inventec.Desktop.Common.Message.WaitingManager.Show();
+                        currentPartner = aiPartner;
+                        currentAction = "phân tích hình ảnh y khoa";
                         HttpResponseMessage resp = null;
                         try
                         {
                             resp = client.PostAsync(fullrequestUri, content).Result;
                         }
-                        catch (HttpRequestException ex)
-                        {
-
-                            throw new Exception("Lỗi kết nối đến");
-                        }
                         catch (Exception ex)
                         {
-                            throw ex;
+                            throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(ex, aiPartner, fullrequestUri);
                         }
                         Inventec.Desktop.Common.Message.WaitingManager.Hide();
                         if (resp == null || !resp.IsSuccessStatusCode)
                         {
-                            int statusCode = resp.StatusCode.GetHashCode();
-                            if (resp.Content != null)
-                            {
-                                string errorData = resp.Content.ReadAsStringAsync().Result;
-                            }
-
-                            throw new Exception(string.Format(" trả về thông tin lỗi. Mã lỗi: {0}", statusCode));
+                            throw Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(aiPartner, fullrequestUri, resp);
                         }
 
                         Inventec.Desktop.Common.Message.WaitingManager.Hide();
-                        string responseData = resp.Content.ReadAsStringAsync().Result;
+                        string responseData = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(resp);
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => responseData), responseData));
-                        this.aiResponse = JsonConvert.DeserializeObject<AIResponse>(responseData);
+                        try
+                        {
+                            this.aiResponse = JsonConvert.DeserializeObject<AIResponse>(responseData);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(aiPartner, fullrequestUri, responseData, ex);
+                        }
 
                         if (this.DelSelectData != null && this.aiResponse != null && !string.IsNullOrEmpty(this.aiResponse.Results))
                         {
@@ -588,15 +594,25 @@ namespace HIS.Desktop.Plugins.AnalyzeMedicalImage.Run
 
                         if (this.aiResponse == null)
                         {
-                            throw new Exception("Dữ liệu trả về không đúng");
+                            throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(aiPartner, fullrequestUri, responseData, null);
+                        }
+                        if (string.IsNullOrEmpty(this.aiResponse.Results))
+                        {
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(aiPartner, null, "Dịch vụ AI không trả về kết quả phân tích"), "Thông báo");
                         }
                     }
+                }
+                else
+                {
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(aiPartner, "Chưa thiết lập địa chỉ dịch vụ AI phân tích hình ảnh (cấu hình hệ thống HIS.Desktop.AI.ConnectionInfo)"), "Thông báo");
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Desktop.Common.Message.WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // vCong 62522: bao loi co nguon thay vi im lang
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, currentPartner ?? aiPartner, currentAction), "Thông báo");
             }
         }
         private List<long> GetBranchCode(List<SereServFileADO> selectedFiles)

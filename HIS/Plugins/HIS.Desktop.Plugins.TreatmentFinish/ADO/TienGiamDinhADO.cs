@@ -79,6 +79,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.ADO
         /// <summary>Ly do khong tra cuu duoc. Chi co nghia khi Status = CheckFailed</summary>
         public EnumTienGiamDinhFailReason FailReason { get; set; }
 
+        /// <summary>Lý do không tra cứu được đã phân loại nguồn lỗi + liên hệ (vCong 62522)</summary>
+        public string FailDetail { get; set; }
+
         /// <summary>Danh sach loi da chuan hoa cua ca ba nhom</summary>
         public List<TienGiamDinhErrorADO> Errors { get; set; }
 

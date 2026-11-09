@@ -54,15 +54,31 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE.M
                     }
                 }
                 Inventec.Common.Logging.LogSystem.Info(string.Format("API: {0}. sendJsonData: {1}", fullrequestUri, sendJsonData));
-                if (method.Equals(System.Net.WebRequestMethods.Http.Get))
-                    resp = client.GetAsync(fullrequestUri).Result;
-                else
-                    resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
+                try
+                {
+                    if (method.Equals(System.Net.WebRequestMethods.Http.Get))
+                        resp = client.GetAsync(fullrequestUri).Result;
+                    else
+                        resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    throw Base.ElectronicBillErrorUtil.WrapHttpCall(ex, Base.ProviderType.MOBIFONE, requestUri);
+                }
 
-                if (resp == null || !resp.IsSuccessStatusCode)
+                if (resp == null)
+                {
+                    throw Base.ElectronicBillErrorUtil.NoResponse(Base.ProviderType.MOBIFONE, "gọi " + requestUri);
+                }
+                if (!resp.IsSuccessStatusCode)
                 {
                     int statusCode = resp.StatusCode.GetHashCode();
-                    throw new Exception(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}", baseUri, requestUri, statusCode));
+                    string errorData = "";
+                    try { errorData = resp.Content != null ? resp.Content.ReadAsStringAsync().Result : ""; }
+                    catch (Exception exRead) { Inventec.Common.Logging.LogSystem.Warn(exRead); }
+                    Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}. Response: {3}", baseUri, requestUri, statusCode, errorData));
+                    throw Base.ElectronicBillErrorUtil.HttpStatusError(Base.ProviderType.MOBIFONE, requestUri, statusCode, resp.ReasonPhrase, errorData);
                 }
                 T data = default(T);
                 string responseData = resp.Content.ReadAsStringAsync().Result;
@@ -70,15 +86,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE.M
                 try
                 {
                     data = JsonConvert.DeserializeObject<T>(responseData);
-                    if (data == null)
-                    {
-                        throw new Exception(string.Format("Loi khi goi API. Response {0}:", responseData));
-                    }
                 }
                 catch (Exception ex)
                 {
                     Inventec.Common.Logging.LogSystem.Error(ex);
-                    throw new Exception(responseData);
+                    throw Base.ElectronicBillErrorUtil.ParseError(Base.ProviderType.MOBIFONE, requestUri, responseData, ex);
+                }
+                if (data == null)
+                {
+                    throw Base.ElectronicBillErrorUtil.ParseError(Base.ProviderType.MOBIFONE, requestUri, responseData, null);
                 }
                 return data;
             }
@@ -110,12 +126,28 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE.M
                     }
                 }
 
-                if (method.Equals(System.Net.WebRequestMethods.Http.Get))
-                    resp = client.GetAsync(fullrequestUri).Result;              
-                if (resp == null || !resp.IsSuccessStatusCode)
+                try
+                {
+                    if (method.Equals(System.Net.WebRequestMethods.Http.Get))
+                        resp = client.GetAsync(fullrequestUri).Result;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    throw Base.ElectronicBillErrorUtil.WrapHttpCall(ex, Base.ProviderType.MOBIFONE, requestUri);
+                }
+                if (resp == null)
+                {
+                    throw Base.ElectronicBillErrorUtil.NoResponse(Base.ProviderType.MOBIFONE, "gọi " + requestUri);
+                }
+                if (!resp.IsSuccessStatusCode)
                 {
                     int statusCode = resp.StatusCode.GetHashCode();
-                    throw new Exception(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}", baseUri, requestUri, statusCode));
+                    string errorData = "";
+                    try { errorData = resp.Content != null ? resp.Content.ReadAsStringAsync().Result : ""; }
+                    catch (Exception exRead) { Inventec.Common.Logging.LogSystem.Warn(exRead); }
+                    Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}. Response: {3}", baseUri, requestUri, statusCode, errorData));
+                    throw Base.ElectronicBillErrorUtil.HttpStatusError(Base.ProviderType.MOBIFONE, requestUri, statusCode, resp.ReasonPhrase, errorData);
                 }
                 
                 byte[] responseData = resp.Content.ReadAsByteArrayAsync().Result;

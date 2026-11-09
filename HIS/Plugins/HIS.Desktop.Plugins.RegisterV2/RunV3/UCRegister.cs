@@ -853,6 +853,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     }
                     else if (dataResult.HisPatientSDO != null)
                     {
+                        // Chọn BN cũ: không để thẻ cũ trong HIS đè lên thẻ cổng BHXH vừa xác nhận
+                        if (dataResult.OldPatient)
+                            this.KeepGovVerifiedHeinCardForOldPatient(dataResult.HisPatientSDO);
                         this._isPatientAppointmentCode = (dataResult.SearchTypePatient == 2);
                         if (!String.IsNullOrEmpty(dataResult.AppointmentCode))
                             this.appointmentCode = dataResult.AppointmentCode;
@@ -2265,8 +2268,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             {
                                 LogSystem.Debug("Gọi api thất bại");
                                 var errorMsg = !string.IsNullOrWhiteSpace(rs?.Data?.ErrorMessage) ? rs.Data.ErrorMessage : rs?.Message;
+                                // vCong 62522: thong bao co nguon loi (thu vien da dung san thi giu nguyen)
+                                if (!Inventec.Common.IntegrationError.IntegrationErrorMessage.IsBuilt(rs?.Message))
+                                    errorMsg = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống bảo lãnh viện phí"), errorMsg, "Đăng ký bảo lãnh thất bại");
+                                else
+                                    errorMsg = rs.Message;
 
-                                XtraMessageBox.Show(string.Format("Đăng ký bảo lãnh thất bại. {0} ", errorMsg), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                XtraMessageBox.Show(errorMsg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 this.chkBaoLanh.Checked = false;
                             }
                         }

@@ -24,6 +24,7 @@ using His.Ksk.QD2062.Transport.Model;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Common.Logging;
+using Inventec.Common.IntegrationError;
 
 namespace HIS.Desktop.Plugins.KskSyncList
 {
@@ -628,7 +629,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     catch (Exception exRow)
                     {
                         Inventec.Common.Logging.LogSystem.Error(exRow);
-                        ado = BuildFailedResult(rowList[i], syncTime, exRow.Message);
+                        ado = BuildFailedResult(rowList[i], syncTime, IntegrationErrorMessage.TagException(exRow, KSK_PARTNER_BYT));
                         MarkVlgNotSent(ado, rowList[i]);
                     }
 
@@ -642,7 +643,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 // Lỗi chung: hồ sơ nào chưa có kết quả -> đánh dấu thất bại để vẫn lưu đủ trạng thái.
                 for (int i = results.Count; i < rowList.Count; i++)
                 {
-                    var ado = BuildFailedResult(rowList[i], syncTime, ex.Message);
+                    var ado = BuildFailedResult(rowList[i], syncTime, IntegrationErrorMessage.TagException(ex, KSK_PARTNER_BYT));
                     MarkVlgNotSent(ado, rowList[i]);
                     results.Add(ado);
                     saveList.Add(BuildSyncEntity(rowList[i], ado));
@@ -784,7 +785,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return new KskSytHcmPushResult { Message = "Lỗi khi đẩy cổng Sở Y tế TP.HCM" };
+                return new KskSytHcmPushResult { Message = IntegrationErrorMessage.TagException(ex, KSK_PARTNER_SYT) };
             }
         }
 
@@ -991,7 +992,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     catch (Exception exRow)
                     {
                         Inventec.Common.Logging.LogSystem.Error(exRow);
-                        ado = BuildFailedResult(row, NowTimeNumber(), "VLG: lỗi tra cứu — " + exRow.Message);
+                        ado = BuildFailedResult(row, NowTimeNumber(), "VLG: lỗi tra cứu — " + IntegrationErrorMessage.TagException(exRow, KSK_PARTNER_VLG));
                         save = false;
                     }
                     results.Add(ado);
@@ -1002,7 +1003,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 for (int i = results.Count; i < rowList.Count; i++)
-                    results.Add(BuildFailedResult(rowList[i], NowTimeNumber(), "VLG: lỗi tra cứu — " + ex.Message));
+                    results.Add(BuildFailedResult(rowList[i], NowTimeNumber(), "VLG: lỗi tra cứu — " + IntegrationErrorMessage.TagException(ex, KSK_PARTNER_VLG)));
             }
 
             if (saveList.Count > 0 && !SaveResults(saveList))
@@ -1279,6 +1280,42 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Phan ly do cua cong KHAC (khong phai VLG) trong SYNC_FAILD_REASON: BuildResultAdo xep ly do cong khac
         /// TRUOC, doan VLG sau cung ("... | VLG: ..."). Bat dau bang "VLG:" -> chi VLG loi -> null.
         /// </summary>
+        #region Nhãn nguồn lỗi theo cổng KSK (vCong 62522)
+
+        private static readonly IntegrationPartner KSK_PARTNER_BYT = IntegrationPartner.HealthPortal("cổng liên thông KSK Bộ Y tế/HSSK");
+        private static readonly IntegrationPartner KSK_PARTNER_HCC = IntegrationPartner.HealthPortal("cổng HCC");
+        private static readonly IntegrationPartner KSK_PARTNER_SYT = IntegrationPartner.HealthPortal("cổng Sở Y tế TP.HCM");
+        private static readonly IntegrationPartner KSK_PARTNER_KDLSK = IntegrationPartner.HealthPortal("Kho dữ liệu sức khỏe toàn dân (hososuckhoe.com.vn)");
+        private static readonly IntegrationPartner KSK_PARTNER_VLG = IntegrationPartner.HealthPortal("cổng tiếp nhận KDLYT Vĩnh Long");
+        private static readonly System.Text.RegularExpressions.Regex GATEWAY_PREFIX = new System.Text.RegularExpressions.Regex(@"^\s*([A-Z][A-Za-z0-9 .]{0,15}):\s*");
+
+        /// <summary>
+        /// Gắn nhãn gọn "[NGUỒN LỖI → liên hệ ai]" vào lý do lỗi của 1 cổng, đặt SAU tiền tố cổng ("KDLSK: ", "VLG: ", "HCC: "...)
+        /// để OtherGatewayReason / "Cập nhật KQ cổng" vẫn tách được theo " | VLG:". Lý do đã có nhãn thì giữ nguyên.
+        /// </summary>
+        private static string TagReason(string reason, IntegrationPartner partner)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(reason)) return reason;
+                System.Text.RegularExpressions.Match m = GATEWAY_PREFIX.Match(reason);
+                if (m.Success)
+                {
+                    string prefix = reason.Substring(0, m.Length);
+                    string rest = reason.Substring(m.Length);
+                    return IntegrationErrorMessage.IsTagged(rest) ? reason : prefix + IntegrationErrorMessage.TagText(partner, rest);
+                }
+                return IntegrationErrorMessage.TagText(partner, reason);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return reason;
+            }
+        }
+
+        #endregion
+
         private static string OtherGatewayReason(string reason)
         {
             if (string.IsNullOrWhiteSpace(reason)) return null;
@@ -3664,27 +3701,28 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 var reasons = new List<string>();
                 if (hasLib && !libOk)
-                    reasons.Add(!string.IsNullOrEmpty(pushResult.Message) ? pushResult.Message : "Đồng bộ thất bại");
+                    reasons.Add(TagReason(!string.IsNullOrEmpty(pushResult.Message) ? pushResult.Message : "Đồng bộ thất bại", KSK_PARTNER_BYT));
                 if (hasHcc && !hccOk)
-                    reasons.Add(!string.IsNullOrEmpty(hccResult.Message) ? hccResult.Message : "HCC: đồng bộ thất bại");
+                    reasons.Add(TagReason(!string.IsNullOrEmpty(hccResult.Message) ? hccResult.Message : "HCC: đồng bộ thất bại", KSK_PARTNER_HCC));
                 if (hasSyt && !sytOk)
-                    reasons.Add("SYT TP.HCM: " + (!string.IsNullOrEmpty(sytResult.Message)
+                    reasons.Add("SYT TP.HCM: " + IntegrationErrorMessage.TagText(KSK_PARTNER_SYT, !string.IsNullOrEmpty(sytResult.Message)
                         ? sytResult.Message : "đồng bộ thất bại"));
                 if (hasKdlsk && !kdlskOk)
-                    reasons.Add(!string.IsNullOrEmpty(kdlskResult.Message) ? kdlskResult.Message : "KDLSK: đồng bộ thất bại");
-                if (!string.IsNullOrEmpty(configError)) reasons.Add(configError);
+                    reasons.Add(TagReason(!string.IsNullOrEmpty(kdlskResult.Message) ? kdlskResult.Message : "KDLSK: đồng bộ thất bại", KSK_PARTNER_KDLSK));
+                if (!string.IsNullOrEmpty(configError)) reasons.Add(TagReason(configError, KSK_PARTNER_BYT));
                 // Ly do VLG xep CUOI: "Cap nhat KQ cong" doc phan truoc " | VLG:" la loi cong khac (OtherGatewayReason).
                 if (hasVlg && !vlgOk)
                 {
                     string vm = !string.IsNullOrEmpty(vlgResult.Message) ? vlgResult.Message : "VLG: đồng bộ thất bại";
                     if (!vm.TrimStart().StartsWith("VLG", StringComparison.OrdinalIgnoreCase)) vm = "VLG: " + vm;
-                    reasons.Add(vm);
+                    reasons.Add(TagReason(vm, KSK_PARTNER_VLG));
                 }
                 // Chi khi KHONG co cong nao duoc day (truoc day thieu !hasVlg + cau "if" treo: ho so chi day VLG
                 // ma that bai luon bi noi them "Chua chon cong", ly do loi SYT bi nuot, configError ghi 2 lan).
                 if (!hasLib && !hasHcc && !hasVlg && !hasSyt && !hasKdlsk && string.IsNullOrEmpty(configError))
                     reasons.Add("Chưa chọn cổng liên thông để đẩy");
-                ado.SYNC_FAILD_REASON = string.Join(" | ", reasons);
+                // SYNC_FAILD_REASON VARCHAR2(4000 BYTE) (vCong 62522)
+                ado.SYNC_FAILD_REASON = IntegrationErrorMessage.TruncateUtf8(string.Join(" | ", reasons), 4000);
             }
             return ado;
         }

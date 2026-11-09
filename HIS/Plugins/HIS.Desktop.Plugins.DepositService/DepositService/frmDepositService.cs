@@ -2628,7 +2628,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                                 {
                                     success = false;
                                     chkConnectionPOS.Checked = false;
-                                    XtraMessageBox.Show("Kiểm tra lại cấu hình NetTcpBinding_IService1", "Thông báo");
+                                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "Không khởi tạo được kết nối tới dịch vụ máy POS: kiểm tra lại cấu hình NetTcpBinding_IService1 trong file cấu hình phần mềm", ex.Message), "Thông báo"); // vCong 62522
                                     Inventec.Common.Logging.LogSystem.Error(ex);
                                     return;
                                 }
@@ -2648,18 +2648,20 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                                     {
                                         WaitingManager.Hide();
                                         if (DevExpress.XtraEditors.XtraMessageBox.
-                                       Show("Tạm thu qua POS thất bại" + "(Mã lỗi: " + result.ERROR + ")", "Thông báo", System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
+                                       Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Bank("ngân hàng quản lý máy POS"), "Mã lỗi: " + result.ERROR, "Tạm thu qua POS thất bại"), "Thông báo", System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
                                             return;
                                     }
                                     WaitingManager.Hide();
-                                    MessageManager.Show(this, param, false);
+                                    // (vCong 62522) máy POS không trả kết quả: báo rõ thay cho "Xử lý thất bại"
+                                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "tạm thu qua máy POS"), "Thông báo");
                                     return;
                                 }
                             }
                             catch (Exception ex)
                             {
                                 WaitingManager.Hide();
-                                MessageManager.Show(this, param, false);
+                                // (vCong 62522) lỗi khi gọi dịch vụ máy POS: báo rõ nguồn lỗi thay cho "Xử lý thất bại"
+                                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "gửi lệnh tạm thu tới máy POS"), "Thông báo");
                                 throw;
                             }
                         }
@@ -4044,14 +4046,14 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 catch (Exception ex)
                 {
                     Inventec.Common.Logging.LogSystem.Error(ex);
-                    XtraMessageBox.Show("Kiểm tra lại cấu hình NetTcpBinding_IService1", "Thông báo");
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "Không khởi tạo được kết nối tới dịch vụ máy POS: kiểm tra lại cấu hình NetTcpBinding_IService1 trong file cấu hình phần mềm", ex.Message), "Thông báo"); // vCong 62522
                     return;
                 }
                 cll.cauhinh();
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show("Cấu hình thất bại", "Thông báo");
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "mở cấu hình máy POS"), "Thông báo"); // vCong 62522
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

@@ -2193,7 +2193,7 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                                             {
                                                 sendOk = false;
                                                 sendMessage = syncResult == null ? "Khong nhan duoc ket qua gui cong" : syncResult.Message;
-                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treat.TREATMENT_CODE, syncResult == null ? "" : syncResult.ErrorCode, sendMessage));
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treat.TREATMENT_CODE, syncResult == null ? "" : syncResult.ErrorCode, syncResult == null ? sendMessage : (syncResult.FullMessage ?? sendMessage)));
                                                 Inventec.Common.Logging.LogSystem.Warn(treatLogPrefix + " - Gui file khong ky so that bai: " + sendMessage);
                                             }
                                             else
@@ -2220,7 +2220,7 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                                         TreatmentId = ado.Treatment.ID,
                                         XmlType = 1,
                                         XmlResult = sendOk ? 2 : 1,
-                                        Description = sendMessage,
+                                        Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.ToShort(sendMessage, 500), // XML_DESC 500 byte (vCong 62522)
                                         CheckCode = (syncResult != null && syncResult.Success) ? syncResult.CheckCode : ""
                                     };
                                     var updateList = new List<object> { updateInfo };

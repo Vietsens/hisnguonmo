@@ -63,6 +63,9 @@ namespace Inventec.VoiceCommand
         string tempFilename = "";
 
         Action<ResultCommandADO> actProcessResultCommand;
+        /// <summary>vCong 62522: lỗi nhận dạng giọng nói gần nhất (đã phân loại nguồn); null nếu không có. Chỉ hiện khi người dùng chủ động bấm, không popup tự động.</summary>
+        public string LastErrorMessage { get; private set; }
+
         DelegateGetCurrentCommandActionLink actGetCurrentCommandActionLink;
         DelegateGetCurrentCommandActionLink actGetCurrentModulelink;
         Action actProcessWhileTimeout;
@@ -200,6 +203,7 @@ namespace Inventec.VoiceCommand
                     if (CommandCFG.apiTypeAI == CommandCFG.apiTypeAI__WITAI)
                     {
                         ResultCommandADO result = new ProcessSpeechWit().Run(File.ReadAllBytes(item)).Result;
+                        if (result != null && !String.IsNullOrEmpty(result.messageError)) this.LastErrorMessage = result.messageError; // vCong 62522
                         if (result != null && !String.IsNullOrEmpty(result.text))
                         {
                             CallBackProcessResultCommand(result);
@@ -209,6 +213,7 @@ namespace Inventec.VoiceCommand
                     else if (CommandCFG.apiTypeAI == CommandCFG.apiTypeAI__RIKKEIAI)
                     {
                         ResultCommandADO result = new ProcessSpeechRikkie().Run(File.ReadAllBytes(item)).Result;
+                        if (result != null && !String.IsNullOrEmpty(result.messageError)) this.LastErrorMessage = result.messageError; // vCong 62522
                         if (result != null && result.status == 200)
                         {
                             result.text = result.message;
@@ -220,6 +225,7 @@ namespace Inventec.VoiceCommand
                     else if (CommandCFG.apiTypeAI == CommandCFG.apiTypeAI__VAIS)
                     {
                         ResultCommandADO result = new ProcessSpeechVais().Run(File.ReadAllBytes(item)).Result;
+                        if (result != null && !String.IsNullOrEmpty(result.messageError)) this.LastErrorMessage = result.messageError; // vCong 62522
                         if (result != null && result.status == 200)
                         {
                             result.text = result.message;
@@ -350,6 +356,7 @@ namespace Inventec.VoiceCommand
 
 
                 var resultCommandADO = await new ProcessSpeechVais().Run(processCommandADO.Buffer);
+                if (resultCommandADO != null && !String.IsNullOrEmpty(resultCommandADO.messageError)) this.LastErrorMessage = resultCommandADO.messageError; // vCong 62522
                 if (resultCommandADO != null && resultCommandADO.status == 2 && resultCommandADO.message != "\n")
                 {
                     _apiResultBuffer.Add(resultCommandADO);

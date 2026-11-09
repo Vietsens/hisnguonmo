@@ -94,9 +94,11 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                     }
                     else
                     {
+                        if (plv == null) plv = new DangNhap(); // vCong 62522: trước đây NullReference
                         plv.Ma = ((int)response.StatusCode).ToString();
                         if (plv.TinNhan == null || plv.TinNhan.Equals(""))
                             plv.TinNhan = responseData;
+                        plv.TinNhan = PharmacyErrorHelper.HttpError(response, plv.TinNhan, "đăng nhập cổng đơn thuốc quốc gia"); // vCong 62522
                         plv.ThongTinDangNhap = new ThongTinDangNhap()
                         {
                             Token = string.Empty,
@@ -108,14 +110,15 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                if (plv == null) plv = new DangNhap(); // vCong 62522: trước đây NullReference
                 plv.Ma = "001";
                 if (ex.Message.Equals("Invalid URI: The format of the URI could not be determined.") || ex.Message.Equals("One or more errors occurred."))
                 {
-                    plv.TinNhan = "Địa chỉ API không chính xác.";
+                    plv.TinNhan = PharmacyErrorHelper.ExceptionError(ex, "đăng nhập"); // vCong 62522: trước đây mọi lỗi kết nối đều báo "Địa chỉ API không chính xác"
                 }
                 else
                 {
-                    plv.TinNhan = ex.ToString();
+                    plv.TinNhan = PharmacyErrorHelper.ExceptionError(ex, "đăng nhập"); // vCong 62522
                 }
                 plv.ThongTinDangNhap = new ThongTinDangNhap()
                 {
@@ -182,19 +185,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     donThuocQG = new DonThuocQuocGia();
                                     donThuocQG.Ma = string.Empty;
-                                    donThuocQG.TinNhan = responseData;
+                                    donThuocQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông đơn thuốc"); // vCong 62522
                                 }
                                 if (donThuocQG.Ma != null && !IsSuccessCode(donThuocQG.Ma))
                                 {
                                     if (donThuocQG.TinNhan == null || donThuocQG.TinNhan.Equals(""))
                                         donThuocQG.TinNhan = responseData;
+                                    donThuocQG.TinNhan = PharmacyErrorHelper.ApiError(donThuocQG.Ma, donThuocQG.TinNhan, "liên thông đơn thuốc"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/hoa_don");
                                 donThuocQG.Ma = ((int)response.StatusCode).ToString();
-                                donThuocQG.TinNhan = responseData;
+                                donThuocQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông đơn thuốc"); // vCong 62522
                             }
                         }
                         else if (thaoTac == ThaoTac.CapNhat)
@@ -209,19 +213,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     donThuocQG = new DonThuocQuocGia();
                                     donThuocQG.Ma = string.Empty;
-                                    donThuocQG.TinNhan = responseData;
+                                    donThuocQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông đơn thuốc"); // vCong 62522
                                 }
                                 if (donThuocQG.Ma != null && !IsSuccessCode(donThuocQG.Ma))
                                 {
                                     if (donThuocQG.TinNhan == null || donThuocQG.TinNhan.Equals(""))
                                         donThuocQG.TinNhan = responseData;
+                                    donThuocQG.TinNhan = PharmacyErrorHelper.ApiError(donThuocQG.Ma, donThuocQG.TinNhan, "liên thông đơn thuốc"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/don_thuoc");
                                 donThuocQG.Ma = ((int)response.StatusCode).ToString();
-                                donThuocQG.TinNhan = responseData;
+                                donThuocQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông đơn thuốc"); // vCong 62522
                             }
                         }
                         else if (thaoTac == ThaoTac.Xoa)
@@ -236,19 +241,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     donThuocQG = new DonThuocQuocGia();
                                     donThuocQG.Ma = string.Empty;
-                                    donThuocQG.TinNhan = responseData;
+                                    donThuocQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông đơn thuốc"); // vCong 62522
                                 }
                                 if (donThuocQG.Ma != null && !IsSuccessCode(donThuocQG.Ma))
                                 {
                                     if (donThuocQG.TinNhan == null || donThuocQG.TinNhan.Equals(""))
                                         donThuocQG.TinNhan = responseData;
+                                    donThuocQG.TinNhan = PharmacyErrorHelper.ApiError(donThuocQG.Ma, donThuocQG.TinNhan, "liên thông đơn thuốc"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/don_thuoc");
                                 donThuocQG.Ma = ((int)response.StatusCode).ToString();
-                                donThuocQG.TinNhan = responseData;
+                                donThuocQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông đơn thuốc"); // vCong 62522
                             }
                         }
                     }
@@ -256,7 +262,7 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                 else
                 {
                     donThuocQG.Ma = plv.Ma;
-                    donThuocQG.TinNhan = plv.TinNhan;
+                    donThuocQG.TinNhan = PharmacyErrorHelper.LoginError(plv.Ma, plv.TinNhan); // vCong 62522
                     donThuocQG.MaDonThuocQuocGia = string.Empty;
                 }
             }
@@ -267,11 +273,11 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                 donThuocQG.Ma = "001";
                 if (ex.Message.Equals("Invalid URI: The format of the URI could not be determined.") || ex.Message.Equals("One or more errors occurred."))
                 {
-                    donThuocQG.TinNhan = "Địa chỉ API không chính xác.";
+                    donThuocQG.TinNhan = PharmacyErrorHelper.ExceptionError(ex, "liên thông đơn thuốc"); // vCong 62522: trước đây mọi lỗi kết nối đều báo "Địa chỉ API không chính xác"
                 }
                 else
                 {
-                    donThuocQG.TinNhan = ex.ToString();
+                    donThuocQG.TinNhan = PharmacyErrorHelper.ExceptionError(ex, "liên thông đơn thuốc"); // vCong 62522
                 }
                 donThuocQG.MaDonThuocQuocGia = string.Empty;
             }
@@ -312,19 +318,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     hoaDonQG = new HoaDonQuocGia();
                                     hoaDonQG.Ma = string.Empty;
-                                    hoaDonQG.TinNhan = responseData;
+                                    hoaDonQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông hóa đơn"); // vCong 62522
                                 }
                                 if (hoaDonQG.Ma != null && !IsSuccessCode(hoaDonQG.Ma))
                                 {
                                     if (hoaDonQG.TinNhan == null || hoaDonQG.TinNhan.Equals(""))
                                         hoaDonQG.TinNhan = responseData;
+                                    hoaDonQG.TinNhan = PharmacyErrorHelper.ApiError(hoaDonQG.Ma, hoaDonQG.TinNhan, "liên thông hóa đơn"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/hoa_don");
                                 hoaDonQG.Ma = ((int)response.StatusCode).ToString();
-                                hoaDonQG.TinNhan = responseData;
+                                hoaDonQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông hóa đơn"); // vCong 62522
                             }
                         }
                         else if (thaoTac == ThaoTac.CapNhat)
@@ -339,19 +346,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     hoaDonQG = new HoaDonQuocGia();
                                     hoaDonQG.Ma = string.Empty;
-                                    hoaDonQG.TinNhan = responseData;
+                                    hoaDonQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông hóa đơn"); // vCong 62522
                                 }
                                 if (hoaDonQG.Ma != null && !IsSuccessCode(hoaDonQG.Ma))
                                 {
                                     if (hoaDonQG.TinNhan == null || hoaDonQG.TinNhan.Equals(""))
                                         hoaDonQG.TinNhan = responseData;
+                                    hoaDonQG.TinNhan = PharmacyErrorHelper.ApiError(hoaDonQG.Ma, hoaDonQG.TinNhan, "liên thông hóa đơn"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/hoa_don");
                                 hoaDonQG.Ma = ((int)response.StatusCode).ToString();
-                                hoaDonQG.TinNhan = responseData;
+                                hoaDonQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông hóa đơn"); // vCong 62522
                             }
                         }
                         else if (thaoTac == ThaoTac.Xoa)
@@ -366,19 +374,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     hoaDonQG = new HoaDonQuocGia();
                                     hoaDonQG.Ma = string.Empty;
-                                    hoaDonQG.TinNhan = responseData;
+                                    hoaDonQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông hóa đơn"); // vCong 62522
                                 }
                                 if (hoaDonQG.Ma != null && !IsSuccessCode(hoaDonQG.Ma))
                                 {
                                     if (hoaDonQG.TinNhan == null || hoaDonQG.TinNhan.Equals(""))
                                         hoaDonQG.TinNhan = responseData;
+                                    hoaDonQG.TinNhan = PharmacyErrorHelper.ApiError(hoaDonQG.Ma, hoaDonQG.TinNhan, "liên thông hóa đơn"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/hoa_don");
                                 hoaDonQG.Ma = ((int)response.StatusCode).ToString();
-                                hoaDonQG.TinNhan = responseData;
+                                hoaDonQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông hóa đơn"); // vCong 62522
                             }
                         }
                     }
@@ -386,7 +395,7 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                 else
                 {
                     hoaDonQG.Ma = plv.Ma;
-                    hoaDonQG.TinNhan = plv.TinNhan;
+                    hoaDonQG.TinNhan = PharmacyErrorHelper.LoginError(plv.Ma, plv.TinNhan); // vCong 62522
                     hoaDonQG.MaHoaDonQuocGia = string.Empty;
                 }
             }
@@ -396,11 +405,11 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                 hoaDonQG.Ma = "001";
                 if (ex.Message.Equals("Invalid URI: The format of the URI could not be determined.") || ex.Message.Equals("One or more errors occurred."))
                 {
-                    hoaDonQG.TinNhan = "Địa chỉ API không chính xác.";
+                    hoaDonQG.TinNhan = PharmacyErrorHelper.ExceptionError(ex, "liên thông hóa đơn"); // vCong 62522: trước đây mọi lỗi kết nối đều báo "Địa chỉ API không chính xác"
                 }
                 else
                 {
-                    hoaDonQG.TinNhan = ex.ToString();
+                    hoaDonQG.TinNhan = PharmacyErrorHelper.ExceptionError(ex, "liên thông hóa đơn"); // vCong 62522
                 }
                 hoaDonQG.MaHoaDonQuocGia = string.Empty;
             }
@@ -441,19 +450,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     phieuNhapQG = new PhieuNhapQuocGia();
                                     phieuNhapQG.Ma = string.Empty;
-                                    phieuNhapQG.TinNhan = responseData;
+                                    phieuNhapQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông phiếu nhập"); // vCong 62522
                                 }
                                 if (phieuNhapQG.Ma != null && !IsSuccessCode(phieuNhapQG.Ma))
                                 {
                                     if (phieuNhapQG.TinNhan == null || phieuNhapQG.TinNhan.Equals(""))
                                         phieuNhapQG.TinNhan = responseData;
+                                    phieuNhapQG.TinNhan = PharmacyErrorHelper.ApiError(phieuNhapQG.Ma, phieuNhapQG.TinNhan, "liên thông phiếu nhập"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/phieu_nhap");
                                 phieuNhapQG.Ma = ((int)response.StatusCode).ToString();
-                                phieuNhapQG.TinNhan = responseData;
+                                phieuNhapQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông phiếu nhập"); // vCong 62522
                             }
                         }
                         else if (thaoTac == ThaoTac.CapNhat)
@@ -468,19 +478,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     phieuNhapQG = new PhieuNhapQuocGia();
                                     phieuNhapQG.Ma = string.Empty;
-                                    phieuNhapQG.TinNhan = responseData;
+                                    phieuNhapQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông phiếu nhập"); // vCong 62522
                                 }
                                 if (phieuNhapQG.Ma != null && !IsSuccessCode(phieuNhapQG.Ma))
                                 {
                                     if (phieuNhapQG.TinNhan == null || phieuNhapQG.TinNhan.Equals(""))
                                         phieuNhapQG.TinNhan = responseData;
+                                    phieuNhapQG.TinNhan = PharmacyErrorHelper.ApiError(phieuNhapQG.Ma, phieuNhapQG.TinNhan, "liên thông phiếu nhập"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/phieu_nhap");
                                 phieuNhapQG.Ma = ((int)response.StatusCode).ToString();
-                                phieuNhapQG.TinNhan = responseData;
+                                phieuNhapQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông phiếu nhập"); // vCong 62522
                             }
                         }
                         else if (thaoTac == ThaoTac.Xoa)
@@ -495,19 +506,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     phieuNhapQG = new PhieuNhapQuocGia();
                                     phieuNhapQG.Ma = string.Empty;
-                                    phieuNhapQG.TinNhan = responseData;
+                                    phieuNhapQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông phiếu nhập"); // vCong 62522
                                 }
                                 if (phieuNhapQG.Ma != null && !IsSuccessCode(phieuNhapQG.Ma))
                                 {
                                     if (phieuNhapQG.TinNhan == null || phieuNhapQG.TinNhan.Equals(""))
                                         phieuNhapQG.TinNhan = responseData;
+                                    phieuNhapQG.TinNhan = PharmacyErrorHelper.ApiError(phieuNhapQG.Ma, phieuNhapQG.TinNhan, "liên thông phiếu nhập"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/phieu_nhap");
                                 phieuNhapQG.Ma = ((int)response.StatusCode).ToString();
-                                phieuNhapQG.TinNhan = responseData;
+                                phieuNhapQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông phiếu nhập"); // vCong 62522
                             }
                         }
                     }
@@ -515,7 +527,7 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                 else
                 {
                     phieuNhapQG.Ma = plv.Ma;
-                    phieuNhapQG.TinNhan = plv.TinNhan;
+                    phieuNhapQG.TinNhan = PharmacyErrorHelper.LoginError(plv.Ma, plv.TinNhan); // vCong 62522
                     phieuNhapQG.MaPhieuNhapQuocGia = string.Empty;
                 }
             }
@@ -525,11 +537,11 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                 phieuNhapQG.Ma = "001";
                 if (ex.Message.Equals("Invalid URI: The format of the URI could not be determined.") || ex.Message.Equals("One or more errors occurred."))
                 {
-                    phieuNhapQG.TinNhan = "Địa chỉ API không chính xác.";
+                    phieuNhapQG.TinNhan = PharmacyErrorHelper.ExceptionError(ex, "liên thông phiếu nhập"); // vCong 62522: trước đây mọi lỗi kết nối đều báo "Địa chỉ API không chính xác"
                 }
                 else
                 {
-                    phieuNhapQG.TinNhan = ex.ToString();
+                    phieuNhapQG.TinNhan = PharmacyErrorHelper.ExceptionError(ex, "liên thông phiếu nhập"); // vCong 62522
                 }
                 phieuNhapQG.MaPhieuNhapQuocGia = string.Empty;
             }
@@ -569,19 +581,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     phieuXuatQG = new PhieuXuatQuocGia();
                                     phieuXuatQG.Ma = string.Empty;
-                                    phieuXuatQG.TinNhan = responseData;
+                                    phieuXuatQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông phiếu xuất"); // vCong 62522
                                 }
                                 if (phieuXuatQG.Ma != null && !IsSuccessCode(phieuXuatQG.Ma))
                                 {
                                     if (phieuXuatQG.TinNhan == null || phieuXuatQG.TinNhan.Equals(""))
                                         phieuXuatQG.TinNhan = responseData;
+                                    phieuXuatQG.TinNhan = PharmacyErrorHelper.ApiError(phieuXuatQG.Ma, phieuXuatQG.TinNhan, "liên thông phiếu xuất"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/phieu_xuat");
                                 phieuXuatQG.Ma = ((int)response.StatusCode).ToString();
-                                phieuXuatQG.TinNhan = responseData;
+                                phieuXuatQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông phiếu xuất"); // vCong 62522
                             }
                         }
                         else if (thaoTac == ThaoTac.CapNhat)
@@ -596,19 +609,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     phieuXuatQG = new PhieuXuatQuocGia();
                                     phieuXuatQG.Ma = string.Empty;
-                                    phieuXuatQG.TinNhan = responseData;
+                                    phieuXuatQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông phiếu xuất"); // vCong 62522
                                 }
                                 if (phieuXuatQG.Ma != null && !IsSuccessCode(phieuXuatQG.Ma))
                                 {
                                     if (phieuXuatQG.TinNhan == null || phieuXuatQG.TinNhan.Equals(""))
                                         phieuXuatQG.TinNhan = responseData;
+                                    phieuXuatQG.TinNhan = PharmacyErrorHelper.ApiError(phieuXuatQG.Ma, phieuXuatQG.TinNhan, "liên thông phiếu xuất"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/phieu_xuat");
                                 phieuXuatQG.Ma = ((int)response.StatusCode).ToString();
-                                phieuXuatQG.TinNhan = responseData;
+                                phieuXuatQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông phiếu xuất"); // vCong 62522
                             }
                         }
                         else if (thaoTac == ThaoTac.Xoa)
@@ -623,19 +637,20 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                                 {
                                     phieuXuatQG = new PhieuXuatQuocGia();
                                     phieuXuatQG.Ma = string.Empty;
-                                    phieuXuatQG.TinNhan = responseData;
+                                    phieuXuatQG.TinNhan = PharmacyErrorHelper.ParseError(responseData, "liên thông phiếu xuất"); // vCong 62522
                                 }
                                 if (phieuXuatQG.Ma != null && !IsSuccessCode(phieuXuatQG.Ma))
                                 {
                                     if (phieuXuatQG.TinNhan == null || phieuXuatQG.TinNhan.Equals(""))
                                         phieuXuatQG.TinNhan = responseData;
+                                    phieuXuatQG.TinNhan = PharmacyErrorHelper.ApiError(phieuXuatQG.Ma, phieuXuatQG.TinNhan, "liên thông phiếu xuất"); // vCong 62522
                                 }
                             }
                             else
                             {
                                 Inventec.Common.Logging.LogSystem.Error("loi goi api: api/lien_thong/phieu_xuat");
                                 phieuXuatQG.Ma = ((int)response.StatusCode).ToString();
-                                phieuXuatQG.TinNhan = responseData;
+                                phieuXuatQG.TinNhan = PharmacyErrorHelper.HttpError(response, responseData, "liên thông phiếu xuất"); // vCong 62522
                             }
                         }
                     }
@@ -643,7 +658,7 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                 else
                 {
                     phieuXuatQG.Ma = plv.Ma;
-                    phieuXuatQG.TinNhan = plv.TinNhan;
+                    phieuXuatQG.TinNhan = PharmacyErrorHelper.LoginError(plv.Ma, plv.TinNhan); // vCong 62522
                     phieuXuatQG.MaPhieuXuatQuocGia = string.Empty;
                 }
             }
@@ -653,11 +668,11 @@ namespace HIS.Desktop.Plugins.Library.NationalPharmacyConnect
                 phieuXuatQG.Ma = "001";
                 if (ex.Message.Equals("Invalid URI: The format of the URI could not be determined.") || ex.Message.Equals("One or more errors occurred."))
                 {
-                    phieuXuatQG.TinNhan = "Địa chỉ API không chính xác.";
+                    phieuXuatQG.TinNhan = PharmacyErrorHelper.ExceptionError(ex, "liên thông phiếu xuất"); // vCong 62522: trước đây mọi lỗi kết nối đều báo "Địa chỉ API không chính xác"
                 }
                 else
                 {
-                    phieuXuatQG.TinNhan = ex.ToString();
+                    phieuXuatQG.TinNhan = PharmacyErrorHelper.ExceptionError(ex, "liên thông phiếu xuất"); // vCong 62522
                 }
                 phieuXuatQG.MaPhieuXuatQuocGia = string.Empty;
             }

@@ -24,7 +24,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             {
                 if (!EcdsConfigCFG.IsValid())
                 {
-                    XtraMessageBox.Show(Resources.ResourceMessage.ChuaCauHinhKetNoiEcds,
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(EcdsApiWorker.Partner, Resources.ResourceMessage.ChuaCauHinhKetNoiEcds), // vCong 62522
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -64,7 +64,8 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
                 }
                 else
                 {
-                    string msg = result != null ? result.thongDiep : "Không nhận được phản hồi từ cổng ECDS.";
+                    // (vCong 62522) lý do thật: kết nối / tài khoản / cổng từ chối (kèm mã lỗi, thông điệp cổng)
+                    string msg = apiWorker.BuildFailMessage(result, "đẩy ca bệnh");
                     Inventec.Common.Logging.LogUtil.LogActionFail(
                         "InfectiousDiseaseReport", "Push",
                         Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
@@ -76,7 +77,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseReport.MainForm
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                XtraMessageBox.Show("Có lỗi khi đẩy ca bệnh: " + ex.Message,
+                XtraMessageBox.Show("Có lỗi khi đẩy ca bệnh: " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, EcdsApiWorker.Partner, "đẩy ca bệnh"), // vCong 62522
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally

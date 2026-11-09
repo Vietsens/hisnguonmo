@@ -139,6 +139,9 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         /// - Nếu đã có thông tin: Upload file mới → Lấy path → Đồng bộ dữ liệu với path mới
         /// - Nếu chưa có: Chỉ upload file
         /// </summary>
+        /// <summary>vCong 62522: thông báo lỗi (đã phân loại nguồn) của lần lưu trữ gần nhất; null nếu thành công.</summary>
+        public string LastErrorMessage { get; private set; }
+
         public bool StoreCitizenInfo(
             string baseUri,
             TwoIdRequestCitizens citizen,
@@ -149,6 +152,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             string transactionId,
             string hash)
         {
+            this.LastErrorMessage = null;
             try
             {
                 Inventec.Common.Logging.LogSystem.Info(
@@ -156,7 +160,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                     $"fingerprint={Newtonsoft.Json.JsonConvert.SerializeObject(fingerprint)}, " +
                     $"faceId={Newtonsoft.Json.JsonConvert.SerializeObject(faceId)}, " +
                     $"handSignature={Newtonsoft.Json.JsonConvert.SerializeObject(handSignature)}, " +
-                    $"apiKey={apiKey}, transactionId={transactionId}, hash={hash}");
+                    $"apiKey=***, transactionId={transactionId}, hash=***"); // vCong 62522: khong log khoa
 
                 // Bước 1: Upload file để tạo path (multipart/form-data với file ảnh)
                 Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Bắt đầu upload file");
@@ -175,7 +179,8 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 if (uploadResult == null || !uploadResult.status)
                 {
                     Inventec.Common.Logging.LogSystem.Error("StoreCitizenInfo: Upload file thất bại");
-                    throw new Exception("UploadFiles failed");
+                    throw new Inventec.Common.IntegrationError.IntegrationException(Inventec.Common.IntegrationError.ErrorSource.Partner, StorageApiClient.Partner,
+                        uploadResult == null ? "Kho 2ID không trả về kết quả tải file ảnh" : "Kho 2ID trả về trạng thái thất bại khi tải file ảnh (status=false)");
                 }
 
                 Inventec.Common.Logging.LogSystem.Info("StoreCitizenInfo: Upload file thành công");
@@ -215,6 +220,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 }
                 else
                 {
+                    this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(StorageApiClient.Partner, "đồng bộ thông tin công dân");
                     return false;
                 }
 
@@ -233,6 +239,7 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error("StoreCitizenInfo: Lỗi - " + ex.ToString());
+                this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, StorageApiClient.Partner, "lưu trữ dữ liệu định danh lên kho 2ID");
                 return false;
             }
         }

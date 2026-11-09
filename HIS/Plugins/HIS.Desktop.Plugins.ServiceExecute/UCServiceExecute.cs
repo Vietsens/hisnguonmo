@@ -3320,14 +3320,22 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
+        /// <summary>vCong 62522: lỗi gần nhất khi gọi dịch vụ AI phân tích hình ảnh (null nếu thành công).</summary>
+        public static string LastAiErrorMessage { get; private set; }
+
         public static ResultADO PhanTichHinhAnhYKhoa(List<ADO.ImageADO> sImage)
         {
+            LastAiErrorMessage = null;
             try
             {
                 WaitingManager.Show();
                 if (sImage != null && sImage.Count > 0 && sImage.Any(o => o.IsChecked))
                 {
-                    if (!string.IsNullOrEmpty(AppConfigKeys.AIConnectionInfo))
+                    if (string.IsNullOrEmpty(AppConfigKeys.AIConnectionInfo))
+                    {
+                        LastAiErrorMessage = Base.AiImageRequestHelper.MissingConfigMessage;
+                    }
+                    else
                     {
                         var Base64Imagess = new List<string>();
                         foreach (ImageADO img in sImage.Where(o => o.IsChecked))
@@ -3343,6 +3351,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                         });
                         WaitingManager.Hide();
+                        if (result != null && string.IsNullOrEmpty(result.Results) && LastAiErrorMessage == null)
+                            LastAiErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Base.AiImageRequestHelper.Partner, null, "Dịch vụ AI không trả về kết quả phân tích");
                         return result;
                     }
                 }
@@ -3350,6 +3360,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                LastAiErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Base.AiImageRequestHelper.Partner, "phân tích hình ảnh y khoa");
             }
             WaitingManager.Hide();
             return null;
@@ -3370,60 +3381,13 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             try
             {
 
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                using (var client = new HttpClient())
-                {
-                    string fullrequestUri = requestUri;
-
-                    client.BaseAddress = new Uri(requestUri);
-                    client.Timeout = new TimeSpan(0, 5, 0);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    var stringPayload = JsonConvert.SerializeObject(sendData);
-                    var content = new StringContent(stringPayload, Encoding.UTF8, "application/json");
-
-
-                    HttpResponseMessage resp = null;
-                    try
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug("_____sendJsonData : " + stringPayload);
-                        resp = client.PostAsync(fullrequestUri, content).Result;
-                    }
-                    catch (HttpRequestException ex)
-                    {
-                        throw new Exception("Lỗi kết nối đến");
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
-                    if (resp == null || !resp.IsSuccessStatusCode)
-                    {
-                        int statusCode = resp.StatusCode.GetHashCode();
-                        if (resp.Content != null)
-                        {
-                            try
-                            {
-                                string errorData = resp.Content.ReadAsStringAsync().Result;
-                                Inventec.Common.Logging.LogSystem.Error("errorData: " + errorData);
-                            }
-                            catch { }
-                        }
-
-                        throw new Exception(string.Format(" trả về thông tin lỗi. Mã lỗi: {0}", statusCode));
-                    }
-                    string responseData = resp.Content.ReadAsStringAsync().Result;
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => responseData), responseData));
-                    data = JsonConvert.DeserializeObject<T>(responseData);
-                    if (data == null)
-                    {
-                        throw new Exception("Dữ liệu trả về không đúng");
-                    }
-                }
+                // vCong 62522: loi mang nguon (ket noi / dich vu AI tra loi / cau hinh dia chi)
+                data = Base.AiImageRequestHelper.Post<T>(requestUri, sendData);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                LastAiErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Base.AiImageRequestHelper.Partner, "phân tích hình ảnh y khoa");
             }
 
             return data;
@@ -3731,6 +3695,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     if (String.IsNullOrEmpty(ConfigSystems.URI_API_PACS)) return;
 
                     var images = LoadImageFromPacsService(aSereServ.SoPhieu);
+                    if (images == null) ShowPacsErrorIfAny(true); // vCong 62522
 
                     List<object> listArgs = new List<object>();
                     listArgs.Add(this.moduleData);
@@ -6856,6 +6821,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Warn("khong lay duoc thong tin anh");
+                    ShowPacsErrorIfAny(false); // vCong 62522
                 }
                 ProcessLoadGridImage(this.listImage);
             }
@@ -6870,10 +6836,12 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             List<PACS.ImagesADO> result = null;
             try
             {
-                CommonParam param = new CommonParam();
+                this.pacsLastErrorMessage = null;
                 PACS.ImageRequestADO layThongTinAnhInputADO = new PACS.ImageRequestADO();
                 layThongTinAnhInputADO.SoPhieu = soPhieu;
-                var resultData = new Inventec.Common.Adapter.BackendAdapter(param).PostWithouApiParam<PACS.ImageResponseADO>(RequestUriStore.PACS_SERIVCE__LAY_THONG_TIN_ANH, PACS.PacsApiConsumer.PacsConsumer, layThongTinAnhInputADO, null, param);
+                // vCong 62522: goi truc tiep consumer de lay duoc loi (BackendAdapter nuot loi)
+                var resultData = CallPacsImageService(layThongTinAnhInputADO);
+                this.pacsLastErrorMessage = BuildPacsResultError(resultData);
                 if (resultData != null && resultData.TrangThai && resultData.Series != null)
                 {
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
@@ -6894,6 +6862,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                this.pacsLastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, PacsPartner, "lấy thông tin ảnh từ PACS");
                 result = null;
             }
             return result;

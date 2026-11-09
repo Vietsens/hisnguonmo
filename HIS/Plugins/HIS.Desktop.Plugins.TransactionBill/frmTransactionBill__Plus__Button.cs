@@ -1480,12 +1480,32 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         {
                             success = false;
                             chkConnectPOS.Checked = false;
-                            XtraMessageBox.Show("Kiểm tra lại cấu hình NetTcpBinding_IService1", "Thông báo");
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "Không khởi tạo được kết nối tới dịch vụ máy POS: kiểm tra lại cấu hình NetTcpBinding_IService1 trong file cấu hình phần mềm", ex.Message), "Thông báo"); // vCong 62522
                             Inventec.Common.Logging.LogSystem.Error(ex);
                             return success;
                         }
 
-                        var result = cll.Sale(System.Convert.ToBase64String(plainTextBytes));
+                        WcfRequest result = null;
+                        try
+                        {
+                            result = cll.Sale(System.Convert.ToBase64String(plainTextBytes));
+                        }
+                        catch (Exception exPos)
+                        {
+                            // (vCong 62522) dịch vụ POS trên máy trạm không chạy / mất kết nối: báo rõ nguồn lỗi rồi giữ nguyên luồng xử lý lỗi cũ
+                            if (cll != null)
+                            {
+                                WaitingManager.Hide();
+                                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exPos, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "gửi lệnh thanh toán tới máy POS"), "Thông báo");
+                            }
+                            throw;
+                        }
+                        if (result == null)
+                        {
+                            // (vCong 62522) trước đây không báo gì khi máy POS không trả kết quả
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "thanh toán qua máy POS"), "Thông báo");
+                        }
 
                         if (result != null && result.RESPONSE_CODE == "00")
                         {
@@ -1501,7 +1521,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             {
                                 WaitingManager.Hide();
                                 if (DevExpress.XtraEditors.XtraMessageBox.
-                               Show(ResourceMessageLang.LoiThanhToan + "(Mã lỗi: " + result.ERROR + ")", ResourceMessageLang.ThongBao, System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
+                               Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Bank("ngân hàng quản lý máy POS"), "Mã lỗi: " + result.ERROR, ResourceMessageLang.LoiThanhToan), ResourceMessageLang.ThongBao, System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
                                     return false;
                             }
 
@@ -1903,7 +1923,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 catch (Exception ex)
                 {
                     chkConnectPOS.Checked = false;
-                    XtraMessageBox.Show("Kiểm tra lại cấu hình NetTcpBinding_IService1", "Thông báo");
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "Không khởi tạo được kết nối tới dịch vụ máy POS: kiểm tra lại cấu hình NetTcpBinding_IService1 trong file cấu hình phần mềm", ex.Message), "Thông báo"); // vCong 62522
                     return;
                 }
                 cll.cauhinh();
@@ -1911,7 +1931,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             catch (Exception ex)
             {
                 chkConnectPOS.Checked = false;
-                XtraMessageBox.Show("Cấu hình thất bại", "Thông báo");
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "mở cấu hình máy POS"), "Thông báo"); // vCong 62522
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

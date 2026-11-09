@@ -7797,7 +7797,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 catch (Exception ex)
                 {
                     ChkKetNoiPOS.Checked = false;
-                    XtraMessageBox.Show("Kiểm tra lại cấu hình NetTcpBinding_IService1", "Thông báo");
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "Không khởi tạo được kết nối tới dịch vụ máy POS: kiểm tra lại cấu hình NetTcpBinding_IService1 trong file cấu hình phần mềm", ex.Message), "Thông báo"); // vCong 62522
                     return;
                 }
                 cll.cauhinh();
@@ -7805,7 +7805,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             catch (Exception ex)
             {
                 ChkKetNoiPOS.Checked = false;
-                XtraMessageBox.Show("Cấu hình thất bại", "Thông báo");
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "mở cấu hình máy POS"), "Thông báo"); // vCong 62522
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

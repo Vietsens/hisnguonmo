@@ -200,6 +200,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 string message = result.FailReason == EnumTienGiamDinhFailReason.Unauthorized
                     ? ResourceMessage.TienGiamDinhSaiThongTinXacThuc
                     : ResourceMessage.TienGiamDinhKhongKiemTraDuoc;
+                if (!string.IsNullOrEmpty(result.FailDetail))
+                    message = message + " " + result.FailDetail; // lý do đã phân loại nguồn lỗi (vCong 62522)
 
                 if (validationDataType == ValidationDataType.GetListMessage && listWarningADO != null)
                 {

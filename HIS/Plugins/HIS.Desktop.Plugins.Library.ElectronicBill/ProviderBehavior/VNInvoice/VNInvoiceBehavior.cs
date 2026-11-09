@@ -54,7 +54,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.VNINVOICE, "Chưa cấu hình địa chỉ cổng hóa đơn điện tử (Webservice URL)");
                         return result;
                     }
                     string[] accountConfigArr = accountConfig.Split('|');
@@ -69,7 +69,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                     if (outputLogin == null)
                     {
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => outputLogin), outputLogin));
-                        //ElectronicBillResultUtil.Set(ref result, false, outputLogin.error);
+                        ElectronicBillResultUtil.SetNoResponse(ref result, ProviderType.VNINVOICE, "đăng nhập cổng hóa đơn điện tử");
                         return result;
                     }
                     switch (electronicBillType)
@@ -132,13 +132,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                         case ElectronicBillType.ENUM.GET_INVOICE_INFO:
                             break;
                         default:
-                            ElectronicBillResultUtil.Set(ref result, false, "Chưa tích hợp tính năng");
+                            ElectronicBillResultUtil.SetSoftwareError(ref result, ProviderType.VNINVOICE, "Phần mềm chưa hỗ trợ: Chưa tích hợp tính năng", null);
                             break;
                     }
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VNINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -178,6 +179,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (ICEBill)");
             }
             return data;
         }
@@ -202,18 +204,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, createInvoiceResult.message != null ? createInvoiceResult.message : "Tạo hóa đơn bán hàng thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, createInvoiceResult.message, "Tạo hóa đơn bán hàng thất bại");
                     }
                 }
                 else if (createInvoiceResult == null || (createInvoiceResult != null && createInvoiceResult.errors != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, createInvoiceResult != null && createInvoiceResult.errors != null ? createInvoiceResult.errors : "Tạo hóa đơn bán hàng thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, createInvoiceResult != null ? createInvoiceResult.errors : null, "Tạo hóa đơn bán hàng thất bại");
                 }
 
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VNINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -237,18 +240,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, createInvoiceResult.message != null ? createInvoiceResult.message : "Tạo hóa đơn giá trị gia tăng thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, createInvoiceResult.message, "Tạo hóa đơn giá trị gia tăng thất bại");
                     }
                 }
                 else if (createInvoiceResult == null || (createInvoiceResult != null && createInvoiceResult.errors != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, createInvoiceResult != null && createInvoiceResult.errors != null ? createInvoiceResult.errors : "Tạo hóa đơn giá trị gia tăng thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, createInvoiceResult != null ? createInvoiceResult.errors : null, "Tạo hóa đơn giá trị gia tăng thất bại");
                 }
 
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VNINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -288,6 +292,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (IEBill)");
             }
             return data;
         }
@@ -310,18 +315,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, createAndSignInvoiceResult.message != null ? createAndSignInvoiceResult.message : "Tạo và ký hóa đơn giá trị gia tăng thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, createAndSignInvoiceResult.message, "Tạo và ký hóa đơn giá trị gia tăng thất bại");
                     }
                 }
                 else if (createAndSignInvoiceResult == null || (createAndSignInvoiceResult != null && createAndSignInvoiceResult.errors != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, createAndSignInvoiceResult != null && createAndSignInvoiceResult.errors != null ? createAndSignInvoiceResult.errors : "Tạo và ký hóa đơn giá trị gia tăng thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, createAndSignInvoiceResult != null ? createAndSignInvoiceResult.errors : null, "Tạo và ký hóa đơn giá trị gia tăng thất bại");
                 }
 
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VNINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -346,18 +352,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                     else
                     {
                         result.Success = false;
-                        ElectronicBillResultUtil.Set(ref result, false, createAndSignInvoiceResult.message != null ? createAndSignInvoiceResult.message : "Tạo và ký hóa đơn bán hàng thất bại");
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, createAndSignInvoiceResult.message, "Tạo và ký hóa đơn bán hàng thất bại");
                     }
                 }
                 else if (createAndSignInvoiceResult == null || (createAndSignInvoiceResult != null && createAndSignInvoiceResult.errors != null))
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, createAndSignInvoiceResult != null && createAndSignInvoiceResult.errors != null ? createAndSignInvoiceResult.errors : "Tạo và ký hóa đơn bán hàng thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, createAndSignInvoiceResult != null ? createAndSignInvoiceResult.errors : null, "Tạo và ký hóa đơn bán hàng thất bại");
                 }
 
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VNINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -380,11 +387,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                 else
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, "Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện.");
+                    ElectronicBillResultUtil.SetSoftwareError(ref result, ProviderType.VNINVOICE, "Phần mềm chưa hỗ trợ: Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện", null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VNINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -404,11 +412,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                 else
                 {
                     result.Success = false;
-                    ElectronicBillResultUtil.Set(ref result, false, "Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện.");
+                    ElectronicBillResultUtil.SetSoftwareError(ref result, ProviderType.VNINVOICE, "Phần mềm chưa hỗ trợ: Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện", null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VNINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -450,6 +459,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (ReplaceInvoice)");
             }
             return replaceInvoice;
         }
@@ -528,6 +538,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
             {
                 dschitiet = new List<VNInvoiceDetail>();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (DSCT)");
             }
             return dschitiet;
         }
@@ -552,18 +563,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                     {
                         result.Success = false;
                         string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.errors ?? ReplaceInvoiceResult.message : "Thay thế hóa đơn GTGT thất bại";
-                        ElectronicBillResultUtil.Set(ref result, false, message);
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, message, null);
                     }
                 }
                 else if (ReplaceInvoiceResult == null || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.errors) || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.message))
                 {
                     result.Success = false;
                     string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.errors ?? ReplaceInvoiceResult.message : "Thay thế hóa đơn GTGT thất bại";
-                    ElectronicBillResultUtil.Set(ref result, false, message);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, message, null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VNINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -586,18 +598,19 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
                     {
                         result.Success = false;
                         string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.errors ?? ReplaceInvoiceResult.message : "Thay thế hóa đơn bán hàng thất bại";
-                        ElectronicBillResultUtil.Set(ref result, false, message);
+                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, message, null);
                     }
                 }
                 else if (ReplaceInvoiceResult == null || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.errors) || !String.IsNullOrWhiteSpace(ReplaceInvoiceResult.message))
                 {
                     result.Success = false;
                     string message = ReplaceInvoiceResult != null ? ReplaceInvoiceResult.errors ?? ReplaceInvoiceResult.message : "Thay thế hóa đơn bán hàng thất bại";
-                    ElectronicBillResultUtil.Set(ref result, false, message);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNINVOICE, message, null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VNINVOICE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -630,7 +643,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.VNINVOICE);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
@@ -648,6 +661,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNInvoice
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                throw; // de Run phan loai nguon loi (ket noi / thiet lap tai khoan / NCC) thay vi tra null khong ro ly do
             }
             return result;
         }

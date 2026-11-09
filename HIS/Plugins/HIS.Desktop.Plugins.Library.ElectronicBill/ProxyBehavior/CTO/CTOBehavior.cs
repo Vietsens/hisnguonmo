@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.CTO
             }
             catch (Exception ex)
             {
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CTO);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -112,7 +112,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.CTO
             catch (Exception ex)
             {
                 valid = false;
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CTO);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return valid;
@@ -142,13 +142,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.CTO
                 }
                 else
                 {
-                    ElectronicBillResultUtil.Set(ref result, false, string.Format("{0}. {1}", apiresult.code, apiresult.message));
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CTO, string.Format("{0}. {1}", apiresult.code, apiresult.message), null);
                     LogSystem.Error("Lay file hoa don that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                 }
             }
             else
             {
-                ElectronicBillResultUtil.Set(ref result, false, "Không nhận được phản hồi từ hệ thống proxy");
+                ElectronicBillResultUtil.SetNoResponse(ref result, ProviderType.CTO, null);
                 LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
             }
 
@@ -180,13 +180,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.CTO
                 }
                 else
                 {
-                    ElectronicBillResultUtil.Set(ref result, false, string.Format("{0}. {1}", apiresult.code, apiresult.message));
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CTO, string.Format("{0}. {1}", apiresult.code, apiresult.message), null);
                     LogSystem.Error("Lay file hoa don that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                 }
             }
             else
             {
-                ElectronicBillResultUtil.Set(ref result, false, "Không nhận được phản hồi từ hệ thống proxy");
+                ElectronicBillResultUtil.SetNoResponse(ref result, ProviderType.CTO, null);
                 LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
             }
 
@@ -209,12 +209,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.CTO
                 {
                     result = "";
                     Inventec.Common.Logging.LogSystem.Error(ex);
+                    HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
                 }
             }
             catch (Exception ex)
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
             }
             return result;
         }
@@ -400,13 +402,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.CTO
                 }
                 else
                 {
-                    ElectronicBillResultUtil.Set(ref result, false, string.Format("{0}. {1}", apiresult.code, apiresult.message));
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CTO, string.Format("{0}. {1}", apiresult.code, apiresult.message), null);
                     LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data) + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => apiresult), apiresult));
                 }
             }
             else
             {
-                ElectronicBillResultUtil.Set(ref result, false, "Không nhận được phản hồi từ hệ thống proxy");
+                ElectronicBillResultUtil.SetNoResponse(ref result, ProviderType.CTO, null);
                 LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
             }
             return result;
@@ -455,6 +457,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProxyBehavior.CTO
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetInvoiceType)");
             }
             return result;
         }

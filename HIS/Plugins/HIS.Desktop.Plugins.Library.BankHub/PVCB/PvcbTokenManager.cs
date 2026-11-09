@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Inventec.Common.IntegrationError;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -151,13 +152,17 @@ namespace HIS.Desktop.Plugins.Library.BankHub.PVCB
             });
 
             using (var req = new HttpRequestMessage(HttpMethod.Post, _tokenUrl) { Content = form })
-            using (var resp = await _http.SendAsync(req, ct).ConfigureAwait(false))
+            using (var resp = await SendAsync(req, ct).ConfigureAwait(false))
             {
                 var body = await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (!resp.IsSuccessStatusCode)
-                    throw new PvcbAuthException((int)resp.StatusCode,
-                        "Lấy access_token thất bại. Body: " + body);
+                {
+                    // (vCong 62522) 401/403 = ClientId/ClientSecret thiết lập tại viện sai; 502/503/504 = kết nối; còn lại = ngân hàng
+                    IntegrationException httpErr = IntegrationHttpError.FromStatus(PvcbAuthException.BankPartner, _tokenUrl, (int)resp.StatusCode, resp.ReasonPhrase, body);
+                    throw new PvcbAuthException((int)resp.StatusCode, httpErr.ErrorSource,
+                        "Lấy access_token PVcomBank thất bại: " + httpErr.Message, null);
+                }
 
                 TokenResponse token;
                 try
@@ -166,13 +171,13 @@ namespace HIS.Desktop.Plugins.Library.BankHub.PVCB
                 }
                 catch (Exception ex)
                 {
-                    throw new PvcbAuthException((int)resp.StatusCode,
-                        "Không parse được response token. Body: " + body, ex);
+                    throw new PvcbAuthException((int)resp.StatusCode, ErrorSource.Partner,
+                        "PVcomBank trả về dữ liệu token không đúng định dạng. Body: " + Cut(body), ex);
                 }
 
                 if (token == null || string.IsNullOrEmpty(token.AccessToken))
-                    throw new PvcbAuthException((int)resp.StatusCode,
-                        "Response không chứa access_token. Body: " + body);
+                    throw new PvcbAuthException((int)resp.StatusCode, ErrorSource.Partner,
+                        "PVcomBank trả về response không chứa access_token. Body: " + Cut(body), null);
 
                 _accessToken = token.AccessToken;
                 _tokenType = token.TokenType;
@@ -183,6 +188,29 @@ namespace HIS.Desktop.Plugins.Library.BankHub.PVCB
                 var effective = lifetime > RefreshBuffer ? lifetime - RefreshBuffer : lifetime;
                 _expiresAt = DateTime.Now + effective;
             }
+        }
+
+        /// <summary>Gửi request, lỗi kết nối (timeout, DNS, SSL, refused) → PvcbAuthException có nguồn lỗi (vCong 62522)</summary>
+        private async Task<HttpResponseMessage> SendAsync(HttpRequestMessage req, CancellationToken ct)
+        {
+            Exception error;
+            try
+            {
+                return await _http.SendAsync(req, ct).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+            Exception wrapped = IntegrationHttpError.WrapCall(error, PvcbAuthException.BankPartner, _tokenUrl);
+            IntegrationException known = wrapped as IntegrationException;
+            throw new PvcbAuthException(0, known != null ? known.ErrorSource : IntegrationErrorClassifier.Classify(error), wrapped.Message, error);
+        }
+
+        private static string Cut(string body)
+        {
+            if (string.IsNullOrEmpty(body)) return body;
+            return body.Length > 500 ? body.Substring(0, 500) + "..." : body;
         }
 
         private static string ToTitleCase(string s)
@@ -209,21 +237,40 @@ namespace HIS.Desktop.Plugins.Library.BankHub.PVCB
         }
     }
 
-    /// <summary>Lỗi khi lấy/làm mới access_token.</summary>
-    public sealed class PvcbAuthException : Exception
+    /// <summary>
+    /// Lỗi khi lấy/làm mới access_token.
+    /// (vCong 62522) Kế thừa IntegrationException để nơi hiển thị biết nguồn lỗi (kết nối / ngân hàng / thiết lập tại viện).
+    /// </summary>
+    public sealed class PvcbAuthException : IntegrationException
     {
         public int HttpStatus { get; private set; }
 
+        public static IntegrationPartner BankPartner
+        {
+            get { return IntegrationPartner.Bank("PVcomBank"); }
+        }
+
         public PvcbAuthException(int httpStatus, string message)
-            : base(message)
+            : base(SourceOf(httpStatus, message), BankPartner, message, null)
         {
             HttpStatus = httpStatus;
         }
 
         public PvcbAuthException(int httpStatus, string message, Exception inner)
-            : base(message, inner)
+            : base(inner != null ? IntegrationErrorClassifier.Classify(inner) : SourceOf(httpStatus, message), BankPartner, message, inner)
         {
             HttpStatus = httpStatus;
+        }
+
+        public PvcbAuthException(int httpStatus, ErrorSource source, string message, Exception inner)
+            : base(source, BankPartner, message, inner)
+        {
+            HttpStatus = httpStatus;
+        }
+
+        private static ErrorSource SourceOf(int httpStatus, string message)
+        {
+            return httpStatus > 0 ? IntegrationErrorClassifier.SourceFromHttpStatus(httpStatus) : IntegrationErrorClassifier.ClassifyByMessage(message);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOIT
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.CongThuong, "Chưa cấu hình địa chỉ cổng hóa đơn điện tử (Webservice URL)");
                         return result;
                     }
 
@@ -101,6 +101,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOIT
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CongThuong); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -124,7 +125,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOIT
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, "");
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.CongThuong);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
@@ -160,13 +161,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOIT
                 {
                     result.Success = false;
                     result.InvoiceSys = ProviderType.CongThuong;
-                    result.Messages = new List<string>() { response.MessLog };
                     Inventec.Common.Logging.LogSystem.Error("Huy hoa don dien tu that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ElectronicBillDataInput), ElectronicBillDataInput));
-                    ElectronicBillResultUtil.Set(ref result, false, response.MessLog);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CongThuong, response != null ? response.MessLog : null, null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CongThuong); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -204,13 +205,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOIT
                 {
                     result.Success = false;
                     result.InvoiceSys = ProviderType.CongThuong;
-                    result.Messages = new List<string>() { response.MessLog };
                     Inventec.Common.Logging.LogSystem.Error("Lay file hoa don dien tu that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ElectronicBillDataInput), ElectronicBillDataInput));
-                    ElectronicBillResultUtil.Set(ref result, false, response.MessLog);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CongThuong, response != null ? response.MessLog : null, null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CongThuong); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -230,6 +231,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOIT
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
             }
             return result;
         }
@@ -250,12 +252,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOIT
                 {
                     result = "";
                     Inventec.Common.Logging.LogSystem.Error(ex);
+                    HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
                 }
             }
             catch (Exception ex)
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lưu file PDF hóa đơn vào máy trạm");
             }
             return result;
         }
@@ -297,14 +301,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOIT
                 {
                     result.Success = false;
                     result.InvoiceSys = ProviderType.CongThuong;
-                    result.Messages = new List<string>() { response.MessLog };
                     Inventec.Common.Logging.LogSystem.Error("Tao hoa don dien tu that bai. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response) + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ElectronicBillDataInput), ElectronicBillDataInput));
-                    ElectronicBillResultUtil.Set(ref result, false, response.MessLog);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.CongThuong, response != null ? response.MessLog : null, null);
                 }
             }
             catch (Exception ex)
             {
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.CongThuong);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }

@@ -1609,9 +1609,10 @@ namespace HIS.Desktop.Plugins.ApprovalExportPrescription
                 {
                     this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager();
                 }
-                this.clienttManager.CallNameAndDob(cong, name, dob);
+                bool callOk = this.clienttManager.CallNameAndDob(cong, name, dob);
 
                 WaitingManager.Hide();
+                if (!callOk) ShowCpaCallError(this.clienttManager.LastErrorMessage); // vCong 62522
                 btnExported.Focus();
                 //thực xuất
                 //ExportPrescription();
@@ -2151,5 +2152,19 @@ namespace HIS.Desktop.Plugins.ApprovalExportPrescription
 
 
 
+        /// <summary>vCong 62522: báo lỗi gọi bệnh nhân qua CPA (đã phân loại nguồn: dịch vụ CPA chưa chạy / lỗi kết nối...).</summary>
+        private void ShowCpaCallError(string msg)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(msg)) return;
+                Action show = () => DevExpress.XtraEditors.XtraMessageBox.Show(msg, "Thông báo", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                if (this.InvokeRequired) this.BeginInvoke(show); else show();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

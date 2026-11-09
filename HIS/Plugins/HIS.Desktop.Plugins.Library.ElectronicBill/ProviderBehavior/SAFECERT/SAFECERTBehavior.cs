@@ -65,7 +65,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SAFECERT
                         case ElectronicBillType.ENUM.GET_INVOICE_LINK:
                         case ElectronicBillType.ENUM.DELETE_INVOICE:
                         case ElectronicBillType.ENUM.CANCEL_INVOICE:
-                            ElectronicBillResultUtil.Set(ref result, false, "Chưa tích hợp tính năng này");
+                            ElectronicBillResultUtil.SetSoftwareError(ref result, ProviderType.safecert, "Phần mềm chưa hỗ trợ: Chưa tích hợp tính năng này", null);
                             break;
                         default:
                             break;
@@ -74,6 +74,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SAFECERT
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.safecert); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -217,25 +218,26 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SAFECERT
                             }
                             else
                             {
-                                ElectronicBillResultUtil.Set(ref billResult, false, string.Format("{0}. {1}", apiresult.maKetQua, apiresult.moTaKetQua));
+                                ElectronicBillResultUtil.SetProviderError(ref billResult, ProviderType.safecert, string.Format("{0}. {1}", apiresult.maKetQua, apiresult.moTaKetQua), null);
                                 LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoice), invoice));
                             }
                         }
                         else
                         {
-                            ElectronicBillResultUtil.Set(ref billResult, false, "");
+                            ElectronicBillResultUtil.SetNoResponse(ref billResult, ProviderType.safecert, null);
                             LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoice), invoice));
                         }
                     }
                     catch (Exception ex)
                     {
-                        ElectronicBillResultUtil.Set(ref billResult, false, ex.Message);
+                        ElectronicBillResultUtil.SetException(ref billResult, ex, ProviderType.safecert);
                         LogSystem.Error("Tao hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoice), invoice));
                     }
                 }
             }
             catch (Exception ex)
             {
+                if (billResult == null || !billResult.Success) { ElectronicBillResultUtil.SetException(ref billResult, ex, ProviderType.safecert); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -305,6 +307,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SAFECERT
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (ProcessTongTien)");
             }
         }
 
@@ -420,6 +423,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SAFECERT
             {
                 result = new List<EinvoiceLine>();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetEinvoiceLine)");
             }
             return result;
         }
@@ -439,6 +443,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SAFECERT
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetDate)");
             }
             return result;
         }
@@ -522,7 +527,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SAFECERT
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.safecert);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;

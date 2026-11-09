@@ -8,6 +8,8 @@ namespace HIS.Desktop.Plugins.XMLViewer130.Bhxh
     {
         public string maKetQua { get; set; }
         public BhxhApiKey APIKey { get; set; }
+        /// <summary>Lý do lấy token thất bại đã phân loại nguồn lỗi (vCong 62522), không có trong JSON cổng trả về.</summary>
+        public string ErrorMessage { get; set; }
     }
 
     public class BhxhApiKey

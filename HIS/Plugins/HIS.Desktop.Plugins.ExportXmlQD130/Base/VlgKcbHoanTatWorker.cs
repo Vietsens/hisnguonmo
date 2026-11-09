@@ -7,6 +7,7 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  */
+using Inventec.Common.IntegrationError;
 using Inventec.Common.Logging;
 using Newtonsoft.Json.Linq;
 using System;
@@ -31,6 +32,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
     /// </summary>
     public class VlgKcbHoanTatWorker
     {
+        /// <summary>Đối tác + lý do đăng nhập thất bại gần nhất để báo đúng nguồn lỗi (vCong 62522).</summary>
+        private static readonly IntegrationPartner PARTNER = IntegrationPartner.HealthPortal("cổng tiếp nhận KDLYT Vĩnh Long");
+        private string lastLoginError;
+        private Exception lastLoginException;
+
         private const string DEFAULT_BASE_URL = "https://congtiepnhan.kdlyt.vinhlong.vn";
         private const string TOKEN_PATH = "/api/xac-thuc/token";
         private const string PUSH_PATH = "/api/kham-chua-benh/hoan-tat";
@@ -108,18 +114,18 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 if (!this.IsValidConfig)
                 {
-                    ret.Message = "Khóa cấu hình Cổng tiếp nhận VLG không hợp lệ";
+                    ret.Message = IntegrationErrorMessage.ConfigError(PARTNER, "Khóa cấu hình cổng tiếp nhận VLG không hợp lệ (VLG_2062__CONNECTION_INFO)");
                     return ret;
                 }
                 if (xmlBytes == null || xmlBytes.Length == 0)
                 {
-                    ret.Message = "Không có dữ liệu XML để đồng bộ";
+                    ret.Message = IntegrationErrorMessage.BusinessError(PARTNER, "Không có dữ liệu XML để đồng bộ");
                     LogSystem.Warn("VlgKcbHoanTatWorker - Khong co du lieu XML. MA_LK: " + maLk);
                     return ret;
                 }
                 if (xmlBytes.Length > MAX_BODY_BYTES)
                 {
-                    ret.Message = "Bản tin vượt giới hạn 10 MiB của cổng (" + xmlBytes.Length + " byte)";
+                    ret.Message = IntegrationErrorMessage.BusinessError(PARTNER, "Bản tin vượt giới hạn 10 MiB của cổng (" + xmlBytes.Length + " byte)");
                     return ret;
                 }
                 await this.pushGate.WaitAsync();
@@ -127,12 +133,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 {
                     if (this.batchFatalError != null)
                     {
-                        ret.Message = this.batchFatalError;
+                        ret.Message = PortalErrorHelper.FromRaw(PARTNER, this.batchFatalError, "Cổng tiếp nhận VLG từ chối");
                         return ret;
                     }
                     if (!await EnsureTokenAsync())
                     {
-                        ret.Message = this.batchFatalError ?? "Đăng nhập cổng tiếp nhận VLG thất bại";
+                        ret.Message = this.batchFatalError != null ? PortalErrorHelper.FromRaw(PARTNER, this.batchFatalError, "Cổng tiếp nhận VLG từ chối") : PortalErrorHelper.Login(PARTNER, this.lastLoginError, this.lastLoginException);
                         return ret;
                     }
 
@@ -144,14 +150,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                         this.token = null; this.tokenExpireTime = DateTime.MinValue;
                         if (!await LoginAsync())
                         {
-                            ret.Message = this.batchFatalError ?? "Đăng nhập lại cổng thất bại (401)";
+                            ret.Message = this.batchFatalError != null ? PortalErrorHelper.FromRaw(PARTNER, this.batchFatalError, "Cổng tiếp nhận VLG từ chối") : PortalErrorHelper.Login(PARTNER, "Đăng nhập lại sau khi bị từ chối (401): " + this.lastLoginError, this.lastLoginException);
                             return ret;
                         }
                         result = await PostHoanTatAsync(xmlBytes, maLk);
                     }
 
                     ret.Success = result.Ok;
-                    ret.Message = result.Message;
+                    ret.Message = ret.Success ? result.Message : PortalErrorHelper.FromRaw(PARTNER, result.Message, "Cổng tiếp nhận VLG không tiếp nhận hồ sơ");
                     LogSystem.Info("VlgKcbHoanTatWorker - Dong bo hoan-tat VLG MA_LK: " + maLk
                         + " thanh cong: " + result.Ok + ". Message: " + result.Message);
                     return ret;
@@ -162,7 +168,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 LogSystem.Error(ex);
                 ret.Success = false;
-                ret.Message = "Lỗi ngoại lệ khi gửi: " + ex.Message;
+                ret.Message = IntegrationErrorMessage.FromException(ex, PARTNER, "gửi hồ sơ lên cổng tiếp nhận VLG");
                 return ret;
             }
         }
@@ -181,6 +187,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 this.token = null;
                 this.tokenExpireTime = DateTime.MinValue;
+                this.lastLoginError = null;
+                this.lastLoginException = null;
 
                 string loginJson = Newtonsoft.Json.JsonConvert.SerializeObject(
                     new { username = this.username, password = this.password });
@@ -196,6 +204,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     {
                         this.batchFatalError = "không kết nối được cổng tiếp nhận (" + this.baseUrl + ") — " + exNet.Message;
                         LogSystem.Error("VlgKcbHoanTatWorker - " + this.batchFatalError, exNet);
+                        this.lastLoginException = exNet;
                         return false;
                     }
                     string body = await response.Content.ReadAsStringAsync();
@@ -215,6 +224,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                         if (sc == 401 || sc == 403 || sc == 429)
                             this.batchFatalError = "đăng nhập cổng tiếp nhận thất bại — " + reason;
                         LogSystem.Warn("VlgKcbHoanTatWorker - Dang nhap that bai. " + reason);
+                        this.lastLoginError = reason;
                         return false;
                     }
                     long ttl = TOKEN_TTL_DEFAULT_SECONDS;
@@ -231,6 +241,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                this.lastLoginException = ex;
                 return false;
             }
         }
@@ -304,7 +315,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 LogSystem.Error(ex);
                 result.Ok = false;
-                result.Message = "Lỗi ngoại lệ khi gửi: " + ex.Message;
+                result.Message = IntegrationErrorMessage.FromException(ex, PARTNER, "gửi hồ sơ lên cổng tiếp nhận VLG");
                 return result;
             }
         }

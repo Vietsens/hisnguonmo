@@ -113,6 +113,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 result = null;
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (MakeIRun)");
             }
             return result;
         }
@@ -190,6 +191,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (ProcessDataSereServToSereServBill)");
             }
         }
 
@@ -262,6 +264,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetSereServWithVAT)");
             }
             return result;
         }

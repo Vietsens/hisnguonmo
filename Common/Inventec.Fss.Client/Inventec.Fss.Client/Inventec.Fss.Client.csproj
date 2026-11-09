@@ -38,6 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\RELEASE\Inventec.Aup.Client\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.IntegrationError">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -60,6 +63,7 @@
     <Compile Include="FileDownloadException.cs" />
     <Compile Include="FileUpload.cs" />
     <Compile Include="FileUploadException.cs" />
+    <Compile Include="FssErrorHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

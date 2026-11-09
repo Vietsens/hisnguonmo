@@ -38,6 +38,14 @@ namespace HIS.Desktop.Plugins.Library.RegisterConnectHrm
     public class RegisterConnectHrmProcessor
     {
         HrmTokenData token = null;
+
+        /// <summary>vCong 62522: thông báo lỗi (đã phân loại nguồn) của lần lấy dữ liệu HRM gần nhất; null nếu thành công.</summary>
+        public string LastErrorMessage { get; private set; }
+
+        public static Inventec.Common.IntegrationError.IntegrationPartner Partner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống nhân sự HRM"); }
+        }
         private static List<IPAddress> GetIPInternet()
         {
             List<IPAddress> localIP = new List<IPAddress>();
@@ -53,12 +61,15 @@ namespace HIS.Desktop.Plugins.Library.RegisterConnectHrm
         public async Task<MOS.SDO.HisPatientSDO> GetDataHrm1(string _baseUri, string loginname, string password, string grant_type, string client_id, string client_secret, string _employeeCode)
         {
             MOS.SDO.HisPatientSDO data = new MOS.SDO.HisPatientSDO();
+            this.LastErrorMessage = null;
             try
             {
                 await RegisToken(_baseUri, loginname, password, grant_type, client_id, client_secret);
                 if (token == null)
                 {
                     Inventec.Common.Logging.LogSystem.Info("Dang Nhap HRM That Bai");
+                    if (this.LastErrorMessage == null)
+                        this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(Partner, "HRM không trả về mã xác thực (access_token)");
                     return data;
                 }
                 var adrr = new RebindingHandler(GetIPInternet());
@@ -70,8 +81,22 @@ namespace HIS.Desktop.Plugins.Library.RegisterConnectHrm
 
                     string dataUri = string.Format("employee_code={0}", _employeeCode);
 
-                    HttpResponseMessage responseRs = await client.GetAsync("WebService/api/v1/employee?" + dataUri).ConfigureAwait(false);
-                    if (responseRs.IsSuccessStatusCode)
+                    HttpResponseMessage responseRs = null;
+                    try
+                    {
+                        responseRs = await client.GetAsync("WebService/api/v1/employee?" + dataUri).ConfigureAwait(false);
+                    }
+                    catch (Exception exCall)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(exCall, Partner, _baseUri + "WebService/api/v1/employee");
+                    }
+                    if (responseRs == null || !responseRs.IsSuccessStatusCode)
+                    {
+                        // vCong 62522: truoc day bo qua im lang
+                        this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(
+                            Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Partner, _baseUri + "WebService/api/v1/employee", responseRs), Partner, "tra cứu nhân viên");
+                    }
+                    else
                     {
                         string rsChiTiet = responseRs.Content.ReadAsStringAsync().Result;
                         try
@@ -92,10 +117,16 @@ namespace HIS.Desktop.Plugins.Library.RegisterConnectHrm
 
                                 Inventec.Common.Logging.LogSystem.Error(Inventec.Common.Logging.LogUtil.TraceData("resultHrm >>>>>>>>>>> : ", ado));
                             }
+                            else
+                            {
+                                this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.BusinessError(Partner, "Không tìm thấy nhân viên có mã " + _employeeCode + " trên hệ thống nhân sự HRM");
+                            }
                         }
                         catch (Exception ex)
                         {
                             LogSystem.Warn(ex);
+                            this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(
+                                Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(Partner, _baseUri + "WebService/api/v1/employee", rsChiTiet, ex), Partner, "tra cứu nhân viên");
                         }
                     }
                 }
@@ -103,6 +134,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConnectHrm
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "tra cứu nhân viên");
             }
             return data;
         }
@@ -122,22 +154,35 @@ namespace HIS.Desktop.Plugins.Library.RegisterConnectHrm
                        new KeyValuePair<string, string>("client_secret", client_secret),
                        new KeyValuePair<string, string>("username", loginname),
                        new KeyValuePair<string, string>("password", password)
-                   }); HttpResponseMessage resp = await client.PostAsync("/WebService/oauth/token", formContent);
+                   }); HttpResponseMessage resp = null;
+                    try
+                    {
+                        resp = await client.PostAsync("/WebService/oauth/token", formContent);
+                    }
+                    catch (Exception exCall)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(exCall, Partner, _baseUri + "/WebService/oauth/token");
+                    }
 
-                    if (resp.IsSuccessStatusCode)
+                    if (resp != null && resp.IsSuccessStatusCode)
                     {
                         string respData = resp.Content.ReadAsStringAsync().Result;
                         token = Newtonsoft.Json.JsonConvert.DeserializeObject<HrmTokenData>(respData);
                     }
                     else
                     {
-                        Inventec.Common.Logging.LogSystem.Error("Khong Dang Nhap Duoc HRM >>>><<<<Address: " + _baseUri + " loginname: " + loginname + " password: " + password);
+                        // vCong 62522: khong log mat khau; bao ro dang nhap HRM that bai (thiet lap tai khoan)
+                        string body = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(resp);
+                        Inventec.Common.Logging.LogSystem.Error("Khong Dang Nhap Duoc HRM >>>><<<<Address: " + _baseUri + " loginname: " + loginname + " status: " + (resp != null ? (int)resp.StatusCode : 0) + " body: " + body);
+                        this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(Partner,
+                            string.Format("HTTP {0} {1}", resp != null ? (int)resp.StatusCode : 0, body));
                     }
                 }
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "đăng nhập HRM");
             }
         }
 

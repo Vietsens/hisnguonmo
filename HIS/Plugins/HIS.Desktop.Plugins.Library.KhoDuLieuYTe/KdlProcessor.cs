@@ -82,6 +82,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                MarkUnfinished(results, ex); // vCong 62522
             }
             return results;
         }
@@ -132,6 +133,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                MarkUnfinished(results, ex); // vCong 62522
             }
             return results;
         }
@@ -141,7 +143,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe
             if (branch == null)
                 return "Không xác định được chi nhánh của hồ sơ";
             if (KdlConfig.GetByMaCskcb(branch.HEIN_MEDI_ORG_CODE) == null)
-                return string.Format("Chưa khai báo kết nối Kho dữ liệu SYT cho cơ sở {0} (khóa {1})", branch.HEIN_MEDI_ORG_CODE, KdlConfig.CONNECTION_INFO_KEY);
+                return Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Api.KdlApiClient.Partner, string.Format("Chưa khai báo kết nối Kho dữ liệu SYT cho cơ sở {0} (khóa {1})", branch.HEIN_MEDI_ORG_CODE, KdlConfig.CONNECTION_INFO_KEY)); // vCong 62522
             return null;
         }
 
@@ -174,6 +176,19 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe
                             SetResult(batch[i].Result, KdlResultADO.STATUS__FAILED, r.Message);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// (vCong 62522) Exception giữa chừng: các hồ sơ chưa có kết quả trước đây hiện "Bỏ qua" không lý do → đánh dấu Lỗi kèm nguyên nhân.
+        /// </summary>
+        private static void MarkUnfinished(List<KdlResultADO> results, Exception ex)
+        {
+            if (results == null) return;
+            string message = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Api.KdlApiClient.Partner, "dựng/gửi dữ liệu lên kho dữ liệu y tế");
+            foreach (KdlResultADO r in results)
+            {
+                if (r.Status == 0) SetResult(r, KdlResultADO.STATUS__FAILED, message);
             }
         }
 

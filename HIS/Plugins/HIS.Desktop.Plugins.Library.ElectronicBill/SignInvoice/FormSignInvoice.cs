@@ -141,6 +141,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.SignInvoice
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                XtraMessageBox.Show(HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.BuildFromException(ex, "MISA", "ký và phát hành hóa đơn"));
             }
         }
 

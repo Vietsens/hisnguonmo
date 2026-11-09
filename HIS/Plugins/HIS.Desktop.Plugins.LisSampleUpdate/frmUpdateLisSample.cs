@@ -3389,7 +3389,8 @@ namespace HIS.Desktop.Plugins.LisSampleUpdate
                         else
                         {
                             WaitingManager.Hide();
-                            DevExpress.XtraEditors.XtraMessageBox.Show("Không tìm thấy thông tin khai báo y tế", "Thông báo");
+                            // vCong 62522: neu loi ket noi/cau hinh/doi tac thi bao ro nguon thay vi "khong tim thay"
+                            DevExpress.XtraEditors.XtraMessageBox.Show(ToKhaiYTeProcessor.LastErrorMessage ?? "Không tìm thấy thông tin khai báo y tế", "Thông báo");
                             //txtPatientName.Text = "";
                             //txtPhone.Text = "";
                             //txtAddress.Text = "";

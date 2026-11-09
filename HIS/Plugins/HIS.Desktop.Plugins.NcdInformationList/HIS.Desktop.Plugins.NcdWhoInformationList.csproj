@@ -197,6 +197,9 @@
     <Reference Include="Inventec.Common.ExcelImport">
       <HintPath>..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.ExcelImport.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.IntegrationError">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
       <HintPath>..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
     </Reference>

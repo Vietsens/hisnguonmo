@@ -51,6 +51,9 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Models
         /// <summary>Timeout HTTP (giây), mặc định 30</summary>
         public int TimeoutSeconds { get; set; }
 
+        /// <summary>Tên ngân hàng hiển thị trong thông báo lỗi (vCong 62522), VD "MB Bank". Rỗng → "BankHub"</summary>
+        public string BankName { get; set; }
+
         ///// <summary>Tạo cấu hình Sandbox</summary>
         //public static BankHubAuthConfig Sandbox(string clientId, string redirectUri)
         //{

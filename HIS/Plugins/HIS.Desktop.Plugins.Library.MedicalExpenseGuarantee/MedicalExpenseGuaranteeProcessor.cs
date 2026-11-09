@@ -14,6 +14,25 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
 {
     public class MedicalExpenseGuaranteeProcessor
     {
+        /// <summary>
+        /// vCong 62522: dựng thông báo lỗi có nguồn cho response thất bại (đối tác trả mã lỗi / không có mô tả).
+        /// Message đã dựng sẵn thì giữ nguyên.
+        /// </summary>
+        private static string BuildPartnerMessage(string existingMessage, string errorCode, string errorDesc, string fallbackSummary)
+        {
+            if (Inventec.Common.IntegrationError.IntegrationErrorMessage.IsBuilt(existingMessage)) return existingMessage;
+            List<string> parts = new List<string>();
+            if (!string.IsNullOrWhiteSpace(errorCode)) parts.Add("Mã lỗi: " + errorCode);
+            if (!string.IsNullOrWhiteSpace(errorDesc)) parts.Add(errorDesc);
+            if (!string.IsNullOrWhiteSpace(existingMessage) && !parts.Contains(existingMessage)) parts.Add(existingMessage);
+            return Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(ApiConsumer.Partner, string.Join(". ", parts), fallbackSummary);
+        }
+
+        private static string BuildExceptionMessage(Exception ex, string action)
+        {
+            return Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, ApiConsumer.Partner, action);
+        }
+
         public RegisterUseResponse GuaranteeRegisterUse(DataInput registerUse)
         {
             RegisterUseResponse registerUseResponse = new RegisterUseResponse(); 
@@ -63,13 +82,17 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 }
                 else
                 {
-                    Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " + registerUseResponse?.Status + ", ErrorMessage: " + registerUseResponse?.Data.ErrorMessage + " ErrorCode: " + registerUseResponse?.Data.ErrorCode);
+                    Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " + registerUseResponse?.Status + ", ErrorMessage: " + registerUseResponse?.Data?.ErrorMessage + " ErrorCode: " + registerUseResponse?.Data?.ErrorCode);
+                    if (registerUseResponse == null) registerUseResponse = new RegisterUseResponse();
+                    registerUseResponse.Message = BuildPartnerMessage(registerUseResponse.Message, registerUseResponse.Data?.ErrorCode, registerUseResponse.Data?.ErrorMessage, "Đăng ký bảo lãnh thất bại"); // vCong 62522
                     return registerUseResponse;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                if (registerUseResponse == null) registerUseResponse = new RegisterUseResponse();
+                if (!registerUseResponse.Success) registerUseResponse.Message = BuildExceptionMessage(ex, "đăng ký bảo lãnh"); // vCong 62522
                 return registerUseResponse;
             }
         }
@@ -132,18 +155,23 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                         var errorCode = responseUser.Data?.ResponseStatus?.ErrorCode;
                         var errorDesc = responseUser.Data?.ResponseStatus?.ErrorDesc;
                         Inventec.Common.Logging.LogSystem.Error("API Error - Code: " + errorCode + " Desc: "+ errorDesc);
+                        responseUser.Message = BuildPartnerMessage(responseUser.Message, errorCode, errorDesc, "Thanh toán bằng bảo lãnh thất bại"); // vCong 62522
                         return responseUser;
                     }
                 }
                 else
                 {
-                    Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " +responseUser?.Status+ ", ErrorDesc: " + responseUser.Data?.ResponseStatus?.ErrorDesc);
+                    Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " +responseUser?.Status+ ", ErrorDesc: " + responseUser?.Data?.ResponseStatus?.ErrorDesc);
+                    if (responseUser == null) responseUser = new UseResponse();
+                    responseUser.Message = BuildPartnerMessage(responseUser.Message, responseUser.Data?.ResponseStatus?.ErrorCode, responseUser.Data?.ResponseStatus?.ErrorDesc, "Thanh toán bằng bảo lãnh thất bại"); // vCong 62522
                     return responseUser;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                if (responseUser == null) responseUser = new UseResponse();
+                if (!responseUser.Success) responseUser.Message = BuildExceptionMessage(ex, "thanh toán bằng bảo lãnh"); // vCong 62522
                 return responseUser;
             }
         }
@@ -199,18 +227,23 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                         var errorCode = cancelRegisterUseResponse.Data?.ResponseStatus?.ErrorCode;
                         var errorDesc = cancelRegisterUseResponse.Data?.ResponseStatus?.ErrorDesc;
                         Inventec.Common.Logging.LogSystem.Error("API Error - Code: " + errorCode + " Desc: " + errorDesc);
+                        cancelRegisterUseResponse.Message = BuildPartnerMessage(cancelRegisterUseResponse.Message, errorCode, errorDesc, "Hủy bảo lãnh thất bại"); // vCong 62522
                         return cancelRegisterUseResponse;
                     }
                 }
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " + cancelRegisterUseResponse?.Status + ", errorDesc: " + cancelRegisterUseResponse?.Data?.ResponseStatus?.ErrorDesc);
+                    if (cancelRegisterUseResponse == null) cancelRegisterUseResponse = new CancelRegisterUseResponse();
+                    cancelRegisterUseResponse.Message = BuildPartnerMessage(cancelRegisterUseResponse.Message, cancelRegisterUseResponse.Data?.ResponseStatus?.ErrorCode, cancelRegisterUseResponse.Data?.ResponseStatus?.ErrorDesc, "Hủy bảo lãnh thất bại"); // vCong 62522
                     return cancelRegisterUseResponse;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                if (cancelRegisterUseResponse == null) cancelRegisterUseResponse = new CancelRegisterUseResponse();
+                if (!cancelRegisterUseResponse.Success) cancelRegisterUseResponse.Message = BuildExceptionMessage(ex, "hủy bảo lãnh"); // vCong 62522
                 return cancelRegisterUseResponse;
             }
         }
@@ -249,6 +282,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 if (availableBalanceInfoResponse == null || !availableBalanceInfoResponse.Success)
                 {
                     Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " + availableBalanceInfoResponse?.Status + ", Message: " + availableBalanceInfoResponse?.Message);
+                    if (availableBalanceInfoResponse == null) availableBalanceInfoResponse = new AvailableBalanceInfoResponse();
+                    availableBalanceInfoResponse.Message = BuildPartnerMessage(availableBalanceInfoResponse.Message, availableBalanceInfoResponse.Data?.ErrorCode, availableBalanceInfoResponse.Data?.ErrorMessage, "Tra cứu hạn mức bảo lãnh thất bại"); // vCong 62522
                     return availableBalanceInfoResponse;
                 }
                 else
@@ -260,6 +295,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                if (availableBalanceInfoResponse == null) availableBalanceInfoResponse = new AvailableBalanceInfoResponse();
+                if (!availableBalanceInfoResponse.Success) availableBalanceInfoResponse.Message = BuildExceptionMessage(ex, "tra cứu hạn mức bảo lãnh"); // vCong 62522
                 return availableBalanceInfoResponse;
             }
         }

@@ -92,7 +92,7 @@ namespace Inventec.Common.BankQrCode.Provider.VIETTINBANK
             catch (Exception ex)
             {
                 result = new ResultQrCode();
-                result.Message = "Run Exception: " + ex.Message;
+                result.Message = QrCodeErrorUtil.RunError("VietinBank", ex); // vCong 62522
             }
             return result;
         }
@@ -120,14 +120,14 @@ namespace Inventec.Common.BankQrCode.Provider.VIETTINBANK
                 else
                 {
                     result = new ResultQrCode();
-                    result.Message = "Sai định dạng cấu hình hệ thống.";
+                    result.Message = QrCodeErrorUtil.ConfigFormatError("VietinBank", null); // vCong 62522
                     return false;
                 }
             }
             catch (Exception ex)
             {
                 result = new ResultQrCode();
-                result.Message = "Check data Exception: " + ex.Message;
+                result.Message = QrCodeErrorUtil.RunError("VietinBank", ex); // vCong 62522
                 return false;
             }
 

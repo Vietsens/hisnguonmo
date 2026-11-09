@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -39,9 +39,43 @@ namespace HIS.Desktop.Common.BankQrCode
     public class QrCodeProcessor
     {
         public static Dictionary<string, string> DicContentBank = new Dictionary<string, string>();
+
+        private static readonly object errorLock = new object();
+        private static string lastErrorMessage;
+
+        /// <summary>
+        /// (vCong 62522) Lỗi (đã phân loại nguồn) của lần CreateQrImage gần nhất mà chưa được hiện cho người dùng:
+        /// cấu hình QR sai định dạng, máy chủ không trả mã QR... Null nếu không có lỗi.
+        /// Trước đây các lỗi này chỉ ghi log Debug nên người dùng chỉ thấy ô QR trống.
+        /// </summary>
+        public static string LastErrorMessage
+        {
+            get { lock (errorLock) { return lastErrorMessage; } }
+        }
+
+        private static void SetError(string message)
+        {
+            lock (errorLock)
+            {
+                if (lastErrorMessage == null && !String.IsNullOrWhiteSpace(message)) lastErrorMessage = message;
+            }
+        }
+
+        private static string BankNameOfKey(string key)
+        {
+            if (String.IsNullOrWhiteSpace(key)) return "tạo mã QR";
+            string[] banks = { "BIDV", "PVCB", "MBB", "VCB", "CTG", "NAPAS", "SHB", "VPB", "DLTW", "TCB", "Vietinbank", "LPBank", "AGR" };
+            foreach (string b in banks)
+            {
+                if (key.IndexOf("." + b + "Info", StringComparison.OrdinalIgnoreCase) > -1) return b;
+            }
+            return key;
+        }
+
         public static Dictionary<string, object> CreateQrImage(HIS_TRANS_REQ data, List<HIS_CONFIG> configValue)
         {
             Dictionary<string, object> result = null;
+            lock (errorLock) { lastErrorMessage = null; }
             if (data != null)
             {
                 bool IsQrDynamic = false;
@@ -70,7 +104,8 @@ namespace HIS.Desktop.Common.BankQrCode
                             }
                             else if (QrBidv == null)
                             {
-                                LogSystem.Info(LogUtil.TraceData("data: ", QrBidv)); 
+                                LogSystem.Info(LogUtil.TraceData("data: ", QrBidv));
+                                SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.Bank("BIDV"), "tạo mã QR (qua máy chủ HIS)")); // vCong 62522 
                                 return null;
                             }
                             else
@@ -103,6 +138,7 @@ namespace HIS.Desktop.Common.BankQrCode
                             else if (data == null)
                             {
                                 LogSystem.Info(LogUtil.TraceData("data: ", data));
+                                SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.Bank("PVcomBank"), "tạo mã QR (qua máy chủ HIS)")); // vCong 62522
                                 return null;
                             }
                         }
@@ -155,6 +191,7 @@ namespace HIS.Desktop.Common.BankQrCode
                             else if (data == null)
                             {
                                 LogSystem.Info(LogUtil.TraceData("data: ", data));
+                                SetError(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.Bank(tdo.Bank), "tạo mã QR (qua máy chủ HIS)")); // vCong 62522
                                 return null;
                             }
                         }
@@ -234,6 +271,13 @@ namespace HIS.Desktop.Common.BankQrCode
                                     {
                                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputData), inputData));
                                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => qrData), qrData));
+                                        // (vCong 62522) giữ lý do để màn hình hiện cho người dùng thay vì ô QR trống
+                                        SetError(!String.IsNullOrWhiteSpace(qrData.Message)
+                                            ? (Inventec.Common.IntegrationError.IntegrationErrorMessage.IsBuilt(qrData.Message)
+                                                ? qrData.Message
+                                                : Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Inventec.Common.IntegrationError.IntegrationPartner.Bank(BankNameOfKey(cfg.KEY)), "Không tạo được mã QR: " + qrData.Message))
+                                            : Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Inventec.Common.IntegrationError.IntegrationPartner.Bank(BankNameOfKey(cfg.KEY)),
+                                                "Không tạo được mã QR từ cấu hình " + cfg.KEY + ": kiểm tra lại thông tin merchant trong cấu hình hệ thống"));
                                     }
                                 }
                             }

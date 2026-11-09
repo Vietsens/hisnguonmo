@@ -1,3 +1,4 @@
+using Inventec.Common.IntegrationError;
 using Inventec.Common.Logging;
 using Newtonsoft.Json;
 using System;
@@ -87,6 +88,9 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
         /// <summary>Token đang dùng cho cả lô. Chỉ lấy lại khi hết hạn hoặc cổng trả 401.</summary>
         private Portal09BHToken currentToken;
 
+        /// <summary>Đối tác dùng để phân loại nguồn lỗi (vCong 62522).</summary>
+        private static readonly IntegrationPartner PARTNER = IntegrationPartner.Bhxh;
+
         private class TokenInfo
         {
             public string access_token { get; set; }
@@ -127,7 +131,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
 
                 if (string.IsNullOrEmpty(address) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
-                    token.ErrorMessage = "Chưa cấu hình thông tin kết nối cổng BHXH.";
+                    token.ErrorMessage = IntegrationErrorMessage.ConfigError(PARTNER, "Chưa cấu hình thông tin kết nối cổng BHXH (địa chỉ, tài khoản, mật khẩu, mã CSKCB)");
                     return token;
                 }
 
@@ -166,9 +170,14 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
                     else
                     {
                         // Cổng trả mã lỗi trong maKetQua (401/402/403/500), HTTP có thể vẫn là 200
+                        // Mã lỗi cổng trả về (401/402/403...) → thiết lập tài khoản; chỉ có HTTP lỗi → phân loại theo mã HTTP (vCong 62522)
                         token.ErrorMessage = !string.IsNullOrEmpty(token.MaKetQua)
-                            ? MapTokenErrorCode(token.MaKetQua)
-                            : "Không đăng nhập được cổng BHXH (HTTP " + (int)response.StatusCode + "). Kiểm tra tài khoản/mật khẩu/mã CSKCB cấu hình.";
+                            ? (token.MaKetQua.StartsWith("5")
+                                ? IntegrationErrorMessage.PartnerError(PARTNER, "Mã " + token.MaKetQua + ": " + MapTokenErrorCode(token.MaKetQua), "Cổng BHXH lỗi khi cấp mã phiên")
+                                : IntegrationErrorMessage.LoginError(PARTNER, "Mã " + token.MaKetQua + ": " + MapTokenErrorCode(token.MaKetQua)))
+                            : (response.IsSuccessStatusCode
+                                ? IntegrationErrorMessage.LoginError(PARTNER, "Cổng không cấp mã phiên (token). Response: " + body)
+                                : IntegrationErrorMessage.FromException(IntegrationHttpError.FromStatus(PARTNER, TOKEN_URI, (int)response.StatusCode, response.ReasonPhrase, body), PARTNER, "đăng nhập cổng BHXH"));
                     }
 
                     LogSystem.Info(string.Format(
@@ -180,7 +189,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                token.ErrorMessage = "Lỗi khi lấy token cổng BHXH: " + ex.Message;
+                token.ErrorMessage = IntegrationErrorMessage.FromException(ex, PARTNER, "đăng nhập cổng BHXH");
             }
             return token;
         }
@@ -226,12 +235,12 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
 
                 if (string.IsNullOrEmpty(address) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
-                    result.ErrorMessage = "Chưa cấu hình thông tin kết nối cổng BHXH.";
+                    result.ErrorMessage = IntegrationErrorMessage.ConfigError(PARTNER, "Chưa cấu hình thông tin kết nối cổng BHXH (địa chỉ, tài khoản, mật khẩu, mã CSKCB)");
                     return result;
                 }
                 if (string.IsNullOrEmpty(fileHsBase64))
                 {
-                    result.ErrorMessage = "Nội dung hồ sơ rỗng, không gửi được.";
+                    result.ErrorMessage = IntegrationErrorMessage.BusinessError(PARTNER, "Nội dung hồ sơ rỗng, không gửi được");
                     return result;
                 }
 
@@ -240,7 +249,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
                 {
                     result.ErrorMessage = (token != null && !string.IsNullOrEmpty(token.ErrorMessage))
                         ? token.ErrorMessage
-                        : "Không đăng nhập được cổng BHXH.";
+                        : IntegrationErrorMessage.LoginError(PARTNER, null);
                     return result;
                 }
 
@@ -261,7 +270,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
                         {
                             result.ErrorMessage = (token != null && !string.IsNullOrEmpty(token.ErrorMessage))
                                 ? token.ErrorMessage
-                                : "Không đăng nhập lại được cổng BHXH.";
+                                : IntegrationErrorMessage.LoginError(PARTNER, null);
                             return result;
                         }
                         continue;
@@ -269,7 +278,9 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
 
                     if (body == null)
                     {
-                        result.ErrorMessage = "Lỗi gọi API gửi hồ sơ. Mã HTTP: " + (int)statusCode;
+                        result.ErrorMessage = (int)statusCode == 0
+                            ? IntegrationErrorMessage.NoResponse(PARTNER, "gửi hồ sơ điều chỉnh 09BH")
+                            : IntegrationErrorMessage.FromException(IntegrationHttpError.FromStatus(PARTNER, SEND_URI, (int)statusCode, statusCode.ToString(), null), PARTNER, "gửi hồ sơ điều chỉnh 09BH");
                         return result;
                     }
 
@@ -279,7 +290,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
 
                     if (sr == null || string.IsNullOrEmpty(sr.maKetQua))
                     {
-                        result.ErrorMessage = "Không đọc được phản hồi từ cổng. Response: " + body;
+                        result.ErrorMessage = IntegrationErrorMessage.FromException(IntegrationHttpError.ParseError(PARTNER, SEND_URI, body, null), PARTNER, null);
                         return result;
                     }
 
@@ -292,9 +303,10 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
                     {
                         // Ghép cả mô tả mã lỗi theo tài liệu và thông điệp cổng trả về để người dùng biết đường sửa
                         string moTaMa = MapErrorCode(sr.maKetQua);
-                        result.ErrorMessage = string.IsNullOrEmpty(sr.thongDiep)
-                            ? moTaMa
-                            : string.Format("{0} ({1})", sr.thongDiep, moTaMa);
+                        string apiMsg = "Mã " + sr.maKetQua + ": " + (string.IsNullOrEmpty(sr.thongDiep) ? moTaMa : string.Format("{0} ({1})", sr.thongDiep, moTaMa));
+                        result.ErrorMessage = (sr.maKetQua == "401" || sr.maKetQua == "402" || sr.maKetQua == "403")
+                            ? IntegrationErrorMessage.LoginError(PARTNER, apiMsg)
+                            : IntegrationErrorMessage.PartnerError(PARTNER, apiMsg, "Cổng BHXH không tiếp nhận hồ sơ điều chỉnh 09BH");
                     }
 
                     LogSystem.Info(string.Format(
@@ -306,7 +318,7 @@ namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Portal
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                result.ErrorMessage = "Lỗi khi đẩy cổng: " + ex.Message;
+                result.ErrorMessage = IntegrationErrorMessage.FromException(ex, PARTNER, "gửi hồ sơ điều chỉnh 09BH");
             }
             return result;
         }

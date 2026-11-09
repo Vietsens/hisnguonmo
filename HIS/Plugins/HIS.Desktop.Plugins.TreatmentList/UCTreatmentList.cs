@@ -4048,12 +4048,12 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         }
                         else
                         {
-                            msg = "Không có dữ liệu trả về từ cổng BHYT";
+                            msg = Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "kiểm tra thẻ BHYT");
                         }
                     }
                     catch (Exception ex)
                     {
-                        msg = $"Lỗi: {ex.Message}";
+                        msg = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "kiểm tra thẻ BHYT");
                         Inventec.Common.Logging.LogSystem.Warn(ex);
                     }
 

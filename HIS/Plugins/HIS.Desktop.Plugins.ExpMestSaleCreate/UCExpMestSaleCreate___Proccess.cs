@@ -67,6 +67,96 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 {
     public partial class UCExpMestSaleCreate : UserControlBase
     {
+        // Gia tri ID cua cboIdentification (ValueMember = ID kieu int). Moi cho gan EditValue
+        // PHAI dung hang int nay: gan chuoi "1"/"CMND" se khong khop dong nao -> combo hien trong
+        // nhung EditValue van giu gia tri cu -> luu sai loai giay to (ORA-12899 cot CMND 9 ky tu).
+        private const int IDENTITY_TYPE_CMND = 1;
+        private const int IDENTITY_TYPE_CCCD = 2;
+        private const int IDENTITY_TYPE_PASSPORT = 3;
+        private const int CMND_LENGTH = 9;
+        private const int CCCD_LENGTH = 12;
+
+        /// <summary>
+        /// Doc loai giay to tu dong dang chon tren cboIdentification (khong tin EditValue vi combo cho go tu do),
+        /// kiem tra do dai so theo loai roi gan vao ado. Tra ve false (da bao loi) neu khong hop le.
+        /// </summary>
+        private bool SetIdentificationToAdo(HisExpMestSaleSDO ado, bool showMessage)
+        {
+            string number = (txtIdentification.Text ?? "").Trim();
+            if (string.IsNullOrEmpty(number))
+            {
+                return true;
+            }
+
+            int identityType = 0;
+            var selectedRow = cboIdentification.GetSelectedDataRow();
+            if (selectedRow != null)
+            {
+                identityType = Inventec.Common.TypeConvert.Parse.ToInt32(
+                    (selectedRow.GetType().GetProperty("ID").GetValue(selectedRow, null) ?? "").ToString());
+            }
+            else if (cboIdentification.EditValue != null)
+            {
+                int.TryParse(cboIdentification.EditValue.ToString(), out identityType);
+            }
+
+            // Nguoi dung chi go so: tu suy loai theo do dai 9 (CMND) / 12 (CCCD) khi combo chua chon.
+            if (identityType == 0 && number.All(char.IsDigit))
+            {
+                if (number.Length == CMND_LENGTH) identityType = IDENTITY_TYPE_CMND;
+                else if (number.Length == CCCD_LENGTH) identityType = IDENTITY_TYPE_CCCD;
+                if (identityType != 0) cboIdentification.EditValue = identityType;
+            }
+
+            string error = null;
+            switch (identityType)
+            {
+                case IDENTITY_TYPE_CMND:
+                    if (number.Length != CMND_LENGTH || !number.All(char.IsDigit))
+                        error = number.Length == CCCD_LENGTH && number.All(char.IsDigit)
+                            ? "Số đã nhập có 12 chữ số là CCCD, vui lòng chọn loại giấy tờ là CCCD."
+                            : "Số CMND phải gồm đúng 9 chữ số.";
+                    break;
+                case IDENTITY_TYPE_CCCD:
+                    if (number.Length != CCCD_LENGTH || !number.All(char.IsDigit))
+                        error = number.Length == CMND_LENGTH && number.All(char.IsDigit)
+                            ? "Số đã nhập có 9 chữ số là CMND, vui lòng chọn loại giấy tờ là CMND."
+                            : "Số CCCD phải gồm đúng 12 chữ số.";
+                    break;
+                case IDENTITY_TYPE_PASSPORT:
+                    break;
+                default:
+                    error = "Vui lòng chọn loại giấy tờ tùy thân.";
+                    break;
+            }
+
+            if (error != null)
+            {
+                LogSystem.Warn("ExpMestSaleCreate: loai giay to khong hop le. identityType=" + identityType + ", length=" + number.Length);
+                if (showMessage)
+                {
+                    MessageBox.Show(error, "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (identityType == 0) cboIdentification.Focus();
+                    else { txtIdentification.Focus(); txtIdentification.SelectAll(); }
+                }
+                return false;
+            }
+
+            switch (identityType)
+            {
+                case IDENTITY_TYPE_CMND:
+                    ado.PatientCmndNumber = number;
+                    break;
+                case IDENTITY_TYPE_CCCD:
+                    ado.PatientCccdNumber = number;
+                    break;
+                case IDENTITY_TYPE_PASSPORT:
+                    ado.PatientPassportNumber = number;
+                    break;
+            }
+            return true;
+        }
+
         private void ReleaseAll()
         {
             try
@@ -236,9 +326,29 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             sucPOS = false;
                             success = false;
                             ChkKetNoiPOS.Checked = false;
-                            XtraMessageBox.Show("Kiểm tra lại cấu hình NetTcpBinding_IService1", "Thông báo");
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "Không khởi tạo được kết nối tới dịch vụ máy POS: kiểm tra lại cấu hình NetTcpBinding_IService1 trong file cấu hình phần mềm", ex.Message), "Thông báo"); // vCong 62522
                         }
-                        var result = cll.Sale(System.Convert.ToBase64String(plainTextBytes));
+                        WcfRequest result = null;
+                        try
+                        {
+                            result = cll.Sale(System.Convert.ToBase64String(plainTextBytes));
+                        }
+                        catch (Exception exPos)
+                        {
+                            // (vCong 62522) dịch vụ POS trên máy trạm không chạy / mất kết nối: báo rõ nguồn lỗi rồi giữ nguyên luồng xử lý lỗi cũ
+                            if (cll != null)
+                            {
+                                WaitingManager.Hide();
+                                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exPos, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "gửi lệnh thanh toán tới máy POS"), "Thông báo");
+                            }
+                            throw;
+                        }
+                        if (result == null)
+                        {
+                            // (vCong 62522) trước đây không báo gì khi máy POS không trả kết quả
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "thanh toán qua máy POS"), "Thông báo");
+                        }
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
                         if (result != null && result.RESPONSE_CODE == "00")
                         {
@@ -271,7 +381,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             success = false;
                             WaitingManager.Hide();
                             if (DevExpress.XtraEditors.XtraMessageBox.
-                           Show(" Giao dịch không thành công (Mã lỗi: " + result.ERROR + ")", "Thông báo", System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK) ;
+                           Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Bank("ngân hàng quản lý máy POS"), "Mã lỗi: " + result.ERROR, "Giao dịch không thành công"), "Thông báo", System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK) ;
 
                         }
                     }
@@ -952,31 +1062,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 }
                 if (!string.IsNullOrWhiteSpace(txtIdentification.Text))
                 {
-                    // cboIdentification cho phep go tu do (TextEditStyle = Standard) nen EditValue
-                    // co the la chuoi nguoi dung go -> phai TryParse, khong Convert.ToInt32 truc tiep.
-                    int identityType = 0;
-                    if (cboIdentification.EditValue == null
-                        || !int.TryParse(cboIdentification.EditValue.ToString(), out identityType))
+                    if (!SetIdentificationToAdo(ado, true))
                     {
-                        MessageBox.Show("Vui lòng chọn loại giấy tờ tùy thân.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        cboIdentification.Focus();
                         return;
-                    }
-
-                    switch (identityType)
-                    {
-                        case 1:
-                            ado.PatientCmndNumber = txtIdentification.Text;
-                            break;
-                        case 2:
-                            ado.PatientCccdNumber = txtIdentification.Text;
-                            break;
-                        case 3:
-                            ado.PatientPassportNumber = txtIdentification.Text;
-                            break;
-                        default:
-                            // Trường hợp không hợp lệ, có thể xử lý thêm nếu cần
-                            break;
                     }
                 }
 
@@ -1321,22 +1409,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                         if (!string.IsNullOrWhiteSpace(txtIdentification.Text))
                         {
-                            int identityType = 0;
-                            if (cboIdentification.EditValue != null
-                                && int.TryParse(cboIdentification.EditValue.ToString(), out identityType))
+                            if (!SetIdentificationToAdo(ado, true))
                             {
-                                switch (identityType)
-                                {
-                                    case 1:
-                                        ado.PatientCmndNumber = txtIdentification.Text;
-                                        break;
-                                    case 2:
-                                        ado.PatientCccdNumber = txtIdentification.Text;
-                                        break;
-                                    case 3:
-                                        ado.PatientPassportNumber = txtIdentification.Text;
-                                        break;
-                                }
+                                return;
                             }
                         }
 
@@ -1990,17 +2065,17 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     if (!string.IsNullOrWhiteSpace(patient.CMND_NUMBER))
                     {
                         txtIdentification.Text = patient.CMND_NUMBER;
-                        cboIdentification.EditValue = "1"; // CMND
+                        cboIdentification.EditValue = IDENTITY_TYPE_CMND;
                     }
                     else if (!string.IsNullOrWhiteSpace(patient.CCCD_NUMBER))
                     {
                         txtIdentification.Text = patient.CCCD_NUMBER;
-                        cboIdentification.EditValue = "2"; // CCCD
+                        cboIdentification.EditValue = IDENTITY_TYPE_CCCD;
                     }
                     else if (!string.IsNullOrWhiteSpace(patient.PASSPORT_NUMBER))
                     {
                         txtIdentification.Text = patient.PASSPORT_NUMBER;
-                        cboIdentification.EditValue = "3"; // PASSPORT
+                        cboIdentification.EditValue = IDENTITY_TYPE_PASSPORT;
                     }
                     else
                     {

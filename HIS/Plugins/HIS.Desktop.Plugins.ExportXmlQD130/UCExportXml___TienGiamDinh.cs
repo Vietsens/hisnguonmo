@@ -249,7 +249,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         result.StatusName = Resources.ResourceMessageLang.TienGiamDinhTrangThaiLoiNghiemTrong;
                         break;
                     case EnumTienGiamDinhStatus.CheckFailed:
-                        result.StatusName = GetTienGiamDinhFailReasonName(result.FailReason);
+                        result.StatusName = string.IsNullOrEmpty(result.FailDetail) ? GetTienGiamDinhFailReasonName(result.FailReason) : result.FailDetail; // lý do đã phân loại (vCong 62522)
                         break;
                     default:
                         result.StatusName = "";

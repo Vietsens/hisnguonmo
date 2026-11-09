@@ -26,12 +26,28 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR.Proce
                 httpClient.Timeout = new TimeSpan(0, 0, 90);
                 string text = JsonConvert.SerializeObject(objData);
                 LogSystem.Info("_____sendJsonData : " + text);
-                HttpResponseMessage result = httpClient.PostAsync(fullapi, new StringContent(text, Encoding.UTF8, "application/json")).Result;
-                bool flag2 = result == null || !result.IsSuccessStatusCode;
-                if (flag2)
+                HttpResponseMessage result = null;
+                try
+                {
+                    result = httpClient.PostAsync(fullapi, new StringContent(text, Encoding.UTF8, "application/json")).Result;
+                }
+                catch (Exception ex)
+                {
+                    LogSystem.Error(ex);
+                    throw Base.ElectronicBillErrorUtil.WrapHttpCall(ex, Base.ProviderType.SoftDream, fullapi);
+                }
+                if (result == null)
+                {
+                    throw Base.ElectronicBillErrorUtil.NoResponse(Base.ProviderType.SoftDream, "gọi " + fullapi);
+                }
+                if (!result.IsSuccessStatusCode)
                 {
                     int hashCode = result.StatusCode.GetHashCode();
-                    throw new Exception(string.Format("Loi khi goi API: {0}. StatusCode: {1}", fullapi, hashCode));
+                    string errorData = "";
+                    try { errorData = result.Content != null ? result.Content.ReadAsStringAsync().Result : ""; }
+                    catch (Exception exRead) { LogSystem.Warn(exRead); }
+                    LogSystem.Error(string.Format("Loi khi goi API: {0}. StatusCode: {1}. Response: {2}", fullapi, hashCode, errorData));
+                    throw Base.ElectronicBillErrorUtil.HttpStatusError(Base.ProviderType.SoftDream, fullapi, hashCode, result.ReasonPhrase, errorData);
                 }
                 string result2 = result.Content.ReadAsStringAsync().Result;
                 LogSystem.Info("__________________api responseData: " + result2);
@@ -39,16 +55,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR.Proce
                 try
                 {
                     t = JsonConvert.DeserializeObject<T>(result2);
-                    bool flag3 = t == null;
-                    if (flag3)
-                    {
-                        throw new Exception(string.Format("Loi khi goi API. Response {0}:", result2));
-                    }
                 }
                 catch (Exception ex)
                 {
                     LogSystem.Error(ex);
-                    throw new Exception(result2);
+                    throw Base.ElectronicBillErrorUtil.ParseError(Base.ProviderType.SoftDream, fullapi, result2, ex);
+                }
+                if (t == null)
+                {
+                    throw Base.ElectronicBillErrorUtil.ParseError(Base.ProviderType.SoftDream, fullapi, result2, null);
                 }
                 result3 = t;
             }
