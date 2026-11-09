@@ -75,6 +75,23 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
         public string HEIGH_RANK_NAME { get; set; }
         public string EXAM_CONCLUSION { get; set; }
         public string CONCLUSION { get; set; }
+        /// <summary>Kết luận khám lâm sàng — V_HIS_SERVICE_REQ.CONCLUSION_CLINICAL của y lệnh khám.</summary>
+        public string CONCLUSION_CLINICAL { get; set; }
+
+        // Kết quả chi tiết Mắt / Tai mũi họng / Răng hàm mặt (EnterKskInfomantionVer2)
+        public string EXAM_EYESIGHT_RIGHT { get; set; }        // Thị lực không kính - mắt phải
+        public string EXAM_EYESIGHT_LEFT { get; set; }         // Thị lực không kính - mắt trái
+        public string EXAM_EYESIGHT_GLASS_RIGHT { get; set; }  // Thị lực có kính - mắt phải
+        public string EXAM_EYESIGHT_GLASS_LEFT { get; set; }   // Thị lực có kính - mắt trái
+        public string EXAM_EYE_DISEASE { get; set; }           // Các bệnh về mắt
+        public string EXAM_ENT_RIGHT_NORMAL { get; set; }      // Nói thường - tai phải
+        public string EXAM_ENT_LEFT_NORMAL { get; set; }       // Nói thường - tai trái
+        public string EXAM_ENT_RIGHT_WHISPER { get; set; }     // Nói thầm - tai phải
+        public string EXAM_ENT_LEFT_WHISPER { get; set; }      // Nói thầm - tai trái
+        public string EXAM_ENT_DISEASE { get; set; }           // Các bệnh về tai mũi họng
+        public string EXAM_STOMATOLOGY_UPPER { get; set; }     // Hàm trên
+        public string EXAM_STOMATOLOGY_LOWER { get; set; }     // Hàm dưới
+        public string EXAM_STOMATOLOGY_DISEASE { get; set; }   // Các bệnh về răng hàm mặt
         public decimal? HEIGHT { get; set; }
         public decimal? WEIGHT { get; set; }
         public decimal? VIR_BMI { get; set; }
@@ -162,7 +179,10 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
             var dataSr = GetServiceReq(data.ID);
             if (dataSr != null && dataSr.Count > 0)
             {
-                long serviceReqId = dataSr.OrderBy(o => o.INTRUCTION_TIME).FirstOrDefault().ID;
+                // Dữ liệu KSK gắn với y lệnh KHÁM — ưu tiên y lệnh khám sớm nhất, không có mới lấy y lệnh bất kỳ.
+                var firstExamReq = dataSr.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                    .OrderBy(o => o.INTRUCTION_TIME).FirstOrDefault();
+                long serviceReqId = firstExamReq != null ? firstExamReq.ID : dataSr.OrderBy(o => o.INTRUCTION_TIME).FirstOrDefault().ID;
 
                 // Gọi API gộp GIỐNG EnterKskInfomantionVer2: 1 call api/HisKskSync/GetKskData lấy toàn bộ
                 // dữ liệu KSK của lượt khám (general + trên-18 + nghề nghiệp + DHST...) thay cho nhiều call lẻ.
@@ -223,6 +243,21 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
 
                     // Phân loại (HIS_HEALTH_EXAM_RANK) của từng phần khám — các combo "Phân loại" ở EnterKskInfomantionVer2.
                     FillSectionRankNames(examRecord, currentGenaral);
+
+                    // Kết quả chi tiết Mắt / Tai mũi họng / Răng hàm mặt (số đo + bệnh) — cùng tên cột ở mọi bảng KSK.
+                    EXAM_EYESIGHT_RIGHT = Pick(examRecord, currentGenaral, "EXAM_EYESIGHT_RIGHT");
+                    EXAM_EYESIGHT_LEFT = Pick(examRecord, currentGenaral, "EXAM_EYESIGHT_LEFT");
+                    EXAM_EYESIGHT_GLASS_RIGHT = Pick(examRecord, currentGenaral, "EXAM_EYESIGHT_GLASS_RIGHT");
+                    EXAM_EYESIGHT_GLASS_LEFT = Pick(examRecord, currentGenaral, "EXAM_EYESIGHT_GLASS_LEFT");
+                    EXAM_EYE_DISEASE = Pick(examRecord, currentGenaral, "EXAM_EYE_DISEASE");
+                    EXAM_ENT_RIGHT_NORMAL = Pick(examRecord, currentGenaral, "EXAM_ENT_RIGHT_NORMAL");
+                    EXAM_ENT_LEFT_NORMAL = Pick(examRecord, currentGenaral, "EXAM_ENT_LEFT_NORMAL");
+                    EXAM_ENT_RIGHT_WHISPER = Pick(examRecord, currentGenaral, "EXAM_ENT_RIGHT_WHISPER");
+                    EXAM_ENT_LEFT_WHISPER = Pick(examRecord, currentGenaral, "EXAM_ENT_LEFT_WHISPER");
+                    EXAM_ENT_DISEASE = Pick(examRecord, currentGenaral, "EXAM_ENT_DISEASE");
+                    EXAM_STOMATOLOGY_UPPER = Pick(examRecord, currentGenaral, "EXAM_STOMATOLOGY_UPPER");
+                    EXAM_STOMATOLOGY_LOWER = Pick(examRecord, currentGenaral, "EXAM_STOMATOLOGY_LOWER");
+                    EXAM_STOMATOLOGY_DISEASE = Pick(examRecord, currentGenaral, "EXAM_STOMATOLOGY_DISEASE");
 
                     long? healthRankId = GetLong(examRecord, "HEALTH_EXAM_RANK_ID") ?? GetLong(currentGenaral, "HEALTH_EXAM_RANK_ID");
                     if (healthRankId != null)
@@ -307,8 +342,14 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                     CONCLUSION_ICD_NAME = GetStr(currentGenaral, "CONCLUSION_ICD_NAME");
                 }
 
-                CONCLUSION = dataSr.OrderByDescending(o => o.INTRUCTION_TIME).FirstOrDefault().CONCLUSION;
-                EXAM_CONCLUSION = dataSr.OrderByDescending(o => o.INTRUCTION_TIME).FirstOrDefault().EXAM_CONCLUSION;
+                // Kết luận lấy ở Y LỆNH KHÁM (ưu tiên y lệnh mới nhất có giá trị) — trước đây lấy y lệnh mới nhất
+                // thuộc mọi loại (XN/CĐHA...) nên thường rỗng.
+                var examReqs = dataSr.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                    .OrderByDescending(o => o.INTRUCTION_TIME).ToList();
+                if (examReqs.Count == 0) examReqs = dataSr.OrderByDescending(o => o.INTRUCTION_TIME).ToList();
+                CONCLUSION_CLINICAL = FirstNotEmpty(examReqs.Select(o => o.CONCLUSION_CLINICAL).ToArray());
+                CONCLUSION = FirstNotEmpty(examReqs.Select(o => o.CONCLUSION).ToArray());
+                EXAM_CONCLUSION = FirstNotEmpty(examReqs.Select(o => o.EXAM_CONCLUSION).ToArray());
             }
         }
 

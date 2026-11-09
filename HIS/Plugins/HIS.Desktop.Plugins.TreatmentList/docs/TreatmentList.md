@@ -120,6 +120,8 @@ Hơn 20 thao tác trên từng hồ sơ, gồm:
 - In phiếu KSK định kỳ
 - In sổ KSK định kỳ
 - Xuất Excel kết quả KSK — mỗi phần khám (thể lực, tuần hoàn, hô hấp, tiêu hóa, nội tiết, cơ xương khớp, thần kinh, tâm thần, da liễu, thận tiết niệu, ngoại khoa, sản, mắt, tai mũi họng, răng hàm mặt) có thêm cột **"Phân loại …"** ngay sau cột nội dung. Giá trị = tên `HIS_HEALTH_EXAM_RANK` của cột `*_RANK` (đúng các combo "Phân loại" ở EnterKskInfomantionVer2), lấy theo bản ghi khám theo loại KSK (trên-18 / dưới-18 / nghề nghiệp …), thiếu thì rơi về `HIS_KSK_GENERAL`. Dưới-18 dùng `EXAM_NEURO_MENTAL_RANK` cho cả Thần kinh và Tâm thần; lái xe dùng `EXAM_CARDIOVASCULAR_RANK` / `EXAM_MATERNITY_RANK` cho Tuần hoàn / Sản.
+  - Kết quả chi tiết (cùng nguồn bản ghi khám, fallback `HIS_KSK_GENERAL`): **Mắt** — thị lực không kính / có kính mắt phải-trái (`EXAM_EYESIGHT_RIGHT/LEFT`, `EXAM_EYESIGHT_GLASS_RIGHT/LEFT`), các bệnh về mắt (`EXAM_EYE_DISEASE`); **Tai mũi họng** — nói thường / nói thầm tai phải-trái (`EXAM_ENT_RIGHT/LEFT_NORMAL`, `EXAM_ENT_RIGHT/LEFT_WHISPER`), các bệnh TMH (`EXAM_ENT_DISEASE`); **Răng hàm mặt** — hàm trên, hàm dưới, các bệnh RHM (`EXAM_STOMATOLOGY_UPPER/LOWER/DISEASE`).
+  - Kết luận lấy từ **y lệnh khám** (`SERVICE_REQ_TYPE_ID = ID__KH`, y lệnh mới nhất có giá trị): "Kết luận khám lâm sàng" = `CONCLUSION_CLINICAL`, "Kết luận khám" = `EXAM_CONCLUSION`, "Kết luận chung" = `CONCLUSION`. Dữ liệu KSK (`api/HisKskSync/GetKskData`) gọi theo y lệnh khám sớm nhất.
 - In phiếu kết quả CLSKSK (`Mps000481`) — ngoài mẫu cũ có thêm mẫu **"Hồ sơ sức khỏe.xlsx"**: thông tin khách hàng, thể lực (DHST), tiền sử bản thân/gia đình, bảng xét nghiệm theo loại XN (STT, kết quả, đơn vị, khoảng bình thường, kết quả bất thường in đậm xanh), CĐHA & TDCN (kết luận), PTTT, kết luận + phân loại sức khỏe, hướng giải quyết, ngày và bác sĩ kết luận.
 
 ### 4.5 Form đặc biệt
@@ -289,5 +291,6 @@ Kết quả bất thường dùng `<#format cell(<#if(<#listXetNghiem.IS_ABNORMA
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 09/11/2026 | vuongnd | Xuất Excel KQ KSK: thêm 13 cột kết quả chi tiết Mắt / Tai mũi họng / Răng hàm mặt (số đo + bệnh) và cột "Kết luận khám lâm sàng" (`CONCLUSION_CLINICAL`). Sửa lỗi "Kết luận khám" / "Kết luận chung" thường trống do lấy y lệnh mới nhất thuộc mọi loại (XN/CĐHA) — nay lấy từ y lệnh khám; `GetKskData` cũng gọi theo y lệnh khám. |
 | 06/11/2026 | vuongnd | Nút In KSK: (1) Xuất Excel KQ KSK thêm 15 cột "Phân loại …" cho từng phần khám (`ExcellDataADO.FillSectionRankNames`); (2) In phiếu kết quả CLS KSK (Mps000481) thêm mẫu "Hồ sơ sức khỏe.xlsx" theo mẫu BV Hùng Vương Gia Lai — TreatmentList lấy thêm DHST, `HIS_TEST_TYPE`, `V_HIS_TEST_INDEX_RANGE`; processor thêm `Mps000481Processor__HoSoSucKhoe.cs`, PDO thêm `Mps000481PDO__HoSoSucKhoe.cs`. |
 | 30/06/2026 | nampp | Thêm menu chuột phải "Gửi Giấy chuyển viện qua EMRTOOLKIT (Test)" — gọi thư viện mới `HIS.Desktop.Plugins.Library.EmrToolkitImport`. Thêm `UCTreatmentList___EmrToolkit.cs` (handler + dựng JSON mẫu), `ItemType.GuiGiayChuyenVienEmrToolkit` trong `PopupMenuProcessor`, ProjectReference tới thư viện. |
