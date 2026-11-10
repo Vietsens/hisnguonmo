@@ -249,6 +249,14 @@ namespace HIS.Desktop.Plugins.EmpUser
             {
                 updateDTOEmployee.ALLOW_UPDATE_OTHER_SCLINICAL = null;
             }
+            if (chkAllowUnfinishUnstart.Checked == true)
+            {
+                updateDTOEmployee.ALLOW_UNFINISH_UNSTART_SEREREQ = 1;
+            }
+            else
+            {
+                updateDTOEmployee.ALLOW_UNFINISH_UNSTART_SEREREQ = null;
+            }
             if (chkAllowBlockConcurrentCLS.Checked == true)
             {
                 updateDTOEmployee.DO_NOT_ALLOW_SIMULTANEITY = 1;
@@ -754,6 +762,10 @@ namespace HIS.Desktop.Plugins.EmpUser
                 {
                     rs.Add(string.Format("{0}: {1} ==> {2}", "Sửa KQ CLS", val1.ALLOW_UPDATE_OTHER_SCLINICAL, val2.ALLOW_UPDATE_OTHER_SCLINICAL));
                 }
+                if (val1.ALLOW_UNFINISH_UNSTART_SEREREQ != val2.ALLOW_UNFINISH_UNSTART_SEREREQ)
+                {
+                    rs.Add(string.Format("{0}: {1} ==> {2}", "Được hủy y lệnh CLS", val1.ALLOW_UNFINISH_UNSTART_SEREREQ, val2.ALLOW_UNFINISH_UNSTART_SEREREQ));
+                }
                 if (val1.DO_NOT_ALLOW_SIMULTANEITY != val2.DO_NOT_ALLOW_SIMULTANEITY)
                 {
                     rs.Add(string.Format("{0}: {1} ==> {2}", "Chặn thực hiện CLS cùng lúc", val1.DO_NOT_ALLOW_SIMULTANEITY, val2.DO_NOT_ALLOW_SIMULTANEITY));
@@ -831,6 +843,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                         chkAllowUpdateOtherSclinical.Checked = true;
                     else
                         chkAllowUpdateOtherSclinical.Checked = false;
+                    chkAllowUnfinishUnstart.Checked = (currentDataEmp.ALLOW_UNFINISH_UNSTART_SEREREQ == 1);
                     if (currentDataEmp.DO_NOT_ALLOW_SIMULTANEITY != null && currentDataEmp.DO_NOT_ALLOW_SIMULTANEITY == 1)
                     {
                         chkAllowBlockConcurrentCLS.Checked = true;
@@ -1001,6 +1014,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 cboDefaultMediStockIds.Focus();
                 SetValuePosition(this.cboPostion, null);
                 chkAllowUpdateOtherSclinical.Checked = false;
+                chkAllowUnfinishUnstart.Checked = false;
                 chkAllowBlockConcurrentCLS.Checked = false;
                 spinMaxBhytServiceReqPerDay.Reset();
                 spnMaxServiceReqPerDay.Reset();

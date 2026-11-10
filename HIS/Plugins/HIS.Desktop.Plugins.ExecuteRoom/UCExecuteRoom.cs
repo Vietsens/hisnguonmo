@@ -2026,6 +2026,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
+                if (!IsAllowUnfinishUnstartCls(currentHisServiceReq))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Tài khoản không có quyền hủy bắt đầu y lệnh cận lâm sàng.", Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK);
+                    return;
+                }
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 CommonParam param = new CommonParam();
                 bool success = false;
@@ -2094,6 +2099,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             bool result = false;
             try
             {
+                if (!IsAllowUnfinishUnstartCls(currentHisServiceReq))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Tài khoản không có quyền hủy bắt đầu y lệnh cận lâm sàng.", Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK);
+                    return false;
+                }
                 CommonParam param = new CommonParam();
                 bool success = false;
                 WaitingManager.Show();

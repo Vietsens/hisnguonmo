@@ -98,6 +98,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.txtEmployeeCode = new DevExpress.XtraEditors.TextEdit();
             this.txtVCong = new DevExpress.XtraEditors.TextEdit();
             this.chkIsNeedSignInstead = new DevExpress.XtraEditors.CheckEdit();
+            this.chkAllowUnfinishUnstart = new DevExpress.XtraEditors.CheckEdit();
             this.cboBranch = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
             this.customGridLookUpEditWithFilterMultiColumn5View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.cboTypeOfTime = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
@@ -191,6 +192,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciAllowUnfinishUnstart = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem44 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -258,6 +260,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.gridColumnDepartMent = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnDefaultMediStock = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnAllowUpdateOtherSclinical = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnAllowUnfinishUnstart = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ckbAllowUpdateOtherSclinical = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumnSOCIAL_INSURANCE_NUMBER = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnEMPLOYEE_CODE = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -288,6 +291,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             ((System.ComponentModel.ISupportInitialize)(this.txtEmployeeCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVCong.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsNeedSignInstead.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAllowUnfinishUnstart.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBranch.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn5View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTypeOfTime.Properties)).BeginInit();
@@ -380,6 +384,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAllowUnfinishUnstart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem44)).BeginInit();
@@ -552,6 +557,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.lcEditInfo.Controls.Add(this.txtEmployeeCode);
             this.lcEditInfo.Controls.Add(this.txtVCong);
             this.lcEditInfo.Controls.Add(this.chkIsNeedSignInstead);
+            this.lcEditInfo.Controls.Add(this.chkAllowUnfinishUnstart);
             this.lcEditInfo.Controls.Add(this.cboBranch);
             this.lcEditInfo.Controls.Add(this.cboTypeOfTime);
             this.lcEditInfo.Controls.Add(this.cboPostion);
@@ -711,10 +717,21 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.chkIsNeedSignInstead.MenuManager = this.barManager1;
             this.chkIsNeedSignInstead.Name = "chkIsNeedSignInstead";
             this.chkIsNeedSignInstead.Properties.Caption = "";
-            this.chkIsNeedSignInstead.Size = new System.Drawing.Size(373, 19);
+            this.chkIsNeedSignInstead.Size = new System.Drawing.Size(126, 19);
             this.chkIsNeedSignInstead.StyleController = this.lcEditInfo;
             this.chkIsNeedSignInstead.TabIndex = 42;
             this.chkIsNeedSignInstead.ToolTip = "Tài khoản cần ký thay cho các chức năng xử lý kết thúc điều trị";
+            // 
+            // chkAllowUnfinishUnstart
+            // 
+            this.chkAllowUnfinishUnstart.Location = new System.Drawing.Point(366, 580);
+            this.chkAllowUnfinishUnstart.MenuManager = this.barManager1;
+            this.chkAllowUnfinishUnstart.Name = "chkAllowUnfinishUnstart";
+            this.chkAllowUnfinishUnstart.Properties.Caption = "";
+            this.chkAllowUnfinishUnstart.Size = new System.Drawing.Size(128, 19);
+            this.chkAllowUnfinishUnstart.StyleController = this.lcEditInfo;
+            this.chkAllowUnfinishUnstart.TabIndex = 56;
+            this.chkAllowUnfinishUnstart.ToolTip = "Tài khoản được phép hủy kết thúc / hủy bắt đầu y lệnh tại phòng cận lâm sàng (áp dụng khi cấu hình MOS.HIS_SERVICE_REQ.CLS.UNFINISH_UNSTART_PERMISSION_MODE = 2)";
             // 
             // cboBranch
             // 
@@ -1511,6 +1528,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.layoutControlItem32,
             this.layoutControlItem34,
             this.layoutControlItem37,
+            this.lciAllowUnfinishUnstart,
             this.layoutControlItem39,
             this.layoutControlItem42,
             this.layoutControlItem44,
@@ -1996,11 +2014,25 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.layoutControlItem37.Location = new System.Drawing.Point(0, 576);
             this.layoutControlItem37.Name = "layoutControlItem37";
             this.layoutControlItem37.OptionsToolTip.ToolTip = "Tài khoản cần ký thay cho các chức năng xử lý kết thúc điều trị";
-            this.layoutControlItem37.Size = new System.Drawing.Size(494, 24);
+            this.layoutControlItem37.Size = new System.Drawing.Size(247, 24);
             this.layoutControlItem37.Text = "Cần ký thay:";
             this.layoutControlItem37.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem37.TextSize = new System.Drawing.Size(112, 20);
             this.layoutControlItem37.TextToControlDistance = 5;
+            // 
+            // lciAllowUnfinishUnstart
+            // 
+            this.lciAllowUnfinishUnstart.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciAllowUnfinishUnstart.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciAllowUnfinishUnstart.Control = this.chkAllowUnfinishUnstart;
+            this.lciAllowUnfinishUnstart.Location = new System.Drawing.Point(247, 576);
+            this.lciAllowUnfinishUnstart.Name = "lciAllowUnfinishUnstart";
+            this.lciAllowUnfinishUnstart.OptionsToolTip.ToolTip = "Tài khoản được phép hủy kết thúc / hủy bắt đầu y lệnh tại phòng cận lâm sàng (áp dụng khi cấu hình MOS.HIS_SERVICE_REQ.CLS.UNFINISH_UNSTART_PERMISSION_MODE = 2)";
+            this.lciAllowUnfinishUnstart.Size = new System.Drawing.Size(247, 24);
+            this.lciAllowUnfinishUnstart.Text = "Được hủy y lệnh CLS:";
+            this.lciAllowUnfinishUnstart.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciAllowUnfinishUnstart.TextSize = new System.Drawing.Size(112, 20);
+            this.lciAllowUnfinishUnstart.TextToControlDistance = 5;
             // 
             // layoutControlItem39
             // 
@@ -2419,6 +2451,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.gridColumnDepartMent,
             this.gridColumnDefaultMediStock,
             this.gridColumnAllowUpdateOtherSclinical,
+            this.gridColumnAllowUnfinishUnstart,
             this.gridColumnSOCIAL_INSURANCE_NUMBER,
             this.gridColumnEMPLOYEE_CODE});
             this.gridViewFormList.GridControl = this.gridControl2;
@@ -2771,6 +2804,18 @@ namespace HIS.Desktop.Plugins.EmpUser
             this.gridColumnAllowUpdateOtherSclinical.VisibleIndex = 21;
             this.gridColumnAllowUpdateOtherSclinical.Width = 67;
             // 
+            // gridColumnAllowUnfinishUnstart
+            // 
+            this.gridColumnAllowUnfinishUnstart.Caption = "Được hủy y lệnh CLS";
+            this.gridColumnAllowUnfinishUnstart.ColumnEdit = this.ckbAllowUpdateOtherSclinical;
+            this.gridColumnAllowUnfinishUnstart.FieldName = "ALLOW_UNFINISH_UNSTART_SEREREQ";
+            this.gridColumnAllowUnfinishUnstart.Name = "gridColumnAllowUnfinishUnstart";
+            this.gridColumnAllowUnfinishUnstart.OptionsColumn.AllowEdit = false;
+            this.gridColumnAllowUnfinishUnstart.ToolTip = "Tài khoản được phép hủy kết thúc / hủy bắt đầu y lệnh tại phòng cận lâm sàng (áp dụng khi cấu hình MOS.HIS_SERVICE_REQ.CLS.UNFINISH_UNSTART_PERMISSION_MODE = 2)";
+            this.gridColumnAllowUnfinishUnstart.Visible = true;
+            this.gridColumnAllowUnfinishUnstart.VisibleIndex = 22;
+            this.gridColumnAllowUnfinishUnstart.Width = 90;
+            // 
             // ckbAllowUpdateOtherSclinical
             // 
             this.ckbAllowUpdateOtherSclinical.AllowFocused = false;
@@ -2954,6 +2999,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             ((System.ComponentModel.ISupportInitialize)(this.txtEmployeeCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVCong.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsNeedSignInstead.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAllowUnfinishUnstart.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBranch.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn5View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTypeOfTime.Properties)).EndInit();
@@ -3046,6 +3092,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAllowUnfinishUnstart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem44)).EndInit();
@@ -3227,6 +3274,9 @@ namespace HIS.Desktop.Plugins.EmpUser
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
         private DevExpress.XtraEditors.CheckEdit chkAllowBlockConcurrentCLS;
         private DevExpress.XtraLayout.LayoutControlItem lciAllowBlockConcurrentCLS;
+        private DevExpress.XtraEditors.CheckEdit chkAllowUnfinishUnstart;
+        private DevExpress.XtraLayout.LayoutControlItem lciAllowUnfinishUnstart;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnAllowUnfinishUnstart;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraEditors.GridLookUpEdit cboGender;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
