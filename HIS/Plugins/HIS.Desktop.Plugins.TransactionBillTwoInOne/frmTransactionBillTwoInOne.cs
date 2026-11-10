@@ -2391,6 +2391,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 txtBuyerAddress.Text = "";
                 txtBuyerName.Text = "";
                 txtBuyerOrganization.Text = "";
+                // Xoa thong tin don vi/ma QHNS cua ho so truoc (viec 62671): FillInfoPatient chi gan khi BN moi co du lieu,
+                // khong xoa o day thi BN sau khong co don vi se mang don vi/ma QHNS cua BN truoc len hoa don
+                chkOther.Checked = false;
+                chkOther2.Checked = false;
+                txtBuyerOrganization2.Text = "";
+                cboBuyerOrganization.EditValue = null;
+                cboBuyerOrganization2.EditValue = null;
+                txtBuyerSocialRelationsCode.Text = "";
                 txtBuyerTaxCode.Text = "";
                 lblHeinRatio.Text = "";
                 lblRightRoute.Text = "";
