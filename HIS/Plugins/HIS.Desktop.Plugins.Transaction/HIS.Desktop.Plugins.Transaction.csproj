@@ -117,6 +117,9 @@
     <Reference Include="Inventec.Common.Number">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Number\Inventec.Common.Number.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.QrCodeBHYT ">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.QrCodeBHYT\Inventec.Common.QrCodeBHYT .dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
@@ -274,6 +277,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UCTransaction__Plus__Control.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCTransaction__Plus__HeinCardNumber.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UCTransaction__Plus__SereServTree.cs">

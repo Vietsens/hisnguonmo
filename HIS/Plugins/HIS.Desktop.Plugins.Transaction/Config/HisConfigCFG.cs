@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.Transaction.Config
         private const string CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT = "HIS.Desktop.Plugins.Transaction.ShowBtnTransactionDebt";
         private const string CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT_COLLECT = "HIS.Desktop.Plugins.Transaction.ShowBtnTransactionDebtCollect";
         private const string CONFIG_KEY__AMOUNT_DECIMAL_NUMBER = "HIS.Desktop.AmountDecimalNumber";
+        private const string CONFIG_KEY__IS_SHOW_HEIN_CARD_NUMBER_FIND = "HIS.Desktop.Plugins.Transaction.IsShowHeinCardNumberFind";
         private const string CONFIG_KEY__PAY_BEFORE_FINISH_OPTION = "MOS.HIS_TREATMENT.PAY_BEFORE_FINISH_OPTION";
 
         internal static string CallPatientFormat;
@@ -84,6 +85,11 @@ namespace HIS.Desktop.Plugins.Transaction.Config
         }
 
         internal static string UNLOCK_FEE_OPTION;
+
+        /// <summary>
+        /// vCong61015: hien o "So the BHYT" tren hang o ma cua man Vien phi (gia tri "1" = hien; mac dinh / khac "1" = an).
+        /// </summary>
+        internal static bool IsShowHeinCardNumberFind;
 
         /// <summary>
         /// Format hien thi cua cot so luong theo cau hinh HIS.Desktop.AmountDecimalNumber (N so thap phan).
@@ -136,6 +142,7 @@ namespace HIS.Desktop.Plugins.Transaction.Config
                 MustFinishedForBilling = GetValue(CONFIG_KEY__MUST_FINISHED_FOR_BILLING);
                 IsPayBeforeFinish = GetValue(CONFIG_KEY__PAY_BEFORE_FINISH_OPTION) == "1";
                 UNLOCK_FEE_OPTION = GetValue(CONFIG_KEY__UNLOCK_FEE_OPTION);
+                IsShowHeinCardNumberFind = GetValue(CONFIG_KEY__IS_SHOW_HEIN_CARD_NUMBER_FIND) == "1";
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

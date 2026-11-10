@@ -530,6 +530,9 @@ namespace HIS.Desktop.Plugins.Transaction
             {
                 if (!btnFind.Enabled)
                     return;
+                // vCong61015: tim theo so the BHYT (3 o ma trong) - chuan hoa / giai ma QR / kiem do dai truoc khi tim
+                if (!this.PrepareHeinCardNumberFind())
+                    return;
                 WaitingManager.Show();
                 FillDataToGridTreatment();
                 //if(chkNoVP.CheckState == CheckState.Checked)
@@ -545,6 +548,7 @@ namespace HIS.Desktop.Plugins.Transaction
                 txtFindTreatmentCode.Focus();
                 txtFindTreatmentCode.SelectAll();
                 WaitingManager.Hide();
+                this.ShowHeinCardNumberNotFound(); // vCong61015
             }
             catch (Exception ex)
             {

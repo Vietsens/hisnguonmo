@@ -139,5 +139,35 @@ namespace HIS.Desktop.Plugins.Transaction.Base
 
 
 
+        internal static string SoTheBhytPhaiDu15KyTuHoac10SoCuoi
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_Transaction__SoTheBhytPhaiDu15KyTuHoac10SoCuoi", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+        internal static string KhongTimThayHoSoCoSoTheBhytDaNhap
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_Transaction__KhongTimThayHoSoCoSoTheBhytDaNhap", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }
