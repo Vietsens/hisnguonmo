@@ -66,6 +66,17 @@ namespace HIS.Desktop.Plugins.EmrDocument.Config
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// Đọc EMR_CONFIG theo key qua cache HIS.Desktop.LocalStorage.EmrConfig (nạp bởi ConfigLoader.Refresh lúc mở màn).
+        /// KHÔNG đọc qua Inventec.Common.SignLibrary.GlobalStore.EmrConfigs: getter đó gọi API bằng consumer của thư viện ký,
+        /// gọi khi thư viện chưa nhận DTI (In/Tải trước khi Xem) sẽ tạo consumer với địa chỉ null và giữ cho cả phiên
+        /// => mọi lần Xem sau đó "Xử lý thất bại" / "Mã hồ sơ điều trị ... không hợp lệ" (BV YHCT Quảng Nam, việc 60846).
+        /// </summary>
+        internal static string GetEmrConfigValue(string code)
+        {
+            return GetValue(code);
+        }
+
         private static string GetValue(string code)
         {
             string result = null;

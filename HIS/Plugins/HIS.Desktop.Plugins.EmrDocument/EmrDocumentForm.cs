@@ -5021,14 +5021,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
             List<int> rs = new List<int>();
             try
             {
-                var configs = GlobalStore.EmrConfigs;
-                var cfgAppearanceOptions = configs.Where(o => o.KEY == "EMR.EMR_SIGN.SIGNATURE_APPEARANCE_OPTION");
-                var cfgAppearanceOption = cfgAppearanceOptions != null ? cfgAppearanceOptions.FirstOrDefault() : null;
-                if (cfgAppearanceOption != null)
+                // Doc qua cache LocalStorage.EmrConfig, khong qua SignLibrary.GlobalStore.EmrConfigs (xem GetFingerPrintDisplayFill)
+                string vlAppearanceOption = Config.ConfigKey.GetEmrConfigValue("EMR.EMR_SIGN.SIGNATURE_APPEARANCE_OPTION");
+                if (!String.IsNullOrEmpty(vlAppearanceOption))
                 {
                     try
                     {
-                        string vlAppearanceOption = !String.IsNullOrEmpty(cfgAppearanceOption.VALUE) ? cfgAppearanceOption.VALUE : cfgAppearanceOption.DEFAULT_VALUE;
                         //vd: p:0|f:11|w:320|h:140
                         var arrOT = vlAppearanceOption.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
                         if (arrOT != null && arrOT.Count() > 0)
@@ -5761,17 +5759,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
         /// <summary>
         /// He so phong to anh van tay (tham so fill trong EMR.EMR_SIGN.FINGERPRINT_SIZE_OPTION, vd "rs:1|fill:1.5|ov:1").
-        /// Doc giong SignLibrary.GlobalStore (internal nen plugin khong goi truc tiep duoc). Khong cau hinh => 1.
+        /// Cach parse giong SignLibrary.GlobalStore. Khong cau hinh => 1.
+        /// Doc qua cache LocalStorage.EmrConfig (Config.ConfigKey.GetEmrConfigValue), KHONG qua SignLibrary.GlobalStore.EmrConfigs:
+        /// goi getter do truoc khi thu vien ky nhan DTI lam consumer EMR cua thu vien bi tao voi dia chi null cho ca phien.
         /// </summary>
         private static float GetFingerPrintDisplayFill()
         {
             try
             {
-                var configs = GlobalStore.EmrConfigs;
-                if (configs == null) return 1.0f;
-                var cfg = configs.FirstOrDefault(o => o.KEY == FINGERPRINT_SIZE_OPTION_KEY);
-                if (cfg == null) return 1.0f;
-                string vl = !String.IsNullOrWhiteSpace(cfg.VALUE) ? cfg.VALUE : cfg.DEFAULT_VALUE;
+                string vl = Config.ConfigKey.GetEmrConfigValue(FINGERPRINT_SIZE_OPTION_KEY);
                 if (String.IsNullOrWhiteSpace(vl)) return 1.0f;
                 foreach (string option in vl.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries))
                 {
