@@ -348,8 +348,14 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                     .OrderByDescending(o => o.INTRUCTION_TIME).ToList();
                 if (examReqs.Count == 0) examReqs = dataSr.OrderByDescending(o => o.INTRUCTION_TIME).ToList();
                 CONCLUSION_CLINICAL = FirstNotEmpty(examReqs.Select(o => o.CONCLUSION_CLINICAL).ToArray());
-                CONCLUSION = FirstNotEmpty(examReqs.Select(o => o.CONCLUSION).ToArray());
-                EXAM_CONCLUSION = FirstNotEmpty(examReqs.Select(o => o.EXAM_CONCLUSION).ToArray());
+                // Phiếu KSK trên 18 tuổi (EnterKskInfomantionVer2):
+                //  - "Kết luận khám"  = ô Kết quả mục KHÁM SỨC KHỎE ĐỊNH KỲ (tab Khám cận lâm sàng) — PERIODIC_CLS_RESULT.
+                //  - "Kết luận chung" = ô Mô tả ở tab Kết luận — HEALTH_EXAM_RANK_DESCRIPTION.
+                // Các phiếu khác không có 2 cột này → giữ giá trị của y lệnh khám. Đọc qua reflection vì EFMODEL các bản lệch nhau.
+                CONCLUSION = FirstNotEmpty(GetStr(kskOverEighteen, "HEALTH_EXAM_RANK_DESCRIPTION"),
+                    FirstNotEmpty(examReqs.Select(o => o.CONCLUSION).ToArray()));
+                EXAM_CONCLUSION = FirstNotEmpty(GetStr(kskOverEighteen, "PERIODIC_CLS_RESULT"),
+                    FirstNotEmpty(examReqs.Select(o => o.EXAM_CONCLUSION).ToArray()));
             }
         }
 
