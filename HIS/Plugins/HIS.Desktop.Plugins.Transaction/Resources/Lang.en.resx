@@ -838,4 +838,7 @@
     <value>Qr list</value>
     <comment>danh sách Qr</comment>
   </data>
+  <data name="UCTransaction.txtHeinCardNumber.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Health insurance card number</value>
+  </data>
 </root>

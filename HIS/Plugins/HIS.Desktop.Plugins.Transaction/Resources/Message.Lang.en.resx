@@ -138,4 +138,10 @@
   <data name="Plugins_Transaction__XuLyThatBai" xml:space="preserve">
     <value>Process fail</value>
   </data>
+  <data name="Plugins_Transaction__SoTheBhytPhaiDu15KyTuHoac10SoCuoi" xml:space="preserve">
+    <value>Health insurance card number must have 15 characters or its last 10 digits</value>
+  </data>
+  <data name="Plugins_Transaction__KhongTimThayHoSoCoSoTheBhytDaNhap" xml:space="preserve">
+    <value>No record found with the entered health insurance card number</value>
+  </data>
 </root>

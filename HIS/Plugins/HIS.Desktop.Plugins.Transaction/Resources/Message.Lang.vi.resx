@@ -138,4 +138,10 @@
   <data name="Plugins_Transaction__XuLyThatBai" xml:space="preserve">
     <value>Xử lý thất bại</value>
   </data>
+  <data name="Plugins_Transaction__SoTheBhytPhaiDu15KyTuHoac10SoCuoi" xml:space="preserve">
+    <value>Số thẻ BHYT phải đủ 15 ký tự hoặc 10 số cuối</value>
+  </data>
+  <data name="Plugins_Transaction__KhongTimThayHoSoCoSoTheBhytDaNhap" xml:space="preserve">
+    <value>Không tìm thấy hồ sơ có số thẻ BHYT đã nhập</value>
+  </data>
 </root>
