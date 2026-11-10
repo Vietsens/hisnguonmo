@@ -2300,21 +2300,29 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     //{
                     //    sereServExt.END_TIME = null;
                     //}
-                    if (cboMachine.EditValue != null)
+                    //Viec 62636: nguoi dung KHONG doi may tren form nay thi giu nguyen may dang dung cua dich vu
+                    //(may tren dong luoi man Xu ly, gom ca may goi y chua luu va danh sach tich nhieu may).
+                    //Truoc day combo chi nap theo may da luu tren ext nen ext chua co may (vd ext do ke tieu hao tao ra)
+                    //thi combo trong -> ghi MACHINE_ID = null va callback gan nguoc null len dong luoi -> XML3 thieu ma may.
+                    List<long> currentMachineIds = GetCurrentMachineIds();
+                    long? currentMachineId = currentMachineIds.Count > 0 ? (long?)currentMachineIds[0] : null;
+                    long? selectedMachineId = cboMachine.EditValue != null ? (long?)Inventec.Common.TypeConvert.Parse.ToInt64(cboMachine.EditValue.ToString()) : null;
+                    if (selectedMachineId.HasValue && selectedMachineId.Value <= 0) selectedMachineId = null;
+
+                    if (selectedMachineId == currentMachineId)
                     {
-                        sereServExt.MACHINE_ID = (long)cboMachine.EditValue;
-                        sereServExt.MACHINE_CODE = this.txtMachineCode.Text;
+                        ApplyMachineIdsToExt(sereServExt, currentMachineIds);
+                    }
+                    else if (selectedMachineId.HasValue)
+                    {
                         //form nay chi chon duoc 1 may: phai ghi lai ca 2 truong danh sach, neu khong ext se o trang thai
                         //MACHINE_ID may moi + MACHINE_IDS danh sach cu (ext la chinh instance nam trong dicSereServExt)
-                        sereServExt.MACHINE_IDS = sereServExt.MACHINE_ID.ToString();
-                        sereServExt.MACHINE_CODES = this.txtMachineCode.Text;
+                        ApplyMachineIdsToExt(sereServExt, new List<long> { selectedMachineId.Value });
                     }
                     else
                     {
-                        sereServExt.MACHINE_ID = null;
-                        sereServExt.MACHINE_CODE = "";
-                        sereServExt.MACHINE_IDS = null;
-                        sereServExt.MACHINE_CODES = null;
+                        //nguoi dung chu dong xoa may tren form
+                        ApplyMachineIdsToExt(sereServExt, null);
                     }
                     sereServExt.INSTRUCTION_NOTE = txtIntructionNote.Text;
                     sereServExt.DESCRIPTION = txtDescription.Text;

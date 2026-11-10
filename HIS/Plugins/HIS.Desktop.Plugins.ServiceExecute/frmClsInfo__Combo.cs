@@ -470,6 +470,82 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             }
         }
 
+        /// <summary>
+        /// Danh sach may dang dung cua dich vu (may dau tien = MACHINE_ID).
+        /// Uu tien dong luoi man Xu ly: luc nap luoi da khoi phuc may tu ext, hoac tu goi y may (chua luu) khi ext chua co may,
+        /// va giu ca danh sach tich nhieu may. Dong luoi khong co may thi lay theo ext.
+        /// </summary>
+        private List<long> GetCurrentMachineIds()
+        {
+            List<long> result = new List<long>();
+            try
+            {
+                if (this.currentServiceADO != null)
+                {
+                    if (this.currentServiceADO.MACHINE_IDs != null && this.currentServiceADO.MACHINE_IDs.Count > 0)
+                        result.AddRange(this.currentServiceADO.MACHINE_IDs.Where(o => o > 0));
+                    else if (this.currentServiceADO.MACHINE_ID.HasValue && this.currentServiceADO.MACHINE_ID.Value > 0)
+                        result.Add(this.currentServiceADO.MACHINE_ID.Value);
+                }
+
+                if (result.Count == 0 && this.sereServExt != null)
+                {
+                    if (!String.IsNullOrWhiteSpace(this.sereServExt.MACHINE_IDS))
+                    {
+                        foreach (var token in this.sereServExt.MACHINE_IDS.Split(new char[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            long id;
+                            if (long.TryParse(token.Trim(), out id) && id > 0) result.Add(id);
+                        }
+                    }
+                    if (result.Count == 0 && this.sereServExt.MACHINE_ID.HasValue && this.sereServExt.MACHINE_ID.Value > 0)
+                        result.Add(this.sereServExt.MACHINE_ID.Value);
+                }
+                result = result.Distinct().ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Ghi danh sach may vao ext theo cung quy uoc voi man Xu ly (UCServiceExecute.ApplyMachinesToExt):
+        /// MACHINE_ID/MACHINE_CODE = may dau tien, MACHINE_IDS/MACHINE_CODES = ca danh sach ngan cach dau cham phay.
+        /// </summary>
+        private void ApplyMachineIdsToExt(HIS_SERE_SERV_EXT ext, List<long> machineIds)
+        {
+            try
+            {
+                if (ext == null) return;
+
+                List<long> validIds = new List<long>();
+                List<string> codes = new List<string>();
+                if (machineIds != null && machineIds.Count > 0)
+                {
+                    var allMachines = BackendDataWorker.Get<HIS_MACHINE>();
+                    foreach (long machineId in machineIds)
+                    {
+                        var machine = allMachines != null ? allMachines.FirstOrDefault(o => o.ID == machineId) : null;
+                        if (machine == null) continue;//bo may khong resolve duoc de 2 chuoi luon cung so phan tu
+                        validIds.Add(machine.ID);
+                        codes.Add(machine.MACHINE_CODE ?? "");
+                    }
+                }
+
+                ext.MACHINE_ID = validIds.Count > 0 ? (long?)validIds[0] : null;
+                ext.MACHINE_CODE = codes.Count > 0 ? codes[0] : "";
+                ext.MACHINE_IDS = validIds.Count > 0 ? String.Join(";", validIds) : null;
+                ext.MACHINE_CODES = codes.Count > 0 ? String.Join(";", codes) : null;
+                Inventec.Common.Logging.LogSystem.Debug("frmClsInfo.ApplyMachineIdsToExt: MACHINE_IDS=" + (ext.MACHINE_IDS ?? ""));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         //#16831
         private async Task ComboHisMachine()
         {
@@ -503,19 +579,36 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 var currentServiceMachine = ListServiceMachine.Where(o => o.SERVICE_ID == currentServiceADO.SERVICE_ID).Select(o => o.MACHINE_ID).ToList();
                 datasMachine = (currentServiceMachine != null && currentServiceMachine.Count > 0) ? datasMachine.Where(o => currentServiceMachine.Contains(o.ID)).ToList() : null;
 
+                //May dang dung cua dich vu: uu tien may tren dong luoi man Xu ly (may goi y tu dong chua luu cung nam o day),
+                //chua co moi lay may da luu tren ext. Neu may do bi bo loc theo phong lam viec/cau hinh dich vu - may
+                //van chon duoc tren luoi man Xu ly - thi van phai dua vao combo, neu khong combo trong va bam Luu se
+                //ghi MACHINE_ID = null de mat may da co (viec 62636 - XML3 thieu ma may).
+                List<long> currentMachineIds = GetCurrentMachineIds();
+                long? currentMachineId = currentMachineIds.Count > 0 ? (long?)currentMachineIds[0] : null;
+                if (currentMachineId.HasValue)
+                {
+                    if (datasMachine == null) datasMachine = new List<HIS_MACHINE>();
+                    if (!datasMachine.Exists(o => o.ID == currentMachineId.Value))
+                    {
+                        var allMachines = BackendDataWorker.Get<HIS_MACHINE>();
+                        var currentMachine = allMachines != null ? allMachines.FirstOrDefault(o => o.ID == currentMachineId.Value) : null;
+                        if (currentMachine != null) datasMachine.Insert(0, currentMachine);
+                    }
+                }
+
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("MACHINE_CODE", "", 150, 1));
                 columnInfos.Add(new ColumnInfo("MACHINE_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("MACHINE_NAME", "ID", columnInfos, false, 250);
                 ControlEditorLoader.Load(this.cboMachine, datasMachine, controlEditorADO);
 
-                if (this.sereServExt != null && this.sereServExt.MACHINE_ID > 0 && datasMachine != null && datasMachine.Count > 0)
+                if (currentMachineId.HasValue && datasMachine != null && datasMachine.Count > 0)
                 {
-                    var data = datasMachine.FirstOrDefault(p => p.ID == this.sereServExt.MACHINE_ID);
+                    var data = datasMachine.FirstOrDefault(p => p.ID == currentMachineId.Value);
                     if (data != null)
                     {
                         txtMachineCode.Text = data.MACHINE_CODE;
-                        cboMachine.EditValue = this.sereServExt.MACHINE_ID;
+                        cboMachine.EditValue = data.ID;
                     }
                 }
             }
