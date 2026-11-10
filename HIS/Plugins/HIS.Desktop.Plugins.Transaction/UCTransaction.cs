@@ -400,6 +400,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 lciDebtClose.Visibility = HisConfigCFG.ShowBtnTransactionDebt == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 lciDebtCollection.Visibility = HisConfigCFG.ShowBtnTransactionDebtCollect == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never; 
                 lciEbill.Visibility = HisConfigCFG.ShowElectronicNumorderCFG == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.InitHeinCardNumberFind();
                 this.InitPayBeforeFinish();
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.Load => 8");
                 InitCheck(cboTreatmentType, SelectionGrid__Status);
@@ -489,6 +490,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 txtKeyword.Text = "";
                 dtInTimeFrom.DateTime = DateTime.Now;
                 dtInTimeTo.DateTime = DateTime.Now;
+                this.ResetCashierChangedDate(); // vCong61015: ngay do he thong tu dat
 
                 this.treatmentResult = BackendDataWorker.Get<HIS_TREATMENT_RESULT>().ToDictionary(o => o.ID, o => o);
             }
@@ -563,6 +565,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     dtInTimeFrom.EditValue = null;
                     dtInTimeTo.EditValue = null;
                 }
+                this.ResetCashierChangedDate(); // vCong61015: ngay do he thong tu dat
             }
             catch (Exception ex)
             {
@@ -1002,21 +1005,27 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             }
             else
             {
-                if (dtInTimeFrom.EditValue != null && dtInTimeFrom.DateTime != DateTime.MinValue)
+                // vCong61015: luot tim theo so the BHYT bo qua Ngay vao / Ngay ra do he thong tu dat (chi ap khi thu ngan da doi ngay)
+                // va sap xep theo thoi gian vao vien giam dan; cac luot tim khac giu nguyen nhu cu
+                bool isHeinCardNumberFind = this.SetHeinCardNumberFilter(treatFilter);
+                if (!isHeinCardNumberFind || this.isCashierChangedDate)
                 {
-                    treatFilter.IN_DATE_FROM = Convert.ToInt64(dtInTimeFrom.DateTime.ToString("yyyyMMdd") + "000000");
-                }
-                if (dtInTimeTo.EditValue != null && dtInTimeTo.DateTime != DateTime.MinValue)
-                {
-                    treatFilter.IN_DATE_TO = Convert.ToInt64(dtInTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
-                }
-                if (dtOutTimeFrom.EditValue != null && dtOutTimeFrom.DateTime != DateTime.MinValue)
-                {
-                    treatFilter.OUT_TIME_FROM = Convert.ToInt64(dtOutTimeFrom.DateTime.ToString("yyyyMMdd") + "000000");
-                }
-                if (dtOutTimeTo.EditValue != null && dtOutTimeTo.DateTime != DateTime.MinValue)
-                {
-                    treatFilter.OUT_TIME_TO = Convert.ToInt64(dtOutTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
+                    if (dtInTimeFrom.EditValue != null && dtInTimeFrom.DateTime != DateTime.MinValue)
+                    {
+                        treatFilter.IN_DATE_FROM = Convert.ToInt64(dtInTimeFrom.DateTime.ToString("yyyyMMdd") + "000000");
+                    }
+                    if (dtInTimeTo.EditValue != null && dtInTimeTo.DateTime != DateTime.MinValue)
+                    {
+                        treatFilter.IN_DATE_TO = Convert.ToInt64(dtInTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
+                    }
+                    if (dtOutTimeFrom.EditValue != null && dtOutTimeFrom.DateTime != DateTime.MinValue)
+                    {
+                        treatFilter.OUT_TIME_FROM = Convert.ToInt64(dtOutTimeFrom.DateTime.ToString("yyyyMMdd") + "000000");
+                    }
+                    if (dtOutTimeTo.EditValue != null && dtOutTimeTo.DateTime != DateTime.MinValue)
+                    {
+                        treatFilter.OUT_TIME_TO = Convert.ToInt64(dtOutTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
+                    }
                 }
                 if (!String.IsNullOrEmpty(txtKeyword.Text))
                 {
@@ -1231,6 +1240,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
 
                 //minhnq
                 this.txtInCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCTransaction.txtInCode.Properties.NullValuePrompt", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
+                this.txtHeinCardNumber.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCTransaction.txtHeinCardNumber.Properties.NullValuePrompt", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
                 this.LciActive.Text = Inventec.Common.Resource.Get.Value("UCTransaction.LciActive.Text", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
                 this.chkIsInDebt.Properties.Caption = Inventec.Common.Resource.Get.Value("UCTransaction.chkIsInDebt.Properties.Caption", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
                 this.chkIsInDebt.ToolTip = Inventec.Common.Resource.Get.Value("UCTransaction.chkIsInDebt.ToolTip", Base.ResourceLangManager.LanguageUCTransaction, LanguageManager.GetCulture());
