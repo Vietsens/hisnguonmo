@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -64,6 +64,10 @@ namespace MPS.Processor.Mps000234
         internal const string USER_TIME_STR = "USER_TIME_STR";
         internal const string USE_TIME_TO_STR = "USE_TIME_TO_STR";
         internal const string USE_DAY = "USE_DAY";
+        //Ngay dung thuoc den lon nhat trong cac dong thuoc cua don
+        internal const string DETAIL_MAX_USE_TIME_TO_STR = "DETAIL_MAX_USE_TIME_TO_STR";
+        //Ngay tai kham = ngay dung thuoc den lon nhat + 1 ngay
+        internal const string DETAIL_MAX_USE_TIME_TO_PLUS1_STR = "DETAIL_MAX_USE_TIME_TO_PLUS1_STR";
         internal const string WORK_PLACE = "WORK_PLACE";
 
         internal const string DOB = "DOB";

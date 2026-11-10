@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -44,6 +44,8 @@ namespace MPS.Processor.Mps000234
         public string REQUEST_DEPARTMENT_NAME { get; set; }
         public string REQUEST_DEPARTMENT_CODE { get; set; }
         public int? USE_DAY { get; set; }//Số ngày sử dụng của nhóm/dòng thuốc (tính theo ngày)
+        public string DETAIL_MAX_USE_TIME_TO_STR { get; set; }//Ngày dùng thuốc đến lớn nhất của nhóm (dd/MM/yyyy)
+        public string DETAIL_MAX_USE_TIME_TO_PLUS1_STR { get; set; }//Ngày tái khám của nhóm = ngày dùng đến lớn nhất + 1 (dd/MM/yyyy)
 
         public ExpMestsGroupADO()
         {

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -139,6 +139,55 @@ namespace MPS.Processor.Mps000234
             }
         }
 
+        //Ngay dung thuoc den lon nhat trong nhom (yyyyMMddHHmmss); 0 neu khong co
+        private long GetMaxUseTimeTo(IEnumerable<ExpMestMedicineSDO> items)
+        {
+            if (items == null) return 0;
+            var list = items.Where(o => o.USE_TIME_TO.HasValue && o.USE_TIME_TO.Value > 0).Select(o => o.USE_TIME_TO.Value).ToList();
+            return list.Count > 0 ? list.Max() : 0;
+        }
+
+        //Gan key ngay tai kham cho 1 nhom (phong chi dinh / loai kho): so ngay dung lon nhat + ngay dung den lon nhat + ngay tai kham (= ngay dung den + 1)
+        private void SetReExamKeys(ExpMestsGroupADO ado, List<ExpMestsGroupADO> items)
+        {
+            try
+            {
+                if (ado == null || items == null || items.Count == 0) return;
+                ado.USE_DAY = items.Max(o => o.USE_DAY);
+                long maxUseTimeTo = GetMaxUseTimeTo(items);
+                Inventec.Common.Logging.LogSystem.Info(string.Format("Mps000234.SetReExamKeys: MEDI_STOCK_TYPE={0} REQUEST_ROOM_CODE={1} REQ_ROOM_ID={2} items={3} itemsHasUseTimeTo={4} maxUseTimeTo={5} INTRUCTION_TIME={6} USE_TIME_TO[]={7}",
+                    ado.MEDI_STOCK_TYPE, ado.REQUEST_ROOM_CODE, ado.REQ_ROOM_ID, items.Count,
+                    items.Count(o => o.USE_TIME_TO.HasValue && o.USE_TIME_TO.Value > 0), maxUseTimeTo,
+                    rdo.HisPrescription != null ? rdo.HisPrescription.INTRUCTION_TIME : 0,
+                    string.Join(",", items.Select(o => o.MEDICINE_TYPE_CODE + ":" + (o.USE_TIME_TO.HasValue ? o.USE_TIME_TO.Value.ToString() : "null")))));
+                if (maxUseTimeTo > 0)
+                {
+                    ado.DETAIL_MAX_USE_TIME_TO_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(maxUseTimeTo);
+                    DateTime? dtUseTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(maxUseTimeTo);
+                    if (dtUseTimeTo.HasValue)
+                    {
+                        long nextUseTimeTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtUseTimeTo.Value.AddDays(1)) ?? 0;
+                        ado.DETAIL_MAX_USE_TIME_TO_PLUS1_STR = Inventec.Common.DateTime.Convert.TimeNumberToDateString(nextUseTimeTo);
+                        Inventec.Common.Logging.LogSystem.Info(string.Format("Mps000234.SetReExamKeys: => DETAIL_MAX_USE_TIME_TO_STR={0} DETAIL_MAX_USE_TIME_TO_PLUS1_STR={1}", ado.DETAIL_MAX_USE_TIME_TO_STR, ado.DETAIL_MAX_USE_TIME_TO_PLUS1_STR));
+
+                        //So ngay tai kham cua nhom = (ngay dung den lon nhat - ngay ke don) + 1, tinh truc tiep tu so thoi gian (khong phu thuoc culture parse chuoi)
+                        if (rdo.HisPrescription != null)
+                        {
+                            DateTime? dtIntruction = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(rdo.HisPrescription.INTRUCTION_TIME);
+                            if (dtIntruction.HasValue)
+                            {
+                                ado.USE_DAY = (dtUseTimeTo.Value.Date - dtIntruction.Value.Date).Days + 1;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void ProcessListMedicineGroupByStock()
         {
             try
@@ -268,7 +317,7 @@ namespace MPS.Processor.Mps000234
                         Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, item.First());
                         ado.AMOUNT = item.Sum(s => s.AMOUNT);
                         ado.PRES_AMOUNT = item.Sum(s => s.PRES_AMOUNT ?? 0);
-                        ado.USE_DAY = item.Max(s => s.USE_DAY);
+                        SetReExamKeys(ado, item.ToList());
 
                         GroupByReqRoom.Add(ado);
                     }
@@ -281,7 +330,7 @@ namespace MPS.Processor.Mps000234
                         Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, item.First());
                         ado.AMOUNT = item.Sum(s => s.AMOUNT);
                         ado.PRES_AMOUNT = item.Sum(s => s.PRES_AMOUNT ?? 0);
-                        ado.USE_DAY = item.Max(s => s.USE_DAY);
+                        SetReExamKeys(ado, item.ToList());
 
                         GroupByType.Add(ado);
                     }
@@ -294,7 +343,7 @@ namespace MPS.Processor.Mps000234
                         Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, item.First());
                         ado.AMOUNT = item.Sum(s => s.AMOUNT);
                         ado.PRES_AMOUNT = item.Sum(s => s.PRES_AMOUNT ?? 0);
-                        ado.USE_DAY = item.Max(s => s.USE_DAY);
+                        SetReExamKeys(ado, item.ToList());
 
                         var stockId = item.Key.MEDI_STOCK_ID;
                         ado.ELECTRONIC_EXP_MEST_CODES = codesByStock.ContainsKey(stockId)
@@ -369,13 +418,39 @@ namespace MPS.Processor.Mps000234
                         GroupByTypeStockRoomDetail.Add(ado);
                     }
 
-                    // Gom theo loai kho va phong chi dinh
-                    GroupByTypeStockRoom = GroupByTypeStockRoomDetail.GroupBy(o => new { o.MEDI_STOCK_TYPE, o.REQUEST_ROOM_CODE }).Select(s => s.First()).ToList();
+                    // Gom theo loai kho va phong chi dinh (tao ban sao de gan key ngay tai kham theo tung phong, khong sua dong chi tiet)
+                    GroupByTypeStockRoom = new List<ExpMestsGroupADO>();
+                    foreach (var grp in GroupByTypeStockRoomDetail.GroupBy(o => new { o.MEDI_STOCK_TYPE, o.REQUEST_ROOM_CODE }))
+                    {
+                        ExpMestsGroupADO ado = new ExpMestsGroupADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, grp.First());
+                        SetReExamKeys(ado, grp.ToList());
+                        GroupByTypeStockRoom.Add(ado);
+                    }
 
                     // Gom theo loai kho
-                    GroupByTypeStock = GroupByTypeStockRoom.GroupBy(o => new { o.MEDI_STOCK_TYPE} ).Select(s => s.First()).ToList();
+                    GroupByTypeStock = new List<ExpMestsGroupADO>();
+                    foreach (var grp in GroupByTypeStockRoomDetail.GroupBy(o => new { o.MEDI_STOCK_TYPE }))
+                    {
+                        ExpMestsGroupADO ado = new ExpMestsGroupADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, grp.First());
+                        SetReExamKeys(ado, grp.ToList());
+                        GroupByTypeStock.Add(ado);
+                    }
 
-                    GroupByTypeStockReqRoom = GroupByTypeStockRoomDetail.GroupBy(o => new { o.REQUEST_ROOM_CODE, o.ADVISE }).Select(s => s.First()).ToList();
+                    Inventec.Common.Logging.LogSystem.Info(string.Format("Mps000234: GroupByTypeStockRoomDetail={0} RequestRoom={1} MediStockType={2}; RequestRoom keys: {3}",
+                        GroupByTypeStockRoomDetail.Count, GroupByTypeStockRoom.Count, GroupByTypeStock.Count,
+                        string.Join(" | ", GroupByTypeStockRoom.Select(o => o.REQUEST_ROOM_CODE + "/" + o.REQUEST_ROOM_NAME + " USE_DAY=" + o.USE_DAY + " PLUS1=" + o.DETAIL_MAX_USE_TIME_TO_PLUS1_STR))));
+
+                    // Gom theo phong chi dinh + loi dan
+                    GroupByTypeStockReqRoom = new List<ExpMestsGroupADO>();
+                    foreach (var grp in GroupByTypeStockRoomDetail.GroupBy(o => new { o.REQUEST_ROOM_CODE, o.ADVISE }))
+                    {
+                        ExpMestsGroupADO ado = new ExpMestsGroupADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, grp.First());
+                        SetReExamKeys(ado, grp.ToList());
+                        GroupByTypeStockReqRoom.Add(ado);
+                    }
                 }
             }
             catch (Exception ex)
@@ -558,6 +633,21 @@ namespace MPS.Processor.Mps000234
                         if (demVatTu == rdo.expMestMedicines.Count) useDayMax = null;
                         SetSingleKey(new KeyValue(Mps000234ExtendSingleKey.USE_DAY, useDayMax));
                         SetSingleKey(new KeyValue(Mps000234ExtendSingleKey.TOTAL_PRICE_PRESCRIPTION, tong));
+
+                        //Ngay dung thuoc den lon nhat cua ca don + ngay tai kham (= ngay dung den + 1), giong Mps000044
+                        long detailMaxUseTimeTo = GetMaxUseTimeTo(rdo.expMestMedicines);
+                        Inventec.Common.Logging.LogSystem.Info(string.Format("Mps000234: expMestMedicines={0} expMestMedicineIncludeOutStock={1} detailMaxUseTimeTo={2}",
+                            rdo.expMestMedicines.Count, rdo.expMestMedicineIncludeOutStock != null ? rdo.expMestMedicineIncludeOutStock.Count : -1, detailMaxUseTimeTo));
+                        if (detailMaxUseTimeTo > 0)
+                        {
+                            SetSingleKey(new KeyValue(Mps000234ExtendSingleKey.DETAIL_MAX_USE_TIME_TO_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(detailMaxUseTimeTo)));
+                            DateTime? dtDetailMaxUseTimeTo = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(detailMaxUseTimeTo);
+                            if (dtDetailMaxUseTimeTo.HasValue)
+                            {
+                                long nextUseTimeTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtDetailMaxUseTimeTo.Value.AddDays(1)) ?? 0;
+                                SetSingleKey(new KeyValue(Mps000234ExtendSingleKey.DETAIL_MAX_USE_TIME_TO_PLUS1_STR, Inventec.Common.DateTime.Convert.TimeNumberToDateString(nextUseTimeTo)));
+                            }
+                        }
 
                         //nếu không có use_time_to trong V_HIS_PRESCRIPTION thì lấy trong ds thuốc 
                         if (rdo.HisPrescription != null && !rdo.HisPrescription.USE_TIME_TO.HasValue)

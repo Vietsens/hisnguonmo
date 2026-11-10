@@ -309,8 +309,16 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         }
                     }
 
-                    var IsSeparatePrintingGN = BackendDataWorker.Get<HIS_MEDICINE_GROUP>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN).IS_SEPARATE_PRINTING ?? 0;
-                    var IsSeparatePrintingHT = BackendDataWorker.Get<HIS_MEDICINE_GROUP>().FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT).IS_SEPARATE_PRINTING ?? 0;
+                    var medicineGroups = BackendDataWorker.Get<HIS_MEDICINE_GROUP>();
+                    var groupGN = medicineGroups.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN);
+                    var groupHT = medicineGroups.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT);
+                    var groupHCGN = medicineGroups.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN);
+                    var groupHCHT = medicineGroups.FirstOrDefault(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT);
+                    var IsSeparatePrintingGN = groupGN != null ? (groupGN.IS_SEPARATE_PRINTING ?? 0) : 0;
+                    var IsSeparatePrintingHT = groupHT != null ? (groupHT.IS_SEPARATE_PRINTING ?? 0) : 0;
+                    //Thuoc co chua duoc chat GN/HT (2 nhom duoi trong Loai thuoc): chi tach in rieng khi CHINH nhom do bat "Tach in rieng" (giong Mps000044), khong an theo nhom GN/HT
+                    var IsSeparatePrintingHCGN = groupHCGN != null ? (groupHCGN.IS_SEPARATE_PRINTING ?? 0) : 0;
+                    var IsSeparatePrintingHCHT = groupHCHT != null ? (groupHCHT.IS_SEPARATE_PRINTING ?? 0) : 0;
 
                     if (IsSeparatePrintingGN == 1)
                     {
@@ -318,7 +326,10 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         ExpMestMedicineSDO = ExpMestMedicineSDO.Where(o => o.IS_ADDICTIVE != IS_TRUE).ToList();
                         listOutStockGN234 = ExpMestMedicineSDOIncludeOutStock.Where(o => o.IS_ADDICTIVE == IS_TRUE).OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
                         ExpMestMedicineSDOIncludeOutStock = ExpMestMedicineSDOIncludeOutStock.Where(o => o.IS_ADDICTIVE != IS_TRUE).ToList();
+                    }
 
+                    if (IsSeparatePrintingHCGN == 1)
+                    {
                         listHCGN234 = ExpMestMedicineSDO.Where(o => o.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN).OrderBy(o => o.NUM_ORDER).ToList();
                         listOutStockHCGN234 = ExpMestMedicineSDOIncludeOutStock.Where(o => o.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN).OrderBy(o => o.NUM_ORDER).ToList();
 
@@ -340,7 +351,10 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         ExpMestMedicineSDO = ExpMestMedicineSDO.Where(o => o.IS_NEUROLOGICAL != IS_TRUE).ToList();
                         listOutStockHT234 = ExpMestMedicineSDOIncludeOutStock.Where(o => o.IS_NEUROLOGICAL == IS_TRUE).OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
                         ExpMestMedicineSDOIncludeOutStock = ExpMestMedicineSDOIncludeOutStock.Where(o => o.IS_NEUROLOGICAL != IS_TRUE).ToList();
+                    }
 
+                    if (IsSeparatePrintingHCHT == 1)
+                    {
                         listHCHT234 = ExpMestMedicineSDO.Where(o => o.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT).OrderBy(o => o.NUM_ORDER).ToList();
                         listOutStockHCHT234 = ExpMestMedicineSDOIncludeOutStock.Where(o => o.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT).OrderBy(o => o.NUM_ORDER).ToList();
 
@@ -554,7 +568,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                     listReq,
                                     BackendDataWorker.Get<ACS_USER>().ToList(),
                                     BackendDataWorker.Get<V_HIS_ROOM>().ToList(),
-                                    listOutStockGN234,
+                                    listOutStockHCGN234,
                                     hisServiceReq_CurentExam,
                                     hisListSereServClsTt);
 
