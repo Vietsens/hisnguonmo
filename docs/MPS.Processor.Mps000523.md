@@ -5,7 +5,7 @@
 | Thông tin | Giá trị |
 |-----------|---------|
 | Processor | `MPS.Processor.Mps000523` (+ `MPS.Processor.Mps000523.PDO`) |
-| Mẫu in | "Mẫu 4" của SYT TP.HCM — Giấy khám sức khỏe định kỳ cho người cao tuổi (thân mẫu ghi "Mẫu 03 – Thông tư 25/2026/TT-BYT"), A4 dọc, 8 trang |
+| Mẫu in | "Mẫu 4" của SYT TP.HCM — Giấy khám sức khỏe định kỳ cho người cao tuổi (thân mẫu ghi "Mẫu 03 – Thông tư 25/2026/TT-BYT"), A4 dọc, 9 trang |
 | Engine | Excel FlexCel (`Inventec.Common.FlexCellExport`) |
 | Gọi từ | `HIS.Desktop.Plugins.EnterKskInfomantionVer2` — nút In ở tab "Ksk trên 18 tuổi" khi hồ sơ là M4 người cao tuổi |
 | Trạng thái | Đang phát triển (việc 60377, BV Xuyên Á Củ Chi) |
@@ -52,13 +52,17 @@ Processor đọc cột của HIS_KSK_SYT_HCM / HIS_KSK_GENERAL **theo tên** (`M
 - **Sản phụ khoa**: nam → trống cả khối; "Từ chối" khi có cờ từ chối và phần không từ chối cũng không có kết quả.
 - **Răng**: mã cổng → tên → số 0–9 của mẫu; mã HIS cũ 1–10 của màn hình được đổi tương ứng; "Không ghi nhận" để trống.
 - **CLS**: ô của màn KSK trước, rồi bảng nối CLS; không có giá trị nào thì in ô ghi chú tổng hợp (huyết học/nước tiểu) của màn hình. d) = Kết quả CLS khác + Kết quả CLS định kỳ.
-- **Chỉ đọc lại bản đã lưu** — nếu lưu tab HCM thất bại thì phiếu in theo dữ liệu cũ.
+- **Tiền sử dòng 22 "Bệnh khác (ghi rõ)"**: chữ ghi rõ (tiền sử bản thân + ICD tiền sử) chỉ in khi dòng 22 = Có — cùng quy tắc Mps000452.
+- **Nguồn chi trả**: tên nguồn không nhận ra → tích "Nguồn khác" và in tên sau đó, kể cả khi hình thức chi trả là hợp đồng / phi địa giới (ô của hình thức chi trả tích riêng).
+- **Khúc xạ**: giữ vị trí "cầu – trụ – trục", phần trống in "…"; trống cả ba thì để trống.
+- **Chỉ đọc lại bản đã lưu** (kể cả kết luận: không phủ ICD đang sửa trên màn hình như Mps000452; DHST gọi lại `api/HisDhst/Get`) — nếu lưu tab HCM thất bại thì phiếu in theo dữ liệu cũ.
 - `SetSingleKey` giữ giá trị **ghi đầu tiên**: quyết định để trống phải nằm trong lần ghi đầu (đã gặp lỗi D5.11 với nam khi xóa sau).
 
 ## 5. Mẫu
 
-- File: `Mau4_GiayKSKDinhKyNguoiCaoTuoi_A4.xlsx` (318 dòng, 506 key), sinh bằng `PTTK\60377\mau_in\TaoMauMps000523.cs` (`build <out.xlsx>` ghi kèm `<out>.keys.txt`; `preview` đổ giá trị mẫu ra PNG).
-- 40 cột × 4,625 mm, lề 15/10/10/12 mm. Mỗi khối (chuyên khoa + ô chữ ký bác sĩ, từng mục CLS, kết luận...) đánh dấu `KeepRowsTogether` rồi `AutoPageBreaks` → ngắt trang cố định, không cắt ngang khối. Chiều cao dòng cố định: chữ dài hơn ô bị cắt, không đẩy trang.
+- File: `Mau4_GiayKSKDinhKyNguoiCaoTuoi_A4.xlsx` (343 dòng, 506 key), sinh bằng `PTTK\60377\mau_in\TaoMauMps000523.cs` (`build <out.xlsx>` ghi kèm `<out>.keys.txt`; `preview <mẫu> <thư mục> [KEY<TAB>VALUE]` đổ giá trị ra PNG).
+- 40 cột × 4,625 mm, lề 15/10/10/12 mm. Mỗi khối (chuyên khoa + ô chữ ký bác sĩ, từng mục CLS, kết luận...) đánh dấu `KeepRowsTogether` rồi `AutoPageBreaks` → 9 trang, ngắt cố định, không cắt ngang khối; trang 1 chứa trọn bảng 22 tiền sử.
+- Chiều cao dòng cố định (FlexCel không giãn ô gộp): ô chữ dài được cấp sẵn số dòng — ICD chuyên khoa 3 dòng (Nội khoa 4), ICD kết luận 4, đang điều trị 4, tiền sử gia đình / bệnh khác D1 / đề nghị khác / dòng 22 tiền sử 3, ghi chú huyết học / nước tiểu 3, CĐHA và CLS khác 6, tên bác sĩ ≥ 2 dòng ở đáy ô ký; nơi điều trị D1 và địa chỉ tự co chữ. Chữ dài hơn vẫn bị cắt.
 - Triển khai: `x64\Tmp\Mps\Mps000523\Mau4_GiayKSKDinhKyNguoiCaoTuoi_A4.xlsx`. Viện có thể sửa chữ/bố cục trong Excel, giữ nguyên các thẻ `<#...;>`; thẻ nằm trong vùng gộp ô phải ở ô đầu tiên của vùng (thẻ ở ô khác không hiện).
 - Cần dòng SAR_PRINT_TYPE `Mps000523` (`PTTK\60377\trien_khai\60377_SAR_PRINT_TYPE_Mps000523.sql`), đăng nhập lại HIS sau khi thêm.
 
@@ -72,11 +76,12 @@ Processor đọc cột của HIS_KSK_SYT_HCM / HIS_KSK_GENERAL **theo tên** (`M
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
-| 10/11/2026 | dangth | **Việc 60377** — Tạo mới: PDO + processor đổ 506 key theo Mẫu 4 SYT TP.HCM (hành chính, tiền sử, đối tượng – chi trả, B/C/D1–D8, 7 chuyên khoa, CLS, kết luận); mẫu A4 8 trang sinh bằng FlexCel, ngắt trang theo khối |
+| 10/11/2026 | dangth | **Việc 60377** — Tạo mới: PDO + processor đổ 506 key theo Mẫu 4 SYT TP.HCM (hành chính, tiền sử, đối tượng – chi trả, B/C/D1–D8, 7 chuyên khoa, CLS, kết luận); mẫu A4 sinh bằng FlexCel, ngắt trang theo khối |
+| 10/11/2026 | dangth | **Việc 60377 — sửa theo phản biện độc lập**: nguồn chi trả lạ vẫn tích "Nguồn khác" khi có hình thức chi trả; chữ dòng 22 tiền sử chỉ khi dòng 22 = Có; khúc xạ giữ vị trí 3 phần; mẫu cấp đủ dòng cho các ô chữ dài và tên bác sĩ (9 trang) |
 
 ## 8. Test Cases
 
-Harness `PTTK\60377\harness_test\chay_harness.ps1` (821 ca): chạy plugin + processor + mẫu thật trên 5 hồ sơ M4 của CSDL test và các ca biên tự dựng, xuất ảnh từng trang.
+Harness `PTTK\60377\harness_test\chay_harness.ps1` (845 ca): chạy plugin + processor + mẫu thật trên 5 hồ sơ M4 của CSDL test và các ca biên tự dựng, xuất ảnh từng trang; kiểm cấu trúc mẫu (thẻ ở ô đầu vùng gộp, số dòng tối thiểu của 37 ô chữ dài, số trang dựng = số ngắt cố định + 1).
 
 - [ ] Hồ sơ đủ dữ liệu: đúng ô tích, tên bác sĩ hiện cạnh từng chuyên khoa
 - [ ] Hồ sơ chưa hỏi bệnh (`{"_v":1}`): mục B1, D1–D8 để trống
@@ -84,3 +89,5 @@ Harness `PTTK\60377\harness_test\chay_harness.ps1` (821 ca): chạy plugin + pro
 - [ ] Nam: D5.11, tiền sử thai sản, sản phụ khoa trống
 - [ ] CCCD 12 số vào 12 ô; hộ chiếu dài hơn 12 ký tự in liền một dòng
 - [ ] Có bảng nối CLS: giá trị XN in đúng dòng; không có: in ghi chú tổng hợp của màn hình
+- [ ] Dòng 22 tiền sử = Không mà có ghi tiền sử bản thân → không in chữ ở dòng 22
+- [ ] Nội khoa có 2–3 bác sĩ, ICD dài → đủ chữ, tên bác sĩ không bị cắt

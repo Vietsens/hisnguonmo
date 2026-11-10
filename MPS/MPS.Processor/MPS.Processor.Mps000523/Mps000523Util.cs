@@ -112,6 +112,14 @@ namespace MPS.Processor.Mps000523
 
         // ---------------------------------------------------------------- ICD
 
+        /// <summary>"cầu – trụ – trục" with fixed positions under the template label; a missing part prints "…", none at all prints "".</summary>
+        internal static string Refraction(string sphere, string cylinder, string axis)
+        {
+            string[] parts = { (sphere ?? "").Trim(), (cylinder ?? "").Trim(), (axis ?? "").Trim() };
+            if (parts.All(o => o.Length == 0)) return "";
+            return string.Join(" – ", parts.Select(o => o.Length > 0 ? o : "…"));
+        }
+
         /// <summary>"Mã -- Tên;Mã -- Tên" (ICD text of HIS_KSK_GENERAL) -> "Mã - Tên; Mã - Tên", like the examination parts.</summary>
         internal static string IcdText(string names)
         {

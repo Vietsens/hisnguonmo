@@ -78,7 +78,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (!IsElderlyPatientType()) return false;
                 if (!IsPrintTemplateInstalled(PRINT_TYPE_CODE__MPS000523))
                 {
-                    LogSystem.Warn("Mps000523: ho so nguoi cao tuoi nhung may chua co mau in Tmp/Mps/Mps000523 -> in Mps000452");
+                    LogSystem.Warn("Mps000523: ho so nguoi cao tuoi nhung may chua co mau in Tmp/Mps/Mps000523 hoac loai in -> in Mps000452");
                     return false;
                 }
                 return true;
@@ -104,14 +104,28 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             return hisElderly != null && SplitIds(currentKskOverEight.KSK_PATIENT_TYPES).Contains(hisElderly.ID.ToString());
         }
 
+        /// <summary>Excel template extensions RichEditor lists (the Mps000523 processor fills Excel only).</summary>
+        private static readonly string[] PRINT_TEMPLATE_EXCEL_EXTENSIONS = { ".xls", ".xlsx", ".xlt", ".xltx" };
+
+        /// <summary>
+        /// True only when the print can really run, checked like RichEditorStore.RunPrintTemplate + MPS do: an active
+        /// SAR_PRINT_TYPE row (loaded at login) and an Excel template in FileLocalStore.Rootpath\code (login sets that root
+        /// from HIS.Desktop.LocalStorage.Location.PrintStoreLocation). Otherwise the caller keeps Mps000452 instead of an error.
+        /// </summary>
         private static bool IsPrintTemplateInstalled(string printTypeCode)
         {
             try
             {
-                string root = Inventec.Desktop.Common.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath ?? "";
-                if (!Path.IsPathRooted(root)) root = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, root);
-                string dir = Path.Combine(root, printTypeCode);
-                return Directory.Exists(dir) && Directory.GetFiles(dir).Any(f => !Path.GetFileName(f).StartsWith("~$"));
+                List<SAR.EFMODEL.DataModels.SAR_PRINT_TYPE> printTypes = Inventec.Common.RichEditor.RichEditorConfig.PrintTypes;
+                if (printTypes == null || !printTypes.Any(o => o != null && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && string.Equals((o.PRINT_TYPE_CODE ?? "").Trim(), printTypeCode, StringComparison.OrdinalIgnoreCase)))
+                {
+                    LogSystem.Warn(printTypeCode + ": chua co dong SAR_PRINT_TYPE dang hoat dong (hoac chua dang nhap lai sau khi them)");
+                    return false;
+                }
+                string dir = Path.Combine(Inventec.Common.RichEditor.Base.FileLocalStore.Rootpath ?? "", printTypeCode);
+                return Directory.Exists(dir) && Directory.GetFiles(dir).Any(f => !Path.GetFileName(f).StartsWith("~$")
+                    && PRINT_TEMPLATE_EXCEL_EXTENSIONS.Contains(Path.GetExtension(f).ToLowerInvariant()));
             }
             catch (Exception ex)
             {
@@ -136,8 +150,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     treatment = treatments != null ? treatments.FirstOrDefault() : null;
                 }
 
+                // Saved KSK general row as is (BuildKskGeneralForPrint overlays the unsaved on-screen conclusion; every
+                // other part of this form is read from saved data, so the conclusion must be too).
                 MPS.Processor.Mps000523.PDO.Mps000523PDO rdo = new MPS.Processor.Mps000523.PDO.Mps000523PDO(
-                    currentServiceReq, currentKskOverEight, currentKskSytHcm, BuildKskGeneralForPrint(), GetDhstForM4Print(param), treatment,
+                    currentServiceReq, currentKskOverEight, currentKskSytHcm, currentKskGeneral, GetDhstForM4Print(param), treatment,
                     BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList());
                 rdo.KskServiceReq = printKskServiceReq;
                 rdo.KskPatient = printKskPatient;
@@ -162,11 +178,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 if (currentKskOverEight == null || !(currentKskOverEight.DHST_ID > 0)) return null;
-                List<HIS_DHST> cached = PreGetDhst(currentKskOverEight.DHST_ID);
-                if (cached != null && cached.Count > 0) return cached[0];
+                // Saved row first, like Mps000452: Save updates the same DHST_ID in place, so the form-open prefetch can be stale.
                 var list = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer,
                     new HisDhstFilter { ID = currentKskOverEight.DHST_ID }, param);
-                return list != null ? list.FirstOrDefault() : null;
+                if (list != null && list.Count > 0) return list[0];
+                List<HIS_DHST> cached = PreGetDhst(currentKskOverEight.DHST_ID);
+                return cached != null && cached.Count > 0 ? cached[0] : null;
             }
             catch (Exception ex)
             {

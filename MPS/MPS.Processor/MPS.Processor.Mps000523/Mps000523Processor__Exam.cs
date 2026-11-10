@@ -249,9 +249,9 @@ namespace MPS.Processor.Mps000523
                 SetKey(Mps000523ExtendSingleKey.EYE_GLASS_L, Mps000523Util.Str(o18, "EXAM_EYESIGHT_GLASS_LEFT"));
                 SetKey(Mps000523ExtendSingleKey.EYE_PINHOLE_R, Mps000523Util.Str(hcm, "EXAM_EYESIGHT_PINHOLE_RIGHT"));
                 SetKey(Mps000523ExtendSingleKey.EYE_PINHOLE_L, Mps000523Util.Str(hcm, "EXAM_EYESIGHT_PINHOLE_LEFT"));
-                SetKey(Mps000523ExtendSingleKey.EYE_REFRACTION_R, Mps000523Util.Join(" – ", Mps000523Util.Str(hcm, "EXAM_EYE_SPHERE_RIGHT"),
+                SetKey(Mps000523ExtendSingleKey.EYE_REFRACTION_R, Mps000523Util.Refraction(Mps000523Util.Str(hcm, "EXAM_EYE_SPHERE_RIGHT"),
                     Mps000523Util.Str(hcm, "EXAM_EYE_CYLINDER_RIGHT"), Mps000523Util.Str(hcm, "EXAM_EYE_AXIS_RIGHT")));
-                SetKey(Mps000523ExtendSingleKey.EYE_REFRACTION_L, Mps000523Util.Join(" – ", Mps000523Util.Str(hcm, "EXAM_EYE_SPHERE_LEFT"),
+                SetKey(Mps000523ExtendSingleKey.EYE_REFRACTION_L, Mps000523Util.Refraction(Mps000523Util.Str(hcm, "EXAM_EYE_SPHERE_LEFT"),
                     Mps000523Util.Str(hcm, "EXAM_EYE_CYLINDER_LEFT"), Mps000523Util.Str(hcm, "EXAM_EYE_AXIS_LEFT")));
 
                 SetKey(Mps000523ExtendSingleKey.ENT_L_NORMAL, Mps000523Util.Str(o18, "EXAM_ENT_LEFT_NORMAL"));

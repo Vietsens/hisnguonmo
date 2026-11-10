@@ -217,8 +217,12 @@ namespace MPS.Processor.Mps000523
                     SetX(k + "_KHONG_X", yn == "0");
                     SetKey(k + "_NAME", row != null ? row.DISEASE_TYPE_NAME : "");
                 }
-                SetKey(Mps000523ExtendSingleKey.PH_22_TEXT, Mps000523Util.Join("; ",
-                    Mps000523Util.Str(o18, "PATHOLOGICAL_HISTORY"), Mps000523Util.IcdText(Mps000523Util.Str(g, "PERSONAL_HISTORY_ICD_NAME"))));
+                // Text of row 22 "Bệnh khác (ghi rõ)" only when that row is "Có" (same rule as Mps000452: disease type code "22").
+                Mps000523HistoryADO other22 = rows.FirstOrDefault(o => o != null && (o.DISEASE_TYPE_CODE ?? "").Trim() == "22")
+                    ?? (rows.Count >= 22 ? rows[21] : null);
+                bool other22Yes = other22 != null && (other22.IS_YES_NO ?? "").Trim() == "1";
+                SetKey(Mps000523ExtendSingleKey.PH_22_TEXT, other22Yes ? Mps000523Util.Join("; ",
+                    Mps000523Util.Str(o18, "PATHOLOGICAL_HISTORY"), Mps000523Util.IcdText(Mps000523Util.Str(g, "PERSONAL_HISTORY_ICD_NAME"))) : "");
 
                 // 3a. Treatment in progress: medicines + ICD of the disease being treated.
                 string treating = Mps000523Util.Join("; ", Mps000523Util.Str(o18, "MEDICINE_USING"), Mps000523Util.IcdText(Mps000523Util.Str(g, "TREATING_DISEASE_ICD_NAME")));
@@ -256,8 +260,9 @@ namespace MPS.Processor.Mps000523
                 bool contract = detail.Contains("hợp đồng") || pay.Contains("hợp đồng");
                 bool nonBorder = detail.Contains("phi địa giới") || pay.Contains("phi địa giới");
                 bool self = pay.Contains("tự chi trả") || pay.Contains("tự trả") || pay.Contains("người dân");
-                bool otherPay = pay.Contains("khác") || !string.IsNullOrWhiteSpace(other)
-                    || (pay.Length > 0 && !nsnn && !contract && !nonBorder && !self);
+                // Unknown pay source -> "Nguồn khác": judged on the pay source only (the detail ticks its own boxes).
+                bool payKnown = nsnn || pay.Contains("hợp đồng") || pay.Contains("phi địa giới") || self;
+                bool otherPay = pay.Contains("khác") || !string.IsNullOrWhiteSpace(other) || (pay.Length > 0 && !payKnown);
                 SetX(Mps000523ExtendSingleKey.PAY_NSNN_X, nsnn);
                 SetX(Mps000523ExtendSingleKey.PAY_CONTRACT_X, contract);
                 SetX(Mps000523ExtendSingleKey.PAY_NON_BORDER_X, nonBorder);
