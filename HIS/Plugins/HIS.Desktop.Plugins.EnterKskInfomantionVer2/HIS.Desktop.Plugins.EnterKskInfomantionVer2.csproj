@@ -223,6 +223,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000520.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000523.PDO">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000523.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
@@ -410,6 +414,9 @@
     </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___UnderSixDefault.cs">
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___PrintMps000523.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___PrintMPS.cs">

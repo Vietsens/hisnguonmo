@@ -50,6 +50,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             MPS000499,
             MPS000516,
             MPS000520, // Giấy khám sức khỏe tâm thần (Mẫu 04 TT 25/2026)
+            MPS000523, // Giấy KSK định kỳ cho người cao tuổi (Mẫu 4 SYT TP.HCM, task 60377)
         }
         /// <summary>Y lệnh KSK (entity HIS_SERVICE_REQ) — nạp 1 lần trước khi in, truyền vào PDO các Mps (key SREQ_).</summary>
         private HIS_SERVICE_REQ printKskServiceReq;
@@ -94,6 +95,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         break;
                     case PRINT_TYPE.MPS000520:
                         richEditorMain.RunPrintTemplate("Mps000520", DelegateRunPrinter);
+                        break;
+                    case PRINT_TYPE.MPS000523:
+                        richEditorMain.RunPrintTemplate(PRINT_TYPE_CODE__MPS000523, DelegateRunPrinter);
                         break;
                 }
             }
@@ -190,6 +194,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         break;
                     case "Mps000520":
                         LoadBieuMauPhieuMps000520(printTypeCode, fileName, ref result);
+                        break;
+                    case PRINT_TYPE_CODE__MPS000523:
+                        LoadBieuMauPhieuMps000523(printTypeCode, fileName, ref result);
                         break;
                 }
             }
