@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Inventec.Common.IntegrationError">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
@@ -58,6 +61,7 @@
     </Compile>
     <Compile Include="JsonADO\JsonADO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PharmacyErrorHelper.cs" />
     <Compile Include="RebindingHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

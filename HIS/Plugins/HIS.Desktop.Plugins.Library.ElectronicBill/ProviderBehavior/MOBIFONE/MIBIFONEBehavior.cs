@@ -76,7 +76,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.MOBIFONE, "Chưa cấu hình địa chỉ cổng hóa đơn điện tử (Webservice URL)");
                         return result;
                     }
                     string[] accountConfigArr = accountConfig.Split('|');
@@ -84,10 +84,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     adoLogin.username = accountConfigArr[0].Trim();
                     adoLogin.password = accountConfigArr[1].Trim();
                     login = ProcessLogin(adoLogin);
-                    if (login == null)
+                    if (login == null || !String.IsNullOrWhiteSpace(login.error))
                     {
-                        Inventec.Common.Logging.LogSystem.Error(String.Format("{0}, {1}__{2}__{3}", login.error, serviceUrl, adoLogin.username, adoLogin.password));
-                        ElectronicBillResultUtil.Set(ref result, false, login.error);
+                        Inventec.Common.Logging.LogSystem.Error(String.Format("Dang nhap cong HDDT that bai: {0}, {1}__{2}", login != null ? login.error : "(khong co phan hoi)", serviceUrl, adoLogin.username));
+                        if (login == null) { ElectronicBillResultUtil.SetNoResponse(ref result, ProviderType.MOBIFONE, "đăng nhập cổng hóa đơn điện tử"); }
+                        else { ElectronicBillResultUtil.SetLoginError(ref result, ProviderType.MOBIFONE, login.error); }
                         return result;
                     }
                     switch (electronicBillType)
@@ -121,6 +122,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MOBIFONE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -142,11 +144,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     result.Success = false;
                     result.InvoiceSys = ProviderType.MOBIFONE;
                     Inventec.Common.Logging.LogSystem.Error("Tai hoa don file PDF that bai " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
-                    ElectronicBillResultUtil.Set(ref result, false, data.error);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MOBIFONE, data != null ? data.error : null, null);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MOBIFONE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -170,12 +173,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     result.Success = false;
                     result.InvoiceSys = ProviderType.MOBIFONE;
                     Inventec.Common.Logging.LogSystem.Error("Tai hoa don file PDF that bai " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
-                    ElectronicBillResultUtil.Set(ref result, false, "Tải hóa đơn file PDF thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MOBIFONE, null, "Tải hóa đơn file PDF thất bại");
                     ProcessPrintInvoice(ref result, false);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MOBIFONE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -201,12 +205,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     result.Success = false;
                     result.InvoiceSys = ProviderType.MOBIFONE;
                     Inventec.Common.Logging.LogSystem.Error("Ky va gui hoa don toi CQT that bai " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
-                    ElectronicBillResultUtil.Set(ref result, false, data.error);
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MOBIFONE, data != null ? data.error : null, null);
                     ProcessCreateInvoice(ref result, (int)EditMode.Delete);
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MOBIFONE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -229,6 +234,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             {
                 obj = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (DataSignInvoiceCertFile68Init)");
             }
             return obj;
         }
@@ -258,7 +264,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     result.Success = false;
                     result.InvoiceSys = ProviderType.MOBIFONE;
                     Inventec.Common.Logging.LogSystem.Error("Tao hoa don that bai " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HoaDonData), HoaDonData));
-                    ElectronicBillResultUtil.Set(ref result, false, HoaDonData != null && HoaDonData.Count > 0 ? string.Join(", ", HoaDonData.Select(o => o.error)) : "Tạo hóa đơn thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MOBIFONE, HoaDonData != null && HoaDonData.Count > 0 ? string.Join(", ", HoaDonData.Select(o => o.error)) : null, "Tạo hóa đơn thất bại");
                 }
             }
             catch (Exception ex)
@@ -267,7 +273,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                 //Loi (timeout, loi ket noi, cong tra ve loi) phai tra ve that bai kem noi dung de hien thi cho nguoi dung,
                 //tranh truong hop Success van = true (do buoc lay thong tin phat hanh da gan) ma khong co so hoa don
                 result.InvoiceSys = ProviderType.MOBIFONE;
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MOBIFONE);
             }
         }
         /// <summary>
@@ -303,6 +309,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetTreatmentCode)");
             }
             return result;
         }
@@ -402,6 +409,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             {
                 obj = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (DataHoaDon78Init)");
             }
             return obj;
         }
@@ -417,7 +425,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     var checkSysbolCode = data.Where(o => o.khhdon.Equals(ElectronicBillDataInput.SymbolCode)).ToList();
                     if (checkSysbolCode == null || checkSysbolCode.Count == 0)
                     {
-                        ElectronicBillResultUtil.Set(ref result, false, String.Format("Không tìm thấy thông tin ký hiệu hóa đơn {0} vui lòng kiểm tra lại hệ thống hóa đơn điện tử.", ElectronicBillDataInput.SymbolCode));
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.MOBIFONE, String.Format("Không tìm thấy thông tin ký hiệu hóa đơn {0} vui lòng kiểm tra lại hệ thống hóa đơn điện tử.", ElectronicBillDataInput.SymbolCode));
                         return;
                     }
                     else
@@ -430,11 +438,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     result.Success = false;
                     result.InvoiceSys = ProviderType.MOBIFONE;
                     Inventec.Common.Logging.LogSystem.Error("Lay thong tin phat hanh hoa don that bai " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
-                    ElectronicBillResultUtil.Set(ref result, false, "Lấy thông tin phát hành hóa đơn thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.MOBIFONE, null, "Lấy thông tin phát hành hóa đơn thất bại");
                 }
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.MOBIFONE); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -459,6 +468,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetInvoice)");
             }
             return result;
         }
@@ -572,6 +582,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetDataInv)");
             }
             return result;
         }
@@ -605,6 +616,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             {
                 result = new List<ProductBase>();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetProductBaseElectronicBill)");
             }
             return result;
         }
@@ -646,6 +658,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetProductElectronicBill)");
             }
             return result;
         }
@@ -663,6 +676,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                throw; // de Run phan loai nguon loi (ket noi / thiet lap tai khoan / NCC) thay vi tra null khong ro ly do
             }
             return result;
         }
@@ -695,7 +709,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.MOBIFONE);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;

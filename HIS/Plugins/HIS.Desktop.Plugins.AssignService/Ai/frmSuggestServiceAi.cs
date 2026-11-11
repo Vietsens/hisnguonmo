@@ -31,6 +31,13 @@ namespace HIS.Desktop.Plugins.AssignService
     {
         private Action<List<SereServADO>> Results { get; set; }
         private RequestAIADO Request { get; set; }
+        /// <summary>vCong 62522: lỗi gần nhất khi gọi dịch vụ AI gợi ý chỉ định.</summary>
+        private string lastErrorMessage;
+
+        private static Inventec.Common.IntegrationError.IntegrationPartner AiPartner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.Ai("dịch vụ AI gợi ý chỉ định"); }
+        }
         public frmSuggestServiceAi( RequestAIADO request, Action<List<SereServADO>> Results)
         {
             InitializeComponent();
@@ -62,6 +69,15 @@ namespace HIS.Desktop.Plugins.AssignService
 
                         });
                 WaitingManager.Hide();
+                if (result == null && !string.IsNullOrEmpty(this.lastErrorMessage))
+                {
+                    // vCong 62522: loi goi dich vu AI -> bao ro nguon, khong hien "khong co goi y"
+                    lblNote.Text = this.lastErrorMessage;
+                    lblWarning.Text = string.Empty;
+                    grcService.DataSource = null;
+                    DevExpress.XtraEditors.XtraMessageBox.Show(this.lastErrorMessage, "Thông báo");
+                    return;
+                }
                 if (result == null || result.AISuggestion == null || result.AISuggestion.ChiDinhGoiY == null)
                 {
                     lblNote.Text = "Không có gợi ý dịch vụ nào cho yêu cầu này.";
@@ -89,13 +105,17 @@ namespace HIS.Desktop.Plugins.AssignService
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                DevExpress.XtraEditors.XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, AiPartner, "lấy gợi ý chỉ định"), "Thông báo");
             }
         }
         T CreateRequest<T>(string requestUri, Dictionary<string, object> sendData)
         {
             T data = default(T);
+            this.lastErrorMessage = null;
             try
             {
+                if (string.IsNullOrWhiteSpace(requestUri))
+                    throw new Inventec.Common.IntegrationError.IntegrationException(Inventec.Common.IntegrationError.ErrorSource.Config, AiPartner, "Chưa thiết lập địa chỉ dịch vụ AI gợi ý chỉ định (cấu hình hệ thống " + HisConfigCFG.CONFIG_KEY__SuggestAssignServicesInfo + ")");
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 using (var client = new HttpClient())
@@ -115,41 +135,37 @@ namespace HIS.Desktop.Plugins.AssignService
                         Inventec.Common.Logging.LogSystem.Debug("_____sendJsonData : " + stringPayload);
                         resp = client.PostAsync(fullrequestUri, content).Result;
                     }
-                    catch (HttpRequestException ex)
-                    {
-                        throw new Exception("Lỗi kết nối đến");
-                    }
                     catch (Exception ex)
                     {
-                        throw ex;
+                        // vCong 62522: timeout/DNS/SSL/khong ket noi -> exception co nguon
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(ex, AiPartner, fullrequestUri);
                     }
                     if (resp == null || !resp.IsSuccessStatusCode)
                     {
-                        int statusCode = resp.StatusCode.GetHashCode();
-                        if (resp.Content != null)
-                        {
-                            try
-                            {
-                                string errorData = resp.Content.ReadAsStringAsync().Result;
-                                Inventec.Common.Logging.LogSystem.Error("errorData: " + errorData);
-                            }
-                            catch { }
-                        }
-
-                        throw new Exception(string.Format(" trả về thông tin lỗi. Mã lỗi: {0}", statusCode));
+                        Inventec.Common.IntegrationError.IntegrationException httpEx = Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(AiPartner, fullrequestUri, resp);
+                        Inventec.Common.Logging.LogSystem.Error("errorData: " + httpEx.Message);
+                        throw httpEx;
                     }
-                    string responseData = resp.Content.ReadAsStringAsync().Result;
+                    string responseData = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(resp);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => responseData), responseData));
-                    data = JsonConvert.DeserializeObject<T>(responseData);
+                    try
+                    {
+                        data = JsonConvert.DeserializeObject<T>(responseData);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(AiPartner, fullrequestUri, responseData, ex);
+                    }
                     if (data == null)
                     {
-                        throw new Exception("Dữ liệu trả về không đúng");
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(AiPartner, fullrequestUri, responseData, null);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                this.lastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, AiPartner, "lấy gợi ý chỉ định");
             }
 
             return data;

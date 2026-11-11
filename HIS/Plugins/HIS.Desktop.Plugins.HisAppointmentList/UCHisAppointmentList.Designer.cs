@@ -85,6 +85,11 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grclApprove = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grclCccdNumber = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grclRegisterSource = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grclExamService = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grclExamRoom = new DevExpress.XtraGrid.Columns.GridColumn();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
@@ -127,6 +132,8 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.navBarGroup2 = new DevExpress.XtraNavBar.NavBarGroup();
             this.txtPhoneNumber = new DevExpress.XtraEditors.TextEdit();
+            this.cboRegisterSource = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtAppointmentCode = new DevExpress.XtraEditors.TextEdit();
             this.txtKeyWord = new DevExpress.XtraEditors.TextEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -183,6 +190,8 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPhoneNumber.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboRegisterSource.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAppointmentCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
@@ -263,7 +272,12 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             this.gridColumn13,
             this.gridColumn14,
             this.gridColumn15,
-            this.gridColumn16});
+            this.gridColumn16,
+            this.grclApprove,
+            this.grclCccdNumber,
+            this.grclRegisterSource,
+            this.grclExamService,
+            this.grclExamRoom});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.True;
@@ -452,6 +466,62 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             this.gridColumn16.Visible = true;
             this.gridColumn16.VisibleIndex = 15;
             this.gridColumn16.Width = 120;
+            //
+            // grclApprove
+            //
+            this.grclApprove.Caption = "Duyệt khám";
+            this.grclApprove.FieldName = "Approve";
+            this.grclApprove.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.grclApprove.Name = "grclApprove";
+            this.grclApprove.OptionsColumn.ShowCaption = false;
+            this.grclApprove.ToolTip = "Duyệt khám";
+            this.grclApprove.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grclApprove.Visible = true;
+            this.grclApprove.VisibleIndex = 2;
+            this.grclApprove.Width = 30;
+            //
+            // grclCccdNumber
+            //
+            this.grclCccdNumber.Caption = "Số CCCD";
+            this.grclCccdNumber.FieldName = "CCCD_NUMBER";
+            this.grclCccdNumber.Name = "grclCccdNumber";
+            this.grclCccdNumber.OptionsColumn.AllowEdit = false;
+            this.grclCccdNumber.Visible = true;
+            this.grclCccdNumber.VisibleIndex = 8;
+            this.grclCccdNumber.Width = 100;
+            //
+            // grclRegisterSource
+            //
+            this.grclRegisterSource.Caption = "Nguồn đăng ký";
+            this.grclRegisterSource.FieldName = "REGISTER_SOURCE_str";
+            this.grclRegisterSource.Name = "grclRegisterSource";
+            this.grclRegisterSource.OptionsColumn.AllowEdit = false;
+            this.grclRegisterSource.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grclRegisterSource.Visible = true;
+            this.grclRegisterSource.VisibleIndex = 9;
+            this.grclRegisterSource.Width = 90;
+            //
+            // grclExamService
+            //
+            this.grclExamService.Caption = "Dịch vụ khám";
+            this.grclExamService.FieldName = "EXAM_SERVICE_str";
+            this.grclExamService.Name = "grclExamService";
+            this.grclExamService.OptionsColumn.AllowEdit = false;
+            this.grclExamService.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grclExamService.Visible = true;
+            this.grclExamService.VisibleIndex = 10;
+            this.grclExamService.Width = 150;
+            //
+            // grclExamRoom
+            //
+            this.grclExamRoom.Caption = "Phòng khám";
+            this.grclExamRoom.FieldName = "EXAM_ROOM_str";
+            this.grclExamRoom.Name = "grclExamRoom";
+            this.grclExamRoom.OptionsColumn.AllowEdit = false;
+            this.grclExamRoom.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grclExamRoom.Visible = true;
+            this.grclExamRoom.VisibleIndex = 11;
+            this.grclExamRoom.Width = 150;
             // 
             // barManager1
             // 
@@ -595,6 +665,7 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             this.layoutControl2.Controls.Add(this.btnSearch);
             this.layoutControl2.Controls.Add(this.navBarControl1);
             this.layoutControl2.Controls.Add(this.txtPhoneNumber);
+            this.layoutControl2.Controls.Add(this.cboRegisterSource);
             this.layoutControl2.Controls.Add(this.txtAppointmentCode);
             this.layoutControl2.Controls.Add(this.txtKeyWord);
             this.layoutControl2.Location = new System.Drawing.Point(2, 2);
@@ -634,10 +705,10 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             this.navBarControl1.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] {
             this.navBarGroup2,
             this.navBarGroup1});
-            this.navBarControl1.Location = new System.Drawing.Point(2, 74);
+            this.navBarControl1.Location = new System.Drawing.Point(2, 98);
             this.navBarControl1.Name = "navBarControl1";
             this.navBarControl1.OptionsNavPane.ExpandedWidth = 216;
-            this.navBarControl1.Size = new System.Drawing.Size(216, 476);
+            this.navBarControl1.Size = new System.Drawing.Size(216, 452);
             this.navBarControl1.TabIndex = 8;
             this.navBarControl1.Text = "navBarControl1";
             // 
@@ -900,6 +971,18 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             this.txtPhoneNumber.StyleController = this.layoutControl2;
             this.txtPhoneNumber.TabIndex = 6;
             this.txtPhoneNumber.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTreatmentCode_PreviewKeyDown);
+            //
+            // cboRegisterSource
+            //
+            this.cboRegisterSource.Location = new System.Drawing.Point(2, 74);
+            this.cboRegisterSource.Name = "cboRegisterSource";
+            this.cboRegisterSource.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboRegisterSource.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboRegisterSource.Size = new System.Drawing.Size(216, 20);
+            this.cboRegisterSource.StyleController = this.layoutControl2;
+            this.cboRegisterSource.TabIndex = 7;
+            this.cboRegisterSource.ToolTip = "Nguồn đăng ký";
             // 
             // txtAppointmentCode
             // 
@@ -931,6 +1014,7 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             this.layoutControlItem3,
             this.layoutControlItem4,
             this.layoutControlItem5,
+            this.layoutControlItem16,
             this.layoutControlItem7,
             this.layoutControlItem12,
             this.layoutControlItem13});
@@ -965,13 +1049,22 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             this.layoutControlItem5.Size = new System.Drawing.Size(220, 24);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
-            // 
+            //
+            // layoutControlItem16
+            //
+            this.layoutControlItem16.Control = this.cboRegisterSource;
+            this.layoutControlItem16.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlItem16.Name = "layoutControlItem16";
+            this.layoutControlItem16.Size = new System.Drawing.Size(220, 24);
+            this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem16.TextVisible = false;
+            //
             // layoutControlItem7
-            // 
+            //
             this.layoutControlItem7.Control = this.navBarControl1;
-            this.layoutControlItem7.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlItem7.Location = new System.Drawing.Point(0, 96);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(220, 480);
+            this.layoutControlItem7.Size = new System.Drawing.Size(220, 456);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -1088,6 +1181,8 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPhoneNumber.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboRegisterSource.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAppointmentCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWord.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
@@ -1185,5 +1280,12 @@ namespace HIS.Desktop.Plugins.HisAppointmentList
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit_Dis;
         private DevExpress.Utils.ImageCollection imageCollection1;
         private DevExpress.Utils.ToolTipController toolTipController1;
+        private DevExpress.XtraGrid.Columns.GridColumn grclApprove;
+        private DevExpress.XtraGrid.Columns.GridColumn grclCccdNumber;
+        private DevExpress.XtraGrid.Columns.GridColumn grclRegisterSource;
+        private DevExpress.XtraGrid.Columns.GridColumn grclExamService;
+        private DevExpress.XtraGrid.Columns.GridColumn grclExamRoom;
+        private DevExpress.XtraEditors.ComboBoxEdit cboRegisterSource;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
     }
 }

@@ -489,6 +489,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                 int failCount = 0; // Đếm số lượng hồ sơ NCD nhưng bị lỗi (thiếu data hoặc lỗi mạng)
 
                 List<string> listIgnoredCodes = new List<string>();
+                List<string> listErrorMessages = new List<string>(); // vCong 62522
                 CommonParam param = new CommonParam();
 
                 foreach (var i in rowHandles)
@@ -524,13 +525,16 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                             Inventec.Common.Logging.LogSystem.Info("Bắt đầu gửi hồ sơ: " + row.TREATMENT_CODE);
                             processor.SendDataForCND();
 
-                            if (processor.HasData)
+                            if (processor.HasData && processor.LastSendSuccess)
                             {
                                 successCount++; 
                             }
                             else
                             {
                                 failCount++;
+                                // vCong 62522: gom ly do that bai (da phan loai nguon) de bao cho nguoi dung
+                                if (!string.IsNullOrEmpty(processor.LastErrorMessage) && !listErrorMessages.Contains(processor.LastErrorMessage))
+                                    listErrorMessages.Add(processor.LastErrorMessage);
                             }
                         }
                         catch (Exception exRow)
@@ -549,6 +553,11 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
                     string strCodes = string.Join(", ", listIgnoredCodes);
                     msg += string.Format("\n\nCác hồ sơ {0} không có mã bệnh huyết áp hoặc đái tháo đường.", strCodes);
                 }
+                if (listErrorMessages.Count > 0)
+                {
+                    // vCong 62522: toi da 3 loi khac nhau de khong qua dai
+                    msg += "\n\nLý do thất bại:\n- " + string.Join("\n- ", listErrorMessages.Take(3));
+                }
 
                 XtraMessageBox.Show(msg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -560,7 +569,7 @@ namespace HIS.Desktop.Plugins.NcdWhoInformationList
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                XtraMessageBox.Show("Có lỗi xảy ra trong quá trình đồng bộ.", "Lỗi hệ thống");
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Ai("WHO CND"), "đồng bộ hồ sơ lên cổng WHO CND"), "Lỗi hệ thống");
             }
         }
         //private bool IsPotentialNcdWho(string icdMain, string icdSub)

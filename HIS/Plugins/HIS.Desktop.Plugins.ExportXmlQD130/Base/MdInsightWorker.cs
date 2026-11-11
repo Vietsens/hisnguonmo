@@ -336,7 +336,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 LogSystem.Error(ex);
                 result.Outcome = EnumMdInsightCallOutcome.Failed;
-                result.Message = "Loi ket noi toi he thong soat loi";
+                result.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống soát lỗi hồ sơ (MdInsight)"), "kết nối hệ thống soát lỗi");
                 return result;
             }
         }
@@ -448,7 +448,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 LogSystem.Error(ex);
                 result.Outcome = EnumMdInsightCallOutcome.Failed;
-                result.Message = "Loi ket noi khi gui ho so";
+                result.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống soát lỗi hồ sơ (MdInsight)"), "gửi hồ sơ lên hệ thống soát lỗi");
                 return result;
             }
         }
@@ -622,7 +622,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 LogSystem.Error(ex);
                 result.Outcome = EnumMdInsightCallOutcome.Failed;
-                result.Message = "Loi ket noi khi tra ket qua";
+                result.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống soát lỗi hồ sơ (MdInsight)"), "lấy kết quả soát lỗi");
                 return result;
             }
         }
@@ -756,7 +756,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                result.Message = "Loi ket noi toi he thong soat loi";
+                result.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống soát lỗi hồ sơ (MdInsight)"), "kết nối hệ thống soát lỗi");
                 return result;
             }
         }

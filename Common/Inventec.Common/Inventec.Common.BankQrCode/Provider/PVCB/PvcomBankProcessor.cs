@@ -64,7 +64,7 @@ namespace Inventec.Common.BankQrCode.Provider.PVCB
             catch (Exception ex)
             {
                 result = new ResultQrCode();
-                result.Message = "Run Exception: " + ex.Message;
+                result.Message = QrCodeErrorUtil.RunError("PVcomBank", ex); // vCong 62522
             }
             return result;
         }
@@ -99,7 +99,7 @@ namespace Inventec.Common.BankQrCode.Provider.PVCB
             catch (Exception ex)
             {
                 resultQrCode = new ResultQrCode();
-                resultQrCode.Message = "Run Exception: " + ex.Message;
+                resultQrCode.Message = QrCodeErrorUtil.RunError("PVcomBank", ex); // vCong 62522
             }
 
             return resultQrCode;

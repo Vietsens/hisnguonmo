@@ -477,12 +477,12 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
                             else
                             {
                                 r.Success = false; r.StatusText = "Lỗi";
-                                r.Message = result != null ? result.thongDiep : "Không có phản hồi từ cổng.";
+                                r.Message = apiWorker.BuildFailMessage(result, "đẩy ca bệnh"); // vCong 62522
                             }
                         }
                         catch (Exception exRow)
                         {
-                            r.Success = false; r.StatusText = "Lỗi"; r.Message = exRow.Message;
+                            r.Success = false; r.StatusText = "Lỗi"; r.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exRow, EcdsApiWorker.Partner, "đẩy ca bệnh"); // vCong 62522
                             Inventec.Common.Logging.LogSystem.Error(exRow);
                         }
                     }
@@ -503,25 +503,26 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
                                         r.Success = ct.thanhCong;
                                         r.StatusText = ct.thanhCong ? "Đã đẩy" : "Lỗi";
                                         // Batch chỉ trả idCaBenh (UUID), KHÔNG có maCaBenh -> để mã ca trống.
-                                        if (!ct.thanhCong) r.Message = "Cổng từ chối ca này.";
+                                        if (!ct.thanhCong) r.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(EcdsApiWorker.Partner, "Cổng trả thanhCong = false cho ca này (không kèm mô tả)", "Cổng eCDS từ chối ca bệnh"); // vCong 62522
                                     }
                                 }
                                 // Hàng không có trong chiTiet -> đánh dấu lỗi.
                                 foreach (var r in results.Where(x => x.StatusText == null))
                                 {
                                     r.Success = false; r.StatusText = "Lỗi";
-                                    r.Message = "Cổng không trả kết quả cho ca này.";
+                                    r.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(EcdsApiWorker.Partner, "Phản hồi không có chiTiet cho ca này", "Cổng eCDS không trả kết quả cho ca bệnh"); // vCong 62522
                                 }
                             }
                             else
                             {
-                                string msg = batch != null ? batch.thongDiep : "Không có phản hồi từ cổng.";
+                                string msg = apiWorker.BuildFailMessage(batch, "đẩy danh sách ca bệnh"); // vCong 62522
                                 foreach (var r in results) { r.Success = false; r.StatusText = "Lỗi"; r.Message = msg; }
                             }
                         }
                         catch (Exception exBatch)
                         {
-                            foreach (var r in results) { r.Success = false; r.StatusText = "Lỗi"; r.Message = exBatch.Message; }
+                            string batchErr = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exBatch, EcdsApiWorker.Partner, "đẩy danh sách ca bệnh"); // vCong 62522
+                            foreach (var r in results) { r.Success = false; r.StatusText = "Lỗi"; r.Message = batchErr; }
                             Inventec.Common.Logging.LogSystem.Error(exBatch);
                         }
                     }
@@ -544,11 +545,11 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
                             Inventec.Common.Logging.LogSystem.Error(e.Error);
                             if (silent)
                             {
-                                if (lblAutoStatus != null) lblAutoStatus.Text = "Tự động: lỗi — " + e.Error.Message;
+                                if (lblAutoStatus != null) lblAutoStatus.Text = "Tự động: lỗi — " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(e.Error, EcdsApiWorker.Partner, "đồng bộ ca bệnh"); // vCong 62522
                             }
                             else
                             {
-                                XtraMessageBox.Show("Lỗi khi đồng bộ: " + e.Error.Message, "Đồng bộ thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                XtraMessageBox.Show("Lỗi khi đồng bộ: " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(e.Error, EcdsApiWorker.Partner, "đồng bộ ca bệnh"), "Đồng bộ thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error); // vCong 62522
                             }
                             return;
                         }
@@ -635,6 +636,15 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
         /// lấy từ đối soát (caseIdByTreatment). Ca CHƯA có bản ghi (chưa tạo qua form chi tiết) sẽ bỏ qua.
         /// Chạy trong worker nền.
         /// </summary>
+        /// <summary>Cắt chuỗi theo số byte UTF-8 cho cột VARCHAR2 giới hạn byte (vCong 62522)</summary>
+        private static string CutByUtf8Bytes(string value, int maxBytes)
+        {
+            if (String.IsNullOrEmpty(value) || System.Text.Encoding.UTF8.GetByteCount(value) <= maxBytes) return value;
+            int len = Math.Min(value.Length, maxBytes);
+            while (len > 0 && System.Text.Encoding.UTF8.GetByteCount(value.Substring(0, len)) > maxBytes - 3) len--;
+            return value.Substring(0, len) + "...";
+        }
+
         private void PersistPushResults(List<EcdsSyncResultADO> results)
         {
             try
@@ -658,7 +668,7 @@ namespace HIS.Desktop.Plugins.InfectiousDiseaseSyncList.MainForm
                         ECDS_CASE_CODE = r.MaCaBenh,
                         PUSH_STATE = (short)(r.Success ? 1 : 2),
                         LAST_PUSH_TIME = now,
-                        PUSH_MESSAGE = r.Message
+                        PUSH_MESSAGE = CutByUtf8Bytes(r.Message, 1990) // vCong 62522: cột 2000 byte
                     });
                 }
 

@@ -38,6 +38,9 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
     /// </summary>
     public partial class UCVlgPortalLookup : UserControlBase
     {
+        /// <summary>Đối tác để phân loại nguồn lỗi (vCong 62522)</summary>
+        private static readonly Inventec.Common.IntegrationError.IntegrationPartner VLG_PORTAL_PARTNER = Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng tiếp nhận KDLYT Vĩnh Long");
+
         #region Declare
         /// <summary>Loai ho so dang tra cuu — index cua cboLoaiHoSo.</summary>
         private const int MODE_KSK = 0;    // Kham suc khoe QD 2062
@@ -277,14 +280,14 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
                         if (ev.Error != null)
                         {
                             Inventec.Common.Logging.LogSystem.Error(ev.Error);
-                            lblConn.Text = "Lỗi kiểm tra kết nối — xem log.";
+                            lblConn.Text = Inventec.Common.IntegrationError.IntegrationErrorMessage.TagException(ev.Error, VLG_PORTAL_PARTNER);
                             lblConn.ForeColor = System.Drawing.Color.FromArgb(210, 40, 40);
                             return;
                         }
                         var r = ev.Result as object[];
                         if (r == null) return;
                         bool ok = (bool)r[0];
-                        lblConn.Text = (string)r[1];
+                        lblConn.Text = ok ? (string)r[1] : Inventec.Common.IntegrationError.IntegrationErrorMessage.TagText(VLG_PORTAL_PARTNER, (string)r[1]);
                         lblConn.ForeColor = ok
                             ? System.Drawing.Color.FromArgb(0, 150, 60)
                             : System.Drawing.Color.FromArgb(210, 40, 40);
@@ -374,7 +377,7 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
                     if (ev.Error != null)
                     {
                         Inventec.Common.Logging.LogSystem.Error(ev.Error);
-                        XtraMessageBox.Show("Lỗi khi gọi cổng." + Environment.NewLine + ev.Error.Message,
+                        XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ev.Error, VLG_PORTAL_PARTNER, "gọi cổng"),
                             "Tra cứu thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
@@ -385,7 +388,7 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
                     string error = r[2] as string;
                     if (!string.IsNullOrEmpty(error))
                     {
-                        XtraMessageBox.Show(error, "Tra cứu thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromText(VLG_PORTAL_PARTNER, error), "Tra cứu thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     if (!found || ado == null)
@@ -413,7 +416,7 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
                 if (ev.Error != null)
                 {
                     Inventec.Common.Logging.LogSystem.Error(ev.Error);
-                    XtraMessageBox.Show("Lỗi khi gọi cổng." + Environment.NewLine + ev.Error.Message,
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ev.Error, VLG_PORTAL_PARTNER, "gọi cổng"),
                         actionName + " thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -424,7 +427,7 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
                 bool truncated = r.Length > 2 && r[2] is bool && (bool)r[2];
                 if (!string.IsNullOrEmpty(error))
                 {
-                    XtraMessageBox.Show(error, actionName + " thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromText(VLG_PORTAL_PARTNER, error), actionName + " thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 BindGrid(list ?? new List<VlgHoSoADO>());
@@ -525,7 +528,7 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
                         if (ev.Error != null)
                         {
                             Inventec.Common.Logging.LogSystem.Error(ev.Error);
-                            XtraMessageBox.Show("Lỗi khi đối soát." + Environment.NewLine + ev.Error.Message,
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ev.Error, VLG_PORTAL_PARTNER, "đối soát"),
                                 "Đối soát thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
@@ -538,7 +541,7 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
                         bool truncated = r[4] is bool && (bool)r[4];
                         if (!string.IsNullOrEmpty(error))
                         {
-                            XtraMessageBox.Show(error, "Đối soát thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromText(VLG_PORTAL_PARTNER, error), "Đối soát thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
                         if (his == null)
@@ -955,7 +958,7 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
                         if (ev.Error != null)
                         {
                             Inventec.Common.Logging.LogSystem.Error(ev.Error);
-                            XtraMessageBox.Show("Lỗi khi gọi cổng." + Environment.NewLine + ev.Error.Message,
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ev.Error, VLG_PORTAL_PARTNER, "gọi cổng"),
                                 actionName + " thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
@@ -965,7 +968,7 @@ namespace HIS.Desktop.Plugins.VlgPortalLookup
                         string error = r[1] as string;
                         if (!string.IsNullOrEmpty(error))
                         {
-                            XtraMessageBox.Show(error, actionName + " thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromText(VLG_PORTAL_PARTNER, error), actionName + " thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
                         // Cap nhat ngay tren luoi de nguoi dung khoi tim lai.

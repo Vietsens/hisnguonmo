@@ -591,5 +591,67 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        /// <summary>
+        /// Chọn BN cũ từ cửa sổ tìm kiếm (họ tên + ngày sinh + giới tính) thì thẻ BHYT gần nhất lưu trong HIS
+        /// được nạp đè lên form. Nếu thẻ đang hiện trên form vừa được cổng BHXH xác nhận (VD: cổng trả 003 và đã
+        /// đổi sang thẻ mới) thì thẻ trong HIS là thẻ cũ/hết hạn => giữ thẻ cổng đã xác nhận.
+        ///
+        /// Sửa trực tiếp các trường thẻ của <paramref name="patient"/>: UCPatientRaw dùng chung đối tượng này
+        /// cho cả 3 lần nạp thẻ sau khi chọn BN (UCHeinInfo.SetValue, ConvertFromPatientData, PatientSDO preview).
+        /// </summary>
+        private void KeepGovVerifiedHeinCardForOldPatient(MOS.SDO.HisPatientSDO patient)
+        {
+            try
+            {
+                if (patient == null || this.ucPatientRaw1 == null || this.ucHeinInfo1 == null)
+                    return;
+
+                ResultDataADO govResult = this.ucPatientRaw1.ResultDataADO;
+                if (govResult == null || govResult.ResultHistoryLDO == null || govResult.HeinCardData == null
+                    || !govResult.ResultHistoryLDO.success
+                    || govResult.ResultHistoryLDO.maKetQua != "000"
+                    || String.IsNullOrEmpty(govResult.HeinCardData.HeinCardNumber))
+                    return;
+
+                string govCardNumber = HeinCardHelper.TrimHeinCardNumber(govResult.HeinCardData.HeinCardNumber);
+                string dbCardNumber = String.IsNullOrEmpty(patient.HeinCardNumber) ? "" : HeinCardHelper.TrimHeinCardNumber(patient.HeinCardNumber);
+                if (govCardNumber == dbCardNumber)
+                    return;
+
+                // Kết quả cổng phải đúng là của thẻ đang hiện trên form
+                var heinProfile = this.ucHeinInfo1.GetValue() as MOS.SDO.HisPatientProfileSDO;
+                string formCardNumber = (heinProfile != null && heinProfile.HisPatientTypeAlter != null && !String.IsNullOrEmpty(heinProfile.HisPatientTypeAlter.HEIN_CARD_NUMBER))
+                    ? HeinCardHelper.TrimHeinCardNumber(heinProfile.HisPatientTypeAlter.HEIN_CARD_NUMBER) : "";
+                if (formCardNumber != govCardNumber)
+                    return;
+
+                // ... và của đúng BN vừa chọn
+                string govName = (govResult.ResultHistoryLDO.hoTen ?? "").Trim().Normalize().ToUpper();
+                string patientName = (patient.VIR_PATIENT_NAME ?? "").Trim().Normalize().ToUpper();
+                string govDob = govResult.ResultHistoryLDO.ngaySinh ?? "";
+                string patientDob = Inventec.Common.DateTime.Convert.TimeNumberToDateString(patient.DOB) ?? "";
+                bool isSameDob = (govDob.Length == 4) ? patientDob.EndsWith(govDob) : (govDob == patientDob);
+                if (govName != patientName || !isSameDob)
+                    return;
+
+                HeinCardData govCard = govResult.HeinCardData;
+                patient.HeinCardNumber = govCardNumber;
+                patient.HeinCardFromTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(HIS.Desktop.Utility.DateTimeHelper.ConvertDateStringToSystemDate(govCard.FromDate));
+                patient.HeinCardToTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(HIS.Desktop.Utility.DateTimeHelper.ConvertDateStringToSystemDate(govCard.ToDate));
+                if (!String.IsNullOrEmpty(govCard.MediOrgCode))
+                    patient.HeinMediOrgCode = govCard.MediOrgCode;
+                if (!String.IsNullOrEmpty(govCard.Address))
+                    patient.HeinAddress = govCard.Address;
+                patient.LiveAreaCode = govCard.LiveAreaCode;
+
+                Inventec.Common.Logging.LogSystem.Info(String.Format("KeepGovVerifiedHeinCardForOldPatient: giu the cong BHXH da xac nhan {0} ({1} - {2}), bo the trong HIS {3}.",
+                    govCardNumber, govCard.FromDate, govCard.ToDate, dbCardNumber));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

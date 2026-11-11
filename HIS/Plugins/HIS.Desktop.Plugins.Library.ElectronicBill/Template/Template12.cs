@@ -176,6 +176,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dòng hàng/dịch vụ của hóa đơn theo mẫu (Template12)");
             }
             return result;
         }
@@ -232,6 +233,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return null;
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (ResolveGroup)");
             }
         }
     }

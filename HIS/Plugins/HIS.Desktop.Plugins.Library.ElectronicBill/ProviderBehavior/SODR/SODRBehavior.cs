@@ -69,7 +69,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.SoftDream, "Chưa cấu hình địa chỉ cổng hóa đơn điện tử (Webservice URL)");
                         return result;
                     }
 
@@ -111,7 +111,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                         else
                         {
                             result.InvoiceSys = ProviderType.SoftDream;
-                            ElectronicBillResultUtil.Set(ref result, false, "Lỗi khởi tạo");
+                            ElectronicBillResultUtil.SetSoftwareError(ref result, ProviderType.SoftDream, "Phần mềm chưa hỗ trợ: Lỗi khởi tạo", null);
                         }
                     }
                     else
@@ -136,6 +136,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.SoftDream); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -157,7 +158,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, "");
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.SoftDream);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
@@ -194,6 +195,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.SoftDream); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -217,6 +219,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetInvoice)");
             }
             return result;
         }
@@ -332,6 +335,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetDataInv)");
             }
             return result;
         }
@@ -374,6 +378,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetProductElectronicBill)");
             }
             return result;
         }
@@ -416,13 +421,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                 else
                 {
                     LogSystem.Error("Thay the va phat hanh hoa don that bai. " + LogUtil.TraceData(LogUtil.GetMemberName<ResultDataV2>(() => response), response) + LogUtil.TraceData(LogUtil.GetMemberName<ReplaceInvoiceV2>(() => input), input));
-                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Thay thế và phát hành hóa thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref electronicBillResult, ProviderType.SoftDream, response != null ? Newtonsoft.Json.JsonConvert.SerializeObject(response) : null, "Thay thế và phát hành hóa đơn thất bại");
                 }
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.SoftDream);
             }
             return electronicBillResult;
         }
@@ -447,13 +452,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                 else
                 {
                     LogSystem.Error("Tao va phat hanh hoa don that bai. " + LogUtil.TraceData(LogUtil.GetMemberName<ResultDataV2>(() => response), response) + LogUtil.TraceData(LogUtil.GetMemberName<IssueCreateV2>(() => invoice), invoice));
-                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Tạo và phát hành hóa thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref electronicBillResult, ProviderType.SoftDream, response != null ? Newtonsoft.Json.JsonConvert.SerializeObject(response) : null, "Tạo và phát hành hóa đơn thất bại");
                 }
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.SoftDream);
             }
             return electronicBillResult;
         }
@@ -621,6 +626,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (ProcessCreateInvoiceV2)");
             }
             return issueCreateV;
         }
@@ -643,13 +649,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                 else
                 {
                     LogSystem.Error("Huy hoa don that bai. " + LogUtil.TraceData(LogUtil.GetMemberName<bool>(() => response), response) + LogUtil.TraceData(LogUtil.GetMemberName<ElectronicBillDataInput>(() => this.ElectronicBillDataInput), this.ElectronicBillDataInput));
-                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Hủy hóa đơn thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref electronicBillResult, ProviderType.SoftDream, null, "Hủy hóa đơn thất bại");
                 }
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.SoftDream);
             }
             return electronicBillResult;
         }
@@ -674,13 +680,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                 else
                 {
                     LogSystem.Error("lay file chuyen doi that bai. " + LogUtil.TraceData(LogUtil.GetMemberName<string>(() => response), response) + LogUtil.TraceData(LogUtil.GetMemberName<ElectronicBillDataInput>(() => this.ElectronicBillDataInput), this.ElectronicBillDataInput));
-                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Lấy file chuyển đổi thất bại");
+                    ElectronicBillResultUtil.SetProviderError(ref electronicBillResult, ProviderType.SoftDream, null, "Lấy file chuyển đổi thất bại");
                 }
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.SoftDream);
             }
             return electronicBillResult;
         }

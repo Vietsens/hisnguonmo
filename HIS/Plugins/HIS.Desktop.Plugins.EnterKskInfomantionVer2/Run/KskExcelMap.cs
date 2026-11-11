@@ -318,7 +318,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
                 // Mẫu khám không có mục nào (KSK khác) thì cũng không xuất 3 dòng hành chính, để nút vẫn mờ.
                 if (rows.Count > 0) rows.InsertRange(0, GetAdminRows(tabIndex));
-                // Mục Thai sản chỉ có nghĩa với bệnh nhân nữ.
+                // Mục Thai sản / Sản phụ khoa chỉ có nghĩa với bệnh nhân nữ.
                 if (!isFemale) rows.RemoveAll(o => IsMaternity(o));
             }
             catch (Exception ex) { LogSystem.Error(ex); }
@@ -452,13 +452,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 "txtExamEntRightNomal" + s, "txtExamEntRightWhisper" + s);
         }
 
-        /// <summary>Mục Thai sản, nhận theo tên ô (2 mẫu khám lái xe dùng tên Maternity).</summary>
+        /// <summary>Mục Thai sản / Sản phụ khoa, nhận theo tên ô (Maternity ở 2 mẫu lái xe, Obstetric ở các mẫu khác).</summary>
         private static bool IsMaternity(KskExcelRowADO row)
         {
             if (row == null) return false;
             string a = (row.MA_O ?? "").ToLowerInvariant();
             string b = (row.MA_O_PHAN_LOAI ?? "").ToLowerInvariant();
-            return a.Contains("maternity") || b.Contains("maternity");
+            return a.Contains("maternity") || b.Contains("maternity")
+                || a.Contains("obstetric") || b.Contains("obstetric");
         }
     }
 }

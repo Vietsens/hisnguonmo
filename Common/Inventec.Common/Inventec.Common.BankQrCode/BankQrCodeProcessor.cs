@@ -41,7 +41,12 @@ namespace Inventec.Common.BankQrCode
             if (this.InputData == null || string.IsNullOrWhiteSpace(this.InputData.SystemConfig) || string.IsNullOrWhiteSpace(this.InputData.TransactionCode) || this.InputData.Amount <= 0)
             {
                 ResultQrCode error = new ResultQrCode();
-                error.Message = "Dữ liệu đầu vào không hợp lệ";
+                // (vCong 62522) nói rõ thiếu gì: cấu hình tại viện hay dữ liệu giao dịch
+                if (this.InputData != null && string.IsNullOrWhiteSpace(this.InputData.SystemConfig))
+                    error.Message = QrCodeErrorUtil.ConfigFormatError(type.ToString(), "Chưa có cấu hình hệ thống thông tin tạo mã QR");
+                else
+                    error.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.BusinessError(QrCodeErrorUtil.Partner(type.ToString()),
+                        "Dữ liệu đầu vào không hợp lệ (mã giao dịch rỗng hoặc số tiền không lớn hơn 0)");
                 return error;
             }
 
@@ -64,6 +69,13 @@ namespace Inventec.Common.BankQrCode
                     break;
             }
 
+            if (iRunQrData == null)
+            {
+                // (vCong 62522) trước đây NullReferenceException
+                ResultQrCode notSupport = new ResultQrCode();
+                notSupport.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(QrCodeErrorUtil.Partner(type.ToString()), "Ngân hàng " + type + " chưa được hỗ trợ tạo mã QR");
+                return notSupport;
+            }
             return iRunQrData.Run();
         }
 
@@ -95,6 +107,13 @@ namespace Inventec.Common.BankQrCode
                     break;
             }
 
+            if (iRunQrData == null)
+            {
+                // (vCong 62522) trước đây NullReferenceException
+                ResultQrCode notSupport = new ResultQrCode();
+                notSupport.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(QrCodeErrorUtil.Partner(type.ToString()), "Ngân hàng " + type + " chưa được hỗ trợ tạo mã QR");
+                return notSupport;
+            }
             return iRunQrData.RunConsumer();
         }
     }

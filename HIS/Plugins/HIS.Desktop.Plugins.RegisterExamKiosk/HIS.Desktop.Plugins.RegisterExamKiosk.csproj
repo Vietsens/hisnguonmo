@@ -145,6 +145,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.IntegrationError">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
     </Reference>
@@ -326,6 +329,7 @@
     <Compile Include="frmWaitingScreen.Designer.cs">
       <DependentUpon>frmWaitingScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="KioskIntegrationError.cs" />
     <Compile Include="NameForm.cs" />
     <Compile Include="Popup\CheckHeinCardGOV\frmCheckHeinCardGOV.cs">
       <SubType>Form</SubType>

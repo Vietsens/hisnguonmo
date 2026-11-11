@@ -67,6 +67,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
         List<HIS_KSK_OVER_EIGHTEEN> _KSK_OverEighteen { get; set; }
         List<HIS_KSK_UNDER_EIGHTEEN> _KSK_UnderEighteen { get; set; }
         List<HIS_KSK_UNDER_SIX> _KSK_UnderSix { get; set; }
+        // Mẫu "Hồ sơ sức khỏe" (Mps000481): toàn bộ DHST của đợt điều trị + danh mục loại XN.
+        List<V_HIS_DHST> _KSK_DhstsAll { get; set; }
+        List<HIS_TEST_TYPE> _KSK_TestTypes { get; set; }
         private void ProcessPrintf(List<V_HIS_TREATMENT_4> _KSK_Treatments_Check)
         {
             try
@@ -147,6 +150,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 _KSK_SereServExts = new List<HIS_SERE_SERV_EXT>();
                 _KSK_SereServTeins = new List<V_HIS_SERE_SERV_TEIN>();
                 _KSK_TestIndexs = new List<V_HIS_TEST_INDEX>();
+                _KSK_DhstsAll = new List<V_HIS_DHST>();
+                _KSK_TestTypes = GetTestTypes__KSK();
                 _KSK_General = new List<HIS_KSK_GENERAL>();
                 ResetKskExamForms();
 
@@ -204,6 +209,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 GetSereServTein__KSK(_treatmentIds);
                 GetService__KSK(_KSK_SereServs.Select(o => o.SERVICE_ID).ToList());
                 GetTestIndex__KSK(_KSK_SereServTeins.Where(o => o.TEST_INDEX_ID != null).Select(o => (long)o.TEST_INDEX_ID).ToList());
+                GetDhstAll__KSK(_treatmentIds);
             }
             catch (Exception ex)
             {
@@ -252,6 +258,42 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 {
                     Inventec.Common.Logging.LogSystem.Error(ex);
                 }
+            }
+        }
+
+        /// <summary>Lấy TOÀN BỘ DHST của các đợt điều trị — processor chọn bản ghi theo DHST_ID của phần khám KSK.</summary>
+        private void GetDhstAll__KSK(List<long> treatmentIds)
+        {
+            try
+            {
+                if (treatmentIds == null || treatmentIds.Count == 0) return;
+                HisDhstViewFilter filter = new HisDhstViewFilter();
+                filter.TREATMENT_IDs = treatmentIds;
+                var rs = new BackendAdapter(_KSK_param).Get<List<V_HIS_DHST>>("api/HisDhst/GetView", ApiConsumers.MosConsumer, filter, _KSK_param);
+                if (rs != null && rs.Count > 0)
+                {
+                    _KSK_DhstsAll.AddRange(rs);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>Danh mục loại xét nghiệm (tên nhóm "Xét nghiệm Huyết học / Sinh hóa ..." trên mẫu Hồ sơ sức khỏe).</summary>
+        private List<HIS_TEST_TYPE> GetTestTypes__KSK()
+        {
+            try
+            {
+                HisTestTypeFilter filter = new HisTestTypeFilter();
+                var rs = new BackendAdapter(_KSK_param).Get<List<HIS_TEST_TYPE>>("api/HisTestType/Get", ApiConsumers.MosConsumer, filter, _KSK_param);
+                return rs ?? new List<HIS_TEST_TYPE>();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return new List<HIS_TEST_TYPE>();
             }
         }
 
@@ -336,6 +378,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 mps000481RDO.ksk_OverEighteens = _KSK_OverEighteen;
                 mps000481RDO.ksk_UnderEighteens = _KSK_UnderEighteen;
                 mps000481RDO.ksk_UnderSixs = _KSK_UnderSix;
+                // Mẫu "Hồ sơ sức khỏe": thể lực, khoảng tham chiếu XN, tên loại XN (mẫu cũ không dùng).
+                mps000481RDO.Dhsts = _KSK_DhstsAll;
+                mps000481RDO.TestIndexRanges = BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>();
+                mps000481RDO.TestTypes = _KSK_TestTypes;
                 WaitingManager.Hide();
                 MPS.ProcessorBase.Core.PrintData PrintData = null;
                 if (_KSK_Treatments != null && _KSK_Treatments.Count == 1)
@@ -1198,21 +1244,49 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 new KskExcelColumn("BMI", (o, i) => o.VIR_BMI),
                 new KskExcelColumn("Mạch", (o, i) => o.PULSE),
                 new KskExcelColumn("Huyết áp", (o, i) => o.BLOOD_PRESSURE_TEXT), // tâm thu/tâm trương, vd "120/80"
+                new KskExcelColumn("Phân loại thể lực", (o, i) => o.DHST_RANK_NAME),
                 new KskExcelColumn("Tuần hoàn", (o, i) => o.EXAM_CIRCULATION),
+                new KskExcelColumn("Phân loại tuần hoàn", (o, i) => o.EXAM_CIRCULATION_RANK_NAME),
                 new KskExcelColumn("Hô hấp", (o, i) => o.EXAM_RESPIRATORY),
+                new KskExcelColumn("Phân loại hô hấp", (o, i) => o.EXAM_RESPIRATORY_RANK_NAME),
                 new KskExcelColumn("Tiêu hóa", (o, i) => o.EXAM_DIGESTION),
+                new KskExcelColumn("Phân loại tiêu hóa", (o, i) => o.EXAM_DIGESTION_RANK_NAME),
                 new KskExcelColumn("Nội tiết", (o, i) => o.EXAM_OEND),
+                new KskExcelColumn("Phân loại nội tiết", (o, i) => o.EXAM_OEND_RANK_NAME),
                 new KskExcelColumn("Cơ xương khớp", (o, i) => o.EXAM_MUSCLE_BONE),
+                new KskExcelColumn("Phân loại cơ xương khớp", (o, i) => o.EXAM_MUSCLE_BONE_RANK_NAME),
                 new KskExcelColumn("Thần kinh", (o, i) => o.EXAM_NEUROLOGICAL),
+                new KskExcelColumn("Phân loại thần kinh", (o, i) => o.EXAM_NEUROLOGICAL_RANK_NAME),
                 new KskExcelColumn("Tâm thần", (o, i) => o.EXAM_MENTAL),
+                new KskExcelColumn("Phân loại tâm thần", (o, i) => o.EXAM_MENTAL_RANK_NAME),
                 new KskExcelColumn("Da liễu", (o, i) => o.EXAM_DERMATOLOGY),
+                new KskExcelColumn("Phân loại da liễu", (o, i) => o.EXAM_DERMATOLOGY_RANK_NAME),
                 new KskExcelColumn("Thận tiết niệu", (o, i) => o.EXAM_KIDNEY_UROLOGY),
+                new KskExcelColumn("Phân loại thận tiết niệu", (o, i) => o.EXAM_KIDNEY_UROLOGY_RANK_NAME),
                 new KskExcelColumn("Ngoại khoa", (o, i) => o.EXAM_SURGERY),
+                new KskExcelColumn("Phân loại ngoại khoa", (o, i) => o.EXAM_SURGERY_RANK_NAME),
                 new KskExcelColumn("Sản", (o, i) => o.EXAM_OBSTETRIC),
                 new KskExcelColumn("Tên ICD sản", (o, i) => o.OBSTETRIC_ICD_NAME),
+                new KskExcelColumn("Phân loại sản", (o, i) => o.EXAM_OBSTETRIC_RANK_NAME),
                 new KskExcelColumn("Mắt", (o, i) => o.EXAM_EYE),
+                new KskExcelColumn("Thị lực không kính - Mắt phải", (o, i) => o.EXAM_EYESIGHT_RIGHT),
+                new KskExcelColumn("Thị lực không kính - Mắt trái", (o, i) => o.EXAM_EYESIGHT_LEFT),
+                new KskExcelColumn("Thị lực có kính - Mắt phải", (o, i) => o.EXAM_EYESIGHT_GLASS_RIGHT),
+                new KskExcelColumn("Thị lực có kính - Mắt trái", (o, i) => o.EXAM_EYESIGHT_GLASS_LEFT),
+                new KskExcelColumn("Các bệnh về mắt", (o, i) => o.EXAM_EYE_DISEASE),
+                new KskExcelColumn("Phân loại mắt", (o, i) => o.EXAM_EYE_RANK_NAME),
                 new KskExcelColumn("Tai mũi họng", (o, i) => o.EXAM_ENT),
+                new KskExcelColumn("Nói thường - Tai phải", (o, i) => o.EXAM_ENT_RIGHT_NORMAL),
+                new KskExcelColumn("Nói thường - Tai trái", (o, i) => o.EXAM_ENT_LEFT_NORMAL),
+                new KskExcelColumn("Nói thầm - Tai phải", (o, i) => o.EXAM_ENT_RIGHT_WHISPER),
+                new KskExcelColumn("Nói thầm - Tai trái", (o, i) => o.EXAM_ENT_LEFT_WHISPER),
+                new KskExcelColumn("Các bệnh về tai mũi họng", (o, i) => o.EXAM_ENT_DISEASE),
+                new KskExcelColumn("Phân loại tai mũi họng", (o, i) => o.EXAM_ENT_RANK_NAME),
                 new KskExcelColumn("Răng hàm mặt", (o, i) => o.EXAM_STOMATOLOGY),
+                new KskExcelColumn("Hàm trên", (o, i) => o.EXAM_STOMATOLOGY_UPPER),
+                new KskExcelColumn("Hàm dưới", (o, i) => o.EXAM_STOMATOLOGY_LOWER),
+                new KskExcelColumn("Các bệnh về răng hàm mặt", (o, i) => o.EXAM_STOMATOLOGY_DISEASE),
+                new KskExcelColumn("Phân loại răng hàm mặt", (o, i) => o.EXAM_STOMATOLOGY_RANK_NAME),
                 new KskExcelColumn("Nhận xét CTM", (o, i) => o.NOTE_BLOOD),
                 new KskExcelColumn("Nhận xét sinh hóa", (o, i) => o.NOTE_BIOCHEMICAL),
                 new KskExcelColumn("Siêu âm tiền liệt tuyến", (o, i) => o.NOTE_PROSTASE),
@@ -1223,6 +1297,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 new KskExcelColumn("Hướng giải quyết", (o, i) => o.TREATMENT_INSTRUCTION),
                 new KskExcelColumn("Kết luận khám (ICD)", (o, i) => o.CONCLUSION_ICD_CODE),
                 new KskExcelColumn("Kết luận chung tên (ICD)", (o, i) => o.CONCLUSION_ICD_NAME),
+                new KskExcelColumn("Kết luận khám lâm sàng", (o, i) => o.CONCLUSION_CLINICAL),
                 new KskExcelColumn("Kết luận khám", (o, i) => o.EXAM_CONCLUSION),
                 new KskExcelColumn("Kết luận chung", (o, i) => o.CONCLUSION),
                 new KskExcelColumn("Nhiệt độ", (o, i) => o.TEMPERATURE),

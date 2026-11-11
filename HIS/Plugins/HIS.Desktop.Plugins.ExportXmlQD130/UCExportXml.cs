@@ -287,6 +287,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.InitMdInsight();
                 //Việc 61380 - Xuất XML hồ sơ đủ 48 giờ: tạo cột khi bật cấu hình; tự động chạy theo Gửi tự động, xuất tay ở menu chuột phải.
                 this.InitXml48h();
+                //Việc 60261 - Cột cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính: chỉ tạo khi bật HIS.QD_130_BYT.XML1.CARD_INFO_WARNING.
+                this.InitCardInfoWarning();
             }
             catch (Exception ex)
             {
@@ -1148,6 +1150,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 if (!btnExportXml.Enabled || listSelection == null || listSelection.Count == 0) return;
 
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
+                if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
+
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;
                 CommonParam param = new CommonParam();
@@ -1751,7 +1756,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     string saveFilePathXml12 = "";
                     string fullFileNameCollinearXml = "";
                     string saveFilePathCollinearXml = "";
-
+                    //Việc 60262 - hồ sơ chưa kết thúc điều trị (viện bật HIS.QD_130_BYT.EXPORT_XML_IN_TREATMENT = 1): sinh ở chế độ hồ sơ
+                    //đang điều trị để kiểm tra, tên tệp đuôi _DANG_DIEU_TRI, không XML12, không ký số (mục UCExportXml___InTreatment).
+                    //Xuất thông tuyến (XuatXmlTT) giữ nguyên như cũ.
+                    bool isInTreatment = !XuatXmlTT && IsExportXmlInTreatment(treatment);
 
                     if (XuatXmlTT)
                     {
@@ -1784,14 +1792,22 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     else
                     {
+                        if (isInTreatment)
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("60262 - Xuat XML ho so dang dieu tri (RunInTreatment): " + treatment.TREATMENT_CODE);
+                        }
                         if (!viewXml)
                         {
                             fullFileName = xmlProcessor.GetFileName();
+                            if (isInTreatment)
+                            {
+                                fullFileName = GetInTreatmentFileName(fullFileName);
+                            }
                             saveFilePath = String.Format("{0}/{1}", this.savePathADO.pathXml, fullFileName);
                             saveFilePathXml12 = String.Format("{0}/{1}{2}", this.savePathADO.pathXmlGDYK, "XML12_", fullFileName);
                         }
-                        var rs = xmlProcessor.Run(ref errorMess);
-                        var rsXml12 = XuatXml12 ? xmlProcessor.RunXml12(ref errorMessXml12) : null;
+                        var rs = isInTreatment ? RunXmlInTreatmentSafe(xmlProcessor, ref errorMess) : xmlProcessor.Run(ref errorMess);
+                        var rsXml12 = XuatXml12 && !isInTreatment ? xmlProcessor.RunXml12(ref errorMessXml12) : null;
                         if (!String.IsNullOrWhiteSpace(errorMess))
                         {
                             Inventec.Common.Logging.LogSystem.Error("Run130: " + errorMess);
@@ -1836,7 +1852,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                     }
 
-                    if (isNotFileSign == false && SettingSignADO != null)
+                    //Việc 60262: tệp hồ sơ đang điều trị chỉ để kiểm tra - không ký chữ ký đơn vị (CHUKYDONVI), tránh ra tệp trông như nộp cổng được
+                    if (isNotFileSign == false && SettingSignADO != null && !isInTreatment)
                     {
                         string currentDirectory = Directory.GetCurrentDirectory();
 
@@ -4397,6 +4414,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     XtraMessageBox.Show(Resources.ResourceMessageLang.BanChuaChonHoSoDeDongBo, Resources.ResourceMessageLang.ThongBao);
                     return;
                 }
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi gửi cổng (Gửi XML 130, Gửi XML 3176). Đặt sau khối
+                //thay danh sách ở trên để cảnh báo đúng các hồ sơ sẽ gửi; luồng gửi dựng XML theo ô XML 3176 (ReadXml3176CheckedSafe).
+                //Chỉ hỏi trên luồng giao diện: lượt gửi tự động (backgroundWorker1) chạy ở luồng nền nên bỏ qua. Khóa = 1: chọn Có thì vẫn gửi; khóa = 2: chặn.
+                if (this.IsHandleCreated && !this.InvokeRequired && !await ConfirmCardInfoAsync(listSelection, ReadXml3176CheckedSafe(), false)) return;
                 var listTreatmentSynced = listSelection.Where(o => o.XML130_RESULT == 2).ToList();
                 if (listTreatmentSynced != null && listTreatmentSynced.Count > 0 && showMessSusscess == true)
                 {
@@ -4486,6 +4507,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     XtraMessageBox.Show(Resources.ResourceMessageLang.BanChuaChonHoSoDeDongBo, Resources.ResourceMessageLang.ThongBao);
                     return;
                 }
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi gửi cổng. Khóa = 1: chọn Có thì vẫn gửi; khóa = 2: chặn.
+                if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 isNotFileSign = false;
                 //qtcode
@@ -4843,7 +4866,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         string errorCode = syncResult.ErrorCode;
                                         if ((errorCode == "01" || errorCode == "02" || errorCode == "03") && !isAutoSync)
                                         {
-                                            XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.Message), Resources.ResourceMessageLang.ThongBao);
+                                            XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.FullMessage ?? syncResult.Message), Resources.ResourceMessageLang.ThongBao);
                                             return;
                                         }
                                         else
@@ -4851,11 +4874,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                             callSyncSuccess = true;
                                             if (!syncResult.Success)
                                             {
-                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.Message));
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.FullMessage ?? syncResult.Message));
                                             }
                                             if (!syncResult12.Success)
                                             {
-                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult12.ErrorCode, syncResult12.Message));
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult12.ErrorCode, syncResult12.FullMessage ?? syncResult12.Message));
                                             }
                                             if (!((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || isSendCollinearXml))
                                             {
@@ -4865,7 +4888,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                 HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
                                                 xmlResultSDO.TreatmentId = treatment.ID;
                                                 xmlResultSDO.XmlResult = syncResult.Success && syncResult12.Success ? 2 : 1;
-                                                xmlResultSDO.Description = String.Join(". ", xmlDescription.Where(o => !String.IsNullOrEmpty(o)).Distinct());
+                                                xmlResultSDO.Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.TruncateUtf8(String.Join(". ", xmlDescription.Where(o => !String.IsNullOrEmpty(o)).Distinct()), 2000); // XML130_DESC 2000 byte (vCong 62522)
                                                 xmlResultSDO.CheckCode = String.Join(";", xmlCheckCode.Where(o => !String.IsNullOrEmpty(o)).Distinct());
                                                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
                                                 var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
@@ -4938,13 +4961,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     {
                                         if (!syncResult.Success && !isAutoSync)
                                         {
-                                            XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
+                                            XtraMessageBox.Show("Ký số thất bại: " + (syncResult.FullMessage ?? syncResult.Message), Resources.ResourceMessageLang.ThongBao);
                                             return;
                                         }
                                         string errorCode = syncResult.ErrorCode;
                                         if ((errorCode == "01" || errorCode == "02" || errorCode == "03") && !isAutoSync)
                                         {
-                                            XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.Message), Resources.ResourceMessageLang.ThongBao);
+                                            XtraMessageBox.Show(String.Format("{0} - {1}", errorCode, syncResult.FullMessage ?? syncResult.Message), Resources.ResourceMessageLang.ThongBao);
                                             return;
                                         }
                                         else
@@ -4958,14 +4981,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                             callSyncSuccess = true;
                                             if (!syncResult.Success)
                                             {
-                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.Message));
+                                                listMessageError.Add(String.Format("{0}: {1} - {2}", treatment.TREATMENT_CODE, syncResult.ErrorCode, syncResult.FullMessage ?? syncResult.Message));
                                             }
 
 
                                             HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
                                             xmlResultSDO.TreatmentId = treatment.ID;
                                             xmlResultSDO.XmlResult = syncResult.Success ? 2 : 1;
-                                            xmlResultSDO.Description = syncResult.Message;
+                                            xmlResultSDO.Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.TruncateUtf8(syncResult.Message, 2000); // XML130_DESC 2000 byte (vCong 62522)
                                             xmlResultSDO.CheckCode = syncResult.CheckCode;
                                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
                                             var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
@@ -5117,7 +5140,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     {
                                                         TreatmentId = kcbTreatmentId,
                                                         FinishResult = kcbSuccess ? 3 : 4,   //3=gửi thành công, 4=gửi thất bại
-                                                        Description = kcbMessage,
+                                                        Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.ToShort(kcbMessage, 3900), // CSDL4750_FINISH_DESC 4000 byte (vCong 62522)
                                                         FinishUrl = kcbFileUrl
                                                     });
                                                 }
@@ -5144,7 +5167,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                             {
                                                                 TreatmentId = kcbTreatmentId,
                                                                 FinishResult = vlgSuccess ? 3 : 4,
-                                                                Description = vlgMessage,
+                                                                Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.ToShort(vlgMessage, 3900),
                                                                 FinishUrl = kcbFileUrl
                                                             });
                                                         }
@@ -5159,7 +5182,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     Inventec.Common.Logging.LogSystem.Error(exVlg);
                                                     lock (kcb4750Lock)
                                                     {
-                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - VLG: " + exVlg.Message);
+                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exVlg, Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng tiếp nhận KDLYT Vĩnh Long"), "gửi hồ sơ"));
                                                     }
                                                 }
                                             }
@@ -5194,7 +5217,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     Inventec.Common.Logging.LogSystem.Error(exHoc);
                                                     lock (kcb4750Lock)
                                                     {
-                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - HOC: " + exHoc.Message);
+                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exHoc, Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("Trung tâm điều hành y tế (HOC)"), "gửi hồ sơ"));
                                                     }
                                                 }
                                             }
@@ -5218,7 +5241,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                             {
                                                                 TreatmentId = kcbTreatmentId,
                                                                 FinishResult = ctSuccess ? 3 : 4,
-                                                                Description = ctMessage,
+                                                                Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.ToShort(ctMessage, 3900),
                                                                 FinishUrl = kcbFileUrl
                                                             });
                                                         }
@@ -5233,7 +5256,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     Inventec.Common.Logging.LogSystem.Error(exCt);
                                                     lock (kcb4750Lock)
                                                     {
-                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - CT: " + exCt.Message);
+                                                        kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exCt, Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng CSDL Y tế Cần Thơ"), "gửi hồ sơ"));
                                                     }
                                                 }
                                             }
@@ -5249,11 +5272,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                     {
                                                         TreatmentId = kcbTreatmentId,
                                                         FinishResult = 4,
-                                                        Description = "Lỗi khi gửi: " + exKcb.Message,
+                                                        Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.ToShort(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exKcb, Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng CSDL 4750"), "gửi hồ sơ"), 3900),
                                                         FinishUrl = null
                                                     });
                                                 }
-                                                kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + exKcb.Message);
+                                                kcbResultLines.Add(kcbTreatmentCode + ": Thất bại - " + Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exKcb, Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng CSDL 4750"), "gửi hồ sơ"));
                                             }
                                         }
                                         finally
@@ -5437,7 +5460,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         //                }
         //                if (!isAutoSync)
         //                {
-        //                    XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
+        //                    XtraMessageBox.Show("Ký số thất bại: " + (syncResult.FullMessage ?? syncResult.Message), Resources.ResourceMessageLang.ThongBao);
         //                    return;
         //                }
         //            }
@@ -6211,10 +6234,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ProcessDataExcelTT12();
         }
 
-        private void MenuItemClick_XuatXmlCheckIn(object sender, EventArgs e)
+        private async void MenuItemClick_XuatXmlCheckIn(object sender, EventArgs e)
         {
             try
             {
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính trước khi tạo lại file check-in (khóa = 1 hỏi, khóa = 2 chặn).
+                if (!await ConfirmCardInfoAsync(listSelection, false, true)) return;
                 CommonParam param = new CommonParam();
                 bool success = false;
                 WaitingManager.Show();
@@ -6392,13 +6417,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void MenuItemClick_XuatXMLKhongBaoGomGDYK(object sender, EventArgs e)
+        private async void MenuItemClick_XuatXMLKhongBaoGomGDYK(object sender, EventArgs e)
         {
             try
             {
                 try
                 {
                     if (listSelection == null || listSelection.Count == 0) return;
+                    //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
+                    if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
                     CommonParam param = new CommonParam();
                     MemoryStream memoryStream = new MemoryStream();
                     bool success = false;
@@ -6546,6 +6573,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnExportCollinearXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
+                if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;
@@ -6723,6 +6753,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnExportGroupXml.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Khóa = 1: chọn Có thì vẫn xuất; khóa = 2: chặn.
+                if (!await ConfirmCardInfoAsync(listSelection, chkXML3176.Checked, false)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;
@@ -6944,6 +6977,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (!btnXML3176.Enabled || listSelection == null || listSelection.Count == 0) return;
+
+                //Việc 60261 - Cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính. Nút XML 3176 luôn sinh XML theo QĐ 3176.
+                if (!await ConfirmCardInfoAsync(listSelection, true, false)) return;
 
                 //vCong53286 - Cổng chặn tiền giám định. Hồ sơ có lỗi nghiêm trọng thì dừng cả lượt, không sinh tệp nào.
                 if (!await EnsureTienGiamDinhPassedAsync()) return;

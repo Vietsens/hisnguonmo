@@ -50,6 +50,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string CONFIG_KEY__SIGN_WARNING_OPTION = "HIS.Desktop.Plugins.ExecuteServiceReq.SignWarningOption";
         private const string CONFIG_KEY__PATIENT_TYPE_OPTION = "HIS.DESKTOP.HIS_MACHINE.MAX_SERVICE_PER_DAY.PATIENT_TYPE_OPTION";
         private const string CONFIG_KEY__AutoDeleteEmrDocumentWhenEditReq = "HIS.Desktop.Plugins.ServiceReqList.AutoDeleteEmrDocumentWhenEditReq";
+        //Phan quyen huy ket thuc / huy bat dau y lenh CLS: 2 = chi tai khoan duoc tich HIS_EMPLOYEE.ALLOW_UNFINISH_UNSTART_SEREREQ (hoac quan tri)
+        private const string CONFIG_KEY__UNFINISH_UNSTART_PERMISSION_MODE = "MOS.HIS_SERVICE_REQ.CLS.UNFINISH_UNSTART_PERMISSION_MODE";
         private const string DISABLE_PART_EXAM_BY_EXECUTOR = "HIS.Desktop.Plugins.ExamServiceReqExecute.DisablePartExamByExecutor";
         private const string AUTO_FINISH_AFTER_UNFINISH = "HIS.HIS_SERVICE_REQ.EXAM.AUTO_FINISH_AFTER_UNFINISH";
         private const string IS_USING_EXECUTE_ROOM_PAYMENT = "MOS.EPAYMENT.IS_USING_EXECUTE_ROOM_PAYMENT";
@@ -98,6 +100,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal static string SignWarningOption;
         internal static string PatientTypeOption;
         internal static string AutoDeleteEmrDocumentWhenEditReq;
+        internal static string UnfinishUnstartPermissionMode;
         internal static string MustSignBeforeStart;
         public static bool IsEnableEditStartTime;
         internal static string ServiceSimultaneity;
@@ -165,6 +168,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 SignWarningOption = GetValue(CONFIG_KEY__SIGN_WARNING_OPTION);
                 PatientTypeOption = GetValue(CONFIG_KEY__PATIENT_TYPE_OPTION);
                 AutoDeleteEmrDocumentWhenEditReq = GetValue(CONFIG_KEY__AutoDeleteEmrDocumentWhenEditReq);
+                UnfinishUnstartPermissionMode = GetValue(CONFIG_KEY__UNFINISH_UNSTART_PERMISSION_MODE);
                 isDisablePartExamByExecutor = GetValue(DISABLE_PART_EXAM_BY_EXECUTOR) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
                 MustSignBeforeStart = GetValue(KEY__MustSignBeforeStart);
                 model = GetValue(HIS_MODEL);

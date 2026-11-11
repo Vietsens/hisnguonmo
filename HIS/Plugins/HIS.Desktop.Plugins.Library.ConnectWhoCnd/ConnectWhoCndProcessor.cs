@@ -23,6 +23,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
         List<HIS_SERE_SERV> V_HIS_SERE_SERVs;
         List<HIS_SERE_SERV_TEIN> ssTein;
         public bool HasData { get; set; } = false;
+        /// <summary>vCong 62522: lần gửi gần nhất thành công hay không.</summary>
+        public bool LastSendSuccess { get; private set; }
+        /// <summary>vCong 62522: thông báo lỗi (đã phân loại nguồn) của lần gửi gần nhất; null nếu thành công.</summary>
+        public string LastErrorMessage { get; private set; }
         public bool continueAnyway { get; set; } = false;
         public bool isNotInIcd { get; set; } = false;
 
@@ -252,6 +256,8 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
         }
         private void SendDataWithoutCheck()
         {
+            this.LastSendSuccess = false;
+            this.LastErrorMessage = null;
             try
             {
                 Inventec.Common.Logging.LogSystem.Info("SendDataWithoutCheck");
@@ -405,25 +411,31 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                     //qtcode
                     if (rsData != null)
                     {
+                        this.LastSendSuccess = true;
                         UpdateNcdWhoStatus(data.ID, 1, null);  // Thành công
 
                     }
                     else
                     {
-                        UpdateNcdWhoStatus(data.ID, 2, "Gửi dữ liệu lên cổng thất bại");
+                        this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(ApiConsumers.Partner, null, "Gửi dữ liệu lên cổng thất bại");
+                        UpdateNcdWhoStatus(data.ID, 2, this.LastErrorMessage);
                     }
                 }
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Error("Đăng nhập thất bại!");
-                    UpdateNcdWhoStatus(data.ID, 2, "Đăng nhập thất bại");
+                    // vCong 62522: dang nhap that bai -> thiet lap tai khoan cong WHO CND
+                    this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(ApiConsumers.Partner,
+                        "Đăng nhập thất bại" + (Utilities.NCDToken != null ? string.Format(" (httpStatus: {0} {1})", Utilities.NCDToken.httpStatusCode, Utilities.NCDToken.httpStatus) : ""));
+                    UpdateNcdWhoStatus(data.ID, 2, this.LastErrorMessage);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                UpdateNcdWhoStatus(data.ID, 2, ex.Message);
-                
+                this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, ApiConsumers.Partner, "gửi dữ liệu lên cổng WHO CND");
+                UpdateNcdWhoStatus(data.ID, 2, this.LastErrorMessage);
+
             }
         }
 
@@ -512,7 +524,8 @@ namespace HIS.Desktop.Plugins.Library.ConnectWhoCnd
                 {
                     TreatmentId = treatmentId,
                     NcdWhoResult = ncdWhoResult,
-                    NcdWhoDescription = description
+                    // vCong 62522: HIS_TREATMENT.NCD_WHO_DESCRIPTION VARCHAR2(2000 BYTE) -> ban rut gon giu nguon loi + chi tiet
+                    NcdWhoDescription = Inventec.Common.IntegrationError.IntegrationErrorMessage.ToShort(description, 2000)
                 };
                 CommonParam param = new CommonParam();
                 var apiResult = new Inventec.Common.Adapter.BackendAdapter(param)

@@ -1194,6 +1194,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         {
             try
             {
+                if (!IsAllowUnfinishUnstartCls(serviceReqInput))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Tài khoản không có quyền hủy bắt đầu y lệnh cận lâm sàng.", Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK);
+                    return;
+                }
                 this.currentHisServiceReq = (HIS.Desktop.Plugins.ExecuteRoom.ADO.ServiceReqADO)gridViewServiceReq.GetFocusedRow();
                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentHisServiceReq), currentHisServiceReq));
                 if (serviceReqInput != null)

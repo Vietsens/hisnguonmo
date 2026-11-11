@@ -807,18 +807,29 @@ namespace LIS.Desktop.Plugins.LisSampleList.Run
                             ado.account = account;
                             ado.password = password;
                             string textJson = JsonConvert.SerializeObject(ado);
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inforData), inforData));
-                            Inventec.Common.Logging.LogSystem.Debug("_____textJson : " + textJson);
+                            // vCong 62522: khong log tai khoan/mat khau/khoa/token (truoc day log ca inforData, textJson, headervalue)
+                            Inventec.Common.Logging.LogSystem.Debug("_____requestURL : " + requestURL + ", account: " + account);
 
                             string headervalue = Base.Utils.Encrypt(textJson, publicKey);
-                            Inventec.Common.Logging.LogSystem.Info("_____headervalue : " + headervalue);
                             HttpWebResponse webResponse = FormUpload.MultipartFormPost(requestURL, userAgent, postParameters, headerkey, headervalue);
+                            if (webResponse == null)
+                                throw Inventec.Common.IntegrationError.IntegrationHttpError.NoResponse(FormUpload.Partner, "gửi kết quả xét nghiệm");
                             // Process response  
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => webResponse), webResponse));
                             StreamReader responseReader = new StreamReader(webResponse.GetResponseStream());
                             string res = responseReader.ReadToEnd();
                             webResponse.Close();
-                            var resultJSON = JsonConvert.DeserializeObject<ADO.LisSampleResult>(res);
+                            ADO.LisSampleResult resultJSON = null;
+                            try
+                            {
+                                resultJSON = JsonConvert.DeserializeObject<ADO.LisSampleResult>(res);
+                            }
+                            catch (Exception exParse)
+                            {
+                                throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(FormUpload.Partner, requestURL, res, exParse);
+                            }
+                            if (resultJSON == null)
+                                throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(FormUpload.Partner, requestURL, res, null);
                             WaitingManager.Hide();
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => res), res));
                            
@@ -841,7 +852,8 @@ namespace LIS.Desktop.Plugins.LisSampleList.Run
                             }
                             else
                             {
-                                XtraMessageBox.Show("Mã: " + resultJSON.code + ", " + resultJSON.message,"Thông báo");
+                                // vCong 62522: doi tac tra ma loi -> ghi ro nguon
+                                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(FormUpload.Partner, "Mã: " + resultJSON.code + ", " + resultJSON.message, "Gửi kết quả xét nghiệm thất bại"), "Thông báo");
                                 return;
                             }
 
@@ -849,13 +861,13 @@ namespace LIS.Desktop.Plugins.LisSampleList.Run
                     }
                     else
                     {
-                        XtraMessageBox.Show("Cấu hình hệ thống LIS.Desktop.Plugins.LisSampleList.ConnectionInfo khai báo không chính xác. vui lòng kiểm tra lại");
+                        XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(FormUpload.Partner, "Cấu hình hệ thống LIS.Desktop.Plugins.LisSampleList.ConnectionInfo khai báo không chính xác (định dạng: địa chỉ|tài khoản|mật khẩu|khóa công khai). Vui lòng kiểm tra lại"));
                         return;
                     }
                 }
                 else
                 {
-                    XtraMessageBox.Show("Cấu hình hệ thống LIS.Desktop.Plugins.LisSampleList.ConnectionInfo khai báo không chính xác. vui lòng kiểm tra lại");
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(FormUpload.Partner, "Cấu hình hệ thống LIS.Desktop.Plugins.LisSampleList.ConnectionInfo khai báo không chính xác (định dạng: địa chỉ|tài khoản|mật khẩu|khóa công khai). Vui lòng kiểm tra lại"));
                     return;
                 }
             }
@@ -863,6 +875,8 @@ namespace LIS.Desktop.Plugins.LisSampleList.Run
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // vCong 62522: bao loi co nguon thay vi im lang
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, FormUpload.Partner, "gửi kết quả xét nghiệm"), "Thông báo");
             }
             finally
             {

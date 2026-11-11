@@ -100,6 +100,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.btnDebtCollection = new DevExpress.XtraEditors.SimpleButton();
             this.btnDebtClose = new DevExpress.XtraEditors.SimpleButton();
             this.txtInCode = new DevExpress.XtraEditors.TextEdit();
+            this.txtHeinCardNumber = new DevExpress.XtraEditors.TextEdit();
             this.chkIsInDebt = new DevExpress.XtraEditors.CheckEdit();
             this.btnBillNotKC = new DevExpress.XtraEditors.SimpleButton();
             this.btnOtherPayment = new DevExpress.XtraEditors.SimpleButton();
@@ -273,6 +274,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciChkIsInDebt = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciHeinCardNumber = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDebtClose = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDebtCollection = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciChkHasBenefit = new DevExpress.XtraLayout.LayoutControlItem();
@@ -285,6 +287,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkHasBenefit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtInCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHeinCardNumber.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsInDebt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboPatientType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
@@ -404,6 +407,7 @@ namespace HIS.Desktop.Plugins.Transaction
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciChkIsInDebt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHeinCardNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDebtClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDebtCollection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciChkHasBenefit)).BeginInit();
@@ -418,6 +422,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.layoutControl1.Controls.Add(this.btnDebtCollection);
             this.layoutControl1.Controls.Add(this.btnDebtClose);
             this.layoutControl1.Controls.Add(this.txtInCode);
+            this.layoutControl1.Controls.Add(this.txtHeinCardNumber);
             this.layoutControl1.Controls.Add(this.chkIsInDebt);
             this.layoutControl1.Controls.Add(this.btnBillNotKC);
             this.layoutControl1.Controls.Add(this.btnOtherPayment);
@@ -494,15 +499,27 @@ namespace HIS.Desktop.Plugins.Transaction
             // 
             // txtInCode
             // 
-            this.txtInCode.Location = new System.Drawing.Point(166, 74);
+            this.txtInCode.Location = new System.Drawing.Point(138, 74);
             this.txtInCode.Name = "txtInCode";
             this.txtInCode.Properties.NullValuePrompt = "Số vào viện";
             this.txtInCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtInCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtInCode.Size = new System.Drawing.Size(54, 20);
+            this.txtInCode.Size = new System.Drawing.Size(46, 20);
             this.txtInCode.StyleController = this.layoutControl1;
             this.txtInCode.TabIndex = 44;
             this.txtInCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtInCode_PreviewKeyDown);
+            //
+            // txtHeinCardNumber
+            //
+            this.txtHeinCardNumber.Location = new System.Drawing.Point(188, 74);
+            this.txtHeinCardNumber.Name = "txtHeinCardNumber";
+            this.txtHeinCardNumber.Properties.NullValuePrompt = "Số thẻ BHYT";
+            this.txtHeinCardNumber.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtHeinCardNumber.Properties.ShowNullValuePromptWhenFocused = true;
+            this.txtHeinCardNumber.Size = new System.Drawing.Size(48, 20);
+            this.txtHeinCardNumber.StyleController = this.layoutControl1;
+            this.txtHeinCardNumber.TabIndex = 46;
+            this.txtHeinCardNumber.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtHeinCardNumber_PreviewKeyDown);
             // 
             // chkIsInDebt
             // 
@@ -593,13 +610,13 @@ namespace HIS.Desktop.Plugins.Transaction
             // 
             // txtFindPatientCode
             // 
-            this.txtFindPatientCode.Location = new System.Drawing.Point(84, 74);
+            this.txtFindPatientCode.Location = new System.Drawing.Point(70, 74);
             this.txtFindPatientCode.Name = "txtFindPatientCode";
             this.txtFindPatientCode.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtFindPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân (F3)";
             this.txtFindPatientCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtFindPatientCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtFindPatientCode.Size = new System.Drawing.Size(78, 20);
+            this.txtFindPatientCode.Size = new System.Drawing.Size(64, 20);
             this.txtFindPatientCode.StyleController = this.layoutControl1;
             this.txtFindPatientCode.TabIndex = 35;
             this.txtFindPatientCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFindPatientCode_KeyPress);
@@ -2108,7 +2125,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.txtFindTreatmentCode.Properties.NullValuePrompt = "Mã điều trị (F2)";
             this.txtFindTreatmentCode.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtFindTreatmentCode.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtFindTreatmentCode.Size = new System.Drawing.Size(78, 20);
+            this.txtFindTreatmentCode.Size = new System.Drawing.Size(64, 20);
             this.txtFindTreatmentCode.StyleController = this.layoutControl1;
             this.txtFindTreatmentCode.TabIndex = 6;
             this.txtFindTreatmentCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFindTreatmentCode_KeyPress);
@@ -2198,12 +2215,12 @@ namespace HIS.Desktop.Plugins.Transaction
             // 
             // txtKeyword
             // 
-            this.txtKeyword.Location = new System.Drawing.Point(224, 74);
+            this.txtKeyword.Location = new System.Drawing.Point(240, 74);
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeyword.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtKeyword.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtKeyword.Size = new System.Drawing.Size(56, 20);
+            this.txtKeyword.Size = new System.Drawing.Size(40, 20);
             this.txtKeyword.StyleController = this.layoutControl1;
             this.txtKeyword.TabIndex = 7;
             this.txtKeyword.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtKeyword_PreviewKeyDown);
@@ -2289,6 +2306,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.layoutControlItem9,
             this.lciChkIsInDebt,
             this.layoutControlItem39,
+            this.lciHeinCardNumber,
             this.lciDebtClose,
             this.lciDebtCollection,
             this.lciChkHasBenefit});
@@ -2301,9 +2319,9 @@ namespace HIS.Desktop.Plugins.Transaction
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.txtKeyword;
-            this.layoutControlItem3.Location = new System.Drawing.Point(222, 72);
+            this.layoutControlItem3.Location = new System.Drawing.Point(238, 72);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(60, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(44, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -2373,7 +2391,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.layoutControlItem18.Control = this.txtFindTreatmentCode;
             this.layoutControlItem18.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(82, 26);
+            this.layoutControlItem18.Size = new System.Drawing.Size(68, 26);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
             // 
@@ -2556,9 +2574,9 @@ namespace HIS.Desktop.Plugins.Transaction
             // layoutControlItem26
             // 
             this.layoutControlItem26.Control = this.txtFindPatientCode;
-            this.layoutControlItem26.Location = new System.Drawing.Point(82, 72);
+            this.layoutControlItem26.Location = new System.Drawing.Point(68, 72);
             this.layoutControlItem26.Name = "layoutControlItem26";
-            this.layoutControlItem26.Size = new System.Drawing.Size(82, 26);
+            this.layoutControlItem26.Size = new System.Drawing.Size(68, 26);
             this.layoutControlItem26.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem26.TextVisible = false;
             // 
@@ -2685,11 +2703,20 @@ namespace HIS.Desktop.Plugins.Transaction
             // layoutControlItem39
             // 
             this.layoutControlItem39.Control = this.txtInCode;
-            this.layoutControlItem39.Location = new System.Drawing.Point(164, 72);
+            this.layoutControlItem39.Location = new System.Drawing.Point(136, 72);
             this.layoutControlItem39.Name = "layoutControlItem39";
-            this.layoutControlItem39.Size = new System.Drawing.Size(58, 26);
+            this.layoutControlItem39.Size = new System.Drawing.Size(50, 26);
             this.layoutControlItem39.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem39.TextVisible = false;
+            // 
+            // lciHeinCardNumber
+            // 
+            this.lciHeinCardNumber.Control = this.txtHeinCardNumber;
+            this.lciHeinCardNumber.Location = new System.Drawing.Point(186, 72);
+            this.lciHeinCardNumber.Name = "lciHeinCardNumber";
+            this.lciHeinCardNumber.Size = new System.Drawing.Size(52, 26);
+            this.lciHeinCardNumber.TextSize = new System.Drawing.Size(0, 0);
+            this.lciHeinCardNumber.TextVisible = false;
             // 
             // lciDebtClose
             // 
@@ -2775,6 +2802,7 @@ namespace HIS.Desktop.Plugins.Transaction
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkHasBenefit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtInCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHeinCardNumber.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsInDebt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CboPatientType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
@@ -2894,6 +2922,7 @@ namespace HIS.Desktop.Plugins.Transaction
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciChkIsInDebt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHeinCardNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDebtClose)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDebtCollection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciChkHasBenefit)).EndInit();
@@ -3063,6 +3092,8 @@ namespace HIS.Desktop.Plugins.Transaction
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem38;
 		private DevExpress.XtraEditors.TextEdit txtInCode;
 		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
+		private DevExpress.XtraEditors.TextEdit txtHeinCardNumber;
+		private DevExpress.XtraLayout.LayoutControlItem lciHeinCardNumber;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Treatment_PatientPhone;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Treatment_MilitaryRank;
 		private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Treatment_WorkPlaceName;

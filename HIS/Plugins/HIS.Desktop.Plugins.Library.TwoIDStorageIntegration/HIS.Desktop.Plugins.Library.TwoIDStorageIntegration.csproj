@@ -44,6 +44,9 @@
     <Reference Include="IMSys.DbConfig.EMR_RS">
       <HintPath>..\..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.EMR_RS\IMSys.DbConfig.EMR_RS.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.IntegrationError">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\Integrate\UpdateAup\Lib\Inventec.Common.Logging.dll</HintPath>
     </Reference>

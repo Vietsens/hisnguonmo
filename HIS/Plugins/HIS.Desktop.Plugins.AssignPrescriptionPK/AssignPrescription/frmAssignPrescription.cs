@@ -3831,6 +3831,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
         }
 
+        /// <summary>vCong 62522: lỗi kiểm tra tương tác thuốc đã báo, không báo lặp lại mỗi lần thêm thuốc.</summary>
+        private string drugInterventionErrorShown;
+
         private bool CheckMediMatyType(List<MediMatyTypeADO> LstMediMatyTypeADO)
         {
             try
@@ -3874,6 +3877,12 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                     HIS.Desktop.Plugins.Library.DrugInterventionInfo.DrugInterventionInfoProcessor checkData = new Library.DrugInterventionInfo.DrugInterventionInfoProcessor(HisConfigCFG.ConnectionInfo, VHistreatment);
                     HIS.Desktop.Plugins.Library.DrugInterventionInfo.ADO.OutputResultADO result = checkData.CheckPrescription(InputCheckData);
+                    if (result == null && !String.IsNullOrEmpty(checkData.LastErrorMessage) && checkData.LastErrorMessage != this.drugInterventionErrorShown)
+                    {
+                        // vCong 62522: khong kiem tra duoc -> bao nguon loi (van cho ke tiep nhu truoc)
+                        this.drugInterventionErrorShown = checkData.LastErrorMessage;
+                        MessageBox.Show("Không kiểm tra được tương tác thuốc, vẫn tiếp tục kê đơn.\n" + checkData.LastErrorMessage, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
 
                     if (result != null && result.AlertLevel == Library.DrugInterventionInfo.ADO.AlertSeverityLevel.Contraindicated)
                     {

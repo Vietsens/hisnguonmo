@@ -549,4 +549,70 @@ Unchecked records are blocked as well because they cannot be confirmed error-fre
   <data name="Xml48hLyDoRaVienTruoc48h" xml:space="preserve">
     <value>Already discharged - the 48-hour XML is only for records still in treatment</value>
   </data>
+  <data name="CardInfoCotCanhBao" xml:space="preserve">
+    <value>Card/record warning</value>
+  </data>
+  <data name="CardInfoHoiTiepTuc" xml:space="preserve">
+    <value>{0}/{1} records have missing or invalid card or main record information (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD, GT_THE_TU, GT_THE_DEN), the health insurance portal may reject them. Do you want to continue? Choose No to view the list and fix them first.</value>
+  </data>
+  <data name="CardInfoTieuDeCuaSo" xml:space="preserve">
+    <value>Missing/invalid card and main record information (XML1)</value>
+  </data>
+  <data name="CardInfoTongKet" xml:space="preserve">
+    <value>Checked {0} records: {1} records have missing or invalid card or main record information.</value>
+  </data>
+  <data name="CardInfoTenTepMacDinh" xml:space="preserve">
+    <value>DanhSachCanhBaoTheHoSo_{0}.xlsx</value>
+  </data>
+  <data name="CardInfoTrangThai" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="CardInfoMucDo" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="CardInfoNhomThe" xml:space="preserve">
+    <value>Health insurance card</value>
+  </data>
+  <data name="CardInfoNhomHoSo" xml:space="preserve">
+    <value>Record information</value>
+  </data>
+  <data name="CardInfoThieuCccd" xml:space="preserve">
+    <value>Missing citizen ID / personal identification number</value>
+  </data>
+  <data name="CardInfoCccdSaiDoDai" xml:space="preserve">
+    <value>Citizen ID &quot;{0}&quot; has {1} digits, it must have 12 digits (old ID card: 9 digits)</value>
+  </data>
+  <data name="CardInfoCccdKyTuLa" xml:space="preserve">
+    <value>Citizen ID &quot;{0}&quot; contains spaces or characters other than letters and digits</value>
+  </data>
+  <data name="CardInfoNgaySinhKhongHopLe" xml:space="preserve">
+    <value>Missing or invalid date of birth</value>
+  </data>
+  <data name="CardInfoThieuMaThe" xml:space="preserve">
+    <value>Health insurance record has no card number</value>
+  </data>
+  <data name="CardInfoMaTheSaiDoDai" xml:space="preserve">
+    <value>Card number &quot;{0}&quot; has {1} characters, it must have 15 characters (new card format: 17 characters)</value>
+  </data>
+  <data name="CardInfoThieuNoiDkbd" xml:space="preserve">
+    <value>Card {0}: missing initial registration facility code</value>
+  </data>
+  <data name="CardInfoNoiDkbdSaiDoDai" xml:space="preserve">
+    <value>Card {0}: initial registration facility code &quot;{1}&quot; has {2} characters, it must have 5 characters</value>
+  </data>
+  <data name="CardInfoThieuGtTheTu" xml:space="preserve">
+    <value>Card {0}: missing valid-from date</value>
+  </data>
+  <data name="CardInfoThieuGtTheDen" xml:space="preserve">
+    <value>Card {0}: missing valid-to date</value>
+  </data>
+  <data name="CardInfoMaTheKyTuLa" xml:space="preserve">
+    <value>Card number &quot;{0}&quot; contains spaces or characters other than letters and digits</value>
+  </data>
+  <data name="CardInfoChanXuatGui" xml:space="preserve">
+    <value>{0}/{1} records have missing or invalid card or main record information (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD, GT_THE_TU, GT_THE_DEN). By hospital configuration, exporting/sending XML is not allowed while such records remain. Please fix the information or deselect these records and try again.</value>
+  </data>
+  <data name="XmlDangDieuTriThuVienChuaHoTro" xml:space="preserve">
+    <value>The His.Bhyt.ExportXml.XML130 library on this computer does not support exporting XML for records still in treatment (update the library to the 28/10/2026 build or later)</value>
+  </data>
 </root>

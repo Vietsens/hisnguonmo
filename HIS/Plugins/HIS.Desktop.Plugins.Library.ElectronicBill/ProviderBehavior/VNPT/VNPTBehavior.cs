@@ -504,13 +504,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                             }
                             else
                             {
-                                ElectronicBillResultUtil.Set(ref result, false, billResult1 != null ? billResult1.Messages : null);
+                                ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNPT, billResult1 != null && billResult1.Messages != null ? string.Join(". ", billResult1.Messages) : null, "Gửi thông tin hóa đơn điện tử thất bại");
                                 LogSystem.Error("Gui thong tin hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => billResult1), billResult1) + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => electronicBillInput.invoices), electronicBillInput.invoices));
                             }
                         }
                         else
                         {
-                            ElectronicBillResultUtil.Set(ref result, false, billResult != null ? billResult.Messages : null);
+                            ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.VNPT, billResult != null && billResult.Messages != null ? string.Join(". ", billResult.Messages) : null, "Gửi thông tin hóa đơn điện tử thất bại");
                             LogSystem.Error("Gui thong tin hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => billResult), billResult) + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => electronicBillInput.invoices), electronicBillInput.invoices));
                         }
                     }
@@ -518,7 +518,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
             }
             catch (Exception ex)
             {
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.VNPT);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
@@ -675,6 +675,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetCmdType)");
             }
             return result;
         }
@@ -720,7 +721,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.VNPT);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
@@ -750,6 +751,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (BillDataToXmlData)");
             }
             return result;
         }

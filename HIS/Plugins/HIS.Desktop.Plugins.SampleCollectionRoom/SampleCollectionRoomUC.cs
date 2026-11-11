@@ -1546,11 +1546,13 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     if (!success)
                     {
                         LogSystem.Error("In barcode Bartender that bai. Check log BartenderPrint");
+                        DevExpress.XtraEditors.XtraMessageBox.Show(client.LastErrorMessage ?? "In tem barcode thất bại", "Thông báo"); // vCong 62522
                     }
                 }
                 else
                 {
                     LogSystem.Warn("Khong mo duoc APP Print Bartender");
+                    DevExpress.XtraEditors.XtraMessageBox.Show(Bartender.PrintClient.BartenderPrintClientManager.BuildOpenAppErrorMessage(), "Thông báo"); // vCong 62522
                 }
                 txtSearchKey.Focus();
                 txtSearchKey.SelectAll();
@@ -1560,6 +1562,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                DevExpress.XtraEditors.XtraMessageBox.Show(Bartender.PrintClient.BartenderPrintClientManager.BuildErrorMessage(ex), "Thông báo"); // vCong 62522
             }
         }
 

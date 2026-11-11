@@ -240,9 +240,13 @@ namespace HIS.Desktop.Plugins.Library.DrugInterventionInfo
             }
         }
 
+        /// <summary>vCong 62522: thông báo lỗi (đã phân loại nguồn) của lần kiểm tra/gửi gần nhất; null nếu thành công.</summary>
+        public string LastErrorMessage { get; private set; }
+
         public OutputResultADO CheckPrescription(InputCheckDataADO data)
         {
             OutputResultADO result = null;
+            this.LastErrorMessage = null;
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("DrugInterventionInfo.CheckPrescription");
@@ -288,6 +292,7 @@ namespace HIS.Desktop.Plugins.Library.DrugInterventionInfo
                                 if (apiresult == null)
                                 {
                                     Inventec.Common.Logging.LogSystem.Error("needDoctorConfirmation reCheck false");
+                                    this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(ApiConsumer.Partner, "kiểm tra lại đơn thuốc sau khi bác sĩ xác nhận");
                                     return null;
                                 }
                             }
@@ -338,6 +343,8 @@ namespace HIS.Desktop.Plugins.Library.DrugInterventionInfo
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // vCong 62522: luu ly do de man hinh ke don bao cho nguoi dung
+                this.LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, ApiConsumer.Partner, isTemporary ? "kiểm tra tương tác thuốc" : "gửi đơn thuốc");
             }
             return result;
         }

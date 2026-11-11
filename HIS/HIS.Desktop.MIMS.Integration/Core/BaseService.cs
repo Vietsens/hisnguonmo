@@ -213,6 +213,7 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 if (isTimeout || string.IsNullOrEmpty(xmlResponse))
                 {
                     result.Success = false;
+                    result.Message = MimsClient.BuildErrorMessage(); // vCong 62522: ghi ly do vao log tuong tac
                     return result;
                 }
 

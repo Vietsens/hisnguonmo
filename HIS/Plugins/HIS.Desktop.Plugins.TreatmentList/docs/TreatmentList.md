@@ -119,8 +119,10 @@ Hơn 20 thao tác trên từng hồ sơ, gồm:
 ### 4.4 Hợp đồng KSK (Khám sức khỏe định kỳ)
 - In phiếu KSK định kỳ
 - In sổ KSK định kỳ
-- Xuất Excel kết quả KSK
-- In phiếu kết quả CLSKSK
+- Xuất Excel kết quả KSK — mỗi phần khám (thể lực, tuần hoàn, hô hấp, tiêu hóa, nội tiết, cơ xương khớp, thần kinh, tâm thần, da liễu, thận tiết niệu, ngoại khoa, sản, mắt, tai mũi họng, răng hàm mặt) có thêm cột **"Phân loại …"** ngay sau cột nội dung. Giá trị = tên `HIS_HEALTH_EXAM_RANK` của cột `*_RANK` (đúng các combo "Phân loại" ở EnterKskInfomantionVer2), lấy theo bản ghi khám theo loại KSK (trên-18 / dưới-18 / nghề nghiệp …), thiếu thì rơi về `HIS_KSK_GENERAL`. Dưới-18 dùng `EXAM_NEURO_MENTAL_RANK` cho cả Thần kinh và Tâm thần; lái xe dùng `EXAM_CARDIOVASCULAR_RANK` / `EXAM_MATERNITY_RANK` cho Tuần hoàn / Sản.
+  - Kết quả chi tiết (cùng nguồn bản ghi khám, fallback `HIS_KSK_GENERAL`): **Mắt** — thị lực không kính / có kính mắt phải-trái (`EXAM_EYESIGHT_RIGHT/LEFT`, `EXAM_EYESIGHT_GLASS_RIGHT/LEFT`), các bệnh về mắt (`EXAM_EYE_DISEASE`); **Tai mũi họng** — nói thường / nói thầm tai phải-trái (`EXAM_ENT_RIGHT/LEFT_NORMAL`, `EXAM_ENT_RIGHT/LEFT_WHISPER`), các bệnh TMH (`EXAM_ENT_DISEASE`); **Răng hàm mặt** — hàm trên, hàm dưới, các bệnh RHM (`EXAM_STOMATOLOGY_UPPER/LOWER/DISEASE`).
+  - Kết luận lấy từ **y lệnh khám** (`SERVICE_REQ_TYPE_ID = ID__KH`, y lệnh mới nhất có giá trị): "Kết luận khám lâm sàng" = `CONCLUSION_CLINICAL`, "Kết luận khám" = `EXAM_CONCLUSION`, "Kết luận chung" = `CONCLUSION`. Riêng phiếu **KSK trên 18 tuổi** ưu tiên: "Kết luận khám" = ô Kết quả mục *KHÁM SỨC KHỎE ĐỊNH KỲ* (tab Khám cận lâm sàng, `HIS_KSK_OVER_EIGHTEEN.PERIODIC_CLS_RESULT`); "Kết luận chung" = ô *Mô tả* tab Kết luận (`HIS_KSK_OVER_EIGHTEEN.HEALTH_EXAM_RANK_DESCRIPTION`) — rỗng mới lấy y lệnh khám. Dữ liệu KSK (`api/HisKskSync/GetKskData`) gọi theo y lệnh khám sớm nhất.
+- In phiếu kết quả CLSKSK (`Mps000481`) — ngoài mẫu cũ có thêm mẫu **"Hồ sơ sức khỏe.xlsx"**: thông tin khách hàng, thể lực (DHST), tiền sử bản thân/gia đình, bảng xét nghiệm theo loại XN (STT, kết quả, đơn vị, khoảng bình thường, kết quả bất thường in đậm xanh), CĐHA & TDCN (kết luận), PTTT, kết luận + phân loại sức khỏe, hướng giải quyết, ngày và bác sĩ kết luận.
 
 ### 4.5 Form đặc biệt
 | Form | Mục đích |
@@ -200,6 +202,27 @@ Hỗ trợ ba ngôn ngữ: **Tiếng Việt** (`vi`), **English** (`en`), **Myan
 | `PRINT_TYPE_CODE__BIEUMAU__THE_BENH_NHAN__MPS000178` | `Mps000178` | Thẻ bệnh nhân |
 | `PRINT_TYPE_CODE__IN_GIAY_HEN_MO__Mps000389` | `Mps000389` | Giấy hẹn mổ |
 | `PRINT_TYPE_CODE__MPS000399` | `Mps000399` | (Biểu mẫu bổ sung) |
+| `"Mps000481"` (nút In KSK) | `Mps000481` | Phiếu kết quả CLS khám sức khỏe — 2 mẫu: `Phiếu kết quả CLS khám sức khỏe.xlsx` (cũ), `Hồ sơ sức khỏe.xlsx` (mới) |
+
+**Mps000481 — dữ liệu cho mẫu "Hồ sơ sức khỏe"** (PDO thêm thuộc tính tùy chọn, mẫu cũ không bị ảnh hưởng):
+
+| PDO | Nguồn ở TreatmentList |
+|-----|----------------------|
+| `Dhsts` | `api/HisDhst/GetView` theo `TREATMENT_IDs` (toàn bộ; processor chọn theo `DHST_ID` phần khám KSK → y lệnh khám → bản mới nhất) |
+| `TestIndexRanges` | `BackendDataWorker.Get<V_HIS_TEST_INDEX_RANGE>()` — chọn theo mã chỉ số + tuổi (AGE_TYPE) + giới tính như Mps000096 |
+| `TestTypes` | `api/HisTestType/Get` — tên nhóm "Xét nghiệm {TEST_TYPE_NAME}" |
+
+| Band / key template | Nội dung |
+|------|---------|
+| `listTreatment.AGE_STR, PATIENT_PHONE_STR, WORK_PLACE_DISPLAY, EXAM_DATE_STR` | Hành chính |
+| `listTreatment.HEIGHT_STR, WEIGHT_STR, BMI_STR, BLOOD_PRESSURE_STR, PULSE_STR, TEMPERATURE_STR, BREATH_RATE_STR` | Thể lực |
+| `listTreatment.PATHOLOGICAL_HISTORY, PATHOLOGICAL_HISTORY_FAMILY` | Tiền sử (trên-18 → y lệnh khám → khám chung) |
+| `listTreatment.CONCLUDER_USERNAME, CONCLUSION_DAY/MONTH/YEAR` | Bác sĩ/ngày kết luận (CONCLUDER của mẫu KSK → y lệnh khám) |
+| `listXetNghiemNhom` → `listXetNghiem` (quan hệ `GROUP_KEY`) | `GROUP_NAME`; dòng `STT, NAME, VALUE, UNIT, NORMAL_RANGE, NOTE, IS_ABNORMAL, ABNORMAL_FLAG (H/L)`. DV 1 chỉ số = 1 dòng; DV nhiều chỉ số = dòng cha + chỉ số con thụt lề |
+| `listCdhaTdcn` | Siêu âm → CĐHA → Nội soi → TDCN: `STT, SERVICE_NAME, RESULT (CONCLUDE), NOTE` |
+| `listPttt` | Phẫu thuật, thủ thuật: `STT, SERVICE_NAME, RESULT` |
+
+Kết quả bất thường dùng `<#format cell(<#if(<#listXetNghiem.IS_ABNORMAL>=1;"ABNORMAL";"NORMAL")>)>` — 2 format khai báo ở sheet `<#Config>` (cột H/I dòng 10–11). Conditional formatting của Excel bị FlexCel bỏ qua, không dùng được.
 
 ---
 
@@ -268,4 +291,7 @@ Hỗ trợ ba ngôn ngữ: **Tiếng Việt** (`vi`), **English** (`en`), **Myan
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 10/11/2026 | vuongnd | Xuất Excel KQ KSK: "Kết luận khám" lấy ô Kết quả mục KHÁM SỨC KHỎE ĐỊNH KỲ (`PERIODIC_CLS_RESULT`), "Kết luận chung" lấy ô Mô tả tab Kết luận (`HEALTH_EXAM_RANK_DESCRIPTION`) của phiếu KSK trên 18 tuổi; phiếu khác giữ nguồn y lệnh khám. |
+| 09/11/2026 | vuongnd | Xuất Excel KQ KSK: thêm 13 cột kết quả chi tiết Mắt / Tai mũi họng / Răng hàm mặt (số đo + bệnh) và cột "Kết luận khám lâm sàng" (`CONCLUSION_CLINICAL`). Sửa lỗi "Kết luận khám" / "Kết luận chung" thường trống do lấy y lệnh mới nhất thuộc mọi loại (XN/CĐHA) — nay lấy từ y lệnh khám; `GetKskData` cũng gọi theo y lệnh khám. |
+| 06/11/2026 | vuongnd | Nút In KSK: (1) Xuất Excel KQ KSK thêm 15 cột "Phân loại …" cho từng phần khám (`ExcellDataADO.FillSectionRankNames`); (2) In phiếu kết quả CLS KSK (Mps000481) thêm mẫu "Hồ sơ sức khỏe.xlsx" theo mẫu BV Hùng Vương Gia Lai — TreatmentList lấy thêm DHST, `HIS_TEST_TYPE`, `V_HIS_TEST_INDEX_RANGE`; processor thêm `Mps000481Processor__HoSoSucKhoe.cs`, PDO thêm `Mps000481PDO__HoSoSucKhoe.cs`. |
 | 30/06/2026 | nampp | Thêm menu chuột phải "Gửi Giấy chuyển viện qua EMRTOOLKIT (Test)" — gọi thư viện mới `HIS.Desktop.Plugins.Library.EmrToolkitImport`. Thêm `UCTreatmentList___EmrToolkit.cs` (handler + dựng JSON mẫu), `ItemType.GuiGiayChuyenVienEmrToolkit` trong `PopupMenuProcessor`, ProjectReference tới thư viện. |

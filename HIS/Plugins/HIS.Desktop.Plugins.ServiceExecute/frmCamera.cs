@@ -676,6 +676,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             {
                                 XtraMessageBox.Show(this, result.Results, "Thông báo", DevExpress.Utils.DefaultBoolean.True);
                             }
+                            else if (!string.IsNullOrEmpty(UCServiceExecute.LastAiErrorMessage))
+                            {
+                                XtraMessageBox.Show(this, UCServiceExecute.LastAiErrorMessage, "Thông báo", DevExpress.Utils.DefaultBoolean.True); // vCong 62522
+                            }
                             break;
                         default:
                             break;
@@ -731,12 +735,21 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         {
                             XtraMessageBox.Show(this, result.Results, "Thông báo", DevExpress.Utils.DefaultBoolean.True);
                         }
+                        else if (!string.IsNullOrEmpty(this.lastAiErrorMessage))
+                        {
+                            XtraMessageBox.Show(this, this.lastAiErrorMessage, "Thông báo", DevExpress.Utils.DefaultBoolean.True); // vCong 62522
+                        }
+                    }
+                    else
+                    {
+                        XtraMessageBox.Show(this, Base.AiImageRequestHelper.MissingConfigMessage, "Thông báo", DevExpress.Utils.DefaultBoolean.True); // vCong 62522
                     }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                XtraMessageBox.Show(this, Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Base.AiImageRequestHelper.Partner, "phân tích hình ảnh y khoa"), "Thông báo", DevExpress.Utils.DefaultBoolean.True);
             }
         }
         static string ConvertStreamToBase64(Stream stream)
@@ -748,66 +761,23 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 return "data:image/jpeg;base64," + Convert.ToBase64String(bytes);
             }
         }
+        /// <summary>vCong 62522: lỗi gần nhất khi gọi dịch vụ AI phân tích hình ảnh.</summary>
+        private string lastAiErrorMessage;
+
         public T CreateRequest<T>(string requestUri, Dictionary<string, object> sendData)
         {
+            this.lastAiErrorMessage = null;
             T data = default(T);
             try
             {
 
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                using (var client = new HttpClient())
-                {
-                    string fullrequestUri = requestUri;
-                    
-                    client.BaseAddress = new Uri(requestUri);
-                    client.Timeout = new TimeSpan(0, 5, 0);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    var stringPayload = JsonConvert.SerializeObject(sendData);
-                    var content = new StringContent(stringPayload, Encoding.UTF8, "application/json");
-                   
-
-                    HttpResponseMessage resp = null;
-                    try
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug("_____sendJsonData : " + stringPayload);
-                        resp = client.PostAsync(fullrequestUri, content).Result;
-                    }
-                    catch (HttpRequestException ex)
-                    {
-                        throw new Exception("Lỗi kết nối đến");
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
-                    if (resp == null || !resp.IsSuccessStatusCode)
-                    {
-                        int statusCode = resp.StatusCode.GetHashCode();
-                        if (resp.Content != null)
-                        {
-                            try
-                            {
-                                string errorData = resp.Content.ReadAsStringAsync().Result;
-                                Inventec.Common.Logging.LogSystem.Error("errorData: " + errorData);
-                            }
-                            catch { }
-                        }
-
-                        throw new Exception(string.Format(" trả về thông tin lỗi. Mã lỗi: {0}", statusCode));
-                    }
-                    string responseData = resp.Content.ReadAsStringAsync().Result;
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => responseData), responseData));
-                    data = JsonConvert.DeserializeObject<T>(responseData);
-                    if (data == null)
-                    {
-                        throw new Exception("Dữ liệu trả về không đúng");
-                    }
-                }
+                // vCong 62522: loi mang nguon (ket noi / dich vu AI tra loi / cau hinh dia chi)
+                data = Base.AiImageRequestHelper.Post<T>(requestUri, sendData);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                this.lastAiErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Base.AiImageRequestHelper.Partner, "phân tích hình ảnh y khoa");
             }
 
             return data;

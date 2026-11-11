@@ -146,6 +146,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         /// Dat trong CheckPaylaterFee_ForSave, gui len backend qua HisTreatmentFinishSDO.
         /// </summary>
         bool isConfirmedPaylaterDebt = false;
+        bool isConfirmedPayBeforeFinishDebt = false;
 
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -3381,8 +3382,26 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 //Chi gan o luong luu that, khong gan o luong luu tam.
                 hisTreatmentFinishSDO.IsConfirmedPaylaterDebt = this.isConfirmedPaylaterDebt;
 
+                //Moi lan bam Luu deu hoi lai tu dau, khong dung lai xac nhan cua lan truoc.
+                this.isConfirmedPayBeforeFinishDebt = false;
+                hisTreatmentFinishSDO.IsConfirmedPayBeforeFinishDebt = false;
+
                 CommonParam param = new CommonParam();
                 SaveTreatmentFinish(hisTreatmentFinishSDO, ref success, ref param);
+
+                //Khoa dat muc canh bao: Backend giu lai thao tac va tra ve cau canh bao.
+                //Hoi nguoi dung, dong y thi gui lai dung ho so do kem co xac nhan.
+                if (!success && PayBeforeFinishConfirm.IsNeedConfirm(param))
+                {
+                    if (PayBeforeFinishConfirm.Confirm(param))
+                    {
+                        this.isConfirmedPayBeforeFinishDebt = true;
+                        hisTreatmentFinishSDO.IsConfirmedPayBeforeFinishDebt = true;
+                        //Dung lai param da duoc xoa cau canh bao, de thong bao cua lan gui lai van hien duoc
+                        SaveTreatmentFinish(hisTreatmentFinishSDO, ref success, ref param);
+                    }
+                }
+
                 MessageManager.Show(this, param, success);
                 if (success)
                 {

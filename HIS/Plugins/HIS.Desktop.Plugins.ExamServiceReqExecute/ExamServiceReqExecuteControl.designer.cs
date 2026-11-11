@@ -4145,7 +4145,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             0,
             0});
             this.spinBloodPressureMin.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinBloodPressureMin.Size = new System.Drawing.Size(41, 20);
+            this.spinBloodPressureMin.Size = new System.Drawing.Size(27, 20);
             this.spinBloodPressureMin.StyleController = this.layoutControl3;
             this.spinBloodPressureMin.TabIndex = 11;
             this.spinBloodPressureMin.KeyUp += new System.Windows.Forms.KeyEventHandler(this.spinBloodPressureMin_KeyUp);
@@ -4183,7 +4183,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             0,
             0});
             this.spinBloodPressureMax.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinBloodPressureMax.Size = new System.Drawing.Size(18, 20);
+            this.spinBloodPressureMax.Size = new System.Drawing.Size(27, 20);
             this.spinBloodPressureMax.StyleController = this.layoutControl3;
             this.spinBloodPressureMax.TabIndex = 10;
             this.spinBloodPressureMax.KeyUp += new System.Windows.Forms.KeyEventHandler(this.spinBloodPressureMax_KeyUp);
@@ -7367,10 +7367,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.lciBloodPressure.Control = this.spinBloodPressureMax;
             this.lciBloodPressure.Location = new System.Drawing.Point(0, 48);
             this.lciBloodPressure.MaxSize = new System.Drawing.Size(0, 24);
-            this.lciBloodPressure.MinSize = new System.Drawing.Size(100, 24);
+            this.lciBloodPressure.MinSize = new System.Drawing.Size(114, 24);
             this.lciBloodPressure.Name = "lciBloodPressure";
             this.lciBloodPressure.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciBloodPressure.Size = new System.Drawing.Size(105, 24);
+            this.lciBloodPressure.Size = new System.Drawing.Size(114, 24);
             this.lciBloodPressure.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciBloodPressure.Text = "Huyết áp:";
             this.lciBloodPressure.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -7380,12 +7380,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // layoutControlItem51
             // 
             this.layoutControlItem51.Control = this.spinBloodPressureMin;
-            this.layoutControlItem51.Location = new System.Drawing.Point(105, 48);
+            this.layoutControlItem51.Location = new System.Drawing.Point(114, 48);
             this.layoutControlItem51.MaxSize = new System.Drawing.Size(0, 24);
-            this.layoutControlItem51.MinSize = new System.Drawing.Size(30, 24);
+            this.layoutControlItem51.MinSize = new System.Drawing.Size(32, 24);
             this.layoutControlItem51.Name = "layoutControlItem51";
-            this.layoutControlItem51.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem51.Size = new System.Drawing.Size(43, 24);
+            this.layoutControlItem51.Padding = new DevExpress.XtraLayout.Utils.Padding(3, 2, 2, 2);
+            this.layoutControlItem51.Size = new System.Drawing.Size(32, 24);
             this.layoutControlItem51.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem51.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem51.TextVisible = false;

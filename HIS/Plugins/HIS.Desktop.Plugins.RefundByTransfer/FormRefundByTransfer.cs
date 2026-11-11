@@ -551,7 +551,8 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 string data = BankHubProcess.GetAccessToken(this.bankCode);
                 if (string.IsNullOrEmpty(data))
                 {
-                    MessageBox.Show("Không thể kết nối đến hệ thống ngân hàng, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    // (vCong 62522) hiện lý do thật (kết nối / thiết lập / ngân hàng) thay cho "Không thể kết nối đến hệ thống ngân hàng"
+                    BankHubProcess.ShowLastError();
                     return;
                 }
 
@@ -599,6 +600,9 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // (vCong 62522) trước đây chỉ ghi log, người dùng không biết lệnh chi đã gửi hay chưa
+                MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, BankHubProcess.GetPartner(this.bankCode), "tạo lệnh hoàn tiền chuyển khoản"),
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -642,7 +646,8 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     string data = BankHubProcess.GetAccessToken(this.bankCode);
                     if (string.IsNullOrEmpty(data))
                     {
-                        MessageBox.Show("Không thể kết nối đến hệ thống ngân hàng, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        // (vCong 62522) hiện lý do thật thay cho câu chung chung
+                        BankHubProcess.ShowLastError();
                         return;
                     }
                     CommonParam param = new CommonParam();
@@ -664,11 +669,23 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                         if (refresh != null)
                             refresh();
                     }
+                    else if (param.Messages != null && param.Messages.Count > 0)
+                    {
+                        // (vCong 62522) trước đây kiểm tra thất bại không báo gì
+                        MessageManager.Show(this, param, false);
+                    }
+                    else if (bankAccountResultSDO != null && !String.IsNullOrWhiteSpace(bankAccountResultSDO.Message))
+                    {
+                        MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(BankHubProcess.GetPartner(this.bankCode),
+                            bankAccountResultSDO.Message, "Kiểm tra tài khoản thụ hưởng không thành công"), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, BankHubProcess.GetPartner(this.bankCode), "kiểm tra tài khoản ngân hàng"),
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

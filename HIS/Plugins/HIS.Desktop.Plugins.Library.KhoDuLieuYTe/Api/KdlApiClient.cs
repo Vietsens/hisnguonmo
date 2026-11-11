@@ -45,6 +45,18 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
         private readonly KdlConfig config;
         private string lastAuthError;
 
+        /// <summary>(vCong 62522) Thông báo đăng nhập thất bại đã phân loại nguồn lỗi (hiện cho người dùng)</summary>
+        private string lastAuthMessage;
+
+        /// <summary>(vCong 62522) Lỗi kết nối của lần HttpSend gần nhất (trước đây chỉ ghi log, trả status 0)</summary>
+        [ThreadStatic]
+        private static Exception lastSendError;
+
+        internal static Inventec.Common.IntegrationError.IntegrationPartner Partner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("kho dữ liệu y tế"); }
+        }
+
         static KdlApiClient()
         {
             try { ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072; }   // TLS 1.2
@@ -64,7 +76,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
             {
                 string token = GetToken(false);
                 if (string.IsNullOrEmpty(token))
-                    return AllFailed(records.Count, "Đăng nhập Kho dữ liệu thất bại: " + (this.lastAuthError ?? ""));
+                    return AllFailed(records.Count, this.lastAuthMessage ?? ("Đăng nhập Kho dữ liệu thất bại: " + (this.lastAuthError ?? ""))); // vCong 62522
 
                 string json = JsonConvert.SerializeObject(new { data = records });
                 byte[] body = new UTF8Encoding(false).GetBytes(json);
@@ -78,11 +90,11 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
                     // Token hết hạn giữa chừng -> lấy token mới, gửi lại 1 lần
                     token = GetToken(true);
                     if (string.IsNullOrEmpty(token))
-                        return AllFailed(records.Count, "Đăng nhập lại Kho dữ liệu thất bại: " + (this.lastAuthError ?? ""));
+                        return AllFailed(records.Count, this.lastAuthMessage ?? ("Đăng nhập lại Kho dữ liệu thất bại: " + (this.lastAuthError ?? ""))); // vCong 62522
                     respBody = HttpSend(url, body, token, out status);
                 }
                 if (status == 0)
-                    return AllFailed(records.Count, "Không kết nối được Kho dữ liệu (" + this.config.BaseUrl + "), kiểm tra mạng");
+                    return AllFailed(records.Count, ConnectionMessage(url, "gửi dữ liệu")); // vCong 62522: kèm lý do thật (timeout, DNS, SSL...)
 
                 JObject jo = null;
                 try { jo = string.IsNullOrEmpty(respBody) ? null : JObject.Parse(respBody); }
@@ -92,7 +104,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
                     status, jo != null ? (string)jo["total"] : "", jo != null ? (string)jo["totalError"] : "", Truncate(message)));
 
                 if (status != 200 && status != 400)
-                    return AllFailed(records.Count, "Kho dữ liệu trả HTTP " + status + ": " + Truncate(message));
+                    return AllFailed(records.Count, Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Partner, url, status, null, string.IsNullOrEmpty(message) ? respBody : message), Partner, "gửi dữ liệu")); // vCong 62522
 
                 // data[] chỉ liệt kê bản ghi bị từ chối, stt tính từ 1 theo vị trí trong mảng đã gửi
                 Dictionary<int, JObject> errorByStt = new Dictionary<int, JObject>();
@@ -110,7 +122,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
 
                 // HTTP 400 không kèm lỗi từng bản ghi = lỗi cấp request (sai cấu trúc, vượt giới hạn, đơn vị chưa cấu hình API...)
                 if (status == 400 && errorByStt.Count == 0)
-                    return AllFailed(records.Count, "Kho dữ liệu từ chối: " + Truncate(message));
+                    return AllFailed(records.Count, Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Partner, Truncate(message), "Kho dữ liệu từ chối yêu cầu")); // vCong 62522
 
                 for (int i = 0; i < records.Count; i++)
                 {
@@ -125,13 +137,13 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
                         results.Add(new KdlRecordResult { Success = true, Existed = true, Message = (string)e["message"] });
                         continue;
                     }
-                    results.Add(new KdlRecordResult { Success = false, Message = JoinErrors(e) });
+                    results.Add(new KdlRecordResult { Success = false, Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Partner, JoinErrors(e), "Kho dữ liệu từ chối bản ghi") }); // vCong 62522
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return AllFailed(records.Count, ex.Message);
+                return AllFailed(records.Count, Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "gửi dữ liệu")); // vCong 62522
             }
             return results;
         }
@@ -187,6 +199,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
             }
 
             this.lastAuthError = null;
+            this.lastAuthMessage = null;
             try
             {
                 string loginJson = JsonConvert.SerializeObject(new { username = this.config.Username, password = this.config.Password });
@@ -196,6 +209,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
                 if (status == 0)
                 {
                     this.lastAuthError = "không kết nối được " + this.config.BaseUrl;
+                    this.lastAuthMessage = ConnectionMessage(this.config.BaseUrl + TOKEN_PATH, "đăng nhập"); // vCong 62522
                     return null;
                 }
                 JObject jo = null;
@@ -206,6 +220,13 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
                 {
                     this.lastAuthError = "HTTP " + status + ((jo != null) ? (" - " + (string)jo["message"]) : "");
                     Inventec.Common.Logging.LogSystem.Warn("KDL-SYT LOGIN FAIL: " + this.lastAuthError);
+                    // (vCong 62522) 400/401/403 = tài khoản thiết lập tại viện; 5xx = phía kho/kết nối; 200 không có token = kho trả sai cấu trúc
+                    if (status == 400 || status == 401 || status == 403)
+                        this.lastAuthMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(Partner, this.lastAuthError);
+                    else if (status == 200)
+                        this.lastAuthMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Partner, "Phản hồi đăng nhập không có access_token: " + Truncate(body), "Kho dữ liệu trả kết quả đăng nhập không hợp lệ");
+                    else
+                        this.lastAuthMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Partner, this.config.BaseUrl + TOKEN_PATH, status, null, body), Partner, "đăng nhập");
                     return null;
                 }
                 long ttl = TOKEN_TTL_DEFAULT_SECONDS;
@@ -224,6 +245,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 this.lastAuthError = ex.Message;
+                this.lastAuthMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "đăng nhập"); // vCong 62522
                 return null;
             }
         }
@@ -231,6 +253,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
         private static string HttpSend(string url, byte[] bodyBytes, string bearerToken, out int statusCode)
         {
             statusCode = 0;
+            lastSendError = null;
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             request.Accept = "application/json";
@@ -256,6 +279,7 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
                 if (errResponse == null)
                 {
                     Inventec.Common.Logging.LogSystem.Error("KDL-SYT: khong ket noi duoc " + url + " - " + wex.Message, wex);
+                    lastSendError = wex; // vCong 62522
                     return null;
                 }
                 using (errResponse)
@@ -278,6 +302,13 @@ namespace HIS.Desktop.Plugins.Library.KhoDuLieuYTe.Api
                 }
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); return null; }
+        }
+
+        /// <summary>Thông báo không kết nối được (status 0) kèm lý do thật của WebException (vCong 62522)</summary>
+        private static string ConnectionMessage(string url, string action)
+        {
+            if (lastSendError == null) return Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Partner, action);
+            return Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(lastSendError, Partner, url), Partner, action);
         }
 
         private static List<KdlRecordResult> AllFailed(int count, string message)

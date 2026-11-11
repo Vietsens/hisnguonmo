@@ -62,7 +62,10 @@ namespace Inventec.VoiceCommand
             }
             catch (Exception ex)
             {
-                resultTDO.message = "Error: " + ex.Message;
+                // vCong 62522: loi nhan dang giong noi co phan loai nguon (chi ghi log, khong popup lien tuc)
+                resultTDO.message = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Ai("Wit.ai"), "nhận dạng giọng nói");
+                resultTDO.messageError = resultTDO.message;
+                Inventec.Common.Logging.LogSystem.Warn(resultTDO.message);
             }
 
             return resultTDO;
@@ -87,6 +90,9 @@ namespace Inventec.VoiceCommand
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                // vCong 62522: ghi loi co phan loai nguon vao ket qua + log (truoc day nuot hoan toan)
+                resultTDO.messageError = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Ai("Wit.ai"), "nhận dạng giọng nói");
+                Inventec.Common.Logging.LogSystem.Warn(resultTDO.messageError);
             }
 
             return resultTDO;

@@ -31,11 +31,14 @@ namespace Inventec.Fss.Client
         public static bool DeleteFile(string clientCode, string fileUrl, string baseUri)
         {
             bool result = false;
+            FssErrorHelper.Reset();
+            string deleteUri = FssErrorHelper.Combine(baseUri, FssConstant.DELETE_URI);
+            const string ACTION = "xóa file trên máy chủ lưu trữ";
             try
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(baseUri);
+                    client.BaseAddress = FssErrorHelper.ParseBaseUri(baseUri, ACTION);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.Timeout = new TimeSpan(0, 0, FssConstant.TIME_OUT);
                     client.DefaultRequestHeaders.Add(FssConstant.HEADER_CLIENT_CODE, clientCode);
@@ -50,8 +53,25 @@ namespace Inventec.Fss.Client
 
                     Inventec.Core.ApiResultObject<bool> rs = null;
 
-                    HttpResponseMessage resp = client.PostAsJsonAsync(requestedUrl, apiParam).Result;
+                    HttpResponseMessage resp = null;
+                    try
+                    {
+                        resp = client.PostAsJsonAsync(requestedUrl, apiParam).Result;
+                    }
+                    catch (Exception exCall)
+                    {
+                        // vCong 62522: timeout/khong ket noi toi FSS
+                        string msg;
+                        Inventec.Common.IntegrationError.IntegrationException ie = FssErrorHelper.Wrap(exCall, deleteUri, ACTION, out msg);
+                        throw new FileDeleteException(msg, ie);
+                    }
                     string responseData = resp.Content.ReadAsStringAsync().Result;
+                    if (!resp.IsSuccessStatusCode)
+                    {
+                        // giu hanh vi cu (tra false), chi ghi nhan ly do de noi goi hien thi qua FssErrorHelper.LastErrorMessage
+                        string msg;
+                        FssErrorHelper.FromStatus(resp, deleteUri, ACTION, out msg);
+                    }
                     try
                     {
                         rs = Newtonsoft.Json.JsonConvert.DeserializeObject<Inventec.Core.ApiResultObject<bool>>(responseData);
@@ -72,7 +92,9 @@ namespace Inventec.Fss.Client
             }
             catch (Exception ex)
             {
-                throw new FileDeleteException("Exception when delete file", ex);
+                string msg;
+                Inventec.Common.IntegrationError.IntegrationException ie = FssErrorHelper.Wrap(ex, deleteUri, ACTION, out msg);
+                throw new FileDeleteException(msg, ie);
             }
             return result;
         }

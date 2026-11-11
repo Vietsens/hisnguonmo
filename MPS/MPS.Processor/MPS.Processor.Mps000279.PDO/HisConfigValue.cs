@@ -29,5 +29,10 @@ namespace MPS.Processor.Mps000279.PDO
         public bool IsNotSameDepartment { get; set; }
         public bool IsSurgPriceOption_1 { get; set; }
         public bool IsGroupHeinServiceByUseTime { get; set; }
+        /// <summary>
+        /// HIS.Desktop.Plugins.Library.Bordereau.Mps.PriceCalculationOption
+        /// 1: làm tròn thành tiền BH từng dòng 2 số lẻ rồi tính quỹ BHYT (khớp cổng BHXH); khác 1: lấy nguyên số DB
+        /// </summary>
+        public long PriceCalculationOption { get; set; }
     }
 }

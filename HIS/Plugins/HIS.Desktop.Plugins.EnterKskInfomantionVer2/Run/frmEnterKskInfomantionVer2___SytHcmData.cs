@@ -225,6 +225,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (currentKskSytHcm == null)
                 {
                     ClearKskSytHcmClinicalControls();
+                    ApplyMaleObstetricLockHcm();
                     return;
                 }
                 HIS_KSK_SYT_HCM d = currentKskSytHcm;
@@ -273,6 +274,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
 
                 FillKskSytHcmTeeth(d);
+                ApplyMaleObstetricLockHcm();
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
@@ -558,6 +560,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 #endregion
 
+                ClearObstetricSytHcmForMale(d);
                 return d;
             }
             catch (Exception ex) { LogSystem.Warn(ex); return null; }

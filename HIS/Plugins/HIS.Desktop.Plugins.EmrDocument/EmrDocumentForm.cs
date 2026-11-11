@@ -5021,14 +5021,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
             List<int> rs = new List<int>();
             try
             {
-                var configs = GlobalStore.EmrConfigs;
-                var cfgAppearanceOptions = configs.Where(o => o.KEY == "EMR.EMR_SIGN.SIGNATURE_APPEARANCE_OPTION");
-                var cfgAppearanceOption = cfgAppearanceOptions != null ? cfgAppearanceOptions.FirstOrDefault() : null;
-                if (cfgAppearanceOption != null)
+                // Doc qua cache LocalStorage.EmrConfig, khong qua SignLibrary.GlobalStore.EmrConfigs (xem GetFingerPrintDisplayFill)
+                string vlAppearanceOption = Config.ConfigKey.GetEmrConfigValue("EMR.EMR_SIGN.SIGNATURE_APPEARANCE_OPTION");
+                if (!String.IsNullOrEmpty(vlAppearanceOption))
                 {
                     try
                     {
-                        string vlAppearanceOption = !String.IsNullOrEmpty(cfgAppearanceOption.VALUE) ? cfgAppearanceOption.VALUE : cfgAppearanceOption.DEFAULT_VALUE;
                         //vd: p:0|f:11|w:320|h:140
                         var arrOT = vlAppearanceOption.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
                         if (arrOT != null && arrOT.Count() > 0)
@@ -5761,17 +5759,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
         /// <summary>
         /// He so phong to anh van tay (tham so fill trong EMR.EMR_SIGN.FINGERPRINT_SIZE_OPTION, vd "rs:1|fill:1.5|ov:1").
-        /// Doc giong SignLibrary.GlobalStore (internal nen plugin khong goi truc tiep duoc). Khong cau hinh => 1.
+        /// Cach parse giong SignLibrary.GlobalStore. Khong cau hinh => 1.
+        /// Doc qua cache LocalStorage.EmrConfig (Config.ConfigKey.GetEmrConfigValue), KHONG qua SignLibrary.GlobalStore.EmrConfigs:
+        /// goi getter do truoc khi thu vien ky nhan DTI lam consumer EMR cua thu vien bi tao voi dia chi null cho ca phien.
         /// </summary>
         private static float GetFingerPrintDisplayFill()
         {
             try
             {
-                var configs = GlobalStore.EmrConfigs;
-                if (configs == null) return 1.0f;
-                var cfg = configs.FirstOrDefault(o => o.KEY == FINGERPRINT_SIZE_OPTION_KEY);
-                if (cfg == null) return 1.0f;
-                string vl = !String.IsNullOrWhiteSpace(cfg.VALUE) ? cfg.VALUE : cfg.DEFAULT_VALUE;
+                string vl = Config.ConfigKey.GetEmrConfigValue(FINGERPRINT_SIZE_OPTION_KEY);
                 if (String.IsNullOrWhiteSpace(vl)) return 1.0f;
                 foreach (string option in vl.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries))
                 {
@@ -6290,6 +6286,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 var relationDatas = new BackendAdapter(new CommonParam()).Get<List<EMR_RELATION>>("api/EmrRelation/Get", ApiConsumer.ApiConsumers.EmrConsumer, filter, null);
                 string RelationPeopleName = null;
                 EMR_RELATION Relation = null;
+                // vCong57201: ghi chú của bệnh nhân / người nhà (khóa EMR.EMR_SIGN.PATIENT_SIGN_DESCRIPTION_INFO.OPTION = 1) - hỏi MỘT lần cho cả lô
+                bool isAskPatientSignNote = Config.ConfigKey.IsPatientSignDescriptionInfo;
+                string patientSignNote = "";
                 int index = 0;
                 bool IsReloadSuccess = false;
                 foreach (var item in listDataTrue)
@@ -6303,6 +6302,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     }
                     if (IsBreak)
                         break;
+                    if (isAskPatientSignNote && index == 1)
+                    {
+                        // Hủy hộp thoại ghi chú => không ký văn bản nào
+                        if (!Inventec.Common.SignLibrary.PatientSignNoteProcess.TryAskNote(IsHomeRelativeSign, "", out patientSignNote))
+                            break;
+                    }
 
                     int opt = 0; int.TryParse(Config.ConfigKey.PrintUsingWatermark, out opt);
                     bool showWatermark = (opt == 1 || opt == 2);
@@ -6338,6 +6343,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     inputADO.DocumentCode = item.DOCUMENT_CODE;
                     inputADO.DocumentName = item.DOCUMENT_NAME;
                     inputADO.IsRemoveSignPadBefore = index == listDataTrue.Count;
+                    if (isAskPatientSignNote)
+                    {
+                        inputADO.SignReason = patientSignNote;// vCong57201: ghi chú chung cho mọi văn bản trong lô
+                    }
                     var dto = libraryProcessor.SignNow(file[0].Base64Data, FileType.Pdf, inputADO);
                     if (dto != null && dto.Success)
                     {

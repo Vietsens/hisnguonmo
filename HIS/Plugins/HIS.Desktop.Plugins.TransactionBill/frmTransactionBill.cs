@@ -4921,7 +4921,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     else
                     {
                         WaitingManager.Hide();
-                        MessageBox.Show(this, res.Data?.ResponseStatus?.ErrorDesc, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        // vCong 62522: truoc day chi hien ErrorDesc (rong khi loi ket noi/HTTP)
+                        string guaranteeMsg = res != null && Inventec.Common.IntegrationError.IntegrationErrorMessage.IsBuilt(res.Message) ? res.Message
+                            : Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống bảo lãnh viện phí"), res?.Data?.ResponseStatus?.ErrorDesc ?? res?.Message, "Thanh toán bằng bảo lãnh thất bại");
+                        MessageBox.Show(this, guaranteeMsg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return false;
                     }
                 }

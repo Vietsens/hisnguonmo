@@ -32,6 +32,7 @@ using HIS.Desktop.DelegateRegister;
 using MOS.EFMODEL.DataModels;
 using System.Globalization;
 using Inventec.Common.Logging;
+using Inventec.Common.IntegrationError;
 namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
 {
     public class HeinGOVManager
@@ -193,22 +194,32 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     else
                     {
                         Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
+                        ShowConfigMissingOnce(showMessage);
+                        EnableButtons();
                         return null;
                     }
 
+                    EnsureResult(rsData);
                     if (!String.IsNullOrEmpty(rsData.ResultHistoryLDO.ketQuaDangKyTocken))
                     {
-                        string message = "Thông tin tài khoản dùng đăng ký phiên làm việc tại cổng BHYT không chính xác.\nKhông thể thực hiện kiểm tra thông tin thẻ bảo hiểm.\n\nHãy liên hệ với nhà cung cấp để được giúp đỡ.";
+                        // Lý do thật đã phân loại (sai tài khoản / mất kết nối / cổng lỗi) thay cho câu cố định (vCong 62522)
+                        string message = GetTokenMessage(rsData.ResultHistoryLDO.message);
                         if (!showMessage)
                         {
                             rsData.ResultHistoryLDO.message = message;
+                            EnableButtons();
                             return rsData;
                         }
                         else
-                            DevExpress.XtraEditors.XtraMessageBox.Show(message, "Lỗi xác thực tài khoản", MessageBoxButtons.OK, DevExpress.Utils.DefaultBoolean.True);
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(message, "Kiểm tra thẻ BHYT", MessageBoxButtons.OK, DevExpress.Utils.DefaultBoolean.True);
+                            EnableButtons();
+                        }
                     }
                     else
                     {
+                        if (HandleFailedResult(rsData, showMessage))
+                            return rsData;
                         DateTime dtHanTheTu = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTu).Value;
                         DateTime dtHanTheDen = (DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDen) ?? DateTime.MinValue);
 
@@ -395,6 +406,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                         Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
                                         rsIns2 = null;
                                     }
+                                    if (rsIns2 != null && rsIns2.IsCallFailed) Inventec.Common.Logging.LogSystem.Warn("Tra cuu lich su KCB phu tren cong BHXH that bai, bo qua buoc gop lich su: " + rsIns2.message);
                                     if (rsIns2 != null && rsIns2.dsLichSuKCB2018 != null && rsIns2.dsLichSuKCB2018.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
                                     {
                                         rsData.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
@@ -481,6 +493,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                             Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
                             rsIns2 = null;
                         }
+                        if (rsIns2 != null && rsIns2.IsCallFailed) Inventec.Common.Logging.LogSystem.Warn("Tra cuu lich su KCB phu tren cong BHXH that bai, bo qua buoc gop lich su: " + rsIns2.message);
                         if (rsIns2 != null && rsIns2.dsLichSuKCB2025 != null && rsIns2.dsLichSuKCB2025.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
                         {
                             rsData.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
@@ -635,9 +648,132 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                 if (dlgHeinEnableButtonSave != null)
                     dlgHeinEnableButtonSave(true);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                ShowException(ex, showMessage, rsData, "kiểm tra thẻ BHYT");
             }
             return rsData;
         }
+        #region Thông báo lỗi cổng BHXH (vCong 62522)
+
+        private static bool configMissingWarned = false;
+
+        private void EnableButtons()
+        {
+            try
+            {
+                if (dlgEnableButtonSave != null)
+                    dlgEnableButtonSave(true);
+                if (dlgHeinEnableButtonSave != null)
+                    dlgHeinEnableButtonSave(true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Kết quả null (không mong đợi) → coi như gọi cổng thất bại để không NullReference phía sau.</summary>
+        private static void EnsureResult(ResultDataADO rsData)
+        {
+            if (rsData != null && rsData.ResultHistoryLDO == null)
+            {
+                rsData.ResultHistoryLDO = new ResultHistoryLDO();
+                rsData.ResultHistoryLDO.IsCallFailed = true;
+                rsData.ResultHistoryLDO.message = IntegrationErrorMessage.NoResponse(IntegrationPartner.Bhxh, "tra cứu thông tin thẻ BHYT");
+            }
+        }
+
+        /// <summary>Thông báo khi không lấy được phiên làm việc (token) với cổng: dùng lý do đã phân loại nếu có.</summary>
+        private static string GetTokenMessage(string classifiedMessage)
+        {
+            if (IntegrationErrorMessage.IsBuilt(classifiedMessage))
+                return classifiedMessage;
+            return IntegrationErrorMessage.LoginError(IntegrationPartner.Bhxh, String.IsNullOrWhiteSpace(classifiedMessage)
+                ? "Thông tin tài khoản dùng đăng ký phiên làm việc tại cổng BHYT không chính xác, không thể kiểm tra thông tin thẻ"
+                : classifiedMessage);
+        }
+
+        /// <summary>
+        /// Gọi cổng thất bại, hoặc cổng trả mã lỗi mà không có thông tin thẻ → báo lý do đã phân loại, bật lại nút, dừng xử lý.
+        /// Trước đây trường hợp này đi tiếp vào đọc hạn thẻ (null.Value) rồi bị catch nuốt, người dùng không thấy gì.
+        /// </summary>
+        private bool HandleFailedResult(ResultDataADO rsData, bool showMessage)
+        {
+            try
+            {
+                if (rsData == null || rsData.ResultHistoryLDO == null)
+                    return false;
+                ResultHistoryLDO r = rsData.ResultHistoryLDO;
+                bool noCardData = !r.success && String.IsNullOrEmpty(r.gtTheTu) && r.maKetQua != GOV_API_RESULT_000;
+                if (!r.IsCallFailed && !noCardData)
+                    return false;
+                string msg = r.message;
+                if (String.IsNullOrWhiteSpace(msg))
+                {
+                    msg = IntegrationErrorMessage.PartnerError(IntegrationPartner.Bhxh,
+                        String.IsNullOrEmpty(r.maKetQua) ? null : "Mã kết quả " + r.maKetQua,
+                        "Cổng BHXH không trả thông tin thẻ");
+                }
+                r.message = msg;
+                Inventec.Common.Logging.LogSystem.Warn("Kiem tra the BHYT khong thanh cong: " + msg);
+                if (showMessage)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(msg, "Kiểm tra thẻ BHYT", MessageBoxButtons.OK, MessageBoxIcon.Warning, DevExpress.Utils.DefaultBoolean.True);
+                }
+                EnableButtons();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        /// <summary>Đã bật tự động kiểm tra thẻ nhưng thiếu cấu hình tài khoản/địa chỉ cổng → báo 1 lần mỗi phiên.</summary>
+        private static void ShowConfigMissingOnce(bool showMessage)
+        {
+            try
+            {
+                if (!showMessage || configMissingWarned)
+                    return;
+                configMissingWarned = true;
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    IntegrationErrorMessage.ConfigError(IntegrationPartner.Bhxh,
+                        "Đã bật tự động kiểm tra thẻ BHYT nhưng chưa cấu hình tài khoản/địa chỉ cổng BHXH (HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS, HIS.CHECK_HEIN_CARD.BHXH__ADDRESS). Thông báo này chỉ hiện 1 lần mỗi phiên"),
+                    "Kiểm tra thẻ BHYT", MessageBoxButtons.OK, DevExpress.Utils.DefaultBoolean.True);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Lỗi không mong đợi trong luồng kiểm tra thẻ: báo đã phân loại thay vì im lặng.</summary>
+        private static void ShowException(Exception ex, bool showMessage, ResultDataADO rsData, string action)
+        {
+            try
+            {
+                string msg = IntegrationErrorMessage.FromException(ex, IntegrationPartner.Bhxh, action);
+                if (showMessage)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(msg, "Kiểm tra thẻ BHYT", MessageBoxButtons.OK, MessageBoxIcon.Warning, DevExpress.Utils.DefaultBoolean.True);
+                }
+                else if (rsData != null)
+                {
+                    if (rsData.ResultHistoryLDO == null)
+                        rsData.ResultHistoryLDO = new ResultHistoryLDO();
+                    rsData.ResultHistoryLDO.IsCallFailed = true;
+                    rsData.ResultHistoryLDO.message = msg;
+                }
+            }
+            catch (Exception exx)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(exx);
+            }
+        }
+
+        #endregion
+
         public bool LoadDataOld(ref ResultDataADO rsData)
         {
             bool isValid = true;
@@ -864,18 +1000,26 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
                 }
 
-                if (!String.IsNullOrEmpty(rsData.ChiTietKCBLDO.ketQuaDangKyTocken))
+                if (rsData.ChiTietKCBLDO == null)
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show("Thông tin tài khoản dùng đăng ký phiên làm việc tại cổng BHYT không chính xác.\nKhông thể thực hiện kiểm tra thông tin thẻ bảo hiểm.\n\nHãy liên hệ với nhà cung cấp để được giúp đỡ.",
-                        "Lỗi xác thực tài khoản", MessageBoxButtons.OK, DevExpress.Utils.DefaultBoolean.True);
+                    ShowConfigMissingOnce(true);
                 }
-                else
+                else if (!String.IsNullOrEmpty(rsData.ChiTietKCBLDO.ketQuaDangKyTocken))
                 {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(GetTokenMessage(rsData.ChiTietKCBLDO.message),
+                        "Kiểm tra hồ sơ KCB trên cổng BHXH", MessageBoxButtons.OK, DevExpress.Utils.DefaultBoolean.True);
+                }
+                else if (rsData.ChiTietKCBLDO.IsCallFailed || !String.IsNullOrWhiteSpace(rsData.ChiTietKCBLDO.message))
+                {
+                    // Gọi cổng thất bại / cổng trả mã lỗi: báo lý do đã phân loại (vCong 62522)
+                    DevExpress.XtraEditors.XtraMessageBox.Show(rsData.ChiTietKCBLDO.message,
+                        "Kiểm tra hồ sơ KCB trên cổng BHXH", MessageBoxButtons.OK, DevExpress.Utils.DefaultBoolean.True);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                ShowException(ex, true, null, "lấy chi tiết hồ sơ KCB trên cổng BHXH");
             }
             return rsData;
         }
@@ -1115,16 +1259,20 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                     else
                     {
                         Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
+                        ShowConfigMissingOnce(true);
                         return null;
                     }
 
+                    EnsureResult(rsData);
                     if (!String.IsNullOrEmpty(rsData.ResultHistoryLDO.ketQuaDangKyTocken))
                     {
-                        DevExpress.XtraEditors.XtraMessageBox.Show("Thông tin tài khoản dùng đăng ký phiên làm việc tại cổng BHYT không chính xác.\nKhông thể thực hiện kiểm tra thông tin thẻ bảo hiểm.\n\nHãy liên hệ với nhà cung cấp để được giúp đỡ.",
-                            "Lỗi xác thực tài khoản", MessageBoxButtons.OK, DevExpress.Utils.DefaultBoolean.True);
+                        DevExpress.XtraEditors.XtraMessageBox.Show(GetTokenMessage(rsData.ResultHistoryLDO.message),
+                            "Kiểm tra thẻ BHYT", MessageBoxButtons.OK, DevExpress.Utils.DefaultBoolean.True);
                     }
                     else
                     {
+                        if (HandleFailedResult(rsData, true))
+                            return rsData;
                         DateTime dtHanTheTu = DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheTu).Value;
                         DateTime dtHanTheDen = (DateTimeHelper.ConvertDateStringToSystemDate(rsData.ResultHistoryLDO.gtTheDen) ?? DateTime.MinValue);
 
@@ -1255,6 +1403,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                         Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
                                         rsIns2 = null;
                                     }
+                                    if (rsIns2 != null && rsIns2.IsCallFailed) Inventec.Common.Logging.LogSystem.Warn("Tra cuu lich su KCB phu tren cong BHXH that bai, bo qua buoc gop lich su: " + rsIns2.message);
                                     if (rsIns2 != null && rsIns2.dsLichSuKCB2018 != null && rsIns2.dsLichSuKCB2018.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
                                     {
                                         rsData.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
@@ -1336,6 +1485,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
                                 Inventec.Common.Logging.LogSystem.Error("Kiem tra lai cau hinh 'HIS.CHECK_HEIN_CARD.BHXH.LOGIN.USER_PASS'  -- 'HIS.CHECK_HEIN_CARD.BHXH__ADDRESS' ==>BHYT");
                                 rsIns2 = null;
                             }
+                            if (rsIns2 != null && rsIns2.IsCallFailed) Inventec.Common.Logging.LogSystem.Warn("Tra cuu lich su KCB phu tren cong BHXH that bai, bo qua buoc gop lich su: " + rsIns2.message);
                             if (rsIns2 != null && rsIns2.dsLichSuKCB2018 != null && rsIns2.dsLichSuKCB2018.Count > 0 && rsIns2.success == true && String.IsNullOrEmpty(rsIns2.message))
                             {
                                 rsData.ResultHistoryLDO.dsLichSuKCB2018 = new List<ExamHistoryLDO>();
@@ -1480,6 +1630,7 @@ namespace HIS.Desktop.Plugins.Library.CheckHeinGOV
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                ShowException(ex, true, rsData, "kiểm tra thẻ BHYT từ mã QR CCCD");
             }
             return rsData;
         }

@@ -66,6 +66,11 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
         static string user = "";
         static string pass = "";
         static string urlLogin = "";
+
+        /// <summary>Đối tác + lý do gửi tệp thất bại trong lượt gửi hiện tại (vCong 62522)</summary>
+        private static readonly Inventec.Common.IntegrationError.IntegrationPartner HSSK_SYT_PARTNER = Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("hệ thống hồ sơ sức khỏe Sở Y tế");
+        private static string lastUploadError;
+        private static readonly System.Collections.Generic.List<string> uploadFailReasons = new System.Collections.Generic.List<string>();
         static string urlXML4210 = "";
         static string urlXML130 = "";
         static string urlXMLCheckin = "";
@@ -363,6 +368,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 }
                 //directoryPathXML130 = "";
                 FillDataToControlXML130();
+                ShowUploadFailures(e != null);
                 TimerReset(sender);
                 WaitingManager.Hide();
             }
@@ -517,11 +523,13 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                                 File.Move(fullname, destFilePathFal);
                             }
                             UpdateFileStatusXML130(fullname, 2);
+                            uploadFailReasons.Add(Path.GetFileName(fullname) + ": " + (lastUploadError ?? "gửi thất bại"));
                         }
                     }
                 }
 
                 FillDataToControlXML130();
+                ShowUploadFailures(e != null);
                 TimerReset(sender);
                 WaitingManager.Hide();
             }
@@ -623,6 +631,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 }
                 //directoryPathXML4210 = "";
                 FillDataToControl();
+                ShowUploadFailures(e != null);
                 TimerReset(sender);
                 WaitingManager.Hide();
             }
@@ -767,10 +776,12 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                                 File.Move(fullname, destFilePathFal);
                             }
                             UpdateFileStatusXML4210(fullname, 2);
+                            uploadFailReasons.Add(Path.GetFileName(fullname) + ": " + (lastUploadError ?? "gửi thất bại"));
                         }
                     }
                 }
                 FillDataToControl();
+                ShowUploadFailures(e != null);
                 TimerReset(sender);
                 WaitingManager.Hide();
             }
@@ -992,7 +1003,6 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 LogSystem.Debug("Bat dau gọi api login");
                 LogSystem.Debug("Địa chỉ API:  " + LogUtil.TraceData("API: ", urlLogin));
-                LogSystem.Debug("Nội dung accoount login: " + LogUtil.TraceData("login: ", content));
                 try
                 {
                     // Gửi yêu cầu POST với form-data
@@ -1008,12 +1018,14 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
 
                         Console.WriteLine("responseData: " + responseData);
                         LoginResuilt data = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResuilt>(responseData);
-                        LogSystem.Debug("____data lay được: " + LogUtil.TraceData("token lấy được: ", data.data.access_token));
+                        LogSystem.Debug("____da lay duoc token: " + (data != null && data.data != null && !string.IsNullOrEmpty(data.data.access_token)));
                         return data.data.access_token;
                     }
                     else
                     {
-                        MessageBox.Show("Cấu hình liên thông dữ liệu không hợp lệ. Không thể đăng nhập hệ thống hồ sơ sức khỏe");
+                        // Lý do thật theo mã HTTP: 401/403 = tài khoản thiết lập sai, 5xx = phía hệ thống HSSK (vCong 62522)
+                        string body = response.Content != null ? response.Content.ReadAsStringAsync().Result : "";
+                        MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(HSSK_SYT_PARTNER, urlLogin, (int)response.StatusCode, response.ReasonPhrase, body), HSSK_SYT_PARTNER, "đăng nhập hệ thống hồ sơ sức khỏe"));
                         Console.WriteLine("Login failed.");
                         Console.WriteLine("Status code: " + response.StatusCode);
                         Console.WriteLine("Response: " + response.Content.ReadAsStringAsync());
@@ -1024,7 +1036,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                 {
                     LogSystem.Debug("Gọi API login thất bại");
                     Inventec.Common.Logging.LogSystem.Error("Error login: " + ex);
-                    Console.WriteLine("An error occurred: " + ex.Message);
+                    MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, HSSK_SYT_PARTNER, "đăng nhập hệ thống hồ sơ sức khỏe"));
                     return string.Empty;
                 }
             }
@@ -1040,6 +1052,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
 
                 using (var client = new HttpClient())
                 {
+                    lastUploadError = null;
                     using (var form = new MultipartFormDataContent())
                     {
                         byte[] fileBytes = File.ReadAllBytes(filePath);
@@ -1067,9 +1080,9 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                         }
                         else
                         {
-                            Console.WriteLine("File upload failed.");
-                            Console.WriteLine("Status code: " + response.StatusCode);
-                            Console.WriteLine("Response: " + await response.Content.ReadAsStringAsync());
+                            string body = await response.Content.ReadAsStringAsync();
+                            Inventec.Common.Logging.LogSystem.Warn("Gui tep that bai. Status: " + (int)response.StatusCode + ". Response: " + body);
+                            lastUploadError = Inventec.Common.IntegrationError.IntegrationErrorMessage.TagException(Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(HSSK_SYT_PARTNER, url, (int)response.StatusCode, response.ReasonPhrase, body), HSSK_SYT_PARTNER);
                             return false;
                         }
                     }
@@ -1078,7 +1091,29 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error("Error uploading file: " + ex);
+                lastUploadError = Inventec.Common.IntegrationError.IntegrationErrorMessage.TagException(ex, HSSK_SYT_PARTNER);
                 return false;
+            }
+        }
+
+        /// <summary>Lượt gửi xong: hiện lý do các tệp thất bại (gửi tay) hoặc chỉ ghi log (gửi tự động) (vCong 62522)</summary>
+        private void ShowUploadFailures(bool manual)
+        {
+            try
+            {
+                if (uploadFailReasons.Count == 0) return;
+                string text = string.Join(Environment.NewLine, uploadFailReasons.Distinct().Take(20).ToArray());
+                Inventec.Common.Logging.LogSystem.Warn("Dong bo HSSK SYT co tep that bai: " + text);
+                if (manual)
+                    MessageManager.ShowAlert(this.ParentForm, "Gửi tệp thất bại", text);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                uploadFailReasons.Clear();
             }
         }
 
@@ -1332,6 +1367,7 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                     MessageManager.ShowAlert(this.ParentForm, "", "Thư mục XML Checkin không tồn tại.");
                 }
                 FillDataToControlXMLCheckin();
+                ShowUploadFailures(e != null);
                 TimerReset(sender);
                 WaitingManager.Hide();
             }
@@ -1450,10 +1486,12 @@ namespace HIS.Desktop.Plugins.SyncHsskSyt
                                 File.Move(fullname, destFilePathFal);
                             }
                             UpdateFileStatusXMLCheckin(fullname, 2);
+                            uploadFailReasons.Add(Path.GetFileName(fullname) + ": " + (lastUploadError ?? "gửi thất bại"));
                         }
                     }
                 }
                 FillDataToControlXMLCheckin();
+                ShowUploadFailures(e != null);
                 TimerReset(sender);
                 WaitingManager.Hide();
             }

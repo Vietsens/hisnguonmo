@@ -155,6 +155,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             {
                 Inventec.Common.Logging.LogSystem.Debug("hisCardPatientSdo__1_" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisCardPatientSdo), hisCardPatientSdo));
                 this.txtPhone.KeyPress += txtPhone_KeyPress;
+                this.txtPhone.EditValueChanged += txtPhone_EditValueChanged;
                 LoadPatientype();
                 LoadDataGridLookUpEdit(cboCareer, "CAREER_CODE", "Mã", "CAREER_NAME", "Tên", "ID", BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == 1).ToList());
                 LoadDataGridLookUpEdit(cboNational, "NATIONAL_CODE", "Mã", "NATIONAL_NAME", "Tên", "NATIONAL_NAME", BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == 1).ToList());
@@ -786,14 +787,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                     DevExpress.XtraEditors.XtraMessageBox.Show("Bạn chưa nhập " + (cboCareer.EditValue == null ? "nghề nghiệp" : "quốc tịch"));
                     return;
                 }
-                string phoneInput = txtPhone.Text == null ? "" : txtPhone.Text.Trim();
-                if (!string.IsNullOrEmpty(phoneInput) && (phoneInput.Length < 10 || phoneInput.Length > 11))
-                {
-                    DevExpress.XtraEditors.XtraMessageBox.Show("Số điện thoại không hợp lệ, vui lòng nhập lại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtPhone.Focus();
-                    return;
-                }
-                hisCardPatientSdo.Phone = string.IsNullOrEmpty(phoneInput) ? null : phoneInput;
+                if (!SyncPhoneToCardSdo(true)) return;
                 hisCardPatientSdo.CareerId = Int64.Parse(cboCareer.EditValue.ToString());
                 hisCardPatientSdo.NationalName = cboNational.EditValue.ToString();
                 var nal = BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.NATIONAL_NAME == cboNational.EditValue.ToString());
@@ -871,6 +865,41 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Dong bo SDT tu o nhap vao CardSDO.
+        /// Ban phim cam ung tren kiosk co the day ca chuoi so vao o SAU khi nguoi dung da cham chon phong
+        /// (ItemClick doc o luc con trong), nen phai doc lai moi khi o doi gia tri va ngay truoc khi gui dang ky.
+        /// showMessage = true: bao loi + focus o khi do dai khong hop le.
+        /// </summary>
+        private bool SyncPhoneToCardSdo(bool showMessage)
+        {
+            if (hisCardPatientSdo == null) return true;
+            string phoneInput = txtPhone.Text == null ? "" : txtPhone.Text.Trim();
+            if (!string.IsNullOrEmpty(phoneInput) && (phoneInput.Length < 10 || phoneInput.Length > 11))
+            {
+                if (showMessage)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Số điện thoại không hợp lệ, vui lòng nhập lại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPhone.Focus();
+                }
+                return false;
+            }
+            hisCardPatientSdo.Phone = string.IsNullOrEmpty(phoneInput) ? null : phoneInput;
+            return true;
+        }
+
+        private void txtPhone_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SyncPhoneToCardSdo(false);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1213,6 +1242,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 bool success = false;
                 CommonParam param = new CommonParam();
                 this.examServiceReqRegisterResultSDO = new HisServiceReqExamRegisterResultSDO();
+                //Doc lai SDT ngay truoc khi gui: ban phim cam ung co the day so vao o sau khi da chon phong
+                if (!SyncPhoneToCardSdo(true)) return;
                 HisExamRegisterKioskSDO sdo = new HisExamRegisterKioskSDO();
                 sdo.CardSDO = hisCardPatientSdo;
                 ProcessRegisterAddress.SplitAddress(sdo.CardSDO);

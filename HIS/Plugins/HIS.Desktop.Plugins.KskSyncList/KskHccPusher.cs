@@ -144,6 +144,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
         private readonly Qd1551Config config;
         private readonly Qd1551Consumer consumer = new Qd1551Consumer();
+
+        /// <summary>Lý do kỹ thuật lần gọi gần nhất (" — ..." hoặc rỗng) để báo đúng nguồn lỗi (vCong 62522).</summary>
+        private string HccReason()
+        {
+            string r = this.consumer.LastErrorMessage;
+            return string.IsNullOrWhiteSpace(r) ? "." : " — " + r;
+        }
         private readonly EnvelopeSigner signer = new EnvelopeSigner();
         private string cachedToken;
         private DateTime tokenExpireAt = DateTime.MinValue;
@@ -170,7 +177,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 {
                     string token = GetToken();
                     if (string.IsNullOrWhiteSpace(token))
-                        return KskHccPushResult.Failure("HCC: đăng nhập thất bại (kiểm tra tài khoản liên thông).");
+                        return KskHccPushResult.Failure("HCC: đăng nhập thất bại (kiểm tra tài khoản liên thông)" + HccReason());
 
                     PushHeader header = BuildHeader();
                     string headerJson = Newtonsoft.Json.JsonConvert.SerializeObject(header);
@@ -209,7 +216,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         continue;
                     }
                     if (response == null)
-                        return KskHccPushResult.Failure("HCC: không nhận được phản hồi từ cổng.");
+                        return KskHccPushResult.Failure("HCC: không nhận được phản hồi từ cổng" + HccReason());
 
                     bool success = response.IsSuccess();
                     return new KskHccPushResult

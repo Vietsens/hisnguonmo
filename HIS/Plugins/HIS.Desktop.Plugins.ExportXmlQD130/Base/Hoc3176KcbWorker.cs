@@ -7,6 +7,7 @@
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  */
+using Inventec.Common.IntegrationError;
 using Inventec.Common.Logging;
 using Newtonsoft.Json.Linq;
 using System;
@@ -41,6 +42,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
     /// </summary>
     public class Hoc3176KcbWorker
     {
+        /// <summary>Đối tác + lý do đăng nhập thất bại gần nhất để báo đúng nguồn lỗi (vCong 62522).</summary>
+        private static readonly IntegrationPartner PARTNER = IntegrationPartner.HealthPortal("Trung tâm điều hành y tế (HOC)");
+        private string lastLoginError;
+        private Exception lastLoginException;
+
         //Duong dan mac dinh theo tai lieu dac ta Trung tam dieu hanh y te
         private const string DEFAULT_TOKEN_URL = "https://ptsso.vncare.vn/auth/realms/hsskv3/protocol/openid-connect/token";
         //Duong gui CO DINH trong ma nguon (KHONG lay tu truong PushUrl cua khoa cau hinh - PushUrl la
@@ -164,12 +170,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 if (!this.IsValidConfig)
                 {
-                    ret.Message = "Cấu hình kết nối Trung tâm điều hành y tế không hợp lệ";
+                    ret.Message = IntegrationErrorMessage.ConfigError(PARTNER, "Cấu hình kết nối Trung tâm điều hành y tế không hợp lệ (HSSK_HOC_2062__CONNECTION_INFO)");
                     return ret;
                 }
                 if (xmlBytes == null || xmlBytes.Length == 0)
                 {
-                    ret.Message = "Không có dữ liệu XML để gửi";
+                    ret.Message = IntegrationErrorMessage.BusinessError(PARTNER, "Không có dữ liệu XML để gửi");
                     LogSystem.Warn("Hoc3176KcbWorker - Khong co du lieu XML. " + tag + ". MA_LK: " + maLk);
                     return ret;
                 }
@@ -179,12 +185,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 {
                     if (this.batchFatalError != null)
                     {
-                        ret.Message = this.batchFatalError;
+                        ret.Message = PortalErrorHelper.FromRaw(PARTNER, this.batchFatalError, "Trung tâm điều hành y tế từ chối");
                         return ret;
                     }
                     if (!await EnsureTokenAsync())
                     {
-                        ret.Message = this.batchFatalError ?? "Đăng nhập Trung tâm điều hành y tế thất bại";
+                        ret.Message = this.batchFatalError != null ? PortalErrorHelper.FromRaw(PARTNER, this.batchFatalError, "Trung tâm điều hành y tế từ chối") : PortalErrorHelper.Login(PARTNER, this.lastLoginError, this.lastLoginException);
                         return ret;
                     }
 
@@ -197,14 +203,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                         this.tokenExpireTime = DateTime.MinValue;
                         if (!await LoginAsync())
                         {
-                            ret.Message = this.batchFatalError ?? "Đăng nhập lại thất bại (401)";
+                            ret.Message = this.batchFatalError != null ? PortalErrorHelper.FromRaw(PARTNER, this.batchFatalError, "Trung tâm điều hành y tế từ chối") : PortalErrorHelper.Login(PARTNER, "Đăng nhập lại sau khi bị từ chối (401): " + this.lastLoginError, this.lastLoginException);
                             return ret;
                         }
                         result = await PostAsync(path, tag, xmlBytes, maLk);
                     }
 
                     ret.Success = result.Ok;
-                    ret.Message = result.Message;
+                    ret.Message = ret.Success ? result.Message : PortalErrorHelper.FromRaw(PARTNER, result.Message, "Trung tâm điều hành y tế không tiếp nhận hồ sơ");
                     ret.TransactionCode = result.TransactionCode;
                     LogSystem.Info("Hoc3176KcbWorker - " + tag + " MA_LK: " + maLk
                         + " thanh cong: " + result.Ok + ". Message: " + result.Message);
@@ -216,7 +222,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 LogSystem.Error(ex);
                 ret.Success = false;
-                ret.Message = "Lỗi ngoại lệ khi gửi: " + ex.Message;
+                ret.Message = IntegrationErrorMessage.FromException(ex, PARTNER, "gửi hồ sơ lên Trung tâm điều hành y tế");
                 return ret;
             }
         }
@@ -238,6 +244,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 this.token = null;
                 this.tokenExpireTime = DateTime.MinValue;
+                this.lastLoginError = null;
+                this.lastLoginException = null;
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -262,6 +270,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     {
                         this.batchFatalError = "không kết nối được cổng dữ liệu y tế (" + this.tokenUrl + ") — " + exNet.Message;
                         LogSystem.Error("Hoc3176KcbWorker - " + this.batchFatalError, exNet);
+                        this.lastLoginException = exNet;
                         return false;
                     }
 
@@ -280,6 +289,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                         if (sc == 400 || sc == 401 || sc == 403 || sc == 429)
                             this.batchFatalError = "đăng nhập cổng dữ liệu y tế thất bại — " + reason;
                         LogSystem.Warn("Hoc3176KcbWorker - Dang nhap that bai. " + reason);
+                        this.lastLoginError = reason;
                         return false;
                     }
 
@@ -300,6 +310,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                this.lastLoginException = ex;
                 return false;
             }
         }
@@ -414,7 +425,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 LogSystem.Error(ex);
                 result.Ok = false;
-                result.Message = "Lỗi ngoại lệ khi gửi: " + ex.Message;
+                result.Message = IntegrationErrorMessage.FromException(ex, PARTNER, "gửi hồ sơ lên Trung tâm điều hành y tế");
                 return result;
             }
         }

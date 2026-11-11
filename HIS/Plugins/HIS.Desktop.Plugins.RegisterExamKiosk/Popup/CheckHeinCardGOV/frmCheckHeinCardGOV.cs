@@ -482,7 +482,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.CheckHeinCardGOV
                 lblMaDKBD.Text = resultHistoryLDO.maDKBD;
                 lblMaKhuVuc.Text = resultHistoryLDO.maKV;
                 lblNgayDu5Nam.Text = resultHistoryLDO.ngayDu5Nam;
-                lblMaKetQua.Text = resultHistoryLDO.maKetQua == "000" ? "Hợp lệ" : "Không hợp lệ";
+                // Không gọi được cổng BHXH thì không kết luận thẻ không hợp lệ (vCong 62522)
+                lblMaKetQua.Text = resultHistoryLDO.IsCallFailed ? "Chưa kiểm tra được thẻ, mời đến quầy tiếp đón" : (resultHistoryLDO.maKetQua == "000" ? "Hợp lệ" : "Không hợp lệ");
+                if (resultHistoryLDO.IsCallFailed) Inventec.Common.Logging.LogSystem.Warn("Kiosk kiem tra the BHYT that bai: " + resultHistoryLDO.message);
 
                 var medi = listMediOrgs.FirstOrDefault(o => o.MEDI_ORG_CODE == resultHistoryLDO.maDKBD);
                 if (medi != null)

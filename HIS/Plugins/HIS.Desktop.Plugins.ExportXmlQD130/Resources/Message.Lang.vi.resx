@@ -549,4 +549,70 @@ Hồ sơ chưa kiểm tra được cũng bị chặn vì chưa thể khẳng đ�
   <data name="Xml48hLyDoRaVienTruoc48h" xml:space="preserve">
     <value>Đã ra viện - XML hồ sơ đủ 48 giờ chỉ xuất cho hồ sơ đang điều trị</value>
   </data>
+  <data name="CardInfoCotCanhBao" xml:space="preserve">
+    <value>Cảnh báo thẻ, hồ sơ</value>
+  </data>
+  <data name="CardInfoHoiTiepTuc" xml:space="preserve">
+    <value>Có {0}/{1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD, GT_THE_TU, GT_THE_DEN), cổng BHYT có thể từ chối các hồ sơ này. Bạn có muốn tiếp tục không? Chọn không để xem danh sách hồ sơ và sửa trước.</value>
+  </data>
+  <data name="CardInfoTieuDeCuaSo" xml:space="preserve">
+    <value>Cảnh báo thiếu/sai thông tin thẻ, thông tin hồ sơ chính (XML1)</value>
+  </data>
+  <data name="CardInfoTongKet" xml:space="preserve">
+    <value>Đã kiểm {0} hồ sơ: {1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính.</value>
+  </data>
+  <data name="CardInfoTenTepMacDinh" xml:space="preserve">
+    <value>DanhSachCanhBaoTheHoSo_{0}.xlsx</value>
+  </data>
+  <data name="CardInfoTrangThai" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="CardInfoMucDo" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="CardInfoNhomThe" xml:space="preserve">
+    <value>Thông tin thẻ BHYT</value>
+  </data>
+  <data name="CardInfoNhomHoSo" xml:space="preserve">
+    <value>Thông tin hồ sơ</value>
+  </data>
+  <data name="CardInfoThieuCccd" xml:space="preserve">
+    <value>Thiếu số CCCD/số định danh cá nhân</value>
+  </data>
+  <data name="CardInfoCccdSaiDoDai" xml:space="preserve">
+    <value>Số CCCD/định danh &quot;{0}&quot; có {1} chữ số, đúng là 12 chữ số (CMND cũ 9 chữ số)</value>
+  </data>
+  <data name="CardInfoCccdKyTuLa" xml:space="preserve">
+    <value>Số CCCD/định danh &quot;{0}&quot; có dấu cách hoặc ký tự không phải chữ, số</value>
+  </data>
+  <data name="CardInfoNgaySinhKhongHopLe" xml:space="preserve">
+    <value>Thiếu hoặc sai ngày sinh</value>
+  </data>
+  <data name="CardInfoThieuMaThe" xml:space="preserve">
+    <value>Hồ sơ BHYT chưa có mã thẻ BHYT</value>
+  </data>
+  <data name="CardInfoMaTheSaiDoDai" xml:space="preserve">
+    <value>Mã thẻ BHYT &quot;{0}&quot; có {1} ký tự, đúng là 15 ký tự (thẻ mẫu mới 17 ký tự)</value>
+  </data>
+  <data name="CardInfoThieuNoiDkbd" xml:space="preserve">
+    <value>Thẻ {0}: thiếu mã nơi đăng ký KCB ban đầu</value>
+  </data>
+  <data name="CardInfoNoiDkbdSaiDoDai" xml:space="preserve">
+    <value>Thẻ {0}: mã nơi đăng ký KCB ban đầu &quot;{1}&quot; có {2} ký tự, đúng là 5 ký tự</value>
+  </data>
+  <data name="CardInfoThieuGtTheTu" xml:space="preserve">
+    <value>Thẻ {0}: thiếu ngày thẻ có giá trị từ</value>
+  </data>
+  <data name="CardInfoThieuGtTheDen" xml:space="preserve">
+    <value>Thẻ {0}: thiếu ngày thẻ có giá trị đến</value>
+  </data>
+  <data name="CardInfoMaTheKyTuLa" xml:space="preserve">
+    <value>Mã thẻ BHYT &quot;{0}&quot; có dấu cách hoặc ký tự không phải chữ, số</value>
+  </data>
+  <data name="CardInfoChanXuatGui" xml:space="preserve">
+    <value>Có {0}/{1} hồ sơ thiếu hoặc sai thông tin thẻ, thông tin hồ sơ chính (SO_CCCD, NGAY_SINH, MA_THE_BHYT, MA_DKBD, GT_THE_TU, GT_THE_DEN). Theo cấu hình của viện, không cho phép xuất/gửi XML khi còn hồ sơ thiếu/sai. Vui lòng sửa thông tin hoặc bỏ chọn các hồ sơ này rồi thực hiện lại.</value>
+  </data>
+  <data name="XmlDangDieuTriThuVienChuaHoTro" xml:space="preserve">
+    <value>Thư viện His.Bhyt.ExportXml.XML130 trên máy chưa hỗ trợ xuất XML hồ sơ đang điều trị (cần cập nhật thư viện bản từ ngày 28/10/2026)</value>
+  </data>
 </root>

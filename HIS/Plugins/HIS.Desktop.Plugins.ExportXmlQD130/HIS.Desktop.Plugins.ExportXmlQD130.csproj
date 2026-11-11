@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Inventec.Common.IntegrationError">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.dll</HintPath>
+    </Reference>
     <Reference Include="Aspose.Cells">
       <HintPath>..\..\..\..\..\..\..\histest\x64\ReferencedAssemblies\Aspose.Cells.dll</HintPath>
     </Reference>
@@ -262,6 +265,7 @@
     <Compile Include="ADO\FilterTypeADO.cs" />
     <Compile Include="ADO\ConfigSyncADO.cs" />
     <Compile Include="ADO\TienGiamDinhADO.cs" />
+    <Compile Include="Base\PortalErrorHelper.cs" />
     <Compile Include="Base\TienGiamDinhWorker.cs" />
     <Compile Include="ADO\MdInsightADO.cs" />
     <Compile Include="ADO\XmlBuildContextADO.cs" />
@@ -284,6 +288,13 @@
     <Compile Include="UCExportXml___Xml48h.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExportXml___CardInfoWarning.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UCExportXml___InTreatment.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Base\CardInfoChecker.cs" />
     <Compile Include="ADO\XmlBatchDataADO.cs" />
     <Compile Include="Base\MdInsightConfig.cs" />
     <Compile Include="Base\MdInsightDescCodec.cs" />

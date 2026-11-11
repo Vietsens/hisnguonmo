@@ -491,7 +491,8 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                     WaitingManager.Show();
                     CommonParam param = new CommonParam();
                     bool success = false;
-                    DataResult sendResult = new ProcessSendToErx(listServiceReq, ListEmployee, SysConfigValue, CurrBranch.HEIN_MEDI_ORG_CODE).Send();
+                    ProcessSendToErx sendProcessor = new ProcessSendToErx(listServiceReq, ListEmployee, SysConfigValue, CurrBranch.HEIN_MEDI_ORG_CODE);
+                    DataResult sendResult = sendProcessor.Send();
 
                     List<long> serviceReqIdToSend = new List<long>();
 
@@ -524,6 +525,8 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                                 var failedServiceReq = listServiceReq.FirstOrDefault(o => o.SERVICE_REQ_CODE == group.Key);
                                 if (failedServiceReq != null)
                                 {
+                                    // (vCong 62522) thông báo đã phân loại dài hơn → cắt theo độ dài cột ERX_DESC (4000 byte)
+                                    errorMessage = CutByUtf8Bytes(errorMessage, 3990);
                                     failedServiceReq.IS_SENT_ERX = 2;
                                     failedServiceReq.ERX_DESC = errorMessage;
                                     updates.Add(new HIS_SERVICE_REQ() { ID = failedServiceReq.ID, IS_SENT_ERX = 2, ERX_DESC = errorMessage });
@@ -554,7 +557,14 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                         }
                     }
 
-                    if (sendResult.Datas != null && sendResult.Datas.Count > 0)
+                    // (vCong 62522) trước đây sendResult null → NullReference, người dùng không thấy gì; Messages của bước kiểm tra dữ liệu cũng không hiện
+                    if (sendResult == null)
+                    {
+                        param.Messages.Add(!String.IsNullOrWhiteSpace(sendProcessor.LastErrorMessage)
+                            ? sendProcessor.LastErrorMessage
+                            : Inventec.Common.IntegrationError.IntegrationErrorMessage.SoftwareError(Inventec.Common.IntegrationError.IntegrationPartner.Pharmacy, "Không gửi được đơn thuốc liên thông (thiếu cấu hình hoặc dữ liệu đơn thuốc)", null));
+                    }
+                    else if (sendResult.Messages != null && sendResult.Messages.Count > 0)
                     {
                         param.Messages.AddRange(sendResult.Messages.Distinct().ToList());
                     }
@@ -577,6 +587,8 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // (vCong 62522) trước đây chỉ ghi log
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Pharmacy, "gửi đơn thuốc liên thông"), ResourceLanguageManager.ThongBao);
             }
             WaitingManager.Hide();
         }
@@ -1005,6 +1017,15 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             return result;
         }
 
+        /// <summary>Cắt chuỗi theo số byte UTF-8 (cột VARCHAR2 4000 byte) (vCong 62522)</summary>
+        private static string CutByUtf8Bytes(string value, int maxBytes)
+        {
+            if (String.IsNullOrEmpty(value) || System.Text.Encoding.UTF8.GetByteCount(value) <= maxBytes) return value;
+            int len = Math.Min(value.Length, maxBytes);
+            while (len > 0 && System.Text.Encoding.UTF8.GetByteCount(value.Substring(0, len)) > maxBytes - 3) len--;
+            return value.Substring(0, len) + "...";
+        }
+
         private void btnUpdateSale_Click(object sender, EventArgs e)
         {
             try
@@ -1015,14 +1036,14 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                 string msgSys = ValidateSysConfig(SysConfigValue);
                 if (!String.IsNullOrEmpty(msgSys))
                 {
-                    XtraMessageBox.Show(msgSys, ResourceLanguageManager.ThongBao);
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Inventec.Common.IntegrationError.IntegrationPartner.Pharmacy, msgSys), ResourceLanguageManager.ThongBao); // vCong 62522
                     return;
                 }
 
                 string msgApp = ValidateClientAppConfig(ClientAppConfigValue);
                 if (!String.IsNullOrEmpty(msgApp))
                 {
-                    XtraMessageBox.Show(msgApp, ResourceLanguageManager.ThongBao);
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Inventec.Common.IntegrationError.IntegrationPartner.Pharmacy, msgApp), ResourceLanguageManager.ThongBao); // vCong 62522
                     return;
                 }
 
@@ -1361,7 +1382,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                 {
                     WaitingManager.Hide();
                     LogSystem.Error(exCall);
-                    lines.Add("Cập nhật số lượng bán không thành công. Vui lòng kiểm tra cấu hình hoặc kết nối tới hệ thống liên thông.");
+                    lines.Add(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exCall, Inventec.Common.IntegrationError.IntegrationPartner.Pharmacy, "cập nhật số lượng bán")); // vCong 62522
                     XtraMessageBox.Show(String.Join(Environment.NewLine, lines), ResourceLanguageManager.ThongBao);
                     return;
                 }
@@ -1369,7 +1390,11 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                 if (rs == null || rs.Datas == null || rs.Datas.Count == 0)
                 {
                     WaitingManager.Hide();
-                    lines.Add("Cập nhật số lượng bán không thành công. Không nhận được phản hồi từ hệ thống liên thông.");
+                    // (vCong 62522) Messages chứa lý do (kiểm tra dữ liệu / lỗi cổng)
+                if (rs != null && rs.Messages != null && rs.Messages.Count > 0)
+                    lines.AddRange(rs.Messages.Distinct().ToList());
+                else
+                    lines.Add(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.Pharmacy, "cập nhật số lượng bán"));
                     XtraMessageBox.Show(String.Join(Environment.NewLine, lines), ResourceLanguageManager.ThongBao);
                     return;
                 }
@@ -1488,7 +1513,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             {
                 WaitingManager.Hide();
                 LogSystem.Error(ex);
-                XtraMessageBox.Show("Có lỗi xảy ra khi cập nhật số lượng bán.", ResourceLanguageManager.ThongBao);
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Pharmacy, "cập nhật số lượng bán"), ResourceLanguageManager.ThongBao); // vCong 62522
             }
         }
 

@@ -551,11 +551,13 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     if (!success)
                     {
                         LogSystem.Error("In barcode Bartender that bai. Check log BartenderPrint");
+                        DevExpress.XtraEditors.XtraMessageBox.Show(client.LastErrorMessage ?? "In tem barcode thất bại", "Thông báo"); // vCong 62522
                     }
                 }
                 else
                 {
                     LogSystem.Warn("Khong mo duoc APP Print Bartender");
+                    DevExpress.XtraEditors.XtraMessageBox.Show(Bartender.PrintClient.BartenderPrintClientManager.BuildOpenAppErrorMessage(), "Thông báo"); // vCong 62522
                 }
                 WaitingManager.Hide();
             }
@@ -563,6 +565,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                DevExpress.XtraEditors.XtraMessageBox.Show(Bartender.PrintClient.BartenderPrintClientManager.BuildErrorMessage(ex), "Thông báo"); // vCong 62522
             }
         }
         #endregion

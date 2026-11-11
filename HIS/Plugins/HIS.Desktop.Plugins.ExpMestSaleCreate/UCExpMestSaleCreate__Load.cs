@@ -362,17 +362,17 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_CMND_NUMBER))
                     {
                         txtIdentification.Text = expMest.TDL_PATIENT_CMND_NUMBER;
-                        cboIdentification.EditValue = "CMND"; // CMND
+                        cboIdentification.EditValue = IDENTITY_TYPE_CMND;
                     }
                     else if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_CCCD_NUMBER))
                     {
                         txtIdentification.Text = expMest.TDL_PATIENT_CCCD_NUMBER;
-                        cboIdentification.EditValue = "CCCD"; // CCCD
+                        cboIdentification.EditValue = IDENTITY_TYPE_CCCD;
                     }
                     else if (!string.IsNullOrWhiteSpace(expMest.TDL_PATIENT_PASSPORT_NUMBER))
                     {
                         txtIdentification.Text = expMest.TDL_PATIENT_PASSPORT_NUMBER;
-                        cboIdentification.EditValue = "PASSPORT"; // PASSPORT
+                        cboIdentification.EditValue = IDENTITY_TYPE_PASSPORT;
                     }
                     else
                     {

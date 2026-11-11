@@ -4211,6 +4211,7 @@ namespace HIS.Desktop.Plugins.TestServiceExecute
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Warn("khong lay duoc thong tin anh");
+                    ShowPacsErrorIfAny(false); // vCong 62522
                 }
                 ProcessLoadGridImage(this.listImage);
             }
@@ -4225,10 +4226,12 @@ namespace HIS.Desktop.Plugins.TestServiceExecute
             List<PACS.ImagesADO> result = null;
             try
             {
-                CommonParam param = new CommonParam();
+                this.pacsLastErrorMessage = null;
                 PACS.ImageRequestADO layThongTinAnhInputADO = new PACS.ImageRequestADO();
                 layThongTinAnhInputADO.SoPhieu = soPhieu;
-                var resultData = new Inventec.Common.Adapter.BackendAdapter(param).PostWithouApiParam<PACS.ImageResponseADO>(RequestUriStore.PACS_SERIVCE__LAY_THONG_TIN_ANH, PACS.PacsApiConsumer.PacsConsumer, layThongTinAnhInputADO, null, param);
+                // vCong 62522: goi truc tiep consumer de lay duoc loi (BackendAdapter nuot loi)
+                var resultData = CallPacsImageService(layThongTinAnhInputADO);
+                this.pacsLastErrorMessage = BuildPacsResultError(resultData);
                 if (resultData != null && resultData.TrangThai && resultData.Series != null)
                 {
                     Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
@@ -4247,6 +4250,7 @@ namespace HIS.Desktop.Plugins.TestServiceExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                this.pacsLastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, PacsPartner, "lấy thông tin ảnh từ PACS");
                 result = null;
             }
             return result;

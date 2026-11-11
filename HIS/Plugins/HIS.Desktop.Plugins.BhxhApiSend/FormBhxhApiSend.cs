@@ -194,11 +194,10 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
 
                 if (tokenResult == null || tokenResult.APIKey == null || tokenResult.maKetQua != "200")
                 {
-                    string errMsg = "Xác thực thất bại.";
-                    if (tokenResult != null)
-                    {
-                        errMsg += " Mã kết quả: " + (tokenResult.maKetQua ?? "null");
-                    }
+                    // Lý do thật: sai tài khoản / mất kết nối / cổng lỗi (vCong 62522)
+                    string errMsg = tokenResult != null && !string.IsNullOrEmpty(tokenResult.ErrorMessage)
+                        ? tokenResult.ErrorMessage
+                        : Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, tokenResult == null ? null : "Mã kết quả: " + (tokenResult.maKetQua ?? "null"));
                     txtMaKetQua.Text = tokenResult != null ? tokenResult.maKetQua : "";
                     txtThongDiep.Text = errMsg;
                     XtraMessageBox.Show(errMsg, "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -251,18 +250,16 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
                 }
                 else
                 {
-                    string errMsg = "Gửi thất bại";
-                    if (sendResult != null && !string.IsNullOrEmpty(sendResult.thongDiep))
-                    {
-                        errMsg += ": " + sendResult.thongDiep;
-                    }
+                    string errMsg = sendResult == null
+                        ? Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "gửi danh mục")
+                        : Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, Inventec.Common.IntegrationError.IntegrationErrorMessage.IsBuilt(sendResult.thongDiep) ? sendResult.thongDiep : ("Mã kết quả " + (sendResult.maKetQua ?? "(trống)") + (string.IsNullOrEmpty(sendResult.thongDiep) ? "" : ": " + sendResult.thongDiep)), "Cổng BHXH không tiếp nhận dữ liệu");
                     XtraMessageBox.Show(errMsg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                XtraMessageBox.Show("Có lỗi xảy ra: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "gửi dữ liệu lên cổng BHXH"), "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

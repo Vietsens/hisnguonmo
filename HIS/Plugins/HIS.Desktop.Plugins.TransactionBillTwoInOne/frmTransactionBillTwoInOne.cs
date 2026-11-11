@@ -2391,6 +2391,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 txtBuyerAddress.Text = "";
                 txtBuyerName.Text = "";
                 txtBuyerOrganization.Text = "";
+                // Xoa thong tin don vi/ma QHNS cua ho so truoc (viec 62671): FillInfoPatient chi gan khi BN moi co du lieu,
+                // khong xoa o day thi BN sau khong co don vi se mang don vi/ma QHNS cua BN truoc len hoa don
+                chkOther.Checked = false;
+                chkOther2.Checked = false;
+                txtBuyerOrganization2.Text = "";
+                cboBuyerOrganization.EditValue = null;
+                cboBuyerOrganization2.EditValue = null;
+                txtBuyerSocialRelationsCode.Text = "";
                 txtBuyerTaxCode.Text = "";
                 lblHeinRatio.Text = "";
                 lblRightRoute.Text = "";
@@ -3213,14 +3221,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     catch (Exception ex)
                     {
                         Inventec.Common.Logging.LogSystem.Error(ex);
-                        XtraMessageBox.Show("Kiểm tra lại cấu hình NetTcpBinding_IService1", "Thông báo");
+                        XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "Không khởi tạo được kết nối tới dịch vụ máy POS: kiểm tra lại cấu hình NetTcpBinding_IService1 trong file cấu hình phần mềm", ex.Message), "Thông báo"); // vCong 62522
                         return;
                     }
                     cll.cauhinh();
                 }
                 catch (Exception ex)
                 {
-                    XtraMessageBox.Show("Cấu hình thất bại", "Thông báo");
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "mở cấu hình máy POS"), "Thông báo"); // vCong 62522
                     Inventec.Common.Logging.LogSystem.Error(ex);
                 }
             }
@@ -4271,7 +4279,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     else
                     {
                         WaitingManager.Hide();
-                        XtraMessageBox.Show(this, result.Data?.ResponseStatus?.ErrorDesc, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        // vCong 62522: truoc day chi hien ErrorDesc (rong khi loi ket noi/HTTP)
+                        string guaranteeMsg = result != null && Inventec.Common.IntegrationError.IntegrationErrorMessage.IsBuilt(result.Message) ? result.Message
+                            : Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống bảo lãnh viện phí"), result?.Data?.ResponseStatus?.ErrorDesc ?? result?.Message, "Thanh toán bằng bảo lãnh thất bại");
+                        XtraMessageBox.Show(this, guaranteeMsg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         chkGuarantee.Checked = false;
                         return false;
                     }

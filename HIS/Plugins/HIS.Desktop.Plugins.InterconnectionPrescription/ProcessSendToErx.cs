@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -51,6 +51,9 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription
         List<HIS_DHST> ListDhst = new List<HIS_DHST>();
         List<HIS_TREATMENT> ListTreatment = new List<HIS_TREATMENT>();
 
+        /// <summary>(vCong 62522) Lý do Send() trả null (cấu hình sai, lỗi gọi cổng...), đã phân loại nguồn lỗi</summary>
+        public string LastErrorMessage { get; private set; }
+
         public ProcessSendToErx(List<HIS_SERVICE_REQ> listServiceReq,List<HIS_EMPLOYEE> listEmplyee, string config, string mediOrgCode)
         {
             this.ListServiceReq = listServiceReq;
@@ -69,12 +72,15 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription
                     var cfg = Config.Split('|');
                     if (cfg.Count() < 3)
                     {
-                        throw new Exception("Loi cau hinh he thong: " + Config);
+                        // (vCong 62522) không đưa chuỗi cấu hình (có mật khẩu cơ sở) vào thông báo
+                        throw new Inventec.Common.IntegrationError.IntegrationException(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.Pharmacy,
+                            "Cấu hình hệ thống liên thông đơn thuốc thiếu tham số (cần dạng Địa chỉ|Mã liên thông cơ sở|Mật khẩu cơ sở)");
                     }
 
                     if (String.IsNullOrWhiteSpace(MediOrgCode) || MediOrgCode.Length != 5)
                     {
-                        throw new Exception("Sai thong tin chi nhanh lam viec: " + MediOrgCode);
+                        throw new Inventec.Common.IntegrationError.IntegrationException(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.Pharmacy,
+                            "Mã cơ sở KCB BHYT của chi nhánh làm việc không hợp lệ (phải đủ 5 ký tự): " + MediOrgCode);
                     }
 
                     ThreadLoadDataMediMate();
@@ -100,6 +106,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                LastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Pharmacy, "gửi đơn thuốc liên thông"); // vCong 62522
             }
             return result;
         }

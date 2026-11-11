@@ -53,11 +53,45 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
         public string EXAM_KIDNEY_UROLOGY { get; set; }
         public string EXAM_DIGESTION { get; set; }
         public string EXAM_CIRCULATION { get; set; }
+
+        // Phân loại từng phần khám (tên HIS_HEALTH_EXAM_RANK) — cột EXAM_*_RANK ở EnterKskInfomantionVer2
+        public string DHST_RANK_NAME { get; set; }
+        public string EXAM_CIRCULATION_RANK_NAME { get; set; }
+        public string EXAM_RESPIRATORY_RANK_NAME { get; set; }
+        public string EXAM_DIGESTION_RANK_NAME { get; set; }
+        public string EXAM_OEND_RANK_NAME { get; set; }
+        public string EXAM_MUSCLE_BONE_RANK_NAME { get; set; }
+        public string EXAM_NEUROLOGICAL_RANK_NAME { get; set; }
+        public string EXAM_MENTAL_RANK_NAME { get; set; }
+        public string EXAM_DERMATOLOGY_RANK_NAME { get; set; }
+        public string EXAM_KIDNEY_UROLOGY_RANK_NAME { get; set; }
+        public string EXAM_SURGERY_RANK_NAME { get; set; }
+        public string EXAM_OBSTETRIC_RANK_NAME { get; set; }
+        public string EXAM_EYE_RANK_NAME { get; set; }
+        public string EXAM_ENT_RANK_NAME { get; set; }
+        public string EXAM_STOMATOLOGY_RANK_NAME { get; set; }
         public string TDL_PATIENT_DOB_MEN { get; set; }
         public string TDL_PATIENT_DOB_WOM { get; set; }
         public string HEIGH_RANK_NAME { get; set; }
         public string EXAM_CONCLUSION { get; set; }
         public string CONCLUSION { get; set; }
+        /// <summary>Kết luận khám lâm sàng — V_HIS_SERVICE_REQ.CONCLUSION_CLINICAL của y lệnh khám.</summary>
+        public string CONCLUSION_CLINICAL { get; set; }
+
+        // Kết quả chi tiết Mắt / Tai mũi họng / Răng hàm mặt (EnterKskInfomantionVer2)
+        public string EXAM_EYESIGHT_RIGHT { get; set; }        // Thị lực không kính - mắt phải
+        public string EXAM_EYESIGHT_LEFT { get; set; }         // Thị lực không kính - mắt trái
+        public string EXAM_EYESIGHT_GLASS_RIGHT { get; set; }  // Thị lực có kính - mắt phải
+        public string EXAM_EYESIGHT_GLASS_LEFT { get; set; }   // Thị lực có kính - mắt trái
+        public string EXAM_EYE_DISEASE { get; set; }           // Các bệnh về mắt
+        public string EXAM_ENT_RIGHT_NORMAL { get; set; }      // Nói thường - tai phải
+        public string EXAM_ENT_LEFT_NORMAL { get; set; }       // Nói thường - tai trái
+        public string EXAM_ENT_RIGHT_WHISPER { get; set; }     // Nói thầm - tai phải
+        public string EXAM_ENT_LEFT_WHISPER { get; set; }      // Nói thầm - tai trái
+        public string EXAM_ENT_DISEASE { get; set; }           // Các bệnh về tai mũi họng
+        public string EXAM_STOMATOLOGY_UPPER { get; set; }     // Hàm trên
+        public string EXAM_STOMATOLOGY_LOWER { get; set; }     // Hàm dưới
+        public string EXAM_STOMATOLOGY_DISEASE { get; set; }   // Các bệnh về răng hàm mặt
         public decimal? HEIGHT { get; set; }
         public decimal? WEIGHT { get; set; }
         public decimal? VIR_BMI { get; set; }
@@ -145,7 +179,10 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
             var dataSr = GetServiceReq(data.ID);
             if (dataSr != null && dataSr.Count > 0)
             {
-                long serviceReqId = dataSr.OrderBy(o => o.INTRUCTION_TIME).FirstOrDefault().ID;
+                // Dữ liệu KSK gắn với y lệnh KHÁM — ưu tiên y lệnh khám sớm nhất, không có mới lấy y lệnh bất kỳ.
+                var firstExamReq = dataSr.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                    .OrderBy(o => o.INTRUCTION_TIME).FirstOrDefault();
+                long serviceReqId = firstExamReq != null ? firstExamReq.ID : dataSr.OrderBy(o => o.INTRUCTION_TIME).FirstOrDefault().ID;
 
                 // Gọi API gộp GIỐNG EnterKskInfomantionVer2: 1 call api/HisKskSync/GetKskData lấy toàn bộ
                 // dữ liệu KSK của lượt khám (general + trên-18 + nghề nghiệp + DHST...) thay cho nhiều call lẻ.
@@ -203,6 +240,24 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                     NOTE_PROSTASE = Pick(examRecord, currentGenaral, "NOTE_PROSTASE");
                     NOTE_SUPERSONIC = Pick(examRecord, currentGenaral, "NOTE_SUPERSONIC");
                     NOTE_XRAY = Pick(examRecord, currentGenaral, "NOTE_XRAY");
+
+                    // Phân loại (HIS_HEALTH_EXAM_RANK) của từng phần khám — các combo "Phân loại" ở EnterKskInfomantionVer2.
+                    FillSectionRankNames(examRecord, currentGenaral);
+
+                    // Kết quả chi tiết Mắt / Tai mũi họng / Răng hàm mặt (số đo + bệnh) — cùng tên cột ở mọi bảng KSK.
+                    EXAM_EYESIGHT_RIGHT = Pick(examRecord, currentGenaral, "EXAM_EYESIGHT_RIGHT");
+                    EXAM_EYESIGHT_LEFT = Pick(examRecord, currentGenaral, "EXAM_EYESIGHT_LEFT");
+                    EXAM_EYESIGHT_GLASS_RIGHT = Pick(examRecord, currentGenaral, "EXAM_EYESIGHT_GLASS_RIGHT");
+                    EXAM_EYESIGHT_GLASS_LEFT = Pick(examRecord, currentGenaral, "EXAM_EYESIGHT_GLASS_LEFT");
+                    EXAM_EYE_DISEASE = Pick(examRecord, currentGenaral, "EXAM_EYE_DISEASE");
+                    EXAM_ENT_RIGHT_NORMAL = Pick(examRecord, currentGenaral, "EXAM_ENT_RIGHT_NORMAL");
+                    EXAM_ENT_LEFT_NORMAL = Pick(examRecord, currentGenaral, "EXAM_ENT_LEFT_NORMAL");
+                    EXAM_ENT_RIGHT_WHISPER = Pick(examRecord, currentGenaral, "EXAM_ENT_RIGHT_WHISPER");
+                    EXAM_ENT_LEFT_WHISPER = Pick(examRecord, currentGenaral, "EXAM_ENT_LEFT_WHISPER");
+                    EXAM_ENT_DISEASE = Pick(examRecord, currentGenaral, "EXAM_ENT_DISEASE");
+                    EXAM_STOMATOLOGY_UPPER = Pick(examRecord, currentGenaral, "EXAM_STOMATOLOGY_UPPER");
+                    EXAM_STOMATOLOGY_LOWER = Pick(examRecord, currentGenaral, "EXAM_STOMATOLOGY_LOWER");
+                    EXAM_STOMATOLOGY_DISEASE = Pick(examRecord, currentGenaral, "EXAM_STOMATOLOGY_DISEASE");
 
                     long? healthRankId = GetLong(examRecord, "HEALTH_EXAM_RANK_ID") ?? GetLong(currentGenaral, "HEALTH_EXAM_RANK_ID");
                     if (healthRankId != null)
@@ -287,8 +342,20 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
                     CONCLUSION_ICD_NAME = GetStr(currentGenaral, "CONCLUSION_ICD_NAME");
                 }
 
-                CONCLUSION = dataSr.OrderByDescending(o => o.INTRUCTION_TIME).FirstOrDefault().CONCLUSION;
-                EXAM_CONCLUSION = dataSr.OrderByDescending(o => o.INTRUCTION_TIME).FirstOrDefault().EXAM_CONCLUSION;
+                // Kết luận lấy ở Y LỆNH KHÁM (ưu tiên y lệnh mới nhất có giá trị) — trước đây lấy y lệnh mới nhất
+                // thuộc mọi loại (XN/CĐHA...) nên thường rỗng.
+                var examReqs = dataSr.Where(o => o.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                    .OrderByDescending(o => o.INTRUCTION_TIME).ToList();
+                if (examReqs.Count == 0) examReqs = dataSr.OrderByDescending(o => o.INTRUCTION_TIME).ToList();
+                CONCLUSION_CLINICAL = FirstNotEmpty(examReqs.Select(o => o.CONCLUSION_CLINICAL).ToArray());
+                // Phiếu KSK trên 18 tuổi (EnterKskInfomantionVer2):
+                //  - "Kết luận khám"  = ô Kết quả mục KHÁM SỨC KHỎE ĐỊNH KỲ (tab Khám cận lâm sàng) — PERIODIC_CLS_RESULT.
+                //  - "Kết luận chung" = ô Mô tả ở tab Kết luận — HEALTH_EXAM_RANK_DESCRIPTION.
+                // Các phiếu khác không có 2 cột này → giữ giá trị của y lệnh khám. Đọc qua reflection vì EFMODEL các bản lệch nhau.
+                CONCLUSION = FirstNotEmpty(GetStr(kskOverEighteen, "HEALTH_EXAM_RANK_DESCRIPTION"),
+                    FirstNotEmpty(examReqs.Select(o => o.CONCLUSION).ToArray()));
+                EXAM_CONCLUSION = FirstNotEmpty(GetStr(kskOverEighteen, "PERIODIC_CLS_RESULT"),
+                    FirstNotEmpty(examReqs.Select(o => o.EXAM_CONCLUSION).ToArray()));
             }
         }
 
@@ -504,6 +571,55 @@ namespace HIS.Desktop.Plugins.TreatmentList.ADO
         }
 
         #endregion
+
+        /// <summary>
+        /// Điền tên phân loại (HIS_HEALTH_EXAM_RANK_NAME) cho từng phần khám — lấy cột EXAM_*_RANK của bản ghi khám
+        /// theo loại KSK (trên-18 / dưới-18 / nghề nghiệp...), thiếu thì rơi về HIS_KSK_GENERAL. Giống các combo
+        /// "Phân loại" của EnterKskInfomantionVer2. Dưới-18 gộp Thần kinh – Tâm thần vào EXAM_NEURO_MENTAL_RANK.
+        /// </summary>
+        private void FillSectionRankNames(object examRecord, object general)
+        {
+            try
+            {
+                var rankDict = new Dictionary<long, string>();
+                var ranks = BackendDataWorker.Get<HIS_HEALTH_EXAM_RANK>();
+                if (ranks != null)
+                {
+                    foreach (var r in ranks)
+                    {
+                        if (r != null && !rankDict.ContainsKey(r.ID)) rankDict[r.ID] = r.HEALTH_EXAM_RANK_NAME;
+                    }
+                }
+
+                DHST_RANK_NAME = PickRankName(rankDict, examRecord, general, "DHST_RANK");
+                EXAM_CIRCULATION_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_CIRCULATION_RANK", "EXAM_CARDIOVASCULAR_RANK");
+                EXAM_RESPIRATORY_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_RESPIRATORY_RANK");
+                EXAM_DIGESTION_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_DIGESTION_RANK");
+                EXAM_OEND_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_OEND_RANK");
+                EXAM_MUSCLE_BONE_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_MUSCLE_BONE_RANK");
+                EXAM_NEUROLOGICAL_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_NEUROLOGICAL_RANK", "EXAM_NEURO_MENTAL_RANK");
+                EXAM_MENTAL_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_MENTAL_RANK", "EXAM_NEURO_MENTAL_RANK");
+                EXAM_DERMATOLOGY_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_DERMATOLOGY_RANK");
+                EXAM_KIDNEY_UROLOGY_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_KIDNEY_UROLOGY_RANK");
+                EXAM_SURGERY_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_SURGERY_RANK", "EXAM_CLINICAL_OTHER_RANK");
+                EXAM_OBSTETRIC_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_OBSTETRIC_RANK", "EXAM_MATERNITY_RANK");
+                EXAM_EYE_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_EYE_RANK");
+                EXAM_ENT_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_ENT_RANK");
+                EXAM_STOMATOLOGY_RANK_NAME = PickRankName(rankDict, examRecord, general, "EXAM_STOMATOLOGY_RANK");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>Lấy ID phân loại ở bản ghi chính (thiếu thì ở general) rồi tra tên trong danh mục.</summary>
+        private static string PickRankName(Dictionary<long, string> rankDict, object primary, object fallback, params string[] names)
+        {
+            long? rankId = GetLong(primary, names) ?? GetLong(fallback, names);
+            string name;
+            return (rankId != null && rankDict != null && rankDict.TryGetValue(rankId.Value, out name)) ? name : null;
+        }
 
         /// <summary>Đọc property string đầu tiên có giá trị (theo danh sách tên field ứng viên) — an toàn kiểu qua reflection.</summary>
         private static string GetStr(object o, params string[] names)

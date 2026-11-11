@@ -856,17 +856,17 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     if (!string.IsNullOrWhiteSpace(_expMest.TDL_PATIENT_CMND_NUMBER))
                     {
                         txtIdentification.Text = _expMest.TDL_PATIENT_CMND_NUMBER;
-                        cboIdentification.EditValue = 1; // CMND
+                        cboIdentification.EditValue = IDENTITY_TYPE_CMND;
                     }
                     else if (!string.IsNullOrWhiteSpace(_expMest.TDL_PATIENT_CCCD_NUMBER))
                     {
                         txtIdentification.Text = _expMest.TDL_PATIENT_CCCD_NUMBER;
-                        cboIdentification.EditValue = 2; // CCCD
+                        cboIdentification.EditValue = IDENTITY_TYPE_CCCD;
                     }
                     else if (!string.IsNullOrWhiteSpace(_expMest.TDL_PATIENT_PASSPORT_NUMBER))
                     {
                         txtIdentification.Text = _expMest.TDL_PATIENT_PASSPORT_NUMBER;
-                        cboIdentification.EditValue = 3; // PASSPORT
+                        cboIdentification.EditValue = IDENTITY_TYPE_PASSPORT;
                     }
                     else
                     {
@@ -955,17 +955,17 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     if (!string.IsNullOrWhiteSpace(_serviceReq.TDL_PATIENT_CMND_NUMBER))
                     {
                         txtIdentification.Text = _serviceReq.TDL_PATIENT_CMND_NUMBER;
-                        cboIdentification.EditValue = 1; // CMND
+                        cboIdentification.EditValue = IDENTITY_TYPE_CMND;
                     }
                     else if (!string.IsNullOrWhiteSpace(_serviceReq.TDL_PATIENT_CCCD_NUMBER))
                     {
                         txtIdentification.Text = _serviceReq.TDL_PATIENT_CCCD_NUMBER;
-                        cboIdentification.EditValue = 2; // CCCD
+                        cboIdentification.EditValue = IDENTITY_TYPE_CCCD;
                     }
                     else if (!string.IsNullOrWhiteSpace(_serviceReq.TDL_PATIENT_PASSPORT_NUMBER))
                     {
                         txtIdentification.Text = _serviceReq.TDL_PATIENT_PASSPORT_NUMBER;
-                        cboIdentification.EditValue = 3; // PASSPORT
+                        cboIdentification.EditValue = IDENTITY_TYPE_PASSPORT;
                     }
                     else
                     {

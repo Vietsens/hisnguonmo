@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -29,6 +29,12 @@ namespace LIS.Desktop.Plugins.LisSampleList.Base
     {
         private static readonly Encoding encoding = Encoding.UTF8;
 
+        /// <summary>vCong 62522: hệ thống nhận đồng bộ kết quả xét nghiệm (cấu hình LIS.Desktop.Plugins.LisSampleList.ConnectionInfo).</summary>
+        public static Inventec.Common.IntegrationError.IntegrationPartner Partner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.Lis("hệ thống nhận kết quả xét nghiệm"); }
+        }
+
         public static HttpWebResponse MultipartFormPost(string postUrl, string userAgent, Dictionary<string, object> postParameters, string headerkey, string headervalue)
         {
             string formDataBoundary = String.Format("----------{0:N}", Guid.NewGuid());
@@ -40,7 +46,16 @@ namespace LIS.Desktop.Plugins.LisSampleList.Base
 
         private static HttpWebResponse PostForm(string postUrl, string userAgent, string contentType, byte[] formData, string headerkey, string headervalue)
         {
-            HttpWebRequest request = WebRequest.Create(postUrl) as HttpWebRequest;
+            HttpWebRequest request = null;
+            try
+            {
+                request = WebRequest.Create(postUrl) as HttpWebRequest;
+            }
+            catch (Exception ex)
+            {
+                // vCong 62522: dia chi trong cau hinh sai dinh dang
+                throw new Inventec.Common.IntegrationError.IntegrationException(Inventec.Common.IntegrationError.ErrorSource.Config, Partner, "Địa chỉ gửi kết quả xét nghiệm trong cấu hình không hợp lệ: " + postUrl, ex);
+            }
 
             if (request == null)
             {
@@ -56,12 +71,20 @@ namespace LIS.Desktop.Plugins.LisSampleList.Base
 
             request.Headers.Add(headerkey, headervalue);
 
-            using (Stream requestStream = request.GetRequestStream())
+            try
             {
-                requestStream.Write(formData, 0, formData.Length);
-                requestStream.Close();
+                using (Stream requestStream = request.GetRequestStream())
+                {
+                    requestStream.Write(formData, 0, formData.Length);
+                    requestStream.Close();
+                }
+                return request.GetResponse() as HttpWebResponse;
             }
-            return request.GetResponse() as HttpWebResponse;
+            catch (Exception ex)
+            {
+                // vCong 62522: timeout/khong ket noi/HTTP loi (doc body) -> exception co nguon
+                throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(ex, Partner, postUrl);
+            }
         }
 
         private static byte[] GetMultipartFormData(Dictionary<string, object> postParameters, string boundary)

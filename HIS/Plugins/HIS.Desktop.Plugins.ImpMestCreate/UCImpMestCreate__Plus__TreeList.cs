@@ -2379,7 +2379,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     });
                 }
 
-                this.medicineProcessor.Reload(this.ucMedicineTypeTree, listMedicineType);
+                this.medicineProcessor.Reload(this.ucMedicineTypeTree, this.FilterMedicineTypeBySupplyOrder(listMedicineType));
                 if (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC || this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK)
                 {
                     if (this.currentBid != null)
@@ -2887,7 +2887,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     });
                 }
                 Inventec.Common.Logging.LogSystem.Info("listMaterialType count: " + listMaterialType.Count());
-                this.materialProcessor.Reload(this.ucMaterialTypeTree, listMaterialType);
+                this.materialProcessor.Reload(this.ucMaterialTypeTree, this.FilterMaterialTypeBySupplyOrder(listMaterialType));
                 if (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC || this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK)
                 {
                     if (this.currentBid != null && this.currentBid.SUPPLIER_IDS != null)

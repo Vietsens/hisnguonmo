@@ -853,4 +853,7 @@
     <value>Danh sách Qr</value>
     <comment>danh sách Qr</comment>
   </data>
+  <data name="UCTransaction.txtHeinCardNumber.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Số thẻ BHYT</value>
+  </data>
 </root>

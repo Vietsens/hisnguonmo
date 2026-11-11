@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
         bool IsAllowDuplicateDocument = false;
         decimal? HeinLimitPrice { get; set; }
         HIS_IMP_MEST _ImpMestUp { get; set; }
+        UCImpMestCreate ucSupplyOrder;
 
         internal SaveManuBehavior(CommonParam param,
             List<VHisServiceADO> serviceADOs,
@@ -74,6 +75,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
             this.IsShowMessDocument = ucImpMestCreate.IsShowMessDocument;
             this.IsAllowDuplicateDocument = ucImpMestCreate.IsAllowDuplicateDocument;
             this._ImpMestUp = ucImpMestCreate._currentImpMestUp;
+            this.ucSupplyOrder = ucImpMestCreate;
         }
 
         object ISaveInit.Run()
@@ -116,6 +118,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Save
                     inputImpMestSDO.ImpMest = this.ResultADO.HisManuSDO.ImpMest;
                 }
                 inputImpMestSDO.ImpMest.SUPPLIER_ID = this.SupplierId;
+                this.ucSupplyOrder.SetSupplyOrderToImpMest(inputImpMestSDO.ImpMest);
 
 
                 HisImpMestManuSDO rs = null;

@@ -197,6 +197,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 LoadConcluderComboExt();
                 LoadConclusionTimeExt();
                 SetEnableControl();
+                // BN Nam: xóa + khóa ô khám sản phụ khoa (sau SetEnableControl, trước mốc so sánh tab ≥18).
+                ApplyMaleObstetricLock(tab);
                 UpdateKskNumberDisplay(); // đổ "Số thứ tự KSK" ngay khi nạp tab (kể cả lúc chỉ MỞ xem, không đổi tab / không lưu)
                 // (Đã bỏ mốc so sánh mục kết luận — Lưu không còn bắt mục kết luận, chỉ bắt khi kết thúc khám.)
                 // Tab ≥18: MỐC so sánh của 14 vùng khám lâm sàng — vùng người dùng không đụng tới thì

@@ -34,8 +34,31 @@ namespace Inventec.Speech
 {
     class SpeechService
     {
+        [ThreadStatic]
+        private static string lastErrorMessage;
+
+        /// <summary>vCong 62522: lỗi gần nhất khi lấy giọng đọc từ dịch vụ ngoài (đã phân loại nguồn); null nếu thành công. Không popup vì đọc tên chạy tự động.</summary>
+        public static string LastErrorMessage
+        {
+            get { return lastErrorMessage; }
+        }
+
+        private static void NoteError(Exception ex, string serviceName)
+        {
+            try
+            {
+                lastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Ai(serviceName), "lấy giọng đọc");
+                LogSystem.Warn(lastErrorMessage);
+            }
+            catch (Exception exx)
+            {
+                LogSystem.Warn(exx);
+            }
+        }
+
         public static bool GetVoice(string content)
         {
+            lastErrorMessage = null;
             try
             {
                 if (!string.IsNullOrWhiteSpace(content))
@@ -71,6 +94,7 @@ namespace Inventec.Speech
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
+                NoteError(ex, "dịch vụ chuyển văn bản thành giọng nói"); // vCong 62522
             }
             return false;
         }
@@ -89,6 +113,7 @@ namespace Inventec.Speech
         public static bool GetVoiceFpt(string content)
         {
             bool result = false;
+            lastErrorMessage = null;
             try
             {
                 if (!string.IsNullOrWhiteSpace(content))
@@ -145,6 +170,7 @@ namespace Inventec.Speech
             {
                 result = false;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                NoteError(ex, "FPT.AI Text-to-Speech"); // vCong 62522
             }
             return result;
         }

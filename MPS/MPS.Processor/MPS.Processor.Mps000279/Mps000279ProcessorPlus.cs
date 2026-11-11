@@ -36,6 +36,43 @@ namespace MPS.Processor.Mps000279
 {
     public partial class Mps000279Processor : AbstractProcessor
     {
+        /// <summary>
+        /// PriceCalculationOption = 1: quỹ BHYT từng dòng = Round(Round(thành tiền BH, 2) * mức hưởng, 2) như cổng BHXH,
+        /// thay cho số DB (VIR_*) làm tròn đơn giá 4 số lẻ rồi nhân số lượng (lệch xu với dòng số lượng lớn, vd oxy 1440 lít).
+        /// Chỉ chuyển phần lẻ giữa quỹ và BN cùng chi trả, tổng dòng giữ nguyên.
+        /// </summary>
+        private void ProcessPriceCalculationOption(List<SereServADO> sereServs)
+        {
+            try
+            {
+                if (rdo.HisConfigValue == null || rdo.HisConfigValue.PriceCalculationOption != 1 || sereServs == null)
+                    return;
+
+                foreach (var ss in sereServs)
+                {
+                    if (!ss.HEIN_RATIO.HasValue || !ss.VIR_TOTAL_HEIN_PRICE.HasValue || (ss.OTHER_SOURCE_PRICE ?? 0) != 0)
+                        continue;
+
+                    decimal heinPrice = ss.VIR_TOTAL_HEIN_PRICE.Value;
+                    decimal totalBhyt = heinPrice + (ss.VIR_TOTAL_PATIENT_PRICE_BHYT ?? 0);
+                    decimal heinPriceRound = Math.Round(Math.Round(totalBhyt, 2, MidpointRounding.AwayFromZero) * ss.HEIN_RATIO.Value, 2, MidpointRounding.AwayFromZero);
+
+                    // Lệch từ 1 đồng trở lên là dòng giá/trần đặc biệt -> giữ số DB
+                    if (heinPriceRound == heinPrice || Math.Abs(heinPriceRound - heinPrice) >= 1)
+                        continue;
+
+                    ss.VIR_TOTAL_HEIN_PRICE = heinPriceRound;
+                    ss.VIR_TOTAL_PATIENT_PRICE_BHYT = totalBhyt - heinPriceRound;
+                    if (ss.AMOUNT > 0)
+                        ss.TOTAL_HEIN_PRICE_ONE_AMOUNT = heinPriceRound / ss.AMOUNT;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         internal void DataInputProcess()
         {
             try
@@ -63,6 +100,9 @@ namespace MPS.Processor.Mps000279
                         && o.IS_NO_EXECUTE != 1
                         && o.IS_EXPEND != 1)
                     .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999).ThenBy(o => o.HEIN_SERVICE_TYPE_CHILD_NUM_ORDER ?? 99999).ToList();
+
+                // Phải chạy trên dòng gốc, trước khi gom nhóm
+                ProcessPriceCalculationOption(sereServADOTemps);
 
                 //sereServ la bhyt, gom nhom
                 var sereServBHYTGroups = sereServADOTemps

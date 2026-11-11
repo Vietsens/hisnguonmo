@@ -68,7 +68,7 @@ namespace Inventec.Common.BankQrCode.Provider.BIDV
             catch (Exception ex)
             {
                 result = new ResultQrCode();
-                result.Message = "Run Exception: " + ex.Message;
+                result.Message = QrCodeErrorUtil.RunError("BIDV", ex); // vCong 62522
             }
             return result;
         }
@@ -85,14 +85,14 @@ namespace Inventec.Common.BankQrCode.Provider.BIDV
                 if (string.IsNullOrEmpty(this.InputData.SystemConfig) || Newtonsoft.Json.JsonConvert.DeserializeObject<BidvInfoData>(this.InputData.SystemConfig) == null)
                 {
                     result = new ResultQrCode();
-                    result.Message = "Sai định dạng cấu hình hệ thống.";
+                    result.Message = QrCodeErrorUtil.ConfigFormatError("BIDV", null); // vCong 62522
                     return false;
                 }
             }
             catch (Exception ex)
             {
                 result = new ResultQrCode();
-                result.Message = "Check data Exception: " + ex.Message;
+                result.Message = QrCodeErrorUtil.RunError("BIDV", ex); // vCong 62522
                 return false;
             }
 
@@ -118,20 +118,34 @@ namespace Inventec.Common.BankQrCode.Provider.BIDV
                     fullrequestUri = extension + requestUri;
                 }
 
-                resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
-
-                if (resp == null || !resp.IsSuccessStatusCode)
+                // (vCong 62522) lỗi kết nối / HTTP / dữ liệu trả về được gắn nguồn lỗi, giữ nội dung ngân hàng trả về
+                Inventec.Common.IntegrationError.IntegrationPartner partner = QrCodeErrorUtil.Partner("BIDV");
+                string uri = baseUri + requestUri;
+                try
                 {
-                    int statusCode = resp.StatusCode.GetHashCode();
-                    throw new Exception(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}", baseUri, requestUri, statusCode));
+                    resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
                 }
+                catch (Exception ex)
+                {
+                    throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(ex, partner, uri);
+                }
+
+                Inventec.Common.IntegrationError.IntegrationHttpError.EnsureSuccess(resp, partner, uri);
 
                 string responseData = resp.Content.ReadAsStringAsync().Result;
 
-                T data = JsonConvert.DeserializeObject<T>(responseData);
+                T data;
+                try
+                {
+                    data = JsonConvert.DeserializeObject<T>(responseData);
+                }
+                catch (Exception ex)
+                {
+                    throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(partner, uri, responseData, ex);
+                }
                 if (data == null)
                 {
-                    throw new Exception(string.Format("Loi khi goi API. Response {0}:", responseData));
+                    throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(partner, uri, responseData, null);
                 }
                 return data;
             }

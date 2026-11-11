@@ -498,6 +498,13 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                             DevExpress.XtraEditors.XtraMessageBox.Show("Hạ tầng không ổn định. Vui lòng thử lại", "Thông báo");
                             return;
                         }
+                        else if (resultFaceReg == null && this.faceRegLastError != null)
+                        {
+                            // vCong 62522: goi dich vu nhan dien that bai -> cau ngan + nhan nguon loi, chi tiet ghi log
+                            DevExpress.XtraEditors.XtraMessageBox.Show(KioskIntegrationError.ForPatient("Chưa nhận diện được khuôn mặt. Vui lòng đặt thẻ CCCD vào khay thiết bị để thực hiện định danh thông tin.",
+                                this.faceRegLastError, KioskIntegrationError.FaceRegPartner, "nhận diện khuôn mặt"), "Thông báo");
+                            return;
+                        }
                         DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng đặt thẻ CCCD vào khay thiết bị để thực hiện định danh thông tin", "Thông báo");
                         return;
                     }
@@ -509,9 +516,13 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             }
 
         }
+        /// <summary>vCong 62522: lỗi gần nhất khi gọi dịch vụ nhận diện khuôn mặt VVN (null nếu thành công).</summary>
+        private Exception faceRegLastError;
+
         public T CreateRequest<T>(string requestUri, Dictionary<string, string> sendData)
         {
             T data = default(T);
+            this.faceRegLastError = null;
             try
             {
 
@@ -543,43 +554,39 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                         Inventec.Common.Logging.LogSystem.Debug("_____sendJsonData : " + stringPayload);
                         resp = client.PostAsync(fullrequestUri, content).Result;
                     }
-                    catch (HttpRequestException ex)
-                    {
-                        throw new Exception("Lỗi kết nối đến Vvn");
-                    }
                     catch (Exception ex)
                     {
-                        throw ex;
+                        // vCong 62522: timeout/DNS/SSL/khong ket noi -> exception co nguon
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(ex, KioskIntegrationError.FaceRegPartner, fullrequestUri);
                     }
 
                     if (resp == null || !resp.IsSuccessStatusCode)
                     {
-                        int statusCode = resp.StatusCode.GetHashCode();
-                        if (resp.Content != null)
-                        {
-                            try
-                            {
-                                string errorData = resp.Content.ReadAsStringAsync().Result;
-                                Inventec.Common.Logging.LogSystem.Error("errorData: " + errorData);
-                            }
-                            catch { }
-                        }
-
-                        throw new Exception(string.Format("Vvn trả về thông tin lỗi. Mã lỗi: {0}", statusCode));
+                        Inventec.Common.IntegrationError.IntegrationException httpEx = Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(KioskIntegrationError.FaceRegPartner, fullrequestUri, resp);
+                        Inventec.Common.Logging.LogSystem.Error("errorData: " + httpEx.Message);
+                        throw httpEx;
                     }
-                    string responseData = resp.Content.ReadAsStringAsync().Result;
+                    string responseData = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(resp);
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => responseData), responseData));
-                    data = JsonConvert.DeserializeObject<T>(responseData);
+                    try
+                    {
+                        data = JsonConvert.DeserializeObject<T>(responseData);
+                    }
+                    catch (Exception exParse)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(KioskIntegrationError.FaceRegPartner, fullrequestUri, responseData, exParse);
+                    }
                     if (data == null)
                     {
-                        throw new Exception("Dữ liệu Vvn trả về không đúng");
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(KioskIntegrationError.FaceRegPartner, fullrequestUri, responseData, null);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                this.faceRegLastError = ex;
             }
 
             return data;

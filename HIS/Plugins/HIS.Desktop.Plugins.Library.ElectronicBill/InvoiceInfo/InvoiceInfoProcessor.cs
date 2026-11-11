@@ -300,6 +300,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
             {
                 result = new InvoiceInfoADO();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lấy thông tin người mua/hóa đơn");
             }
             return result;
         }
@@ -372,6 +373,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.InvoiceInfo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "chuẩn hóa thông tin định danh người mua");
             }
         }
 

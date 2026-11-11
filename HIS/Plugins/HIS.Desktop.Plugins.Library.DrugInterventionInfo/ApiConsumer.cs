@@ -27,11 +27,20 @@ namespace HIS.Desktop.Plugins.Library.DrugInterventionInfo
 {
     class ApiConsumer
     {
+        /// <summary>vCong 62522: hệ thống kiểm tra/can thiệp dược lý (cấu hình ConnectionInfo).</summary>
+        internal static Inventec.Common.IntegrationError.IntegrationPartner Partner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.Ai("hệ thống kiểm tra tương tác thuốc"); }
+        }
+
         public static T CreateRequest<T>(string baseUri, string requestUri, object sendData)
         {
+            Uri baseAddress;
+            if (String.IsNullOrWhiteSpace(baseUri) || !Uri.TryCreate(baseUri, UriKind.Absolute, out baseAddress))
+                throw new Inventec.Common.IntegrationError.IntegrationException(Inventec.Common.IntegrationError.ErrorSource.Config, Partner, "Địa chỉ hệ thống kiểm tra tương tác thuốc trong cấu hình chưa có hoặc sai định dạng: " + baseUri);
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri(baseUri);
+                client.BaseAddress = baseAddress;
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = new TimeSpan(0, 0, 90);
@@ -47,21 +56,39 @@ namespace HIS.Desktop.Plugins.Library.DrugInterventionInfo
                     fullrequestUri = extension + requestUri;
                 }
 
-                resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
+                string uriForMessage = baseUri.TrimEnd('/') + "/" + requestUri.TrimStart('/');
+                try
+                {
+                    resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
+                }
+                catch (Exception ex)
+                {
+                    // vCong 62522: timeout/DNS/SSL/khong ket noi -> exception co nguon
+                    throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(ex, Partner, uriForMessage);
+                }
 
                 if (resp == null || !resp.IsSuccessStatusCode)
                 {
-                    int statusCode = resp.StatusCode.GetHashCode();
-                    throw new Exception(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}", baseUri, requestUri, statusCode));
+                    Inventec.Common.IntegrationError.IntegrationException httpEx = Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Partner, uriForMessage, resp);
+                    Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. {2}", baseUri, requestUri, httpEx.Message));
+                    throw httpEx;
                 }
 
-                string responseData = resp.Content.ReadAsStringAsync().Result;
+                string responseData = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(resp);
                 Inventec.Common.Logging.LogSystem.Info("HIS.Desktop.Plugins.Library.DrugInterventionInfo__________________api responseData: " + responseData);
 
-                T data = JsonConvert.DeserializeObject<T>(responseData);
+                T data;
+                try
+                {
+                    data = JsonConvert.DeserializeObject<T>(responseData);
+                }
+                catch (Exception ex)
+                {
+                    throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(Partner, uriForMessage, responseData, ex);
+                }
                 if (data == null)
                 {
-                    throw new Exception(string.Format("Loi khi goi API. Response {0}:", responseData));
+                    throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(Partner, uriForMessage, responseData, null);
                 }
                 return data;
             }

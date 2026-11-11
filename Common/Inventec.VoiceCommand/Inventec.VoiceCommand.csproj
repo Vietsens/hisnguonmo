@@ -33,6 +33,9 @@
     <Reference Include="IMSys.DbConfig.VVA_RS">
       <HintPath>..\..\RELEASE\IMSys.DbConfig\IMSys.DbConfig.VVA_RS\IMSys.DbConfig.VVA_RS.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.IntegrationError">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\RELEASE\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>

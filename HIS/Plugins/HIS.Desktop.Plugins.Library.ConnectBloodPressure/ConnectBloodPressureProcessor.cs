@@ -28,8 +28,22 @@ namespace HIS.Desktop.Plugins.Library.ConnectBloodPressure
 {
     public class ConnectBloodPressureProcessor
     {
+        /// <summary>vCong 62522: lỗi gần nhất khi mở ứng dụng kết nối máy đo.</summary>
+        private static Exception lastOpenError;
+
+        private static Inventec.Common.IntegrationError.IntegrationPartner AppPartner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.LocalService("ứng dụng kết nối máy đo huyết áp (Blood.Pressure.Monitor)"); }
+        }
+
+        private static Inventec.Common.IntegrationError.IntegrationPartner DevicePartner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.Device("máy đo huyết áp"); }
+        }
+
         public static bool OpenAppBloodPressure()
         {
+            lastOpenError = null;
             try
             {
                 if (IsProcessOpen("Blood.Pressure.Monitor"))
@@ -44,6 +58,7 @@ namespace HIS.Desktop.Plugins.Library.ConnectBloodPressure
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                lastOpenError = ex;
             }
             return false;
         }
@@ -96,7 +111,10 @@ namespace HIS.Desktop.Plugins.Library.ConnectBloodPressure
             {
                 if (!OpenAppBloodPressure())
                 {
-                    MessageBox.Show("Lỗi mở ứng dụng kết nối máy đo.");
+                    // vCong 62522: thieu file Integrate\BloodPressure\Blood.Pressure.Monitor.exe / khong co quyen chay -> may tram
+                    MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.WorkstationError(AppPartner,
+                        "Lỗi mở ứng dụng kết nối máy đo (Integrate\\BloodPressure\\Blood.Pressure.Monitor.exe)",
+                        lastOpenError != null ? Inventec.Common.IntegrationError.IntegrationErrorClassifier.GetDetail(lastOpenError) : null));
                     return result;
                 }
 
@@ -133,17 +151,18 @@ namespace HIS.Desktop.Plugins.Library.ConnectBloodPressure
                         }
                         else
                         {
-                            MessageBox.Show(receivedData.Message);
+                            // vCong 62522: ung dung ket noi bao loi thiet bi (cong COM, khong phan hoi...)
+                            MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.WorkstationError(DevicePartner, "Máy đo huyết áp/ứng dụng kết nối máy đo báo lỗi", receivedData.Message));
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Xử lý thất bại. Không nhận được kết quả");
+                        MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(AppPartner, "lấy kết quả máy đo huyết áp"));
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Xử lý thất bại. Không nhận được kết quả");
+                    MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(AppPartner, "lấy kết quả máy đo huyết áp"));
                 }
             }
             catch (Exception ex)
@@ -151,6 +170,8 @@ namespace HIS.Desktop.Plugins.Library.ConnectBloodPressure
                 KillAppBloodPressure();
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                // vCong 62522: truoc day chi ghi log (WCF chua san sang / ung dung tat giua chung...)
+                MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, AppPartner, "lấy kết quả máy đo huyết áp"));
             }
             return result;
         }

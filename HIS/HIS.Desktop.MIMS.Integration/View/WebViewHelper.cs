@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HIS.Desktop.MIMS.Integration.Models;
+using HIS.Desktop.MIMS.Integration.Core;
 
 namespace HIS.Desktop.MIMS.Integration.View
 {
@@ -30,6 +31,7 @@ namespace HIS.Desktop.MIMS.Integration.View
             var form = new WebBrowser(loadingHtml, title, width, height);
             form.Show();
 
+            string actionErrorMessage = null; // vCong 62522
             Task.Run(() =>
             {
                 try
@@ -40,6 +42,7 @@ namespace HIS.Desktop.MIMS.Integration.View
                 catch (Exception ex)
                 {
                     Inventec.Common.Logging.LogSystem.Error(ex);
+                    actionErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, MimsClient.Partner, "tra cứu cảnh báo thuốc");
                     return null;
                 }
             })
@@ -53,11 +56,14 @@ namespace HIS.Desktop.MIMS.Integration.View
 
                 if (result == null || result.IsTimeout)
                 {
-                    htmlToShow = "<html><head><meta charset=\"utf-8\"/></head><body><h3>Kiểm tra kết nối MIMS</h3></body></html>";
+                    // vCong 62522: hien loi da phan loai (ket noi / tai khoan MIMS / phia MIMS) thay cho "Kiem tra ket noi MIMS"
+                    string msg = result != null && Inventec.Common.IntegrationError.IntegrationErrorMessage.IsBuilt(result.Message) ? result.Message
+                        : (actionErrorMessage ?? Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(MimsClient.Partner, "tra cứu cảnh báo thuốc"));
+                    htmlToShow = "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + System.Security.SecurityElement.Escape(msg) + "</h3></body></html>";
                 }
                 else if (result.IsErrorResponse)
                 {
-                    var msg = string.IsNullOrEmpty(result.ErrorMessage) ? "MIMS trả về lỗi." : result.ErrorMessage;
+                    var msg = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(MimsClient.Partner, result.ErrorMessage, "MIMS trả về lỗi");
                     string safe = System.Security.SecurityElement.Escape(msg);
                     htmlToShow = "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + safe + "</h3></body></html>";
                 }

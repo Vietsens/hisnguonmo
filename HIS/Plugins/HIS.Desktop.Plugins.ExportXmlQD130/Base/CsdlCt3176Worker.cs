@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using Inventec.Common.IntegrationError;
 using Inventec.Common.Logging;
 using Newtonsoft.Json.Linq;
 using System;
@@ -36,6 +37,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
     /// </summary>
     public class CsdlCt3176Worker
     {
+        /// <summary>Đối tác + lý do đăng nhập thất bại gần nhất để báo đúng nguồn lỗi (vCong 62522).</summary>
+        private static readonly IntegrationPartner PARTNER = IntegrationPartner.HealthPortal("cổng CSDL Y tế Cần Thơ");
+        private string lastLoginError;
+        private Exception lastLoginException;
+
         //Đường dẫn mặc định theo tài liệu Cần Thơ (dùng khi khóa không khai báo)
         private const string DEFAULT_LOGIN_PATH = "api/get-token";
         private const string DEFAULT_IMPORT_PATH = "api/csdl-3176/import-csdl-3176-by-xml-file-khong-dong-bo";
@@ -168,6 +174,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 this.token = null;
                 this.tokenExpireTime = DateTime.MinValue;
+                this.lastLoginError = null;
+                this.lastLoginException = null;
 
                 using (HttpClient client = new HttpClient())
                 using (MultipartFormDataContent content = new MultipartFormDataContent())
@@ -186,6 +194,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     if (!response.IsSuccessStatusCode)
                     {
                         LogSystem.Warn(TAG + " - Dang nhap that bai. url=" + loginUrl + "; HttpStatus=" + (int)response.StatusCode + "; message=" + message);
+                        this.lastLoginError = "HTTP " + (int)response.StatusCode + " - " + message;
                         return false;
                     }
 
@@ -202,6 +211,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     {
                         LogSystem.Warn(TAG + " - Dang nhap khong tra ve token hop le. message=" + message);
                         this.token = null;
+                        this.lastLoginError = "Cổng không trả về token hợp lệ: " + message;
                         return false;
                     }
 
@@ -216,6 +226,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+                this.lastLoginException = ex;
                 return false;
             }
         }
@@ -231,12 +242,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 if (!this.IsValidConfig)
                 {
-                    ret.Message = "CT: cấu hình kết nối cổng CSDL Y tế Cần Thơ không hợp lệ";
+                    ret.Message = IntegrationErrorMessage.ConfigError(PARTNER, "Cấu hình kết nối cổng CSDL Y tế Cần Thơ không hợp lệ (CSDL_CANTHO_3176__CONNECTION_INFO)");
                     return ret;
                 }
                 if (xmlBytes == null || xmlBytes.Length == 0)
                 {
-                    ret.Message = "CT: không có dữ liệu XML để đồng bộ";
+                    ret.Message = IntegrationErrorMessage.BusinessError(PARTNER, "Không có dữ liệu XML để đồng bộ");
                     return ret;
                 }
                 await this.importGate.WaitAsync();
@@ -244,7 +255,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 {
                     if (!await EnsureTokenAsync())
                     {
-                        ret.Message = "CT: đăng nhập lấy token thất bại";
+                        ret.Message = PortalErrorHelper.Login(PARTNER, this.lastLoginError, this.lastLoginException);
                         return ret;
                     }
 
@@ -254,14 +265,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                         LogSystem.Info(TAG + " - Token bi tu choi (401), lay lai token va gui lai. MA_LK: " + maLk);
                         if (!await LoginAsync())
                         {
-                            ret.Message = "CT: đăng nhập lại lấy token thất bại (401)";
+                            ret.Message = PortalErrorHelper.Login(PARTNER, "Đăng nhập lại sau khi bị từ chối (401): " + this.lastLoginError, this.lastLoginException);
                             return ret;
                         }
                         result = await PostImportAsync(xmlBytes, maLk);
                     }
 
                     ret.Success = result.Ok;
-                    ret.Message = "CT: " + result.Message;
+                    ret.Message = ret.Success ? "CT: " + result.Message : PortalErrorHelper.FromRaw(PARTNER, result.Message, "Cổng CSDL Y tế Cần Thơ không nhập được hồ sơ");
                     LogSystem.Info(TAG + " - Dong bo KCB 3176 MA_LK: " + maLk + " thanh cong: " + result.Ok + ". " + result.Message);
                     return ret;
                 }
@@ -274,7 +285,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 LogSystem.Error(ex);
                 ret.Success = false;
-                ret.Message = "CT: lỗi ngoại lệ khi gửi: " + ex.Message;
+                ret.Message = IntegrationErrorMessage.FromException(ex, PARTNER, "gửi hồ sơ lên cổng CSDL Y tế Cần Thơ");
                 return ret;
             }
         }
@@ -352,7 +363,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 LogSystem.Error(ex);
                 result.Ok = false;
-                result.Message = "Lỗi ngoại lệ khi gửi: " + ex.Message;
+                result.Message = IntegrationErrorMessage.FromException(ex, PARTNER, "gửi hồ sơ lên cổng CSDL Y tế Cần Thơ");
                 return result;
             }
         }

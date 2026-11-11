@@ -255,6 +255,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.cboKskCode.EditValueChanged -= new System.EventHandler(this.cboKskCode_EditValueChanged);
                 this.cboKskCode.Leave -= new System.EventHandler(this.cboKskCode_Leave);
                 this.cboKskCode.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboKskCode_PreviewKeyDown);
+                this.layoutControl3.SizeChanged -= new System.EventHandler(this.layoutControl3_SizeChanged);
                 this.spinBloodPressureMin.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.spinBloodPressureMin_KeyUp);
                 this.spinBloodPressureMin.Leave -= new System.EventHandler(this.spinBloodPressureMin_Leave);
                 this.txtKhamToanThan.KeyDown -= new System.Windows.Forms.KeyEventHandler(this.txtKhamToanThan_KeyDown);

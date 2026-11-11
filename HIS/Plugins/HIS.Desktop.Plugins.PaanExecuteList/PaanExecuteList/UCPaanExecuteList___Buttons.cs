@@ -406,8 +406,9 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                 if (this.clienttManager == null) return;
                 if (String.IsNullOrWhiteSpace(txtGateNumber.Text) || String.IsNullOrWhiteSpace(txtStepNumber.Text)) return;
 
-                this.clienttManager.RecallNumOrderString(
-                    txtGateNumber.Text.Trim(), int.Parse(txtStepNumber.Text));
+                if (!this.clienttManager.RecallNumOrderString(
+                    txtGateNumber.Text.Trim(), int.Parse(txtStepNumber.Text)))
+                    ShowCpaCallError(this.clienttManager.LastErrorMessage); // vCong 62522
 
                 long[] id = this.clienttManager.GetCurrentPatientCall(txtGateNumber.Text.Trim(), false);
                 Inventec.Common.Logging.LogSystem.Info(
@@ -514,8 +515,9 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
                 if (!isMissCall)
                 {
                     if (String.IsNullOrWhiteSpace(txtStepNumber.Text)) return;
-                    this.clienttManager.CallNumOrderString(
-                        txtGateNumber.Text.Trim(), int.Parse(txtStepNumber.Text));
+                    if (!this.clienttManager.CallNumOrderString(
+                        txtGateNumber.Text.Trim(), int.Parse(txtStepNumber.Text)))
+                        ShowCpaCallError(this.clienttManager.LastErrorMessage); // vCong 62522
                 }
 
                 long[] id = this.clienttManager.GetCurrentPatientCall(
@@ -893,5 +895,19 @@ namespace HIS.Desktop.Plugins.PaanExecuteList.PaanExecuteList
         }
 
         #endregion
+        /// <summary>vCong 62522: báo lỗi gọi bệnh nhân qua CPA (đã phân loại nguồn: dịch vụ CPA chưa chạy / lỗi kết nối...).</summary>
+        private void ShowCpaCallError(string msg)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(msg)) return;
+                Action show = () => DevExpress.XtraEditors.XtraMessageBox.Show(msg, "Thông báo", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                if (this.InvokeRequired) this.BeginInvoke(show); else show();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

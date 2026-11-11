@@ -1322,8 +1322,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     });
                 }
 
-                this.medicineProcessor.Reload(this.ucMedicineTypeTree, listMedicineType);
-                this.materialProcessor.Reload(this.ucMaterialTypeTree, listMaterialType);
+                this.medicineProcessor.Reload(this.ucMedicineTypeTree, this.FilterMedicineTypeBySupplyOrder(listMedicineType));
+                this.materialProcessor.Reload(this.ucMaterialTypeTree, this.FilterMaterialTypeBySupplyOrder(listMaterialType));
             }
             catch (Exception ex)
             {

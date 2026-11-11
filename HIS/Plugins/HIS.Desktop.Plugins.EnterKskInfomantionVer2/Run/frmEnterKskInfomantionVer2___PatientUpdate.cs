@@ -82,6 +82,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     currentServiceReq.TDL_PATIENT_NAME = pat.VIR_PATIENT_NAME;
                     currentServiceReq.TDL_PATIENT_CCCD_NUMBER = pat.CCCD_NUMBER;
                     currentServiceReq.TDL_PATIENT_GENDER_NAME = pat.GENDER_NAME;
+                    currentServiceReq.TDL_PATIENT_GENDER_ID = pat.GENDER_ID;
                     currentServiceReq.TDL_PATIENT_DOB = pat.DOB;
                     currentServiceReq.TDL_PATIENT_IS_HAS_NOT_DAY_DOB = pat.IS_HAS_NOT_DAY_DOB;
                     currentServiceReq.TDL_PATIENT_AVATAR_URL = pat.AVATAR_URL;
@@ -95,6 +96,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     }
                 }
                 ShowInformationPatient();
+                // Sửa giới tính -> khóa/mở lại ô khám sản phụ khoa của tab đang mở.
+                ApplyMaleObstetricLock(xtraTabControl1.SelectedTabPageIndex);
             }
             catch (Exception ex)
             {

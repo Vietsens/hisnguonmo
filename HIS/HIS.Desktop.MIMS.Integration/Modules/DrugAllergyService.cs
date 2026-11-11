@@ -29,7 +29,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             if (isTimeout)
             {
                 result.Success = false;
-                result.Message = "Kiểm tra kết nối MIMS";
+                result.Message = MimsClient.BuildErrorMessage(); // vCong 62522
                 result.Html = BuildSimpleHtml(result.Message);
                 return result;
             }
@@ -37,7 +37,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             if (string.IsNullOrEmpty(xmlResponse))
             {
                 result.Success = false;
-                result.Message = "No response from MIMS API";
+                result.Message = MimsClient.BuildErrorMessage(); // vCong 62522
                 result.Html = BuildSimpleHtml(result.Message);
                 return result;
             }
@@ -57,7 +57,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 				}
 
 				result.Success = false;
-				result.Message = result.ErrorMessage;
+				result.Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(MimsClient.Partner, result.ErrorMessage, "MIMS trả về lỗi"); // vCong 62522
 				result.Html = BuildSimpleHtml(result.ErrorMessage ?? "MIMS trả về lỗi.");
 				return result;
 			}

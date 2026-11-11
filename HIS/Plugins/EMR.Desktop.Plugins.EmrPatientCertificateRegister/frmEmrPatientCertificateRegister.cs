@@ -605,6 +605,12 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 return null;
             }
         }
+        /// <summary>vCong 62522: dịch vụ xác thực sinh trắc học chạy trên máy trạm (localhost:7000).</summary>
+        private static Inventec.Common.IntegrationError.IntegrationPartner VerifyServicePartner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ xác thực sinh trắc học trên máy trạm"); }
+        }
+
         private async void btnReadCCCD_Click(object sender, EventArgs e)
         {
             try
@@ -615,21 +621,33 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 {
                     Inventec.Common.Logging.LogSystem.Info("Gửi yêu cầu đọc CCCD đến thiết bị qua API http://localhost:7000/api/v1/verify");
 
-                    var response = await client.GetAsync("http://localhost:7000/api/v1/verify");
+                    HttpResponseMessage response = null;
+                    try
+                    {
+                        response = await client.GetAsync("http://localhost:7000/api/v1/verify");
+                    }
+                    catch (Exception exCall)
+                    {
+                        // vCong 62522: dich vu localhost:7000 chua chay / bi chan -> loi dich vu tren may tram
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(exCall, VerifyServicePartner, "http://localhost:7000/api/v1/verify");
+                    }
 
                     if (!response.IsSuccessStatusCode)
                     {
                         var errorContent = await response.Content.ReadAsStringAsync();
                         Inventec.Common.Logging.LogSystem.Info("API lỗi: " + errorContent);
 
-                        XtraMessageBox.Show(errorContent, "Thông báo");
+                        Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                        XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(VerifyServicePartner,
+                            string.Format("HTTP {0}: {1}", (int)response.StatusCode, errorContent), "Dịch vụ xác thực trên máy trạm báo lỗi khi đọc CCCD"), "Thông báo");
                         return;
                     }
 
                     try
                     {
                         var content = await response.Content.ReadAsStringAsync();
-                        Inventec.Common.Logging.LogSystem.Info("Đọc CCCD thành công. Response: " + content);
+                        // vCong 62522: khong log du lieu CCCD (thong tin nhan than, anh) - chi ghi do dai
+                        Inventec.Common.Logging.LogSystem.Info("Đọc CCCD thành công. Response length: " + (content == null ? 0 : content.Length));
                     }
                     catch (Exception ex)
                     {
@@ -638,11 +656,22 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     }
 
                     var json = await response.Content.ReadAsStringAsync();
-                    var root = JsonConvert.DeserializeObject<RootResponse>(json);
+                    RootResponse root = null;
+                    try
+                    {
+                        root = JsonConvert.DeserializeObject<RootResponse>(json);
+                    }
+                    catch (Exception exParse)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(VerifyServicePartner, "http://localhost:7000/api/v1/verify", json, exParse);
+                    }
 
                     if (root == null || root.success != true || root.result?.data == null)
                     {
-                        XtraMessageBox.Show("Không nhận được dữ liệu thẻ CCCD.", "Thông báo");
+                        Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                        // vCong 62522: dich vu tra success=false / khong co du lieu (chua dat the, dau doc loi...)
+                        XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Workstation, Inventec.Common.IntegrationError.IntegrationPartner.Device("đầu đọc CCCD"),
+                            "Không nhận được dữ liệu thẻ CCCD: kiểm tra thẻ đã đặt đúng vị trí và đầu đọc đã kết nối với máy trạm", root == null ? json : ("success=" + root.success)), "Thông báo");
                         return;
                     }
 
@@ -735,7 +764,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             }
             catch (Exception ex)
             {
-                XtraMessageBox.Show("Có lỗi khi quét CCCD: " + ex.Message, "Thông báo");
+                Inventec.Desktop.Common.Message.WaitingManager.Hide();
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, VerifyServicePartner, "đọc CCCD"), "Thông báo");
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             finally
@@ -892,7 +922,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                XtraMessageBox.Show("Có lỗi khi lấy vân tay: " + ex.Message, "Thông báo");
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, VerifyServicePartner, "lấy vân tay"), "Thông báo");
             }
             finally
             {
@@ -914,22 +944,42 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     }
 
                     client.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
-                    HttpResponseMessage response = await client.GetAsync("http://localhost:7000/api/v1/verify/finger");
+                    HttpResponseMessage response = null;
+                    try
+                    {
+                        response = await client.GetAsync("http://localhost:7000/api/v1/verify/finger");
+                    }
+                    catch (Exception exCall)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(exCall, VerifyServicePartner, "http://localhost:7000/api/v1/verify/finger");
+                    }
                     if (!response.IsSuccessStatusCode)
                     {
-                        MessageBox.Show(string.Format("Không gọi được API: {0}", response.StatusCode, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error));
+                        // vCong 62522: kem noi dung dich vu tra ve (truoc day chi co ma HTTP)
+                        string errorContent = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(response);
+                        MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(VerifyServicePartner,
+                            string.Format("HTTP {0}: {1}", (int)response.StatusCode, errorContent), "Dịch vụ xác thực trên máy trạm báo lỗi khi lấy vân tay"), "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         IsSuccess = false;
                         return;
                     }
 
                     string jsonResponse = await response.Content.ReadAsStringAsync();
-                    LogSystem.Info(string.Format("[FingerPrintAuth] Response: {0}", jsonResponse));
+                    // vCong 62522: khong log anh van tay (du lieu sinh trac) - chi ghi do dai
+                    LogSystem.Info(string.Format("[FingerPrintAuth] Response length: {0}", jsonResponse == null ? 0 : jsonResponse.Length));
 
 
-                    fingerResponse = JsonConvert.DeserializeObject<FingerApiResponse>(jsonResponse);
+                    try
+                    {
+                        fingerResponse = JsonConvert.DeserializeObject<FingerApiResponse>(jsonResponse);
+                    }
+                    catch (Exception exParse)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(VerifyServicePartner, "http://localhost:7000/api/v1/verify/finger", jsonResponse, exParse);
+                    }
                     if (fingerResponse == null || fingerResponse.result == null || string.IsNullOrEmpty(fingerResponse.result.data))
                     {
-                        MessageBox.Show("Không có dữ liệu vân tay trả về!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Workstation, Inventec.Common.IntegrationError.IntegrationPartner.Device("thiết bị đọc vân tay"),
+                            "Không có dữ liệu vân tay trả về: kiểm tra thiết bị đọc vân tay đã kết nối và người dùng đã đặt ngón tay", null), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         IsSuccess = false;
                         return;
                     }
@@ -1029,13 +1079,13 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             catch (HttpRequestException ex)
             {
                 LogSystem.Error(ex);
-                MessageBox.Show("Không kết nối được API vân tay. Hãy kiểm tra dịch vụ tại cổng 7000.", "Lỗi kết nối", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, VerifyServicePartner, "lấy vân tay (cổng 7000)"), "Lỗi kết nối", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 IsSuccess = false;
             }
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
-                MessageBox.Show("Lỗi khi lấy vân tay: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, VerifyServicePartner, "lấy vân tay"), "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 IsSuccess = false;
             }
            
@@ -1160,7 +1210,9 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 string[] configParts = cfgStorage.Split('|');
                 if (configParts.Length < 3)
                 {
-                    Inventec.Common.Logging.LogSystem.Warn(string.Format("ProcessStore2IDStorage - Config không đúng định dạng. Expected: <URL>|<keyAuth>|<secretKey>. Received: {0}", cfgStorage));
+                    Inventec.Common.Logging.LogSystem.Warn(string.Format("ProcessStore2IDStorage - Config không đúng định dạng. Expected: <URL>|<keyAuth>|<secretKey>. Received: {0}", configParts.Length > 0 ? configParts[0] : ""));
+                    Show2IDStorageWarning(Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Inventec.Common.IntegrationError.IntegrationPartner.Other("kho lưu trữ định danh 2ID"),
+                        "Cấu hình EMR.2ID.STORAGE_INFO không đúng định dạng <URL>|<keyAuth>|<secretKey>"));
                     return;
                 }
 
@@ -1175,6 +1227,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     (!storageUrl.StartsWith("http://") && !storageUrl.StartsWith("https://")))
                 {
                     Inventec.Common.Logging.LogSystem.Warn("ProcessStore2IDStorage: URL không hợp lệ: " + storageUrl);
+                    Show2IDStorageWarning(Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Inventec.Common.IntegrationError.IntegrationPartner.Other("kho lưu trữ định danh 2ID"),
+                        "Địa chỉ trong cấu hình EMR.2ID.STORAGE_INFO không hợp lệ (phải bắt đầu bằng http:// hoặc https://): " + storageUrl));
                     return;
                 }
 
@@ -1238,12 +1292,31 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Warn(string.Format("ProcessStore2IDStorage: Lưu trữ 2ID thất bại cho certificate ID={0}, CCCD={1}", certificate.ID, sdo.citizenIdentify));
+                    Show2IDStorageWarning(processor.LastErrorMessage);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error("ProcessStore2IDStorage: Lỗi khi xử lý lưu trữ 2ID", ex);
                 // Không throw exception để không ảnh hưởng đến luồng phát hành chứng thư chính
+                Show2IDStorageWarning(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Other("kho lưu trữ định danh 2ID"), "lưu trữ dữ liệu định danh lên kho 2ID"));
+            }
+        }
+
+        /// <summary>
+        /// vCong 62522: báo (không chặn) khi lưu trữ 2ID thất bại — chứng thư vẫn phát hành bình thường.
+        /// </summary>
+        private void Show2IDStorageWarning(string message)
+        {
+            try
+            {
+                if (String.IsNullOrWhiteSpace(message)) return;
+                WaitingManager.Hide();
+                XtraMessageBox.Show("Chứng thư vẫn được phát hành, nhưng lưu trữ dữ liệu định danh lên kho 2ID thất bại.\n" + message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         private string NormalizeBase64(string base64)

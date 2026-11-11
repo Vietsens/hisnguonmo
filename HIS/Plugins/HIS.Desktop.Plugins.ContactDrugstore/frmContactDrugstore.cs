@@ -651,6 +651,8 @@ namespace HIS.Desktop.Plugins.ContactDrugstore
                 {
                     this.__StrMess = this.__StrMess.Distinct().ToList();
                     Inventec.Common.Logging.LogSystem.Error(Inventec.Common.Logging.LogUtil.TraceData("__StrMess", __StrMess));
+                    // (vCong 62522) trước đây lỗi cổng đơn thuốc quốc gia chỉ ghi log, người dùng chỉ thấy "Xử lí thất bại"
+                    DevExpress.XtraEditors.XtraMessageBox.Show(string.Join("\r\n\r\n", this.__StrMess.Where(o => !string.IsNullOrWhiteSpace(o))), "Thông báo");
                 }
             }
             catch (Exception ex)

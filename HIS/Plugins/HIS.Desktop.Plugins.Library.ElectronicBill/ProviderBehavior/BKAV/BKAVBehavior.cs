@@ -73,7 +73,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
-                        ElectronicBillResultUtil.Set(ref result, false, "Không tìm thấy địa chỉ Webservice URL");
+                        ElectronicBillResultUtil.SetConfigError(ref result, ProviderType.BKAV, "Chưa cấu hình địa chỉ cổng hóa đơn điện tử (Webservice URL)");
                         return result;
                     }
 
@@ -104,7 +104,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
                         {
                             Inventec.Common.Logging.LogSystem.Error("Lỗi dữ liệu không có thành tiền dịch vụ");
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoiceDataWSs), invoiceDataWSs));
-                            ElectronicBillResultUtil.Set(ref result, false, "Tổng tiền hóa đơn phải lớn hơn 0");
+                            ElectronicBillResultUtil.SetBusinessError(ref result, ProviderType.BKAV, "Tổng tiền hóa đơn phải lớn hơn 0");
                             return result;
                         }
                     }
@@ -144,7 +144,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
                                     IsError = true;
                                     break;
                                 }
-                                ElectronicBillResultUtil.Set(ref result, false, item.MessLog);
+                                ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.BKAV, item.MessLog, null);
                                 LogSystem.Error("gui thong tin hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.MessLog), item.MessLog) + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoiceDataWSs), invoiceDataWSs));
                                 return result;
                             }
@@ -183,11 +183,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
                                 {
                                     if (ElectronicBillDataInput.Transaction != null && ElectronicBillDataInput.Transaction.ORIGINAL_TRANSACTION_ID.HasValue && ElectronicBillTypeEnum == ElectronicBillType.ENUM.CREATE_INVOICE)
                                     {
-                                        ElectronicBillResultUtil.Set(ref result, false,"Thay thế hóa đơn thất bại. " + item.MessLog);
+                                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.BKAV, item.MessLog, "Thay thế hóa đơn thất bại");
                                     }
                                     else
                                     {
-                                        ElectronicBillResultUtil.Set(ref result, false, item.MessLog);
+                                        ElectronicBillResultUtil.SetProviderError(ref result, ProviderType.BKAV, item.MessLog, null);
                                     }
 
                                     LogSystem.Error("gui thong tin hoa don dien tu that bai. " + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => item.MessLog), item.MessLog) + LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => invoiceDataWSs), invoiceDataWSs));
@@ -201,7 +201,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
             catch (Exception ex)
             {
                 result.Success = false;
-                ElectronicBillResultUtil.Set(ref result, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref result, ex, ProviderType.BKAV);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
@@ -257,6 +257,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetCmdType)");
             }
             return result;
         }
@@ -309,7 +310,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
             catch (Exception ex)
             {
                 result = false;
-                ElectronicBillResultUtil.Set(ref electronicBillResult, false, ex.Message);
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, ProviderType.BKAV);
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
@@ -369,6 +370,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
             {
                 result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetReason)");
             }
             return result;
         }
@@ -577,6 +579,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
             {
                 result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "dựng dữ liệu hóa đơn (GetUserDefine)");
             }
             return result;
         }

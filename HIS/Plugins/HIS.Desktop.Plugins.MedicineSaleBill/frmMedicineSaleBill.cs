@@ -1278,10 +1278,8 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         cboIdentityType.EditValue = null;
                     }
 
-                    if (currentTreatment?.TDL_PATIENT_BUD_REL_UNIT_CODE != null || patient?.BUD_REL_UNIT_CODE != null)
-                    {
-                        txtBudRelUnitCode.Text = currentTreatment.TDL_PATIENT_BUD_REL_UNIT_CODE ?? patient.BUD_REL_UNIT_CODE;
-                    }
+                    // Luon gan lai (ke ca rong) de khong giu ma QHNS cua benh nhan truoc (viec 62671)
+                    txtBudRelUnitCode.Text = currentTreatment?.TDL_PATIENT_BUD_REL_UNIT_CODE ?? patient?.BUD_REL_UNIT_CODE ?? "";
                     txtBuyerPhone.Text = patient?.PHONE ?? expMest.TDL_PATIENT_PHONE ?? "";
                     txtAddress.Text = expMest.TDL_PATIENT_ADDRESS ?? "";
 
@@ -1293,6 +1291,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     }
 
                     txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0) ?? "";
+
+                    // Xoa don vi "Khac" (text tu do) cua lan nap truoc: neu khong, ten don vi cua benh nhan truoc
+                    // bi giu lai va gui len hoa don dien tu cua benh nhan sau (viec 62671)
+                    chkKhac.Checked = false;
+                    txtBuyerOrganization.Text = "";
+                    // Dua combo ve null truoc: BN sau cung don vi voi BN truoc thi EditValueChanged van chay lai (nap MST/ma QHNS theo don vi)
+                    cboBuyerOrganization.EditValue = null;
 
                     if (autoLoadOrgTax)
                     {
@@ -1338,6 +1343,9 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 // Cơ quan
                 else if (rdoCoQuan.Checked)
                 {
+                    // txtName an o tab Co quan nhung van gui len BUYER_NAME -> nap theo BN hien tai, khong giu ten BN truoc (viec 62671)
+                    txtName.Text = expMest.TDL_PATIENT_NAME ?? "";
+
                     if (chkKhac1.Checked)
                     {
                         txtBuyerOrganization1.Visible = true;
@@ -1347,6 +1355,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     {
                         txtBuyerOrganization1.Visible = false;
                         cboBuyerOrganization1.Visible = true;
+
+                        // Xoa MST/ma QHNS cua lan truoc + dua combo ve null de EditValueChanged nap lai theo don vi moi (ke ca trung don vi)
+                        cboBuyerOrganization1.EditValue = null;
+                        txtBuyerTaxCode.Text = "";
+                        txtBudRelUnitCode1.Text = "";
 
                         if (autoLoadOrgTax)
                         {

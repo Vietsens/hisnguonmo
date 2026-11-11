@@ -1387,6 +1387,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 ApplyConclusionTimeToKskGeneralSdo(sdo);
                 // Độ dài theo QĐ 2062 đo trên CHÍNH dữ liệu sắp gửi (bắt cả giá trị đổ bằng code: nhập Excel,
                 // thư viện văn bản, lấy sẵn từ y lệnh khám; mã ICD / Đối tượng ghép ";").
+                // BN Nam: không được có thông tin khám sản phụ khoa -> xóa trắng trên dữ liệu sắp gửi.
+                ClearObstetricDataForMale(sdo);
                 if (!ValidateQd2062LengthBeforePost(sdo)) return;
                 CommonParam param = new CommonParam();
                 Inventec.Common.Logging.LogSystem.Debug("INPUT DATA:__api/HisServiceReq/KskExecuteV2 " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
@@ -1576,8 +1578,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 1)
                 {
+                    // Elderly record of the HCMC portal (Mẫu 4) -> Mps000523, otherwise the usual over-18 form
                     if (currentKskOverEight != null)
-                        PrintProcess(PRINT_TYPE.MPS000452);
+                        PrintProcess(IsElderlyM4Print() ? PRINT_TYPE.MPS000523 : PRINT_TYPE.MPS000452);
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 2)
                 {

@@ -129,6 +129,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
         public ElectronicBillResult Run(ElectronicBillType.ENUM type)
         {
             ElectronicBillResult result = new ElectronicBillResult();
+            string provider = null;
+            ElectronicBillErrorUtil.ResetSilentError();
 
             try
             {
@@ -211,7 +213,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                         ProcessSeseBillRepay();
                     }
 
-                    string provider = GetProvider(serviceConfig);
+                    provider = GetProvider(serviceConfig);
                     IRun iRun = null;
                     switch (provider)
                     {
@@ -261,7 +263,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                             break;
                     }
 
-                    result = iRun != null ? iRun.Run(type, TempType) : null;
+                    if (iRun != null)
+                    {
+                        result = iRun.Run(type, TempType);
+                    }
+                    else
+                    {
+                        ElectronicBillResultUtil.SetConfigError(ref result, provider, string.Format("Nhà cung cấp hóa đơn điện tử \'{0}\' chưa được phần mềm hỗ trợ hoặc cấu hình hóa đơn điện tử sai định dạng", provider));
+                    }
 
                     // Gửi Zalo thông báo hóa đơn (KHÔNG CHẶN) — chỉ khi tạo hóa đơn thành công + cấu hình bật
                     if (type == ElectronicBillType.ENUM.CREATE_INVOICE
@@ -274,9 +283,83 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
             }
             catch (Exception ex)
             {
+                if (result == null || !result.Success) { ElectronicBillResultUtil.SetException(ref result, ex, provider); }
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            FinalizeResult(ref result, type, provider);
             return result;
+        }
+
+        /// <summary>
+        /// Chốt cuối của mọi thao tác hóa đơn điện tử (vCong 62522):
+        /// - Thất bại mà không có lý do → báo rõ, không để màn hình trống.
+        /// - Có lỗi bị nuốt khi dựng dữ liệu → báo lỗi code HIS / máy trạm lên đầu, để người dùng không đổ cho nhà cung cấp.
+        /// - Lấy file hóa đơn "thành công" nhưng không có file vì lỗi lưu file → chuyển thành thất bại có lý do.
+        /// </summary>
+        private void FinalizeResult(ref ElectronicBillResult result, ElectronicBillType.ENUM type, string provider)
+        {
+            try
+            {
+                if (result == null)
+                {
+                    result = new ElectronicBillResult();
+                }
+                string silentMessage = ElectronicBillErrorUtil.BuildSilentErrorMessage(provider);
+                bool noFile = (type == ElectronicBillType.ENUM.GET_INVOICE_LINK || type == ElectronicBillType.ENUM.CONVERT_INVOICE)
+                    && result.Success && String.IsNullOrWhiteSpace(result.InvoiceLink) && (result.PdfFileData == null || result.PdfFileData.Length == 0);
+                if (noFile && silentMessage != null)
+                {
+                    result.Success = false;
+                }
+
+                if (!result.Success)
+                {
+                    if (result.Messages == null)
+                    {
+                        result.Messages = new List<string>();
+                    }
+                    result.Messages.RemoveAll(o => String.IsNullOrWhiteSpace(o));
+                    if (silentMessage != null)
+                    {
+                        result.Messages.Insert(0, silentMessage);
+                    }
+                    if (result.Messages.Count == 0)
+                    {
+                        ElectronicBillResultUtil.SetSoftwareError(ref result, provider,
+                            string.Format("Thư viện hóa đơn điện tử không trả về kết quả cho thao tác {0}. Có thể thao tác này chưa được phần mềm hỗ trợ với nhà cung cấp đang dùng", GetActionName(type)), null);
+                    }
+                    Inventec.Common.Logging.LogSystem.Warn("Hoa don dien tu that bai (" + type + ", " + provider + "): " + string.Join(" | ", result.Messages));
+                }
+                else if (silentMessage != null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Hoa don dien tu thanh cong nhung co loi khi dung du lieu, can kiem tra noi dung hoa don: " + silentMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                ElectronicBillErrorUtil.ResetSilentError();
+            }
+        }
+
+        private static string GetActionName(ElectronicBillType.ENUM type)
+        {
+            switch (type)
+            {
+                case ElectronicBillType.ENUM.CREATE_INVOICE: return "phát hành hóa đơn";
+                case ElectronicBillType.ENUM.GET_INVOICE_LINK: return "lấy file hóa đơn";
+                case ElectronicBillType.ENUM.DELETE_INVOICE: return "xóa hóa đơn";
+                case ElectronicBillType.ENUM.CANCEL_INVOICE: return "hủy hóa đơn";
+                case ElectronicBillType.ENUM.CONVERT_INVOICE: return "chuyển đổi hóa đơn";
+                case ElectronicBillType.ENUM.CREATE_INVOICE_DATA: return "tạo dữ liệu hóa đơn";
+                case ElectronicBillType.ENUM.GET_INVOICE_INFO: return "lấy thông tin hóa đơn";
+                case ElectronicBillType.ENUM.REPLACE_INVOICE: return "thay thế hóa đơn";
+                case ElectronicBillType.ENUM.ATTACH_BORDEREAU: return "đính kèm bảng kê";
+                default: return type.ToString();
+            }
         }
 
         /// <summary>
@@ -340,6 +423,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "trừ tiền hoàn ứng dịch vụ khỏi hóa đơn");
             }
         }
 
@@ -421,6 +505,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "lấy đối tượng thanh toán hiện tại của bệnh nhân");
             }
         }
 
@@ -453,6 +538,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.NoteSilentError(ex, "đọc cấu hình VNPT theo sổ thu chi");
             }
         }
 
@@ -611,6 +697,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
             catch (Exception ex)
             {
                 result = false;
+                errorMess = (errorMess ?? "") + HIS.Desktop.Plugins.Library.ElectronicBill.Base.ElectronicBillErrorUtil.BuildFromException(ex, null, "liên kết hóa đơn điện tử");
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
@@ -625,13 +712,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                 {
                     Inventec.Common.Logging.LogSystem.Error("Khong tim thay thong tin cau hinh serviceConfig");
                     result = false;
-                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Không tìm thấy thông tin cấu hình serviceConfig");
+                    ElectronicBillResultUtil.SetConfigError(ref electronicBillResult, null, "Chưa có cấu hình hóa đơn điện tử (khóa ELECTRONIC_BILL__CONFIG hoặc loại hóa đơn điện tử của giao dịch)");
                 }
                 else if (String.IsNullOrEmpty(accountConfig) && !serviceConfig.Contains(ProviderType.safecert))
                 {
                     Inventec.Common.Logging.LogSystem.Error("Khong tim thay thong tin cau hinh tai khoan");
                     result = false;
-                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Không tìm thấy thông tin cấu hình tài khoản");
+                    ElectronicBillResultUtil.SetConfigError(ref electronicBillResult, null, "Chưa cấu hình tài khoản hóa đơn điện tử cho máy/người dùng này");
                 }
                 //else if (this.TempType == null)
                 //{
@@ -643,7 +730,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                 {
                     Inventec.Common.Logging.LogSystem.Error("Khong tim thay thong tin giao dich");
                     result = false;
-                    ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Không xác định được giao dịch");
+                    ElectronicBillResultUtil.SetBusinessError(ref electronicBillResult, null, "Không xác định được giao dịch cần phát hành hóa đơn");
                 }
                 else if (ElectronicBillDataInput.ListTransaction != null && ElectronicBillDataInput.ListTransaction.Count > 0)
                 {
@@ -652,7 +739,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                     {
                         Inventec.Common.Logging.LogSystem.Error("Giao dich thuoc nhieu ho so dieu tri: " + string.Join(", ", groupTreatment.Select(s => s.Key)));
                         result = false;
-                        ElectronicBillResultUtil.Set(ref electronicBillResult, false, "Các giao dịch không cùng hồ sơ điều trị");
+                        ElectronicBillResultUtil.SetBusinessError(ref electronicBillResult, null, "Các giao dịch không cùng hồ sơ điều trị");
                     }
 
                     var replaceTransaction = ElectronicBillDataInput.ListTransaction.Where(o => o.ORIGINAL_TRANSACTION_ID.HasValue).ToList();
@@ -660,12 +747,14 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill
                     {
                         Inventec.Common.Logging.LogSystem.Error("Giao dich la thay the: " + string.Join(", ", replaceTransaction.Select(s => s.TRANSACTION_CODE)));
                         result = false;
-                        ElectronicBillResultUtil.Set(ref electronicBillResult, false, string.Format("Giao dịch {0} là giao dịch thay thế không cho phép gộp", string.Join(", ", replaceTransaction.Select(s => s.TRANSACTION_CODE))));
+                        ElectronicBillResultUtil.SetBusinessError(ref electronicBillResult, null, string.Format("Giao dịch {0} là giao dịch thay thế không cho phép gộp", string.Join(", ", replaceTransaction.Select(s => s.TRANSACTION_CODE))));
                     }
                 }
             }
             catch (Exception ex)
             {
+                result = false;
+                ElectronicBillResultUtil.SetException(ref electronicBillResult, ex, null, "kiểm tra dữ liệu trước khi gửi hóa đơn");
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;

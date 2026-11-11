@@ -138,6 +138,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PayBeforeFinishWarning.cs" />
     <Compile Include="ADO\HisBedADO.cs" />
     <Compile Include="ADO\HisBedHistoryADO.cs" />
     <Compile Include="ADO\HisBedServiceTypeADO.cs" />

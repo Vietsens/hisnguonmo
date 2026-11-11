@@ -181,6 +181,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 {
                     result.Status = EnumTienGiamDinhStatus.CheckFailed;
                     result.FailReason = EnumTienGiamDinhFailReason.NotConfigured;
+                    result.FailDetail = Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "Chưa khai báo hoặc khai thiếu thông tin kết nối hệ thống tiền giám định (TIEN_GIAM_DINH__CONNECTION_INFO)");
                     return result;
                 }
 
@@ -188,6 +189,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 {
                     result.Status = EnumTienGiamDinhStatus.CheckFailed;
                     result.FailReason = EnumTienGiamDinhFailReason.SystemError;
+                    result.FailDetail = Inventec.Common.IntegrationError.IntegrationErrorMessage.SoftwareError(Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "Không xác định được mã điều trị để tra cứu", null);
                     LogSystem.Warn("TienGiamDinhWorker - Ma dieu tri rong, bo qua tra cuu.");
                     return result;
                 }
@@ -223,6 +225,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                 LogSystem.Error("TienGiamDinhWorker - Tra cuu that bai. Ma dieu tri: " + treatmentCode, ex);
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.SystemError;
+                result.FailDetail = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "tra cứu tiền giám định");
                 return result;
             }
         }
@@ -234,6 +237,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             public string Body { get; set; }
             public bool IsTimeout { get; set; }
             public bool IsNetworkError { get; set; }
+            /// <summary>Exception khi gọi (timeout/mạng) để phân loại nguồn lỗi (vCong 62522)</summary>
+            public Exception Error { get; set; }
 
             /// <summary>So giay cong yeu cau cho truoc khi goi lai (header Retry-After). 0 = cong khong chi dinh.</summary>
             public int RetryAfterSecond { get; set; }
@@ -301,10 +306,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 throw;
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException exCancel)
             {
                 //HttpClient nem OperationCanceledException khi qua thoi gian cho
                 httpResult.IsTimeout = true;
+                httpResult.Error = exCancel;
                 LogSystem.Warn("TienGiamDinhWorker - Qua thoi gian cho " + this.timeoutSecond
                     + " giay. Ma dieu tri: " + treatmentCode);
                 return httpResult;
@@ -312,6 +318,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             catch (HttpRequestException exHttp)
             {
                 httpResult.IsNetworkError = true;
+                httpResult.Error = exHttp;
                 LogSystem.Warn("TienGiamDinhWorker - Khong ket noi duoc he tien giam dinh. Ma dieu tri: "
                     + treatmentCode + ". " + exHttp.Message);
                 return httpResult;
@@ -372,6 +379,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.Timeout;
+                result.FailDetail = Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Connection, Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "Hết thời gian chờ phản hồi từ hệ thống tiền giám định", httpResult.Error != null ? httpResult.Error.Message : null);
                 return result;
             }
 
@@ -379,6 +387,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.SystemError;
+                result.FailDetail = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(httpResult.Error ?? new System.Net.Http.HttpRequestException("Không kết nối được"), Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "tra cứu tiền giám định");
                 return result;
             }
 
@@ -386,6 +395,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.Unauthorized;
+                result.FailDetail = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "api/order-check/violations", 401, "Unauthorized", httpResult.Body), Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "tra cứu tiền giám định");
                 LogSystem.Warn("TienGiamDinhWorker - Chuoi xac thuc khong hop le (401). Ma dieu tri: "
                     + result.TreatmentCode);
                 return result;
@@ -395,6 +405,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.RateLimited;
+                result.FailDetail = Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Partner, Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "Hệ thống tiền giám định báo quá tải (HTTP 429), đã chờ và thử lại nhưng vẫn bị từ chối. Hồ sơ này chưa được kiểm, bấm kiểm tra lại sau ít phút", null);
 
                 //Phai ghi ro: ho so nay KHONG duoc kiem, khong phai la ho so sach.
                 //Truoc day nhanh nay im lang nen khong dem duoc bao nhieu ho so chet vi qua tai.
@@ -407,6 +418,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
             {
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.SystemError;
+                result.FailDetail = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "api/order-check/violations", httpResult.StatusCode, null, httpResult.Body), Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "tra cứu tiền giám định");
                 LogSystem.Warn("TienGiamDinhWorker - He ngoai tra ve HttpStatus " + httpResult.StatusCode
                     + ". Ma dieu tri: " + result.TreatmentCode
                     + ". Body: " + CutForLog(httpResult.Body));
@@ -429,6 +441,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     result.Status = EnumTienGiamDinhStatus.CheckFailed;
                     result.FailReason = EnumTienGiamDinhFailReason.SystemError;
                     JObject error = json["error"] as JObject;
+                    result.FailDetail = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), error == null ? null : ("Mã lỗi " + error.Value<string>("code") + ": " + error.Value<string>("message") + (string.IsNullOrEmpty(error.Value<string>("details")) ? "" : " - " + error.Value<string>("details"))), "Hệ thống tiền giám định trả về thất bại");
                     LogSystem.Warn("TienGiamDinhWorker - He ngoai tra ve that bai. Ma dieu tri: "
                         + result.TreatmentCode
                         + ". Ma loi: " + (error == null ? "" : error.Value<string>("code"))
@@ -475,6 +488,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.Base
                     + ". Body: " + CutForLog(httpResult.Body), ex);
                 result.Status = EnumTienGiamDinhStatus.CheckFailed;
                 result.FailReason = EnumTienGiamDinhFailReason.SystemError;
+                result.FailDetail = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), "api/order-check/violations", httpResult.Body, ex), Inventec.Common.IntegrationError.IntegrationPartner.Other("hệ thống tiền giám định"), null);
                 return result;
             }
         }

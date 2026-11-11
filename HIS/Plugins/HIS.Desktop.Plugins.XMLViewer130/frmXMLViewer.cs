@@ -1496,7 +1496,8 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                     this.Cursor = Cursors.Default;
                     btnSendBhxh.Enabled = true;
                     Inventec.Common.Logging.LogSystem.Error("Xac thuc Cong BHXH that bai. maKetQua=" + (tokenResult?.maKetQua ?? "null"));
-                    XtraMessageBox.Show("Xác thực Cổng BHXH thất bại. Mã: " + (tokenResult?.maKetQua ?? "null"),
+                    XtraMessageBox.Show(tokenResult != null && !string.IsNullOrEmpty(tokenResult.ErrorMessage) ? tokenResult.ErrorMessage
+                        : Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "Mã: " + (tokenResult?.maKetQua ?? "null")),
                         "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -1550,6 +1551,16 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         + "; thongDiep=" + (sendResult?.thongDiep ?? "null"));
                 }
 
+                // Không thành công: thông điệp phân loại nguồn lỗi (vCong 62522)
+                if (sendResult == null)
+                {
+                    XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "gửi dữ liệu"), "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (sendResult.maKetQua != "200" && !Inventec.Common.IntegrationError.IntegrationErrorMessage.IsBuilt(sendResult.thongDiep))
+                {
+                    sendResult.thongDiep = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "Mã kết quả " + (sendResult.maKetQua ?? "(trống)") + (string.IsNullOrEmpty(sendResult.thongDiep) ? "" : ": " + sendResult.thongDiep), "Cổng BHXH không tiếp nhận dữ liệu");
+                }
+
                 // Show result popup
                 if (sendResult != null)
                 {
@@ -1569,7 +1580,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                     + Inventec.Common.Logging.LogUtil.TraceData("xmlTT12FilePath", xmlTT12FilePath)
                     + Inventec.Common.Logging.LogUtil.TraceData("selectedCode", cboBhxhSample?.EditValue),
                     ex);
-                XtraMessageBox.Show("Lỗi khi gửi dữ liệu: " + ex.Message,
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Bhxh, "gửi dữ liệu lên cổng BHXH"),
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

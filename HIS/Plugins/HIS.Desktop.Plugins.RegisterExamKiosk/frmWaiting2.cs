@@ -639,6 +639,13 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                             DevExpress.XtraEditors.XtraMessageBox.Show("Hạ tầng không ổn định. Vui lòng thử lại", "Thông báo");
                             return;
                         }
+                        else if (resultFaceReg == null && this.faceRegLastError != null)
+                        {
+                            // vCong 62522: goi dich vu nhan dien that bai -> cau ngan + nhan nguon loi, chi tiet ghi log
+                            DevExpress.XtraEditors.XtraMessageBox.Show(KioskIntegrationError.ForPatient("Chưa nhận diện được khuôn mặt. Vui lòng đặt thẻ CCCD vào khay thiết bị để thực hiện định danh thông tin.",
+                                this.faceRegLastError, KioskIntegrationError.FaceRegPartner, "nhận diện khuôn mặt"), "Thông báo");
+                            return;
+                        }
                         DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng đặt thẻ CCCD vào khay thiết bị để thực hiện định danh thông tin", "Thông báo");
                         return;
                     }
@@ -650,9 +657,13 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             }
 
         }
+        /// <summary>vCong 62522: lỗi gần nhất khi gọi dịch vụ nhận diện khuôn mặt VVN (null nếu thành công).</summary>
+        private Exception faceRegLastError;
+
         public T CreateRequest<T>(string requestUri, Dictionary<string, string> sendData)
         {
             T data = default(T);
+            this.faceRegLastError = null;
             try
             {
 
@@ -684,43 +695,39 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                         Inventec.Common.Logging.LogSystem.Debug("_____sendJsonData : " + stringPayload);
                         resp = client.PostAsync(fullrequestUri, content).Result;
                     }
-                    catch (HttpRequestException ex)
-                    {
-                        throw new Exception("Lỗi kết nối đến Vvn");
-                    }
                     catch (Exception ex)
                     {
-                        throw ex;
+                        // vCong 62522: timeout/DNS/SSL/khong ket noi -> exception co nguon
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(ex, KioskIntegrationError.FaceRegPartner, fullrequestUri);
                     }
 
                     if (resp == null || !resp.IsSuccessStatusCode)
                     {
-                        int statusCode = resp.StatusCode.GetHashCode();
-                        if (resp.Content != null)
-                        {
-                            try
-                            {
-                                string errorData = resp.Content.ReadAsStringAsync().Result;
-                                Inventec.Common.Logging.LogSystem.Error("errorData: " + errorData);
-                            }
-                            catch { }
-                        }
-
-                        throw new Exception(string.Format("Vvn trả về thông tin lỗi. Mã lỗi: {0}", statusCode));
+                        Inventec.Common.IntegrationError.IntegrationException httpEx = Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(KioskIntegrationError.FaceRegPartner, fullrequestUri, resp);
+                        Inventec.Common.Logging.LogSystem.Error("errorData: " + httpEx.Message);
+                        throw httpEx;
                     }
-                    string responseData = resp.Content.ReadAsStringAsync().Result;
+                    string responseData = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(resp);
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => responseData), responseData));
-                    data = JsonConvert.DeserializeObject<T>(responseData);
+                    try
+                    {
+                        data = JsonConvert.DeserializeObject<T>(responseData);
+                    }
+                    catch (Exception exParse)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(KioskIntegrationError.FaceRegPartner, fullrequestUri, responseData, exParse);
+                    }
                     if (data == null)
                     {
-                        throw new Exception("Dữ liệu Vvn trả về không đúng");
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(KioskIntegrationError.FaceRegPartner, fullrequestUri, responseData, null);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                this.faceRegLastError = ex;
             }
 
             return data;
@@ -2519,6 +2526,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
         }
         private async void btnScanCCCD_Click(object sender, EventArgs e)
         {
+            bool isDeviceStage = true; // vCong 62522: loi o buoc goi dich vu xac thuc localhost:7000 hay o buoc xu ly sau
             try
             {
                 Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: Start scan CCCD");
@@ -2526,21 +2534,40 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                 using (var client = new HttpClient())
                 {
                     Inventec.Common.Logging.LogSystem.Info("btnScanCCCD_Click: Sending request to device API");
-                    var response = await client.GetAsync("http://localhost:7000/api/v1/verify");
+                    HttpResponseMessage response = null;
+                    try
+                    {
+                        response = await client.GetAsync("http://localhost:7000/api/v1/verify");
+                    }
+                    catch (Exception exCall)
+                    {
+                        // vCong 62522: dich vu chua chay / bi chan -> loi dich vu tren may tram
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(exCall, KioskIntegrationError.VerifyServicePartner, "http://localhost:7000/api/v1/verify");
+                    }
                     Inventec.Common.Logging.LogSystem.Info(string.Format("btnScanCCCD_Click: Device API response status: {0}", response.StatusCode));
 
                     if (!response.IsSuccessStatusCode)
                     {
                         Inventec.Common.Logging.LogSystem.Warn("btnScanCCCD_Click: Device not connected or error response");
                         WaitingManager.Hide();
-                        XtraMessageBox.Show("Không kết nối được thiết bị CCCD.", "Thông báo");
+                        string errorBody = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(response);
+                        XtraMessageBox.Show(KioskIntegrationError.ForPatient("Không kết nối được thiết bị CCCD.", Inventec.Common.IntegrationError.ErrorSource.Partner, KioskIntegrationError.VerifyServicePartner,
+                            Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(KioskIntegrationError.VerifyServicePartner, string.Format("HTTP {0}: {1}", (int)response.StatusCode, errorBody), "Dịch vụ xác thực trên máy kiosk báo lỗi khi đọc CCCD")), "Thông báo");
                         return;
                     }
 
                     var responseData = await response.Content.ReadAsStringAsync();
                     Inventec.Common.Logging.LogSystem.Debug("btnScanCCCD_Click: Raw response data: " + responseData);
 
-                    var root = JsonConvert.DeserializeObject<RootResponse>(responseData);
+                    RootResponse root = null;
+                    try
+                    {
+                        root = JsonConvert.DeserializeObject<RootResponse>(responseData);
+                    }
+                    catch (Exception exParse)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(KioskIntegrationError.VerifyServicePartner, "http://localhost:7000/api/v1/verify", responseData, exParse);
+                    }
                     Inventec.Common.Logging.LogSystem.Debug("btnScanCCCD_Click: Deserialized RootResponse: " + JsonConvert.SerializeObject(root));
 
                     if (root == null || !root.success || root.result?.data == null)
@@ -2551,6 +2578,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                         return;
                     }
 
+                    isDeviceStage = false;
                     this.PatientData = new InformationObjectADO();
 
                     string cccdFromDevice = root.result.data.identifyNumber;
@@ -2593,7 +2621,10 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
             catch (Exception ex)
             {
                 WaitingManager.Hide();
-                XtraMessageBox.Show("Có lỗi xảy ra khi quẹt CCCD: " + ex.Message, "Thông báo");
+                if (isDeviceStage)
+                    XtraMessageBox.Show(KioskIntegrationError.ForPatient("Có lỗi xảy ra khi quẹt CCCD.", ex, KioskIntegrationError.VerifyServicePartner, "đọc CCCD"), "Thông báo"); // vCong 62522
+                else
+                    XtraMessageBox.Show("Có lỗi xảy ra khi quẹt CCCD: " + ex.Message, "Thông báo");
                 Inventec.Common.Logging.LogSystem.Error("btnScanCCCD_Click: Exception", ex);
             }
         }

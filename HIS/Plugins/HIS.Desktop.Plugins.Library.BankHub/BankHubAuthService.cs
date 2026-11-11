@@ -1,5 +1,6 @@
 ﻿using HIS.Desktop.Plugins.Library.BankHub.Helper;
 using HIS.Desktop.Plugins.Library.BankHub.Models;
+using Inventec.Common.IntegrationError;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +27,12 @@ namespace HIS.Desktop.Plugins.Library.BankHub
 
         /// <summary>Token hiện tại (null nếu chưa đăng nhập)</summary>
         public TokenResponse CurrentToken { get; private set; }
+
+        /// <summary>Ngân hàng đối tác dùng trong thông báo lỗi (vCong 62522)</summary>
+        public IntegrationPartner Partner
+        {
+            get { return IntegrationPartner.Bank(_config == null || string.IsNullOrEmpty(_config.BankName) ? "BankHub" : _config.BankName); }
+        }
 
         public BankHubAuthService(BankHubAuthConfig config)
         {
@@ -269,13 +276,14 @@ namespace HIS.Desktop.Plugins.Library.BankHub
                 request.Headers.Add("Authorization", "Bearer " + accessToken);
             }
 
-            using (var stream = request.GetRequestStream())
-            {
-                stream.Write(bodyBytes, 0, bodyBytes.Length);
-            }
-
             try
             {
+                // (vCong 62522) GetRequestStream cũng có thể lỗi kết nối (DNS, refused, SSL) → đưa vào try
+                using (var stream = request.GetRequestStream())
+                {
+                    stream.Write(bodyBytes, 0, bodyBytes.Length);
+                }
+
                 using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     if (expectNoContent || response.StatusCode == HttpStatusCode.NoContent)
@@ -299,17 +307,28 @@ namespace HIS.Desktop.Plugins.Library.BankHub
                     {
                         body = reader.ReadToEnd();
                     }
-                    throw new BankHubException(
-                        string.Format("Keycloak lỗi HTTP {0}: {1}", (int)httpResp.StatusCode, body), ex);
+                    // (vCong 62522) phân loại theo mã HTTP: 401/403/404 = thiết lập tại viện, 502/503/504 = kết nối, còn lại = ngân hàng
+                    IntegrationException httpErr = IntegrationHttpError.FromStatus(Partner, url, (int)httpResp.StatusCode, httpResp.StatusDescription, body);
+                    throw new BankHubException(httpErr.ErrorSource, Partner,
+                        string.Format("Máy chủ xác thực (Keycloak) của {0} lỗi HTTP {1}: {2}", IntegrationErrorMessage.GetName(Partner), (int)httpResp.StatusCode, httpErr.Message), ex);
                 }
-                throw new BankHubException("Lỗi kết nối Keycloak: " + ex.Message, ex);
+                throw BankHubException.From(IntegrationHttpError.WrapCall(ex, Partner, url), Partner, ex);
+            }
+            catch (BankHubException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // (vCong 62522) timeout, IOException... khi gọi máy chủ xác thực
+                throw BankHubException.From(IntegrationHttpError.WrapCall(ex, Partner, url), Partner, ex);
             }
         }
 
         private TokenResponse ParseTokenResponse(string json)
         {
             if (string.IsNullOrEmpty(json))
-                throw new BankHubException("Keycloak trả về response rỗng");
+                throw new BankHubException(ErrorSource.Connection, Partner, "Máy chủ xác thực (Keycloak) của " + IntegrationErrorMessage.GetName(Partner) + " trả về response rỗng");
 
             // Kiểm tra lỗi từ Keycloak ({"error":"...", "error_description":"..."})
             if (json.Contains("\"error\""))
@@ -318,15 +337,27 @@ namespace HIS.Desktop.Plugins.Library.BankHub
                 object errVal, errDesc;
                 errDict.TryGetValue("error", out errVal);
                 errDict.TryGetValue("error_description", out errDesc);
-                throw new BankHubException(
-                    string.Format("Keycloak lỗi: {0} - {1}", errVal, errDesc));
+                string keycloakError = string.Format("Keycloak lỗi: {0} - {1}", errVal, errDesc);
+                // (vCong 62522) invalid_client/invalid_grant/unauthorized_client = thiết lập tại viện hoặc phiên đăng nhập hết hạn; còn lại = ngân hàng
+                ErrorSource source = IntegrationErrorClassifier.ClassifyByMessage(keycloakError);
+                if (source != ErrorSource.Config && source != ErrorSource.Connection) source = ErrorSource.Partner;
+                throw new BankHubException(source, Partner, keycloakError);
             }
 
-            var token = JsonHelper.Deserialize<TokenResponse>(json);
+            TokenResponse token;
+            try
+            {
+                token = JsonHelper.Deserialize<TokenResponse>(json);
+            }
+            catch (Exception ex)
+            {
+                throw BankHubException.From(IntegrationHttpError.ParseError(Partner, _config.TokenUrl, json, ex), Partner, ex);
+            }
             if (token == null)
-                throw new BankHubException("Không parse được TokenResponse từ Keycloak");
+                throw BankHubException.From(IntegrationHttpError.ParseError(Partner, _config.TokenUrl, json, null), Partner, null);
 
-            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => token), token));
+            // (vCong 62522) không ghi access_token/refresh_token ra log, chỉ ghi thời hạn
+            Inventec.Common.Logging.LogSystem.Debug("BankHub token: expires_in=" + token.expires_in + ", refresh_expires_in=" + token.refresh_expires_in);
             // Tính thời điểm hết hạn
             var now = DateTime.Now;
             token.ExpiresAt = now.AddSeconds(token.expires_in);

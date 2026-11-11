@@ -72,7 +72,7 @@ namespace HIS.Desktop.Plugins.Library.EmrToolkitImport
                 return new EmrToolkitImportResult
                 {
                     Success = false,
-                    Message = ex.Message,
+                    Message = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Inventec.Common.IntegrationError.IntegrationPartner.Emr("EMR Toolkit"), "gửi dữ liệu sang EMR Toolkit"), // vCong 62522
                     Step = EmrToolkitImportStep.None
                 };
             }

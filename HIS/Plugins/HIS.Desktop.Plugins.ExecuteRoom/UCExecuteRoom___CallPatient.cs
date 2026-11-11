@@ -309,7 +309,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     }
                     if (this.clienttManager == null)
                         this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager();
-                    this.clienttManager.CallNumOrderString(txtGateNumber.Text.Trim(), int.Parse(txtStepNumber.Text));
+                    if (!this.clienttManager.CallNumOrderString(txtGateNumber.Text.Trim(), int.Parse(txtStepNumber.Text)))
+                        ShowCpaCallError(this.clienttManager.LastErrorMessage); // vCong 62522
                     long[] id = this.clienttManager.GetCurrentPatientCall(txtGateNumber.Text.Trim(), false);
                     Inventec.Common.Logging.LogSystem.Info("This.clienttManager.GetCurrentPatientCall ____Goi F6: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => id), id));
                     txtCallPatientCPA.ForeColor = Color.Black;
@@ -600,7 +601,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         }
                     }
                     Inventec.Common.Logging.LogSystem.Debug("data_ ___ " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listPatientName), listPatientName));
-                    this.clienttManager.CallPatientAndExecuteRoom(int.Parse(txtGateNumber.Text.Trim()), listPatientName);
+                    if (!this.clienttManager.CallPatientAndExecuteRoom(int.Parse(txtGateNumber.Text.Trim()), listPatientName))
+                        ShowCpaCallError(this.clienttManager.LastErrorMessage); // vCong 62522
                 }
             }
             catch (Exception ex)
@@ -1059,6 +1061,20 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 //#region Process has exception
                 //HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(paramK);
                 //#endregion
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        /// <summary>vCong 62522: báo lỗi gọi bệnh nhân qua CPA (đã phân loại nguồn: dịch vụ CPA chưa chạy / lỗi kết nối...).</summary>
+        private void ShowCpaCallError(string msg)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(msg)) return;
+                Action show = () => DevExpress.XtraEditors.XtraMessageBox.Show(msg, "Thông báo", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                if (this.InvokeRequired) this.BeginInvoke(show); else show();
             }
             catch (Exception ex)
             {

@@ -56,10 +56,65 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 {
     public partial class UCExecuteRoom : UserControlBase
     {
+        /// <summary>
+        /// Phan quyen huy ket thuc / huy bat dau y lenh tai phong CLS (viec 52744).
+        /// Doi chieu backend HisServiceReqStatusCheck.IsAllowUnfinishUnstartCls:
+        /// chi chan khi MOS.HIS_SERVICE_REQ.CLS.UNFINISH_UNSTART_PERMISSION_MODE = 2 va y lenh thuoc loai CLS
+        /// (XN, CDHA, SA, NS, TDCN, GPBL); tai khoan quan tri hoac duoc tich ALLOW_UNFINISH_UNSTART_SEREREQ van duoc huy.
+        /// </summary>
+        private bool IsAllowUnfinishUnstartCls(L_HIS_SERVICE_REQ serviceReq)
+        {
+            try
+            {
+                if (serviceReq == null || HisConfigCFG.UnfinishUnstartPermissionMode != "2")
+                {
+                    return true;
+                }
+                List<long> subclinicalTypeIds = new List<long>()
+                {
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__CDHA,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__NS,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__SA,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__TDCN,
+                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN
+                };
+                if (!subclinicalTypeIds.Contains(serviceReq.SERVICE_REQ_TYPE_ID))
+                {
+                    return true;
+                }
+
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                HIS_EMPLOYEE employee = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == loginName);
+                if (employee != null && (employee.IS_ADMIN == 1 || employee.ALLOW_UNFINISH_UNSTART_SEREREQ == 1))
+                {
+                    return true;
+                }
+
+                //Cache nhan vien co the cu (vua duoc cap quyen sau khi mo phan mem) => hoi lai server truoc khi chan
+                MOS.Filter.HisEmployeeFilter employeeFilter = new MOS.Filter.HisEmployeeFilter();
+                employeeFilter.LOGINNAME__EXACT = loginName;
+                List<HIS_EMPLOYEE> employees = new BackendAdapter(new CommonParam()).Get<List<HIS_EMPLOYEE>>("api/HisEmployee/Get", ApiConsumers.MosConsumer, employeeFilter, null);
+                employee = employees != null ? employees.FirstOrDefault() : null;
+                return employee != null && (employee.IS_ADMIN == 1 || employee.ALLOW_UNFINISH_UNSTART_SEREREQ == 1);
+            }
+            catch (Exception ex)
+            {
+                //Loi khi kiem tra o client thi de backend quyet dinh
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return true;
+            }
+        }
+
         private void CancelFinish(L_HIS_SERVICE_REQ serviceReqInput)
         {
             try
             {
+                if (!IsAllowUnfinishUnstartCls(serviceReqInput))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Tài khoản không có quyền hủy kết thúc y lệnh cận lâm sàng.", Resources.ResourceMessage.ThongBao, MessageBoxButtons.OK);
+                    return;
+                }
                 if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "1" && HisConfigCFG.IsHasConnectionEmr)
                 {
                     EmrDocumentViewFilter emrDocumentFilter = new EmrDocumentViewFilter();

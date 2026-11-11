@@ -4019,7 +4019,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                     string data = BankHubProcess.GetAccessToken(bankCode);
                     if (string.IsNullOrEmpty(data))
                     {
-                        MessageBox.Show("Không thể kết nối đến hệ thống ngân hàng, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        // (vCong 62522) hiện lý do thật (kết nối / thiết lập / ngân hàng) thay cho "Không thể kết nối đến hệ thống ngân hàng"
+                        BankHubProcess.ShowLastError();
                         return;
                     }
 

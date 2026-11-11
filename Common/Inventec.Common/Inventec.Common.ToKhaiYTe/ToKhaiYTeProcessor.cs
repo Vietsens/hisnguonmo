@@ -29,14 +29,32 @@ namespace Inventec.Common.ToKhaiYTe
 {
     public class ToKhaiYTeProcessor
     {
+        [ThreadStatic]
+        private static string lastErrorMessage;
+
+        /// <summary>vCong 62522: thông báo lỗi (đã phân loại nguồn) của lần GetUserInfo gần nhất; null nếu thành công/không có lỗi.</summary>
+        public static string LastErrorMessage
+        {
+            get { return lastErrorMessage; }
+        }
+
+        private static Inventec.Common.IntegrationError.IntegrationPartner Partner
+        {
+            get { return Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("hệ thống tờ khai y tế"); }
+        }
+
         public static TkytUserADO GetUserInfo(string qrcode, string phoneNumber, string serverUrl)
         {
             TkytUserADO result = null;
+            lastErrorMessage = null;
             try
             {
                 if (String.IsNullOrWhiteSpace(qrcode) || String.IsNullOrWhiteSpace(phoneNumber) || String.IsNullOrWhiteSpace(serverUrl))
                 {
                     LogSystem.Error("QrCode or PhoneNumber or ServerUrl is null or empty");
+                    lastErrorMessage = String.IsNullOrWhiteSpace(serverUrl)
+                        ? Inventec.Common.IntegrationError.IntegrationErrorMessage.ConfigError(Partner, "Chưa thiết lập địa chỉ hệ thống tờ khai y tế (KBYT_URL)")
+                        : Inventec.Common.IntegrationError.IntegrationErrorMessage.BusinessError(Partner, "Thiếu mã QR hoặc số điện thoại khai báo y tế");
                     return null;
                 }
 
@@ -45,6 +63,7 @@ namespace Inventec.Common.ToKhaiYTe
                 if (String.IsNullOrWhiteSpace(userId))
                 {
                     LogSystem.Error("UserId is null or empty");
+                    lastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.BusinessError(Partner, "Mã QR không phải mã QR tờ khai y tế (định dạng user|id|...)");
                     return null;
                 }
 
@@ -52,6 +71,10 @@ namespace Inventec.Common.ToKhaiYTe
                 if (token == null || token.User == null || String.IsNullOrWhiteSpace(token.User.token))
                 {
                     LogSystem.Error("Khong lay duoc token theo sdt: " + LogUtil.TraceData("token", token));
+                    // vCong 62522: truoc day roi vao NullReference o dong duoi
+                    if (lastErrorMessage == null)
+                        lastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.LoginError(Partner, "Hệ thống tờ khai y tế không trả về mã xác thực (token) cho số điện thoại " + phoneNumber);
+                    return null;
                 }
 
                 using (HttpClient client = new HttpClient())
@@ -64,8 +87,16 @@ namespace Inventec.Common.ToKhaiYTe
 
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-                    HttpResponseMessage resp = client.GetAsync(requestedUrl).Result;
-                    if (resp.IsSuccessStatusCode)
+                    HttpResponseMessage resp = null;
+                    try
+                    {
+                        resp = client.GetAsync(requestedUrl).Result;
+                    }
+                    catch (Exception exCall)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(exCall, Partner, serverUrl + requestedUrl);
+                    }
+                    if (resp != null && resp.IsSuccessStatusCode)
                     {
                         string responseData = resp.Content.ReadAsStringAsync().Result;
                         try
@@ -76,6 +107,7 @@ namespace Inventec.Common.ToKhaiYTe
                             if (lstToKhai == null || lstToKhai.User == null)
                             {
                                 LogSystem.Error("User info is empty: \n" + LogUtil.TraceData("lstToKhai", lstToKhai));
+                                lastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Partner, null, "Hệ thống tờ khai y tế không trả về thông tin người khai báo");
                                 return null;
                             }
                             result = lstToKhai.User;
@@ -83,25 +115,23 @@ namespace Inventec.Common.ToKhaiYTe
                         catch (Exception ex)
                         {
                             Inventec.Common.Logging.LogSystem.Error(ex);
+                            lastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(
+                                Inventec.Common.IntegrationError.IntegrationHttpError.ParseError(Partner, serverUrl + requestedUrl, responseData, ex), Partner, "đọc tờ khai y tế");
                         }
                     }
                     else
                     {
-                        try
-                        {
-                            string responseData = resp.Content.ReadAsStringAsync().Result;
-                            LogSystem.Warn("GetUserInfo that bai: " + responseData);
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Error(ex);
-                        }
+                        string responseData = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(resp);
+                        LogSystem.Warn("GetUserInfo that bai: " + responseData);
+                        lastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(
+                            Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Partner, serverUrl + requestedUrl, resp), Partner, "đọc tờ khai y tế"); // vCong 62522
                     }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                lastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "đọc tờ khai y tế");
                 result = null;
             }
             return result;
@@ -145,8 +175,16 @@ namespace Inventec.Common.ToKhaiYTe
 
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
-                    HttpResponseMessage resp = client.PostAsJsonAsync("/register", ado).Result;
-                    if (resp.IsSuccessStatusCode)
+                    HttpResponseMessage resp = null;
+                    try
+                    {
+                        resp = client.PostAsJsonAsync("/register", ado).Result;
+                    }
+                    catch (Exception exCall)
+                    {
+                        throw Inventec.Common.IntegrationError.IntegrationHttpError.WrapCall(exCall, Partner, serverUrl + "/register");
+                    }
+                    if (resp != null && resp.IsSuccessStatusCode)
                     {
                         string responseData = resp.Content.ReadAsStringAsync().Result;
                         try
@@ -160,21 +198,17 @@ namespace Inventec.Common.ToKhaiYTe
                     }
                     else
                     {
-                        try
-                        {
-                            string responseData = resp.Content.ReadAsStringAsync().Result;
-                            LogSystem.Warn("Register that bai: " + responseData);
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Error(ex);
-                        }
+                        string responseData = Inventec.Common.IntegrationError.IntegrationHttpError.ReadBody(resp);
+                        LogSystem.Warn("Register that bai: " + responseData);
+                        lastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(
+                            Inventec.Common.IntegrationError.IntegrationHttpError.FromStatus(Partner, serverUrl + "/register", resp), Partner, "đăng ký số điện thoại với hệ thống tờ khai y tế"); // vCong 62522
                     }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                lastErrorMessage = Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, Partner, "đăng ký số điện thoại với hệ thống tờ khai y tế");
                 result = null;
             }
             return result;

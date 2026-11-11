@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Inventec.Common.IntegrationError">
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.dll</HintPath>
+    </Reference>
     <Reference Include="Accessibility" />
     <Reference Include="ACS.EFMODEL">
       <HintPath>..\..\..\..\lib\ACS\ACS.EFMODEL.dll</HintPath>
@@ -393,6 +396,7 @@
     <Compile Include="FormTreatmentFinish__TienGiamDinh.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="PayBeforeFinishConfirm.cs" />
     <Compile Include="FormTreatmentFinish_Warning.cs">
       <SubType>Form</SubType>
     </Compile>

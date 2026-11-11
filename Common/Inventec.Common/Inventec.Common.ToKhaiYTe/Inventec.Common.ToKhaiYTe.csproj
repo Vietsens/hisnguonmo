@@ -66,4 +66,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\Inventec.Common.IntegrationError\Inventec.Common.IntegrationError.csproj">
+      <Project>{7C3E2A61-4D2B-4F0E-9B8A-62522E0B1A01}</Project>
+      <Name>Inventec.Common.IntegrationError</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

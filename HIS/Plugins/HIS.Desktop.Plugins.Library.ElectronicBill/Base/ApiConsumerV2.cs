@@ -100,15 +100,21 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
             }
             catch (WebException ex)
             {
+                if (ex.Response == null)
+                {
+                    // Không có response = chưa tới được cổng (timeout, DNS, tường lửa, SSL...)
+                    throw ElectronicBillErrorUtil.WrapHttpCall(ex, null, api);
+                }
                 using (WebResponse response = ex.Response)
                 {
                     HttpWebResponse httpResponse = (HttpWebResponse)response;
+                    string text = "";
                     using (Stream data = response.GetResponseStream())
                     using (var reader = new StreamReader(data))
                     {
-                        string text = reader.ReadToEnd();
-                        throw new Exception(text);
+                        text = reader.ReadToEnd();
                     }
+                    throw ElectronicBillErrorUtil.HttpStatusError(null, api, (int)httpResponse.StatusCode, httpResponse.StatusDescription, text);
                 }
             }
 
@@ -153,20 +159,16 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                     else
                         resp = client.PostAsync(fullrequestUri, new StringContent(sendJsonData, Encoding.UTF8, "application/json")).Result;
                 }
-                catch (AggregateException ex)
+                catch (Exception ex)
                 {
                     Inventec.Common.Logging.LogSystem.Error(ex);
-                    if (ex.InnerExceptions.Any(o => o is TaskCanceledException))
-                    {
-                        throw new Exception(string.Format("Hết thời gian chờ ({0} giây) phản hồi từ cổng hóa đơn điện tử ({1}). Vui lòng kiểm tra hóa đơn trên cổng trước khi phát hành lại.", (int)client.Timeout.TotalSeconds, requestUri));
-                    }
-                    Exception inner = ex.GetBaseException();
-                    throw new Exception(string.Format("Lỗi kết nối cổng hóa đơn điện tử ({0}): {1}", requestUri, inner != null ? inner.Message : ex.Message));
+                    // Timeout / không kết nối được / SSL → nguồn lỗi KẾT NỐI, giữ nguyên exception gốc bên trong
+                    throw ElectronicBillErrorUtil.WrapHttpCall(ex, null, requestUri);
                 }
 
                 if (resp == null)
                 {
-                    throw new Exception(string.Format("Cổng hóa đơn điện tử không trả về dữ liệu ({0}).", requestUri));
+                    throw ElectronicBillErrorUtil.NoResponse(null, "gọi " + requestUri);
                 }
 
                 if (!resp.IsSuccessStatusCode)
@@ -182,7 +184,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                         Inventec.Common.Logging.LogSystem.Warn(exRead);
                     }
                     Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}. Response: {3}", baseUri, requestUri, statusCode, errorData));
-                    throw new Exception(string.Format("Cổng hóa đơn điện tử trả về lỗi (mã {0}): {1}", statusCode, String.IsNullOrWhiteSpace(errorData) ? resp.ReasonPhrase : errorData));
+                    throw ElectronicBillErrorUtil.HttpStatusError(null, requestUri, statusCode, resp.ReasonPhrase, errorData);
                 }
                 T data = default(T);
                 string responseData = resp.Content.ReadAsStringAsync().Result;
@@ -190,15 +192,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                 try
                 {
                     data = JsonConvert.DeserializeObject<T>(responseData);
-                    if (data == null)
-                    {
-                        throw new Exception(string.Format("Loi khi goi API. Response {0}:", responseData));
-                    }
                 }
                 catch (Exception ex)
                 {
                     Inventec.Common.Logging.LogSystem.Error(ex);
-                    throw new Exception(responseData);
+                    throw ElectronicBillErrorUtil.ParseError(null, requestUri, responseData, ex);
+                }
+                if (data == null)
+                {
+                    throw ElectronicBillErrorUtil.ParseError(null, requestUri, responseData, null);
                 }
                 return data;
             }
@@ -235,12 +237,27 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Base
                     }
                 }
 
-                if (method.Equals(System.Net.WebRequestMethods.Http.Get))
-                    resp = client.GetAsync(fullrequestUri).Result;
-                if (resp == null || !resp.IsSuccessStatusCode)
+                try
+                {
+                    if (method.Equals(System.Net.WebRequestMethods.Http.Get))
+                        resp = client.GetAsync(fullrequestUri).Result;
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    throw ElectronicBillErrorUtil.WrapHttpCall(ex, null, requestUri);
+                }
+                if (resp == null)
+                {
+                    throw ElectronicBillErrorUtil.NoResponse(null, "tải file từ " + requestUri);
+                }
+                if (!resp.IsSuccessStatusCode)
                 {
                     int statusCode = resp.StatusCode.GetHashCode();
-                    throw new Exception(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}", baseUri, requestUri, statusCode));
+                    string errorData = "";
+                    try { errorData = resp.Content != null ? resp.Content.ReadAsStringAsync().Result : ""; }
+                    catch (Exception exRead) { Inventec.Common.Logging.LogSystem.Warn(exRead); }
+                    throw ElectronicBillErrorUtil.HttpStatusError(null, requestUri, statusCode, resp.ReasonPhrase, errorData);
                 }
 
                 byte[] responseData = resp.Content.ReadAsByteArrayAsync().Result;

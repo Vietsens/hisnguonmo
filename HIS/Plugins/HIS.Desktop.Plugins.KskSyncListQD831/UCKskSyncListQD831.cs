@@ -43,6 +43,9 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
     /// </summary>
     public partial class UCKskSyncListQD831 : UserControlBase
     {
+        /// <summary>Đối tác để phân loại nguồn lỗi (vCong 62522)</summary>
+        private static readonly Inventec.Common.IntegrationError.IntegrationPartner P_HSSK831 = Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng HSSK (QĐ 831)");
+        private static readonly Inventec.Common.IntegrationError.IntegrationPartner P_VLG = Inventec.Common.IntegrationError.IntegrationPartner.HealthPortal("cổng tiếp nhận KDLYT Vĩnh Long");
         #region Declare
         // Cau hinh lien thong HSSK QĐ831 (HIS_CONFIG).
         private const string CONFIG_KEY__HSSK_831 = "MOS.HIS_KSK_SYNC.HSSK_AREA_831_CONNECTION_INFO";
@@ -486,7 +489,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                XtraMessageBox.Show("Lỗi tạo dữ liệu xem trước." + Environment.NewLine + ex.Message,
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, P_HSSK831, "tạo dữ liệu xem trước"),
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -727,14 +730,14 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
                                 string xml = Ksk831Serializer.ToXml(data);
                                 Ksk831PushResult r = syncer.Push(xml, nguoiGui);
                                 if (r == null || !r.Success)
-                                { allOk = false; reasons.Add("831: " + ((r != null) ? r.Message : "Lỗi không xác định")); }
+                                { allOk = false; reasons.Add("831: " + Inventec.Common.IntegrationError.IntegrationErrorMessage.TagText(P_HSSK831, (r != null) ? r.Message : "Không nhận được phản hồi từ cổng")); }
                                 else reasons.Add("831: OK — KHÔNG cần đẩy lại cổng này");
                             }
                             if (vlgSyncer != null)
                             {
                                 Ksk831PushResult rv = vlgSyncer.Push(data, RowCode(kv.Key));
                                 if (rv == null || !rv.Success)
-                                { allOk = false; reasons.Add("VLG: " + ((rv != null) ? rv.Message : "Lỗi không xác định")); }
+                                { allOk = false; reasons.Add("VLG: " + Inventec.Common.IntegrationError.IntegrationErrorMessage.TagText(P_VLG, (rv != null) ? rv.Message : "Không nhận được phản hồi từ cổng")); }
                                 else reasons.Add("VLG: OK");
                             }
                             if (allOk) { prof.SYNC_RESULT_TYPE = 2; ok++; }
@@ -742,8 +745,8 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
                             {
                                 prof.SYNC_RESULT_TYPE = 3;
                                 prof.SYNC_FAILD_REASON = string.Join(" | ", reasons.ToArray());
-                                if (prof.SYNC_FAILD_REASON.Length > 3500)
-                                    prof.SYNC_FAILD_REASON = prof.SYNC_FAILD_REASON.Substring(0, 3500);
+                                // SYNC_FAILD_REASON VARCHAR2(4000 BYTE): cắt theo byte, không theo ký tự (vCong 62522)
+                                prof.SYNC_FAILD_REASON = Inventec.Common.IntegrationError.IntegrationErrorMessage.TruncateUtf8(prof.SYNC_FAILD_REASON, 4000);
                                 failed++; errors.Add(RowCode(kv.Key) + ": " + prof.SYNC_FAILD_REASON);
                             }
                         }
@@ -751,8 +754,8 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
                     catch (Exception ex)
                     {
                         Inventec.Common.Logging.LogSystem.Error(ex);
-                        prof.SYNC_RESULT_TYPE = 3; prof.SYNC_FAILD_REASON = ex.Message;
-                        failed++; errors.Add(RowCode(kv.Key) + ": " + ex.Message);
+                        prof.SYNC_RESULT_TYPE = 3; prof.SYNC_FAILD_REASON = Inventec.Common.IntegrationError.IntegrationErrorMessage.TruncateUtf8(Inventec.Common.IntegrationError.IntegrationErrorMessage.TagException(ex, P_HSSK831), 4000);
+                        failed++; errors.Add(RowCode(kv.Key) + ": " + prof.SYNC_FAILD_REASON);
                     }
                     results.Add(prof);
 
@@ -765,7 +768,7 @@ namespace HIS.Desktop.Plugins.KskSyncListQD831
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                XtraMessageBox.Show("Lỗi khi đồng bộ." + Environment.NewLine + ex.Message, "Đồng bộ thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(ex, P_HSSK831, "đồng bộ hồ sơ"), "Đồng bộ thất bại", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

@@ -629,8 +629,39 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                         var json = JsonConvert.Serialize<WcfRequest>(wc);
                         //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => json), json));
                         var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(json);
-                        WcfClient cll = new WcfClient();
-                        var result = cll.Void(System.Convert.ToBase64String(plainTextBytes));
+                        WcfClient cll = null;
+                        try
+                        {
+                            cll = new WcfClient();
+                        }
+                        catch (Exception ex)
+                        {
+                            // (vCong 62522) thiếu/sai endpoint WCF trong file cấu hình
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.Build(Inventec.Common.IntegrationError.ErrorSource.Config, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "Không khởi tạo được kết nối tới dịch vụ máy POS: kiểm tra lại cấu hình NetTcpBinding_IService1 trong file cấu hình phần mềm", ex.Message), "Thông báo"); // vCong 62522
+                            throw;
+                        }
+                        WcfRequest result = null;
+                        try
+                        {
+                            result = cll.Void(System.Convert.ToBase64String(plainTextBytes));
+                        }
+                        catch (Exception exPos)
+                        {
+                            // (vCong 62522) dịch vụ POS trên máy trạm không chạy / mất kết nối: báo rõ nguồn lỗi rồi giữ nguyên luồng xử lý lỗi cũ
+                            if (cll != null)
+                            {
+                                WaitingManager.Hide();
+                                XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.FromException(exPos, Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "gửi lệnh hủy giao dịch tới máy POS"), "Thông báo");
+                            }
+                            throw;
+                        }
+                        if (result == null)
+                        {
+                            // (vCong 62522) trước đây không báo gì khi máy POS không trả kết quả
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.NoResponse(Inventec.Common.IntegrationError.IntegrationPartner.LocalService("dịch vụ kết nối máy POS"), "hủy giao dịch qua máy POS"), "Thông báo");
+                        }
                         //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
                         if (result != null && result.RESPONSE_CODE == "00")
                         {
@@ -647,7 +678,7 @@ namespace HIS.Desktop.Plugins.TransactionCancel
                             {
                                 WaitingManager.Hide();
                                 if (DevExpress.XtraEditors.XtraMessageBox.
-                               Show("Giao dịch hủy không thành công" + "(Mã lỗi: " + result.ERROR + ")", ResourceMessageLang.TieuDeThongBao, System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
+                               Show(Inventec.Common.IntegrationError.IntegrationErrorMessage.PartnerError(Inventec.Common.IntegrationError.IntegrationPartner.Bank("ngân hàng quản lý máy POS"), "Mã lỗi: " + result.ERROR, "Giao dịch hủy không thành công"), ResourceMessageLang.TieuDeThongBao, System.Windows.Forms.MessageBoxButtons.OK) == System.Windows.Forms.DialogResult.OK)
                                     success = false;
                             }
                             success = false;
