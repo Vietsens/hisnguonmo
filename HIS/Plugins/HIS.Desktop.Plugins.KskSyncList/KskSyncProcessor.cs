@@ -3757,7 +3757,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (hasKdlsk && !kdlskOk)
                     reasons.Add(TagReason(!string.IsNullOrEmpty(kdlskResult.Message) ? kdlskResult.Message : "KDLSK: đồng bộ thất bại", KSK_PARTNER_KDLSK));
                 if (hasFacare && !facareOk)
-                    reasons.Add(!string.IsNullOrEmpty(facareResult.Message) ? facareResult.Message : "FACARE: đồng bộ thất bại");
+                    reasons.Add(TagReason(!string.IsNullOrEmpty(facareResult.Message) ? facareResult.Message : "FACARE: đồng bộ thất bại", KSK_PARTNER_FACARE));
                 if (!string.IsNullOrEmpty(configError)) reasons.Add(TagReason(configError, KSK_PARTNER_BYT));
                 // Ly do VLG xep CUOI: "Cap nhat KQ cong" doc phan truoc " | VLG:" la loi cong khac (OtherGatewayReason).
                 if (hasVlg && !vlgOk)

@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using His.Ksk.QD2062.Base;
+using Inventec.Common.IntegrationError;
 using MOS.EFMODEL.DataModels;
 using Newtonsoft.Json.Linq;
 
@@ -31,6 +32,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
     {
         private const string FACARE_LABEL = "FACARE:";
         private const string FACARE_FIELD_SIGNATURE = "electronic_signature";
+
+        /// <summary>Nhãn nguồn lỗi của cổng FaCare (cùng cách gắn nhãn các cổng KSK khác — vCong 62522).</summary>
+        private static readonly IntegrationPartner KSK_PARTNER_FACARE = IntegrationPartner.HealthPortal("cổng CSDL KSK Sở Y tế Cần Thơ (FaCare)");
 
         /// <summary>Có đẩy cổng FaCare hay không — theo ô tích trong bảng Cài đặt.</summary>
         internal bool PushFacare { get; set; }
@@ -174,9 +178,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 // Hồ sơ đã có trên cổng: lỗi bất ngờ không được làm mất trạng thái đó.
+                string msg = "FACARE: " + IntegrationErrorMessage.TagException(ex, KSK_PARTNER_FACARE);
                 if (KskFacarePushResult.IsOnPortal(storedState))
-                    return new KskFacarePushResult { Success = false, State = storedState, Message = "FACARE: " + ex.Message };
-                return KskFacarePushResult.NotSent("FACARE: " + ex.Message);
+                    return new KskFacarePushResult { Success = false, State = storedState, Message = msg };
+                return KskFacarePushResult.NotSent(msg);
             }
         }
 
