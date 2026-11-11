@@ -29932,9 +29932,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // 
             this.layoutControlItem633.Control = this.panel8;
             this.layoutControlItem633.Location = new System.Drawing.Point(0, 122);
+            this.layoutControlItem633.MaxSize = new System.Drawing.Size(0, 149);
+            this.layoutControlItem633.MinSize = new System.Drawing.Size(100, 149);
             this.layoutControlItem633.Name = "layoutControlItem633";
             this.layoutControlItem633.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlItem633.Size = new System.Drawing.Size(406, 149);
+            this.layoutControlItem633.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem633.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem633.TextVisible = false;
             // 
