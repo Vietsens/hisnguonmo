@@ -18,7 +18,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
     public partial class frmEnterKskInfomantionVer2
     {
         /// <summary>Cờ đã fill dữ liệu cho từng tab (index 0..8) — chống fill lại.</summary>
-        private readonly bool[] tabFilled = new bool[9];
+        private readonly bool[] tabFilled = new bool[10];
 
         /// <summary>Chỉ số 3 tab chọn theo tuổi khi y lệnh chưa có bản ghi KSK nào.</summary>
         private const int TAB_OVER_EIGHTEEN = 1;
@@ -177,6 +177,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (tab == TAB_MENTAL)
                 {
                     LoadTabMental();
+                    return;
+                }
+                // Tab "Ksk lái xe (Mẫu 5)": luồng nạp riêng (bảng HIS_KSK_PRO_DRIVER, dịch vụ CRUD riêng).
+                if (tab == TAB_PRO_DRIVER)
+                {
+                    LoadTabProDriver();
                     return;
                 }
                 // CHỐNG DÍNH DỮ LIỆU Y LỆNH TRƯỚC: xóa sạch mọi editor trên trang tab trước khi đổ dữ liệu.

@@ -1354,6 +1354,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     sdo.KskGeneral = new KskGeneralV2SDO();
                     sdo.KskGeneral.HisKskGeneral = BuildKskGeneralForMental();
                 }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER)
+                {
+                    // Ksk lai xe Mau 5 (TT 36/2024): nguoi + ngay ket luan -> HIS_KSK_GENERAL o day;
+                    // du lieu kham HIS_KSK_PRO_DRIVER + the luc luu tiep sau khi thanh cong (SaveKskProDriver)
+                    sdo.KskGeneral = new KskGeneralV2SDO();
+                    sdo.KskGeneral.HisKskGeneral = BuildKskGeneralForMental();
+                }
                 // Kết luận theo bệnh (ICD-10) — UC chung → lưu vào HIS_KSK_GENERAL cho MỌI tab
                 int curTabIcd = xtraTabControl1.SelectedTabPageIndex;
                 if (dicIcdConclusionUc.ContainsKey(curTabIcd) && dicIcdConclusionUc[curTabIcd] != null)
@@ -1404,6 +1411,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     // Lưu tiếp bảng dữ liệu riêng của mẫu M4 — cần mã bản ghi KSK vừa trả về
                     // làm khóa liên kết nên phải chạy sau, không gộp vào cùng lệnh lưu trên.
                     SaveKskSytHcm(result.HisKskOverEighteen);
+                    // Tab Ksk lai xe Mau 5: luu tiep HIS_KSK_PRO_DRIVER (+ the luc, 22 dong tien su)
+                    SaveKskProDriver();
                     if (result.HisKskPeriodDriver != null) currentKskPeriodDriver = result.HisKskPeriodDriver;
                     if (result.HisKskUnderEighteen != null) currentKskUnderEight = result.HisKskUnderEighteen;
                     if (result.HisKskOther != null) currentKskOther = result.HisKskOther;
@@ -1556,6 +1565,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     if (currentServiceReq != null)
                         IsEnable = true;
                 }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER)
+                {
+                    // Ksk lai xe Mau 5: phieu in (Mps000524) dung tu cac o tren tab
+                    if (currentServiceReq != null)
+                        IsEnable = true;
+                }
                 btnPrint.Enabled = IsEnable;
             }
             catch (System.Exception ex)
@@ -1617,6 +1632,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     // Ksk tam than: Giay kham suc khoe tam than (Mps000520)
                     if (currentServiceReq != null)
                         PrintProcess(PRINT_TYPE.MPS000520);
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER)
+                {
+                    // Ksk lai xe Mau 5 TT 36/2024 (Mps000524)
+                    if (currentServiceReq != null)
+                        PrintProcess(PRINT_TYPE.MPS000524);
                 }
             }
             catch (System.Exception ex)

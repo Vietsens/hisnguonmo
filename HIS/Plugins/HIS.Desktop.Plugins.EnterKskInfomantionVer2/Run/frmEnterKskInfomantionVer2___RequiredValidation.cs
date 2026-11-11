@@ -405,6 +405,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 else if (tabIndex == 2) { spnMax = spnBloodPressureMax3; spnMin = spnBloodPressureMin3; }
                 else if (tabIndex == 6) { spnMax = spnBloodPressureMax7; spnMin = spnBloodPressureMin7; }
                 else if (tabIndex == TAB_MENTAL) { spnMax = this.ucKskMental.SpnBloodPressureMax; spnMin = this.ucKskMental.SpnBloodPressureMin; }
+                else if (tabIndex == TAB_PRO_DRIVER) { spnMax = this.ucKskProDriver.SpnBloodPressureMax; spnMin = this.ucKskProDriver.SpnBloodPressureMin; }
                 else return;
                 if (spnMax == null || spnMin == null) return;
 

@@ -180,6 +180,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     case 6: dte = dteConclusionTimeOccupational; break;    // Ksk nghề nghiệp
                     case 7: dte = dteConclusionTime8; break;               // Trẻ em dưới 6 tuổi
                     case TAB_MENTAL: dte = this.ucKskMental.DteConclusionTime; break; // Ksk tâm thần
+                    case TAB_PRO_DRIVER: dte = this.ucKskProDriver.DteConclusionTime; break; // Ksk lái xe Mẫu 5
                 }
                 if (dte == null || dte.EditValue == null) return;
                 if (sdo.KskGeneral == null) sdo.KskGeneral = new MOS.SDO.KskGeneralV2SDO();
