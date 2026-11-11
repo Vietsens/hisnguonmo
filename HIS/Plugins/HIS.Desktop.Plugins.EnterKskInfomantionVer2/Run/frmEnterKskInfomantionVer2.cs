@@ -1356,8 +1356,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER)
                 {
-                    // Ksk lai xe Mau 5 (TT 36/2024): nguoi + ngay ket luan -> HIS_KSK_GENERAL o day;
-                    // du lieu kham HIS_KSK_PRO_DRIVER + the luc luu tiep sau khi thanh cong (SaveKskProDriver)
+                    // Ksk lai xe Mau 5 (TT 36/2024): du lieu kham HIS_KSK_PRO_DRIVER (KSK_FORM_TYPE = 5) + the luc
+                    // + 22 dong tien su -> nhanh KskProDriver; nguoi + ngay ket luan -> HIS_KSK_GENERAL
+                    if (!ValidateProDriverBeforeSave())
+                    {
+                        WaitingManager.Hide();
+                        return;
+                    }
+                    sdo.KskProDriver = BuildKskProDriverSdo();
                     sdo.KskGeneral = new KskGeneralV2SDO();
                     sdo.KskGeneral.HisKskGeneral = BuildKskGeneralForMental();
                 }
@@ -1411,8 +1417,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     // Lưu tiếp bảng dữ liệu riêng của mẫu M4 — cần mã bản ghi KSK vừa trả về
                     // làm khóa liên kết nên phải chạy sau, không gộp vào cùng lệnh lưu trên.
                     SaveKskSytHcm(result.HisKskOverEighteen);
-                    // Tab Ksk lai xe Mau 5: luu tiep HIS_KSK_PRO_DRIVER (+ the luc, 22 dong tien su)
-                    SaveKskProDriver();
+                    // Tab Ksk lai xe Mau 5: giu ban ghi vua luu (co so giay) + cap nhat du lieu tai san
+                    if (result.KskProDriver != null) ApplyKskProDriverSaved(result.KskProDriver, sdo.KskProDriver);
                     if (result.HisKskPeriodDriver != null) currentKskPeriodDriver = result.HisKskPeriodDriver;
                     if (result.HisKskUnderEighteen != null) currentKskUnderEight = result.HisKskUnderEighteen;
                     if (result.HisKskOther != null) currentKskOther = result.HisKskOther;

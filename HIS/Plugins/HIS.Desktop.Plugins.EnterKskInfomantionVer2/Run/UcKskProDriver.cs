@@ -673,7 +673,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// Đổ bản ghi đã lưu lên các ô. <paramref name="data"/> null = hồ sơ mới (để trống);
         /// <paramref name="dhst"/> null = chưa có thể lực. Đối tượng/Nguồn chi trả/Hạng GPLX/Người kết luận do form đổ.
         /// </summary>
-        internal void FillData(KskProDriverADO data, HIS_DHST dhst)
+        internal void FillData(HIS_KSK_PRO_DRIVER data, HIS_DHST dhst)
         {
             try
             {
@@ -753,7 +753,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         /// <summary>Ghi giá trị các ô vào bản ghi (không đụng ID / liên kết / mã / DHST_ID / các combo form quản lý).</summary>
-        internal void GetData(KskProDriverADO data)
+        internal void GetData(HIS_KSK_PRO_DRIVER data)
         {
             if (data == null) return;
             try
@@ -818,10 +818,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 data.SUGGEST_NOTE = NullIfEmpty(this.txtSuggestNote.Text);
                 data.DRIVER_CONCLUSION_TYPE = GetRadio(this.rdoDriverConclusion);
                 data.REEXAM_NOTE = data.DRIVER_CONCLUSION_TYPE == 3 ? NullIfEmpty(this.txtReexamNote.Text) : null;
-                if (this.dteConclusionTime.EditValue != null)
-                    data.CONCLUSION_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(this.dteConclusionTime.DateTime);
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Kết luận "Đạt nhưng yêu cầu khám lại" (mã 3) bắt buộc có thời gian khám lại — BE từ chối cả lượt lưu nếu thiếu.
+        /// Trả true khi hợp lệ; thiếu thì đưa con trỏ vào ô "Thời gian khám lại".
+        /// </summary>
+        internal bool ValidateReexamNote()
+        {
+            if (GetRadio(this.rdoDriverConclusion) == 3 && string.IsNullOrWhiteSpace(this.txtReexamNote.Text))
+            {
+                this.txtReexamNote.Focus();
+                return false;
+            }
+            return true;
         }
 
         /// <summary>Ghi chỉ số thể lực vào HIS_DHST — không đụng ID / người đo.</summary>

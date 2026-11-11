@@ -497,7 +497,6 @@
     <Compile Include="Run\frmEnterKskInfomantionVer2___UnderSixNormalSign.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ADO\KskProDriverADO.cs" />
     <Compile Include="Run\frmEnterKskInfomantionVer2___ProDriver.cs">
       <SubType>Form</SubType>
     </Compile>
