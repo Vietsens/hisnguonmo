@@ -9,6 +9,7 @@
  * FillData chạy), các bước wholesale (SetEnableControl/LoadIcd...) đều guard theo null.
  */
 using System;
+using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using Inventec.Common.Logging;
@@ -73,6 +74,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             if (Cnt(preKskOthers) > 0) return 5;
             if (Cnt(preKskUnderSixes) > 0) return TAB_UNDER_SIX;
             if (Cnt(preKskMentals) > 0) return TAB_MENTAL;
+            if (preKskProDrivers != null && currentServiceReq != null
+                && preKskProDrivers.Any(o => o != null && o.SERVICE_REQ_ID == currentServiceReq.ID && IsMau5(o))) return TAB_PRO_DRIVER;
             // Ksk nghề nghiệp hiển thị ở tab 0 — giữ nguyên hành vi cũ.
             if (Cnt(preKskOccupationals) > 0) return 0;
             return -1;
