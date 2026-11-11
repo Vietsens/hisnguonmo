@@ -423,6 +423,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 case 5: return 2; // KSK khác (hôn nhân/di chúc) → HIS_KSK_OTHER
                 case 6: return 2; // Ksk nghề nghiệp → HIS_KSK_OCCUPATIONAL
                 case 7: return ComputeKskTypeIdUnderSix(g); // Trẻ dưới 6 tuổi → tính theo tuổi (6–13)
+                case TAB_PRO_DRIVER: return 3; // Ksk lái xe Mẫu 5 → lái xe
                 default: return null;
             }
         }

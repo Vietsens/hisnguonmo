@@ -2249,6 +2249,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem669 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage17 = new DevExpress.XtraTab.XtraTabPage();
             this.ucKskMental = new HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run.UcKskMental();
+            this.xtraTabPage18 = new DevExpress.XtraTab.XtraTabPage();
+            this.ucKskProDriver = new HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run.UcKskProDriver();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnPatientUpdate = new DevExpress.XtraEditors.SimpleButton();
@@ -4361,6 +4363,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem633)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem669)).BeginInit();
             this.xtraTabPage17.SuspendLayout();
+            this.xtraTabPage18.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
@@ -4641,7 +4644,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.xtraTabPage6,
             this.xtraTabPage7,
             this.xtraTabPage8,
-            this.xtraTabPage17});
+            this.xtraTabPage17,
+            this.xtraTabPage18});
             this.xtraTabControl1.SelectedPageChanged += new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl1_SelectedPageChanged);
             // 
             // xtraTabPage1
@@ -29966,6 +29970,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.ucKskMental.Size = new System.Drawing.Size(1379, 835);
             this.ucKskMental.TabIndex = 0;
             // 
+            // xtraTabPage18
+            // 
+            this.xtraTabPage18.Controls.Add(this.ucKskProDriver);
+            this.xtraTabPage18.Name = "xtraTabPage18";
+            this.xtraTabPage18.Size = new System.Drawing.Size(1379, 835);
+            this.xtraTabPage18.Text = "Ksk lái xe (Mẫu 5)";
+            this.xtraTabPage18.Tooltip = "Giấy khám sức khỏe của người lái xe, người điều khiển xe máy chuyên dùng (Mẫu 5 - Thông tư 36/2024/TT-BYT)";
+            // 
+            // ucKskProDriver
+            // 
+            this.ucKskProDriver.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ucKskProDriver.Location = new System.Drawing.Point(0, 0);
+            this.ucKskProDriver.Name = "ucKskProDriver";
+            this.ucKskProDriver.Size = new System.Drawing.Size(1379, 835);
+            this.ucKskProDriver.TabIndex = 0;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.layoutControl2);
@@ -33905,6 +33925,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem633)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem669)).EndInit();
             this.xtraTabPage17.ResumeLayout(false);
+            this.xtraTabPage18.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
@@ -33993,6 +34014,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         // Tab "Ksk tâm thần" — Mẫu số 04, TT 25/2026/TT-BYT (giao diện nằm trong UcKskMental)
         private DevExpress.XtraTab.XtraTabPage xtraTabPage17;
         private HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run.UcKskMental ucKskMental;
+        // Tab "Ksk lái xe (Mẫu 5)" — Mẫu 5, TT 36/2024/TT-BYT (giao diện nằm trong UcKskProDriver)
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage18;
+        private HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run.UcKskProDriver ucKskProDriver;
         private System.Windows.Forms.TableLayoutPanel tlpUnderSix;
         private System.Windows.Forms.Panel scrUnderSixLeft;
         private System.Windows.Forms.Panel scrUnderSixMid;
