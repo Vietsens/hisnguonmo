@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private bool vlgConfigAvailable;   // MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO co du lieu
         private bool sytConfigAvailable;   // MOS.HIS_KSK_SYNC.SYT_HCM_CONNECTION_INFO co du lieu
         private bool kdlskConfigAvailable; // MOS.HIS_KSK_SYNC.KDLSK_2062_CONNECTION_INFO co du lieu
+        private bool facareConfigAvailable; // MOS.HIS_KSK_SYNC.FACARE_CONNECTION_INFO co du lieu
         private bool hasSavedSyncState;    // da co trang thai check luu truoc do
         // Trang thai luu co chua truong SyncVlg chua? JSON luu tu BAN CU (truoc khi co cong VLG) khong co
         // truong nay -> deserialize ra false "gia" -> phai auto-tick theo config MOT LAN khi vien vua khai
@@ -69,6 +70,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
         /// <summary>Trạng thái đã lưu CÓ trường SyncKdlsk chưa — để tự tích một lần khi viện vừa khai khóa Kho.</summary>
         private bool kdlskStateSaved;
+
+        /// <summary>Trạng thái đã lưu CÓ trường SyncFacare chưa — để tự tích một lần khi viện vừa khai khóa FaCare.</summary>
+        private bool facareStateSaved;
         private string exportXmlPath = ""; // duong dan xuat XML (luu local qua ControlState theo key btnExportPath)
         // Khai bao noi chi so can lam sang voi chi tieu mau M3 (cong SYT TP.HCM) — luu local qua ControlState.
         private string sytClsMapJson = "";
@@ -744,6 +748,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                                 vlgStateSaved = HasJsonField(item.VALUE, "SyncVlg");
                                 sytStateSaved = HasJsonField(item.VALUE, "SyncSytHcm");
                                 kdlskStateSaved = HasJsonField(item.VALUE, "SyncKdlsk");
+                                facareStateSaved = HasJsonField(item.VALUE, "SyncFacare");
                             }
                         }
                         else if (item.KEY == btnExportPath.Name)
@@ -860,6 +865,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private DevExpress.XtraEditors.CheckEdit chkSyncVlg;
         private DevExpress.XtraEditors.CheckEdit chkSyncSytHcm;
         private DevExpress.XtraEditors.CheckEdit chkSyncKdlsk;
+        private DevExpress.XtraEditors.CheckEdit chkSyncFacare;
 
         /// <summary>Dựng PopupControlContainer (như nút cài đặt in AssignService) chứa các checkbox chọn cổng liên thông.</summary>
         private void EnsureSyncPopup()
@@ -892,6 +898,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
             chkSyncKdlsk = new DevExpress.XtraEditors.CheckEdit();
             chkSyncKdlsk.Properties.Caption = "Liên thông Kho dữ liệu sức khỏe toàn dân (2062/QĐ-BYT)";
             chkSyncKdlsk.Checked = syncTarget != null && syncTarget.SyncKdlsk;
+
+            chkSyncFacare = new DevExpress.XtraEditors.CheckEdit();
+            chkSyncFacare.Properties.Caption = "Liên thông CSDL KSK Sở Y tế Cần Thơ (FaCare)";
+            chkSyncFacare.Checked = syncTarget != null && syncTarget.SyncFacare;
 
             // Bố cục chuẩn bằng LayoutControl: mỗi checkbox = 1 LayoutControlItem (ẩn text item, dùng caption checkbox).
             DevExpress.XtraLayout.LayoutControl lc = new DevExpress.XtraLayout.LayoutControl();
@@ -946,6 +956,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
             lciKdlsk.Visibility = kdlskConfigAvailable
                 ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
                 : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+            // Cổng CSDL KSK Sở Y tế Cần Thơ (FaCare) — dòng cuối, sau các cổng đang có.
+            DevExpress.XtraLayout.LayoutControlItem lciFacare =
+                (DevExpress.XtraLayout.LayoutControlItem)lc.Root.AddItem();
+            lciFacare.Control = chkSyncFacare;
+            lciFacare.TextVisible = false;
+            lciFacare.Visibility = facareConfigAvailable
+                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             lc.Root.GroupBordersVisible = false;
             lc.EndUpdate();
 
@@ -957,12 +976,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
             chkSyncVlg.CheckedChanged += SyncTarget_CheckedChanged;
             chkSyncSytHcm.CheckedChanged += SyncTarget_CheckedChanged;
             chkSyncKdlsk.CheckedChanged += SyncTarget_CheckedChanged;
+            chkSyncFacare.CheckedChanged += SyncTarget_CheckedChanged;
 
             // Chiều cao popup CO GIÃN theo số cổng THỰC SỰ hiển thị (config có dữ liệu) — mỗi item 1 dòng.
             int visibleCount = (bytConfigAvailable ? 1 : 0) + (hsskConfigAvailable ? 1 : 0)
                              + (hocConfigAvailable ? 1 : 0) + (hccConfigAvailable ? 1 : 0)
                              + (vlgConfigAvailable ? 1 : 0) + (sytConfigAvailable ? 1 : 0)
-                             + (kdlskConfigAvailable ? 1 : 0);
+                             + (kdlskConfigAvailable ? 1 : 0) + (facareConfigAvailable ? 1 : 0);
             if (visibleCount < 1) visibleCount = 1;
             const int ROW_HEIGHT = 30;   // chiều cao 1 dòng checkbox (đủ để không hiện scroll)
             const int PADDING = 14;      // padding trên/dưới của LayoutControl 
@@ -983,7 +1003,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             try
             {
                 if (!bytConfigAvailable && !hsskConfigAvailable && !hocConfigAvailable && !hccConfigAvailable
-                    && !vlgConfigAvailable && !sytConfigAvailable && !kdlskConfigAvailable)
+                    && !vlgConfigAvailable && !sytConfigAvailable && !kdlskConfigAvailable && !facareConfigAvailable)
                 {
                     XtraMessageBox.Show(
                         "Chưa cấu hình cổng liên thông khám sức khỏe cho cơ sở " + GetCurrentBranchName() + "." + Environment.NewLine +
@@ -991,8 +1011,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         "MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO (Liên thông HSSK), " +
                         "MOS.HIS_KSK_SYNC.HSSK_HOC_2062_CONNECTION_INFO (Liên thông HOC), " +
                         "MOS.HIS_KSK_SYNC.HSSK_HCC_2062_CONNECTION_INFO (Liên thông HCC), " +
-                        "MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO (Liên thông KDLYT Vĩnh Long) " +
-                        "hoặc " + KskKdlskConfigParser.CONFIG_KEY + " (Liên thông Kho dữ liệu sức khỏe toàn dân).",
+                        "MOS.HIS_KSK_SYNC.VLG_2062_CONNECTION_INFO (Liên thông KDLYT Vĩnh Long), " +
+                        KskKdlskConfigParser.CONFIG_KEY + " (Liên thông Kho dữ liệu sức khỏe toàn dân) " +
+                        "hoặc " + KskFacareConfigParser.CONFIG_KEY + " (Liên thông CSDL KSK Sở Y tế Cần Thơ).",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
@@ -1015,6 +1036,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (chkSyncVlg != null) syncTarget.SyncVlg = chkSyncVlg.Checked;
                 if (chkSyncSytHcm != null) syncTarget.SyncSytHcm = chkSyncSytHcm.Checked;
                 if (chkSyncKdlsk != null) syncTarget.SyncKdlsk = chkSyncKdlsk.Checked;
+                if (chkSyncFacare != null) syncTarget.SyncFacare = chkSyncFacare.Checked;
                 SaveControlStateTarget();
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
@@ -1171,15 +1193,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 vlgConfigAvailable = !string.IsNullOrWhiteSpace(GetVlgConnectionInfo());
                 sytConfigAvailable = !string.IsNullOrWhiteSpace(GetConfigValue(CONFIG_KEY__SYT_HCM_CONNECTION_INFO));
                 kdlskConfigAvailable = !string.IsNullOrWhiteSpace(GetConfigValue(KskKdlskConfigParser.CONFIG_KEY));
+                facareConfigAvailable = !string.IsNullOrWhiteSpace(GetConfigValue(KskFacareConfigParser.CONFIG_KEY));
 
                 // Tom tat cong nao co cau hinh THEO CHI NHANH dang lam viec — soi nhanh khi vien bao
                 // "da khai cau hinh ma khong tich duoc cong". Chi tiet tung key: marker "KskBranchConfig:".
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                     "KskSyncList: chi nhanh dang lam viec={0} ({1}) | co cau hinh: BYT={2}, HSSK={3},"
-                    + " HOC={4}, HCC={5}, VLG={6}, SYT_HCM={7}, KDLSK={8}",
+                    + " HOC={4}, HCC={5}, VLG={6}, SYT_HCM={7}, KDLSK={8}, FACARE={9}",
                     KskBranchConfig.CurrentBranchId(), KskBranchConfig.CurrentBranchName(),
                     bytConfigAvailable, hsskConfigAvailable, hocConfigAvailable,
-                    hccConfigAvailable, vlgConfigAvailable, sytConfigAvailable, kdlskConfigAvailable));
+                    hccConfigAvailable, vlgConfigAvailable, sytConfigAvailable, kdlskConfigAvailable,
+                    facareConfigAvailable));
 
                 if (syncTarget == null) syncTarget = new KskSyncTargetADO();
                 if (!hasSavedSyncState)
@@ -1191,6 +1215,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     syncTarget.SyncVlg = vlgConfigAvailable;
                     syncTarget.SyncSytHcm = sytConfigAvailable;
                     syncTarget.SyncKdlsk = kdlskConfigAvailable;
+                    syncTarget.SyncFacare = facareConfigAvailable;
                 }
                 else
                 {
@@ -1201,6 +1226,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     if (!vlgStateSaved) syncTarget.SyncVlg = vlgConfigAvailable;
                     if (!sytStateSaved) syncTarget.SyncSytHcm = sytConfigAvailable;
                     if (!kdlskStateSaved) syncTarget.SyncKdlsk = kdlskConfigAvailable;
+                    if (!facareStateSaved) syncTarget.SyncFacare = facareConfigAvailable;
                 }
                 if (!bytConfigAvailable) syncTarget.SyncByt = false;
                 if (!hsskConfigAvailable) syncTarget.SyncHssk = false;
@@ -1216,6 +1242,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 // (26/08 Designer dong bo tu may dev da bo EmptySpaceItem "emptyFilterTop" va them btnClsMap — khong con swap cap.)
                 if (!sytConfigAvailable) syncTarget.SyncSytHcm = false;
                 if (!kdlskConfigAvailable) syncTarget.SyncKdlsk = false;
+                if (!facareConfigAvailable) syncTarget.SyncFacare = false;
             }
             catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
@@ -1224,7 +1251,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         private bool CanSync()
         {
             return bytConfigAvailable || hsskConfigAvailable || hocConfigAvailable || hccConfigAvailable
-                || vlgConfigAvailable || sytConfigAvailable || kdlskConfigAvailable;
+                || vlgConfigAvailable || sytConfigAvailable || kdlskConfigAvailable || facareConfigAvailable;
         }
         #endregion
 
@@ -1337,18 +1364,34 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 bool toSytHcm = syncTarget != null && syncTarget.SyncSytHcm && sytConfigAvailable;
                 bool toKdlsk = syncTarget != null && syncTarget.SyncKdlsk && kdlskConfigAvailable;
+                bool toFacare = syncTarget != null && syncTarget.SyncFacare && facareConfigAvailable;
 
                 // Scene 5: chua chon/chua cau hinh cong nao -> bao loi, khong day.
                 // Tinh CA cong VLG va cong So Y te TP.HCM: chi tich rieng mot trong hai van phai day
                 // duoc, khong bi cac cong khac chan.
-                if (!toByt && !toHssk && !toHoc && !toHcc && !toVlg && !toSytHcm && !toKdlsk)
+                if (!toByt && !toHssk && !toHoc && !toHcc && !toVlg && !toSytHcm && !toKdlsk && !toFacare)
                 {
                     XtraMessageBox.Show(
                         "Chưa chọn cổng liên thông có cấu hình để đẩy dữ liệu." + Environment.NewLine +
                         "Vui lòng bấm nút Cài đặt để chọn cổng (KSK BYT / HSSK / HOC / HCC / "
-                        + "KDLYT Vĩnh Long / KSK Sở Y tế TP.HCM / Kho dữ liệu sức khỏe toàn dân) đã được cấu hình.",
+                        + "KDLYT Vĩnh Long / KSK Sở Y tế TP.HCM / Kho dữ liệu sức khỏe toàn dân / CSDL KSK Sở Y tế Cần Thơ)"
+                        + " đã được cấu hình.",
                         "Không thể đồng bộ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
+                }
+
+                // FaCare: gửi lại cùng mã liên kết thì cổng TẠO THÊM lượt khám, mà cổng chưa có API tra cứu ->
+                // hồ sơ lần trước đã gửi nhưng chưa rõ kết quả thì hỏi 1 lần trước khi gửi lại.
+                bool facareResendUnknown = false;
+                if (toFacare)
+                {
+                    int unknownCount = KskSyncProcessor.FindFacareUnknown(rows).Count;
+                    if (unknownCount > 0)
+                        facareResendUnknown = XtraMessageBox.Show(
+                            "Có " + unknownCount + " hồ sơ đã gửi cổng FaCare nhưng chưa rõ kết quả. Cổng FaCare chưa có API tra cứu,"
+                            + " gửi lại có thể tạo lượt khám trùng. Nên nhờ nhóm hỗ trợ API FaCare kiểm tra trước."
+                            + Environment.NewLine + "Vẫn gửi lại các hồ sơ này?",
+                            "Cổng FaCare", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
                 }
 
                 // Ky so ap dung cho MOI cong dung ban tin XML (BYT/HSSK/HOC + HCC che do xml) — ban tin base64
@@ -1378,6 +1421,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 string hccConnectionInfo = GetHccConnectionInfo();
                 string vlgConnectionInfo = GetVlgConnectionInfo();
                 string kdlskConnectionInfo = toKdlsk ? GetConfigValue(KskKdlskConfigParser.CONFIG_KEY) : null;
+                string facareConnectionInfo = toFacare ? GetConfigValue(KskFacareConfigParser.CONFIG_KEY) : null;
                 bool sign = chkSign.Checked;
                 SettingSignADO signSettingLocal = this.SettingSignADO;
                 long syncTime = Inventec.Common.TypeConvert.Parse.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
@@ -1403,6 +1447,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     // Cổng Kho dữ liệu sức khỏe toàn dân — khóa riêng, cùng cách đặt qua thuộc tính.
                     processor.PushKdlsk = toKdlsk;
                     processor.KdlskConnectionInfo = kdlskConnectionInfo;
+                    // Cổng CSDL KSK Sở Y tế Cần Thơ (FaCare) — chạy sau mọi cổng khác của hồ sơ.
+                    processor.PushFacare = toFacare;
+                    processor.FacareConnectionInfo = facareConnectionInfo;
+                    processor.FacareResendUnknown = facareResendUnknown;
                     // Bảng khai báo nối chỉ số cận lâm sàng — nguồn của khối cận lâm sàng.
                     processor.SytClsMapJson = this.sytClsMapJson;
                     // PushList: đẩy TỪNG hồ sơ 1 + LƯU trạng thái ngay từng hồ sơ (không lưu batch lần 2 nữa).

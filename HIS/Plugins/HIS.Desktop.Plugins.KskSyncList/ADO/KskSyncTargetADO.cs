@@ -19,5 +19,8 @@ namespace HIS.Desktop.Plugins.KskSyncList.ADO
 
         /// <summary>Liên thông Kho dữ liệu sức khỏe toàn dân (hososuckhoe.com.vn — QĐ 2062).</summary>
         public bool SyncKdlsk { get; set; }
+
+        /// <summary>Liên thông CSDL KSK Sở Y tế Cần Thơ (FaCare) — chạy sau các cổng khác của hồ sơ.</summary>
+        public bool SyncFacare { get; set; }
     }
 }

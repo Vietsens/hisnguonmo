@@ -190,6 +190,8 @@
     <Compile Include="KskHccPusher.cs" />
     <Compile Include="KskVlgPusher.cs" />
     <Compile Include="KskKdlskPusher.cs" />
+    <Compile Include="KskFacarePusher.cs" />
+    <Compile Include="KskSyncProcessor___Facare.cs" />
     <Compile Include="KskConclusionRules.cs" />
     <Compile Include="KskVlgLengthRules.cs" />
     <Compile Include="KskHccJsonConverter.cs" />
