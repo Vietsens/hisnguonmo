@@ -224,6 +224,28 @@ namespace HIS.Desktop.Modules.Main
         string MessageLicense = null;
         string MessageLicenseFull = null;
 
+        Dictionary<BarItem, int> dicStatusLinkWidth = new Dictionary<BarItem, int>();
+        bool isLicenseResizeRegistered;
+
+        //61963: do rong 1 muc tren thanh trang thai. Khong dung rieng Bounds: muc bi day ra ngoai khi man hep co Bounds = 0
+        //-> tinh thieu -> thong bao rong ra day mat muc khac, lan sau lai tinh khac (luc mat muc nay luc mat muc kia)
+        //nen lay max(Bounds lan gan nhat con hien, do rong do theo chu) - khong phu thuoc vao viec muc co dang bi day ra hay khong
+        private int GetStatusLinkWidth(BarItemLink link)
+        {
+            int width = 0;
+            if (link.Bounds.Width > 0)
+                dicStatusLinkWidth[link.Item] = link.Bounds.Width;
+            dicStatusLinkWidth.TryGetValue(link.Item, out width);
+            if (!String.IsNullOrEmpty(link.Item.Caption))
+            {
+                int textWidth = TextRenderer.MeasureText(link.Item.Caption, link.Item.ItemAppearance.Normal.Font).Width + 12;
+                if (link.Item.Glyph != null)
+                    textWidth += link.Item.Glyph.Width + 4;
+                width = Math.Max(width, textWidth);
+            }
+            return width + (link.BeginGroup ? 8 : 0);
+        }
+
         //61963: do rong thong bao license = phan con trong tren thanh trang thai sau khi tru cac muc khac (ten dang nhap, IP, phong, phien ban, phim tat...)
         //thay vi co dinh 500px de khong che cac muc do; con trong it hon 150px thi an dong huong dan phim tat de nhuong cho; noi dung dai hon do rong thi chay chu nhu cu
         private void SetLicenseWidth()
@@ -237,7 +259,7 @@ namespace HIS.Desktop.Modules.Main
                 {
                     if (link.Item == lblLicense || link.Item == blblHelp || !link.Visible || link.Item.Visibility == BarItemVisibility.Never)
                         continue;
-                    otherWidth += link.Bounds.Width;
+                    otherWidth += GetStatusLinkWidth(link);
                 }
                 int freeWidth = ribbonStatusBar.Width - otherWidth - 60;
                 int helpWidth = TextRenderer.MeasureText(blblHelp.Caption ?? "", blblHelp.ItemAppearance.Normal.Font).Width + 20;
@@ -337,7 +359,12 @@ namespace HIS.Desktop.Modules.Main
                     SetLicenseWidth();
                     //do lai sau khi thanh trang thai sap xep xong (Bounds cac muc moi dung)
                     this.BeginInvoke(new Action(SetLicenseWidth));
-                    ribbonStatusBar.SizeChanged += (s, e) => SetLicenseWidth();
+                    if (!isLicenseResizeRegistered)
+                    {
+                        isLicenseResizeRegistered = true;
+                        //tinh sau khi thanh trang thai sap xep lai theo kich thuoc moi
+                        ribbonStatusBar.SizeChanged += (s, e) => { if (this.IsHandleCreated) this.BeginInvoke(new Action(SetLicenseWidth)); };
+                    }
                 }
             }
             catch (Exception ex)

@@ -432,16 +432,6 @@ namespace MPS.Processor.Mps000512.ADO
                             this.PRICE_VP = this.PRICE_VP / ((this.SERVICE_PAY_RATE ?? 0) / 100);
                         }
                     }
-                    else if (this.PARENT_ID.HasValue
-                        && (this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__PT
-                            || this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT))
-                    {
-                        //PTTT phat sinh (dinh kem dich vu cha): backend da nhan ti le (50% hoac 80%)
-                        //thang vao PRICE, nen don gia in ra bi chia theo ti le.
-                        //Tinh nguoc lai de cot "Don gia" hien dung gia theo chinh sach gia dich vu.
-                        //Thanh tien van giu nguyen vi duoc tinh tu VIR_TOTAL_PRICE, khong phu thuoc PRICE_VP.
-                        this.PRICE_VP = this.PRICE_VP / ((this.SERVICE_PAY_RATE ?? 0) / 100);
-                    }
                 }
 
                 if (this.TOTAL_PATIENT_PRICE_LEFT < 0)
