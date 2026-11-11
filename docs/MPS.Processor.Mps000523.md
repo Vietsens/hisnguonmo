@@ -60,9 +60,10 @@ Processor đọc cột của HIS_KSK_SYT_HCM / HIS_KSK_GENERAL **theo tên** (`M
 
 ## 5. Mẫu
 
-- File: `Mau4_GiayKSKDinhKyNguoiCaoTuoi_A4.xlsx` (343 dòng, 506 key), sinh bằng `PTTK\60377\mau_in\TaoMauMps000523.cs` (`build <out.xlsx>` ghi kèm `<out>.keys.txt`; `preview <mẫu> <thư mục> [KEY<TAB>VALUE]` đổ giá trị ra PNG).
-- 40 cột × 4,625 mm, lề 15/10/10/12 mm. Mỗi khối (chuyên khoa + ô chữ ký bác sĩ, từng mục CLS, kết luận...) đánh dấu `KeepRowsTogether` rồi `AutoPageBreaks` → 9 trang, ngắt cố định, không cắt ngang khối; trang 1 chứa trọn bảng 22 tiền sử.
-- Chiều cao dòng cố định (FlexCel không giãn ô gộp): ô chữ dài được cấp sẵn số dòng — ICD chuyên khoa 3 dòng (Nội khoa 4), ICD kết luận 4, đang điều trị 4, tiền sử gia đình / bệnh khác D1 / đề nghị khác / dòng 22 tiền sử 3, ghi chú huyết học / nước tiểu 3, CĐHA và CLS khác 6, tên bác sĩ ≥ 2 dòng ở đáy ô ký; nơi điều trị D1 và địa chỉ tự co chữ. Chữ dài hơn vẫn bị cắt.
+- File: `Mau4_GiayKSKDinhKyNguoiCaoTuoi_A4.xlsx` (345 dòng, 506 key), sinh bằng `PTTK\60377\mau_in\TaoMauMps000523.cs` (`build <out.xlsx>` ghi kèm `<out>.keys.txt`; `preview <mẫu> <thư mục> [KEY<TAB>VALUE]` đổ giá trị ra PNG).
+- 40 cột × 4,625 mm, lề 15/10/10/12 mm. Mỗi khối (chuyên khoa + ô chữ ký bác sĩ, từng mục CLS, kết luận...) đánh dấu `KeepRowsTogether` rồi `AutoPageBreaks` → 9 trang, ngắt cố định, không cắt ngang khối; trang 1 chứa trọn bảng 22 tiền sử (bảng chỉ giữ cụm tiêu đề + 2 dòng đầu, phần còn lại ngắt theo dòng như Word).
+- Chiều cao dòng cố định (FlexCel không giãn ô gộp): ô chữ dài được cấp sẵn số dòng — địa chỉ / nơi làm việc / lý do khám / đối tượng / nguồn khác 2 dòng, ICD chuyên khoa 3 (Nội khoa 4), ICD kết luận 4, đang điều trị 4, tiền sử gia đình / bệnh khác D1 / đề nghị khác 3, ghi chú huyết học / nước tiểu 3, CĐHA và CLS khác 6, tên bác sĩ ≥ 2 dòng ở đáy ô ký. Chữ ghi rõ dòng 22 in ở hàng rộng hết bảng ngay dưới STT 22 (2 dòng, ~250 ký tự). Cột "CS KBCB đang điều trị" của D1 ghi nhãn một lần ở dòng tiêu đề, mỗi dòng còn 23 cột (~70 ký tự cỡ 10) cho tên cơ sở. Chữ dài hơn vẫn bị cắt.
+- **FlexCel 5.7.6 (máy in/PDF của HIS) không vẽ ShrinkToFit** — không dùng "co chữ cho vừa ô", phải cấp dòng/cột.
 - Triển khai: `x64\Tmp\Mps\Mps000523\Mau4_GiayKSKDinhKyNguoiCaoTuoi_A4.xlsx`. Viện có thể sửa chữ/bố cục trong Excel, giữ nguyên các thẻ `<#...;>`; thẻ nằm trong vùng gộp ô phải ở ô đầu tiên của vùng (thẻ ở ô khác không hiện).
 - Cần dòng SAR_PRINT_TYPE `Mps000523` (`PTTK\60377\trien_khai\60377_SAR_PRINT_TYPE_Mps000523.sql`), đăng nhập lại HIS sau khi thêm.
 
@@ -78,10 +79,11 @@ Processor đọc cột của HIS_KSK_SYT_HCM / HIS_KSK_GENERAL **theo tên** (`M
 |------|-----------|-----------------|
 | 10/11/2026 | dangth | **Việc 60377** — Tạo mới: PDO + processor đổ 506 key theo Mẫu 4 SYT TP.HCM (hành chính, tiền sử, đối tượng – chi trả, B/C/D1–D8, 7 chuyên khoa, CLS, kết luận); mẫu A4 sinh bằng FlexCel, ngắt trang theo khối |
 | 10/11/2026 | dangth | **Việc 60377 — sửa theo phản biện độc lập**: nguồn chi trả lạ vẫn tích "Nguồn khác" khi có hình thức chi trả; chữ dòng 22 tiền sử chỉ khi dòng 22 = Có; khúc xạ giữ vị trí 3 phần; mẫu cấp đủ dòng cho các ô chữ dài và tên bác sĩ (9 trang) |
+| 11/11/2026 | dangth | **Việc 60377 — sửa theo phản biện vòng 2**: bỏ "co chữ" (FlexCel 5.7.6 không vẽ) — địa chỉ / nơi làm việc / lý do khám / đối tượng / nguồn khác 2 dòng, nhãn "CS KBCB đang điều trị" của D1 ghi một lần để tên cơ sở có 23 cột, chữ ghi rõ dòng 22 sang hàng rộng hết bảng; chú thích HEIN_CARD_NUMBER_LONG |
 
 ## 8. Test Cases
 
-Harness `PTTK\60377\harness_test\chay_harness.ps1` (845 ca): chạy plugin + processor + mẫu thật trên 5 hồ sơ M4 của CSDL test và các ca biên tự dựng, xuất ảnh từng trang; kiểm cấu trúc mẫu (thẻ ở ô đầu vùng gộp, số dòng tối thiểu của 37 ô chữ dài, số trang dựng = số ngắt cố định + 1).
+Harness `PTTK\60377\harness_test\chay_harness.ps1` (847 ca): chạy plugin + processor + mẫu thật trên 5 hồ sơ M4 của CSDL test và các ca biên tự dựng, xuất ảnh từng trang; kiểm cấu trúc mẫu (thẻ ở ô đầu vùng gộp, số dòng tối thiểu của 42 ô chữ dài, không ô nào dựa vào ShrinkToFit, ô tên cơ sở D1 ≥ 20 cột, số trang dựng = số ngắt cố định + 1).
 
 - [ ] Hồ sơ đủ dữ liệu: đúng ô tích, tên bác sĩ hiện cạnh từng chuyên khoa
 - [ ] Hồ sơ chưa hỏi bệnh (`{"_v":1}`): mục B1, D1–D8 để trống
@@ -91,3 +93,4 @@ Harness `PTTK\60377\harness_test\chay_harness.ps1` (845 ca): chạy plugin + pro
 - [ ] Có bảng nối CLS: giá trị XN in đúng dòng; không có: in ghi chú tổng hợp của màn hình
 - [ ] Dòng 22 tiền sử = Không mà có ghi tiền sử bản thân → không in chữ ở dòng 22
 - [ ] Nội khoa có 2–3 bác sĩ, ICD dài → đủ chữ, tên bác sĩ không bị cắt
+- [ ] Địa chỉ đủ số nhà – ấp – xã – huyện – tỉnh, tên cơ sở điều trị D1 dài ("Bệnh viện Đại học Y Dược Thành phố Hồ Chí Minh - Cơ sở 2"), 3 loại đối tượng → đủ chữ

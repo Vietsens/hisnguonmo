@@ -96,7 +96,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             string sytTypes = GetSytHcmStr(currentKskSytHcm, "SYT_PATIENT_TYPES");
             if (!string.IsNullOrWhiteSpace(sytTypes))
             {
-                SytCatalogItem elderly = GetSytCatalog(SYT_CODE__DOI_TUONG_KHAM).FirstOrDefault(o => o != null && NormName(o.Name) == NormName(SYT_ELDERLY_NAME));
+                List<SytCatalogItem> types = GetSytCatalog(SYT_CODE__DOI_TUONG_KHAM);
+                if (types.Count == 0)
+                    LogSystem.Warn("Mps000523: may chua co danh muc cong " + SYT_CODE__DOI_TUONG_KHAM + " -> khong nhan duoc nguoi cao tuoi, in Mps000452");
+                SytCatalogItem elderly = types.FirstOrDefault(o => o != null && NormName(o.Name) == NormName(SYT_ELDERLY_NAME));
                 return elderly != null && SplitIds(sytTypes).Contains((elderly.Id ?? "").Trim());
             }
             // Saved while the portal catalog was missing: HIS codes (QĐ 1551) in KSK_PATIENT_TYPES.
@@ -104,8 +107,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             return hisElderly != null && SplitIds(currentKskOverEight.KSK_PATIENT_TYPES).Contains(hisElderly.ID.ToString());
         }
 
-        /// <summary>Excel template extensions RichEditor lists (the Mps000523 processor fills Excel only).</summary>
-        private static readonly string[] PRINT_TEMPLATE_EXCEL_EXTENSIONS = { ".xls", ".xlsx", ".xlt", ".xltx" };
+        /// <summary>Excel endings RichEditor lists for printing (frmPrintTemplate.ProcessFile, case-sensitive EndsWith); the processor fills Excel only.</summary>
+        private static readonly string[] PRINT_TEMPLATE_EXCEL_EXTENSIONS = { ".xls", ".xlsx" };
 
         /// <summary>
         /// True only when the print can really run, checked like RichEditorStore.RunPrintTemplate + MPS do: an active
@@ -125,7 +128,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
                 string dir = Path.Combine(Inventec.Common.RichEditor.Base.FileLocalStore.Rootpath ?? "", printTypeCode);
                 return Directory.Exists(dir) && Directory.GetFiles(dir).Any(f => !Path.GetFileName(f).StartsWith("~$")
-                    && PRINT_TEMPLATE_EXCEL_EXTENSIONS.Contains(Path.GetExtension(f).ToLowerInvariant()));
+                    && PRINT_TEMPLATE_EXCEL_EXTENSIONS.Any(e => f.EndsWith(e)));
             }
             catch (Exception ex)
             {

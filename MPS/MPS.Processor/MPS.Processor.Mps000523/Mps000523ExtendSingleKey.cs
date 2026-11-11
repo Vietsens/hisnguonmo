@@ -48,7 +48,7 @@ namespace MPS.Processor.Mps000523
         /// <summary>Filled only when the id does not fit the 12 boxes (passport...).</summary>
         internal const string ID_NUMBER_LONG = "ID_NUMBER_LONG";
         internal const string HEIN_CARD_NUMBER = "HEIN_CARD_NUMBER";
-        /// <summary>Filled only when the card number is not 15 characters.</summary>
+        /// <summary>Filled only when the card number is longer than the 15 boxes (new 17-character card); shorter fills boxes from the left.</summary>
         internal const string HEIN_CARD_NUMBER_LONG = "HEIN_CARD_NUMBER_LONG";
         internal const string ADDRESS_DETAIL = "ADDRESS_DETAIL";
         internal const string ADDRESS_COMMUNE = "ADDRESS_COMMUNE";
