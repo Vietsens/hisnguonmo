@@ -50,6 +50,9 @@ Chỉ bật khi chi nhánh đang làm việc khai 1 trong các key cổng 2062 (
 | HIS_KSK_OTHER | Table | KSK khác |
 | HIS_DHST | Table | Dấu hiệu sinh tồn |
 | V_HIS_SERVICE_REQ | View | Yêu cầu dịch vụ |
+| HIS_KSK_SYT_HCM | Table | Mẫu M3/M4 cổng SYT TP.HCM (khám lâm sàng HCM, hỏi bệnh `INTERVIEW_JSON`, đối tượng/chi trả) — đọc để in Mps000523 |
+| HIS_PERIOD_DRIVER_DITY | Table | 22 câu tiền sử bản thân đã lưu của hồ sơ KSK trên 18 (in Mps000523) |
+| V_HIS_TREATMENT_4, V_HIS_SERE_SERV_TEIN | View | Hành chính + kết quả XN cho Mps000523 |
 
 ## 4. UI Layout
 
@@ -71,6 +74,9 @@ Section 10 ("Nghề, công việc trước đây") trong tab General gồm:
 | Get KSK Occupational | api/HisKskOccupational/Get | MosConsumer |
 | Get HIS_DHST | api/HisDhst/Get | MosConsumer |
 | Save V2 | api/HisServiceReq/KskExecuteV2 | MosConsumer |
+| In Mps000523 — hồ sơ điều trị | api/HisTreatment/GetView4 | MosConsumer |
+| In Mps000523 — tiền sử bản thân đã lưu | api/HisPeriodDriverDity/Get (`KSK_OVER_EIGHTEEN_ID`) + api/HisDiseaseType/Get (`IS_KSK_OVER_EIGHTEEN = 1`, khi chưa có cache) | MosConsumer |
+| In Mps000523 — kết quả XN (chỉ khi máy có bảng nối CLS) | api/HisSereServ/Get (XN đã thực hiện) + api/HisSereServTein/GetView | MosConsumer |
 
 ## 6. Dependencies
 
@@ -81,6 +87,13 @@ Section 10 ("Nghề, công việc trước đây") trong tab General gồm:
 ## 7. Print
 
 MPS printers (xem `frmEnterKskInfomantionVer2___PrintMPS.cs`).
+
+| Loại in | PrintTypeCode | Library/MPS | Template |
+|---------|--------------|-------------|----------|
+| Giấy KSK trên 18 tuổi (tab "Ksk trên 18 tuổi") | Mps000452 | MPS.Processor.Mps000452 | `Mps000452___KSK_TRÊN_18.xlsx` |
+| Giấy KSK định kỳ cho người cao tuổi (Mẫu 4 SYT TP.HCM) — cùng nút In của tab trên 18 | Mps000523 | MPS.Processor.Mps000523 (`docs/MPS.Processor.Mps000523.md`) | `Mau4_GiayKSKDinhKyNguoiCaoTuoi_A4.xlsx` |
+
+Chọn mẫu ở nút In tab trên 18 (`IsElderlyM4Print`, file `frmEnterKskInfomantionVer2___PrintMps000523.cs`): in **Mps000523** khi đủ 4 điều kiện — chi nhánh khai cổng SYT TP.HCM, có bản ghi HIS_KSK_SYT_HCM, đối tượng có "Người cao tuổi" (`SYT_PATIENT_TYPES` theo danh mục `M3_DoiTuongKham`; lưu khi chưa có danh mục cổng thì theo `KSK_PATIENT_TYPES` mã HIS = 1) và biểu in chạy được trên máy trạm — kiểm giống hệt RichEditor + MPS: có dòng `SAR_PRINT_TYPE` Mps000523 đang hoạt động trong `RichEditorConfig.PrintTypes` (nạp lúc đăng nhập) và thư mục `FileLocalStore.Rootpath\Mps000523` (= `Tmp\Mps\Mps000523`, đăng nhập gán từ `HIS.Desktop.LocalStorage.Location.PrintStoreLocation`) có mẫu Excel (tên kết thúc `.xls`/`.xlsx` như RichEditor liệt kê, bỏ tệp tạm `~$`); thiếu một điều kiện → in **Mps000452** như cũ (ghi log Warn khi thiếu mẫu / loại in). Mọi dữ liệu in đọc lại từ bản đã lưu — kể cả kết luận (không phủ ICD đang sửa trên màn hình) và DHST (gọi `api/HisDhst/Get`, bộ đệm mở form chỉ dùng khi API không trả); tên danh mục cổng lấy từ bộ nhớ đệm / tệp `SytHcmCatalog\<mã>.json`, không gọi cổng.
 
 ## 8. Changelog
 
@@ -96,6 +109,9 @@ MPS printers (xem `frmEnterKskInfomantionVer2___PrintMPS.cs`).
 | 02/07/2026 | huannh | (HIS_KSK_SYNC) Chốt: khi lưu KSK V2, việc tạo bản ghi `HIS_KSK_SYNC` (lấy `KSK_TYPE_ID` = loại mẫu, set `SYNC_RESULT_TYPE = 0` = chưa gửi đồng bộ) do **BE tự sinh từ `HIS_KSK_GENERAL`** — FE KHÔNG phát sinh code mới, chỉ cần đảm bảo `HIS_KSK_GENERAL.KSK_TYPE_ID` được gửi kèm (đã có qua `SetKskTypeIdToGeneral`). |
 | 04/09/2026 | nampp | (Việc 56156) Mở rộng "Tự động lấy kết quả CLS" tab Khám cận lâm sàng (Ksk >18t) từ 3 lên **11 dòng cấu hình dịch vụ** trong `frmAutoClsSetting` (tab "Tự động lấy CLS"): thêm 1b Đường máu/Urê/Creatinin/ASAT/ALAT (`AutoCls_BloodGluco/BloodUre/BloodCreatinin/BloodAsat/BloodAlat` → `txtTestBloodGluco2/Ure2/Creatinin2/Asat2/Alat2`), 1c XN máu-Khác (`AutoCls_BloodOther` → `txtTestBloodOther2`), 4 KQ khám CLS khác (`AutoCls_OtherPara` → `txtResultSubclinical2`), KSK định kỳ-Kết quả (`AutoCls_Periodic` → `txtResultSubclinical2_2`). 2 dòng cuối đổ danh mục XN+CĐHA+TDCN, còn lại XN. `AutoGetTestIndexByGroup` chạy cơ chế nhóm chỉ số cũ trước (fallback điền ô trống) rồi 11 dòng theo dịch vụ (ghi đè nếu có cấu hình). Refactor: 11 combo gom vào `comboDefs` (combo–StateKey–JsonKey) để Init/Load/Save/Export/Import chạy vòng lặp; `KskSettingFileADO.AUTO_CLS` đổi từ 3 list sang Dictionary (key BLOOD/URINE/DIIM giữ nguyên → file JSON cũ vẫn nhập được, JSON_VERSION 2→3); key hằng chuyển `internal` để form chính dùng chung. Không đổi DB/BE — cấu hình lưu ControlState local. |
 | 25/09/2026 | dangth2 | (BV Nguyễn Đình Chiểu — liên thông cổng Vĩnh Long) (1) **Mục kết luận không còn chặn Lưu** ở tab trên 18 / dưới 18 / trẻ dưới 6 tuổi (trước đây mở sub-tab "Kết luận", chọn 1 ô của cặp hoặc tab trẻ <6 bắt "Kết luận về sức khỏe" là bắt nhập Phân loại + Người khám ngay khi Lưu → phải nhập kết luận trước mới lưu được phần khám/CLS). Nay chỉ bắt buộc khi **Kết thúc y lệnh khám** (`ValidateConclusionBeforeFinish` gọi đầu `FinishCurrentServiceReq`): đủ trên màn hình VÀ trong bản ghi đã lưu; tự động kết thúc sau Lưu mà mục kết luận chưa lưu ô nào thì bỏ qua lặng lẽ. Bỏ cơ chế snapshot (`CaptureConclusionInputSnapshot`...). Caption mục kết luận luôn Maroon + tooltip "bắt buộc trước khi kết thúc". Loại hồ sơ xét theo bản ghi (`ResolveConclusionRuleTab`: current* / pre*) nên đứng tab khác bấm Kết thúc không lách được; sau Lưu chỉ ghi đè `currentKskGeneral/OverEight/UnderEight/UnderSixEf` khi BE trả về khác null (trước đây Lưu tab khác làm null → Kết thúc báo nhầm "chưa Lưu"). `FocusFirstInvalidControl` tự mở sub-tab chứa ô lỗi. Sau Lưu `SyncSharedGeneralAfterSave` cập nhật `preKskGenerals` + đổ lại Người khám / Phân loại (HIS_KSK_GENERAL dùng chung) sang các tab khác đã nạp — chỉ cột tab vừa lưu thực sự ghi (tránh mở/Lưu tab khác đè mất Người khám vừa lưu). "Lưu và ký" chỉ in + ký khi Lưu thành công (`lastSaveSucceeded`). (2) **Giới hạn độ dài theo QĐ 2062** khi chi nhánh có cổng 2062 (`HisConfigCFG.IsQd2062LengthCheck`): MaxLength lúc Load + kiểm tra trên SDO trước khi POST (partial mới `frmEnterKskInfomantionVer2___Qd2062Length.cs`). Bảng cột→thẻ→độ dài đối chiếu thực nghiệm với thư viện His.Ksk.QD2062 (chép nguyên văn, không Trim; số in đủ chữ số thập phân; riêng 4 ô tai thư viện tự cắt 10 → chỉ MaxLength, không chặn Lưu). Thêm SĐT người đi cùng trẻ (DIEN_THOAI_NGUOI_DI_CUNG 15) và 3 ô số đo trẻ <6 (CHIEU_DAI, VONG_DAU, CHU_VI_VONG_CANH_TAY 10). Không đổi DB/BE. |
+| 10/11/2026 | dangth2 | (Việc 60377 — BV Xuyên Á Củ Chi) **In Mẫu 4 "Giấy KSK định kỳ cho người cao tuổi"** (Mps000523 mới) từ nút In tab "Ksk trên 18 tuổi": hồ sơ M4 người cao tuổi của cổng SYT TP.HCM + máy có mẫu → in Mps000523, ngược lại Mps000452 như cũ. Partial mới `frmEnterKskInfomantionVer2___PrintMps000523.cs` dựng PDO từ dữ liệu đã lưu: 22 câu tiền sử (HIS_PERIOD_DRIVER_DITY của hồ sơ), câu trả lời hỏi bệnh (`INTERVIEW_JSON`), tên các mã danh mục cổng (kể cả mã tạm HIS của địa điểm khám/đề nghị, mã răng HIS cũ), họ tên bác sĩ theo tài khoản, giá trị XN qua bảng nối CLS của module Đồng bộ KSK (không có bảng nối thì processor in ghi chú tổng hợp). Thêm tham chiếu `MPS.Processor.Mps000523.PDO`. Không đổi DB/BE (cần dòng SAR_PRINT_TYPE Mps000523). |
+| 10/11/2026 | dangth2 | (Việc 60377 — sửa theo phản biện độc lập) Điều kiện "máy có mẫu" kiểm đúng thư mục RichEditor dùng (`FileLocalStore.Rootpath`, trước đây đọc nhầm `Inventec.Desktop.Common.LocalStorage.Location.PrintStoreLocation` không ai gán nên luôn sai) + dòng SAR_PRINT_TYPE Mps000523 đang hoạt động + tệp Excel; DHST của Mps000523 gọi `api/HisDhst/Get` trước (Lưu cập nhật DHST tại chỗ, bộ đệm lúc mở form bị cũ); kết luận lấy bản đã lưu (`currentKskGeneral`) thay cho `BuildKskGeneralForPrint`. Thêm tham chiếu `SAR.EFMODEL`. |
+| 11/11/2026 | dangth2 | (Việc 60377 — phản biện vòng 2) Lọc tệp mẫu đúng như RichEditor (`EndsWith(".xls"/".xlsx")` phân biệt hoa thường); ghi log Warn khi máy chưa có danh mục cổng `M3_DoiTuongKham` (không nhận được người cao tuổi → in Mps000452). |
 
 ## 9. Test Cases
 
@@ -134,3 +150,14 @@ MPS printers (xem `frmEnterKskInfomantionVer2___PrintMPS.cs`).
 - [ ] Chi nhánh KHÔNG khai key cổng 2062 → không giới hạn (như cũ)
 - [ ] Ô tai có dữ liệu cũ "Nói thường 5m" (13 ký tự) → Lưu vẫn được (chỉ không gõ thêm quá 10)
 - [ ] Lưu từ sub-tab "Kết luận" khi ô thị lực (sub-tab Khám lâm sàng) vượt độ dài → tự mở sub-tab Khám lâm sàng, focus ô lỗi
+
+### 10/11/2026 — Việc 60377: In Mẫu 4 người cao tuổi (Mps000523)
+- [ ] Chi nhánh có cổng SYT TP.HCM, hồ sơ M4 đối tượng "Người cao tuổi", máy có `Tmp\Mps\Mps000523` → nút In tab trên 18 ra Giấy KSK định kỳ cho người cao tuổi (8 trang)
+- [ ] Cùng hồ sơ nhưng máy chưa có thư mục mẫu → in Mps000452 như cũ, log Warn "chua co mau in"
+- [ ] Chưa chạy script SAR_PRINT_TYPE Mps000523 (hoặc chưa đăng nhập lại sau khi chạy) → in Mps000452, không báo lỗi "không tồn tại mã in"
+- [ ] Sửa cân nặng / huyết áp ở tab trên 18 → Lưu → In (không đóng form) → giấy người cao tuổi in số mới
+- [ ] Hồ sơ trên 18 không phải người cao tuổi / chi nhánh không khai cổng → in Mps000452 như cũ
+- [ ] Hồ sơ lưu khi chưa có danh mục cổng (đối tượng mã HIS 1 = Người cao tuổi) → vẫn in Mps000523
+- [ ] Hồ sơ chưa trả lời mục hỏi bệnh → mục B1, D1–D8 để trống (không tích "Không")
+- [ ] 22 câu tiền sử in đúng câu trả lời đã lưu; tên bác sĩ hiện cạnh từng chuyên khoa
+- [ ] Máy có cấu hình bảng nối CLS ở màn Đồng bộ KSK → giá trị XN in đúng dòng; không có → in ghi chú tổng hợp huyết học/nước tiểu của màn hình

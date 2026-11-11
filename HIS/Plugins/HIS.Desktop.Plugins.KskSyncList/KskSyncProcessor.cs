@@ -36,7 +36,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
     /// SHA256RSA -> xac thuc OAuth2 -> POST /api/platform/data-sync/push;
     /// (3) map ket qua tung ho so -> KskSyncResultADO de UC luu qua api/HisKskSync/SaveSyncResult.
     /// </summary>
-    internal class KskSyncProcessor
+    internal partial class KskSyncProcessor
     {
         private readonly string connectionInfo;        // cong BYT (MOS.HIS_KSK_SYNC.CONNECTION_INFO)
         private readonly string hsskConnectionInfo;     // cong HSSK (MOS.HIS_KSK_SYNC.HSSK_HN_2062_CONNECTION_INFO)
@@ -372,6 +372,17 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (this.PushKdlsk && !string.IsNullOrWhiteSpace(this.KdlskConnectionInfo))
                     kdlskPusher = new KskKdlskPusher(KskKdlskConfigParser.Parse(this.KdlskConnectionInfo));
 
+                // Cổng CSDL KSK Sở Y tế Cần Thơ (FaCare) — chạy SAU mọi cổng khác của hồ sơ (cần biết hồ sơ đã lên
+                // cổng Bộ chưa). Bản tin dùng mã CSKCB của bản tin Bộ Y tế (như Xuất XML).
+                KskFacarePusher facarePusher = null;
+                string facareMacskcb = null;
+                if (this.PushFacare && !string.IsNullOrWhiteSpace(this.FacareConnectionInfo))
+                {
+                    facarePusher = new KskFacarePusher(KskFacareConfigParser.Parse(this.FacareConnectionInfo));
+                    Qd1551Config facareCfg = BuildConfig();
+                    facareMacskcb = (facareCfg != null) ? (facareCfg.SenderId ?? "") : "";
+                }
+
                 // Các cổng do THƯ VIỆN đẩy (BYT/HSSK/HOC). Không có cổng nào -> KHÔNG gọi PushListMulti
                 // (gọi rỗng sẽ trả về "thành công" giả vì không cổng nào đánh dấu thất bại).
                 bool pushViaLibrary = this.pushByt || hsskConfig != null || hocConfig != null;
@@ -383,6 +394,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 // Ghi log giá trị cấu hình TỪNG CỔNG vừa lấy được (mật khẩu / khóa bí mật đã mask).
                 LogGatewayConfigs(bytConfig, hsskConfig, hocConfig, hccConfig, vlgConfig);
                 LogKdlskConfig(this.KdlskConnectionInfo, this.PushKdlsk, (kdlskPusher != null) ? kdlskPusher.Config : null);
+                LogFacareConfig(this.FacareConnectionInfo, this.PushFacare, (facarePusher != null) ? facarePusher.Config : null);
 
                 // Cổng ĐÃ CHỌN + CÓ chuỗi cấu hình nhưng PARSE LỖI (sai định dạng) -> KHÔNG bỏ qua âm thầm:
                 // ghi nhận để đánh dấu hồ sơ thất bại kèm lý do (nếu không, hồ sơ vẫn "thành công" nhờ cổng khác).
@@ -429,6 +441,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 if (vlgConfig != null) gateways.Add("VLG(data-sync/push)");
                 if (kdlskPusher != null)
                     gateways.Add("KDLSK" + ((kdlskPusher.Config != null && kdlskPusher.Config.IsJson()) ? "(json)" : "(xml)"));
+                if (facarePusher != null)
+                    gateways.Add("FACARE" + (this.FacareResendUnknown ? "(gui lai ho so CHUA_RO)" : ""));
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                     "Dong bo KSK: {0} ho so -> cong: {1}; ky so: {2}{3}",
                     rowList.Count,
@@ -436,7 +450,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     doSign ? "co" : "khong",
                     (configError != null) ? ("; LOI CAU HINH: " + configError) : ""));
                 // Có cổng nào NGOÀI VLG được đẩy trong lô không (quyết định lỗi cấu hình VLG có chặn cả hồ sơ không).
-                bool otherGatewaySelected = pushViaLibrary || hccPusher != null || this.PushSytHcm || kdlskPusher != null;
+                bool otherGatewaySelected = pushViaLibrary || hccPusher != null || this.PushSytHcm || kdlskPusher != null
+                    || facarePusher != null;
                 bool dupBytVlg = vlgConfig != null && (this.pushByt || hocConfig != null);
                 if (dupBytVlg)
                     Inventec.Common.Logging.LogSystem.Warn("Dong bo KSK: cong VLG (API V1.5) DA TU chuyen tiep ban tin sang"
@@ -615,8 +630,19 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             KskKdlskPushResult kdlskResult = (kdlskPusher != null)
                                 ? PushKdlskOneRow(kdlskPusher, inp, dataSigner) : null;
 
+                            // Cổng FaCare — SAU CÙNG: hồ sơ lên cổng Bộ trong lượt này (BYT/HOC qua thư viện, hoặc
+                            // Kho dữ liệu sức khỏe toàn dân) thì báo FaCare đã liên thông. Tự bọc try/catch.
+                            KskFacarePushResult facareResult = null;
+                            if (facarePusher != null)
+                            {
+                                bool linkedThisRun = (r0 != null && r0.Success && (this.pushByt || hocConfig != null))
+                                    || (kdlskResult != null && kdlskResult.Success);
+                                facareResult = PushFacareOneRow(facarePusher, rowList[i], inp, dataSigner,
+                                    linkedThisRun, facareMacskcb, syncTime);
+                            }
+
                             ado = BuildResultAdo(rowList[i], r0, hccResult, vlgResult, syncTime,
-                                libSingleLabel, configError, sytResult, kdlskResult);
+                                libSingleLabel, configError, sytResult, kdlskResult, facareResult);
                             if (dupBytVlg && ado.SYNC_RESULT_TYPE == RESULT_SUCCESS)
                                 ado.SuccessNote = (string.IsNullOrEmpty(ado.SuccessNote) ? "" : (ado.SuccessNote + "; "))
                                     + "Lưu ý: đang tích cả cổng BYT/HOC và Vĩnh Long — Kho Vĩnh Long đã tự chuyển tiếp sang Bộ Y tế,"
@@ -2924,7 +2950,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             return res;
         }
 
-        private static readonly string[] GatewayLabels = { "BYT:", "HSSK:", "HOC:", "HCC:", "VLG:", KDLSK_LABEL };
+        private static readonly string[] GatewayLabels = { "BYT:", "HSSK:", "HOC:", "HCC:", "VLG:", KDLSK_LABEL, FACARE_LABEL };
 
         private static bool HasGatewayLabel(string value)
         {
@@ -3026,14 +3052,16 @@ namespace HIS.Desktop.Plugins.KskSyncList
             int vi = parts.FindIndex(p => p.StartsWith("VLG:", StringComparison.OrdinalIgnoreCase));
             // Doan "KDLSK:" cung giu nguyen: ma giao dich la cach DUY NHAT tra cuu ket qua xu ly tren web Kho.
             int ki = parts.FindIndex(p => p.StartsWith(KDLSK_LABEL, StringComparison.OrdinalIgnoreCase));
+            // Doan "FACARE:" giu nguyen: trang thai quyet dinh co gui lai FaCare khong (gui lai = trung luot kham).
+            int fi = parts.FindIndex(p => p.StartsWith(FACARE_LABEL, StringComparison.OrdinalIgnoreCase));
             int over = value.Length - SYNC_CODE_MAX_LEN;
-            if (vi >= 0 || ki >= 0)
+            if (vi >= 0 || ki >= 0 || fi >= 0)
             {
                 while (over > 0)
                 {
                     int j = -1;
                     for (int k = 0; k < parts.Count; k++)
-                        if (k != vi && k != ki && parts[k].Length > SEGMENT_MIN_KEEP && (j < 0 || parts[k].Length > parts[j].Length)) j = k;
+                        if (k != vi && k != ki && k != fi && parts[k].Length > SEGMENT_MIN_KEEP && (j < 0 || parts[k].Length > parts[j].Length)) j = k;
                     if (j < 0) break;
                     int cut = Math.Min(over, parts[j].Length - SEGMENT_MIN_KEEP);
                     parts[j] = parts[j].Substring(0, parts[j].Length - cut);
@@ -3583,7 +3611,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         private KskSyncResultADO BuildResultAdo(V_HIS_KSK_SYNC row, ResultADO pushResult,
             KskHccPushResult hccResult, KskVlgPushResult vlgResult, long syncTime,
-            string libSingleLabel, string configError, KskSytHcmPushResult sytResult, KskKdlskPushResult kdlskResult)
+            string libSingleLabel, string configError, KskSytHcmPushResult sytResult, KskKdlskPushResult kdlskResult,
+            KskFacarePushResult facareResult = null)
         {
             KskSyncResultADO ado = NewResult(row, syncTime);
             PushResponse resp = ExtractResponse(pushResult);
@@ -3594,17 +3623,20 @@ namespace HIS.Desktop.Plugins.KskSyncList
             // này sẽ bị ghi nhầm là "chưa chọn cổng nào để đẩy".
             bool hasSyt = sytResult != null;
             bool hasKdlsk = kdlskResult != null;
+            bool hasFacare = facareResult != null;
 
             bool libOk = hasLib && pushResult.Success;
             bool hccOk = hasHcc && hccResult.Success;
             bool vlgOk = hasVlg && vlgResult.Success;
             bool sytOk = hasSyt && sytResult.Success;
             bool kdlskOk = hasKdlsk && kdlskResult.Success;
+            bool facareOk = hasFacare && facareResult.Success;
 
-            bool success = (hasLib || hasHcc || hasVlg || hasSyt || hasKdlsk)
+            bool success = (hasLib || hasHcc || hasVlg || hasSyt || hasKdlsk || hasFacare)
                         && (!hasLib || libOk) && (!hasHcc || hccOk)
                         && (!hasVlg || vlgOk) && (!hasSyt || sytOk)
                         && (!hasKdlsk || kdlskOk)
+                        && (!hasFacare || facareOk)
                         && string.IsNullOrEmpty(configError);
 
             ado.SYNC_RESULT_TYPE = success ? RESULT_SUCCESS : RESULT_FAILED;
@@ -3645,6 +3677,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
             string kdlskTxn = kdlskSent ? EmptyToNull(kdlskResult.TxnCode) : storedKdlskTxn;
             string kdlskReg = hasKdlsk ? kdlskResult.State : storedKdlskReg;
             bool kdlskInvolved = hasKdlsk || storedKdlskTxn != null || storedKdlskReg != null;
+            // FACARE: đoạn "FACARE:" riêng — mã yêu cầu của lần GỬI hồ sơ + trạng thái (quyết định có gửi lại không).
+            // Lượt này không gửi hồ sơ -> giữ mã yêu cầu lần trước; trạng thái hồ sơ đã có trên cổng không bị ghi đè.
+            string storedFacareTxn = GetFacareSegment(storedTxn);
+            string storedFacareReg = GetFacareSegment(storedReg);
+            string facareTxn = (hasFacare && !string.IsNullOrEmpty(facareResult.RequestId)) ? facareResult.RequestId : storedFacareTxn;
+            string facareReg = hasFacare ? MergeFacareState(storedFacareReg, facareResult.State) : storedFacareReg;
+            bool facareInvolved = hasFacare || storedFacareTxn != null || storedFacareReg != null;
             bool otherSource = hasLib || hasHcc;
             if (!hasVlg && !otherSource)
             {
@@ -3662,7 +3701,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 // Nhieu cong: gan nhan theo cong THAM GIA (khong theo gia tri co/khong) de doan VLG luon co nhan.
                 bool forceLabel = otherSource && (hasVlg || !string.IsNullOrEmpty(vlgTxn) || !string.IsNullOrEmpty(vlgReg)
-                    || kdlskInvolved);
+                    || kdlskInvolved || facareInvolved);
                 ado.TRANSACTION_CODE = JoinGatewayValue(txn, hasHcc ? hccResult.TxnCode : null, vlgTxn, libSingleLabel, forceLabel);
                 ado.REGISTRATION_NO = JoinGatewayValue(regState, hasHcc ? hccResult.State : null, vlgReg, libSingleLabel, forceLabel);
             }
@@ -3670,6 +3709,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
             {
                 ado.TRANSACTION_CODE = SetKdlskSegment(ado.TRANSACTION_CODE, kdlskTxn, true);
                 ado.REGISTRATION_NO = SetKdlskSegment(ado.REGISTRATION_NO, kdlskReg, false);
+            }
+            if (facareInvolved)
+            {
+                ado.TRANSACTION_CODE = SetFacareSegment(ado.TRANSACTION_CODE, facareTxn, true);
+                ado.REGISTRATION_NO = SetFacareSegment(ado.REGISTRATION_NO, facareReg, false);
             }
             // Lan day nay KHONG co ma giao dich/trang thai (bi chan truoc khi gui, mat mang...) -> GIU
             // gia tri da luu cua ho so (backend upsert ghi de nguyen cot — null se XOA tracking_id cua
@@ -3697,6 +3741,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     + " — tra cứu kết quả xử lý trên hososuckhoe.com.vn theo mã giao dịch";
                 ado.SuccessNote = string.IsNullOrEmpty(ado.SuccessNote) ? note : (ado.SuccessNote + "; " + note);
             }
+            // FaCare: cổng đã tiếp nhận / đã xác nhận liên thông / hồ sơ đã có trên cổng (không gửi lại).
+            if (success && hasFacare && facareOk && !string.IsNullOrEmpty(facareResult.Note))
+                ado.SuccessNote = string.IsNullOrEmpty(ado.SuccessNote) ? facareResult.Note : (ado.SuccessNote + "; " + facareResult.Note);
             if (!success)
             {
                 var reasons = new List<string>();
@@ -3709,6 +3756,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         ? sytResult.Message : "đồng bộ thất bại"));
                 if (hasKdlsk && !kdlskOk)
                     reasons.Add(TagReason(!string.IsNullOrEmpty(kdlskResult.Message) ? kdlskResult.Message : "KDLSK: đồng bộ thất bại", KSK_PARTNER_KDLSK));
+                if (hasFacare && !facareOk)
+                    reasons.Add(TagReason(!string.IsNullOrEmpty(facareResult.Message) ? facareResult.Message : "FACARE: đồng bộ thất bại", KSK_PARTNER_FACARE));
                 if (!string.IsNullOrEmpty(configError)) reasons.Add(TagReason(configError, KSK_PARTNER_BYT));
                 // Ly do VLG xep CUOI: "Cap nhat KQ cong" doc phan truoc " | VLG:" la loi cong khac (OtherGatewayReason).
                 if (hasVlg && !vlgOk)
@@ -3719,7 +3768,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 }
                 // Chi khi KHONG co cong nao duoc day (truoc day thieu !hasVlg + cau "if" treo: ho so chi day VLG
                 // ma that bai luon bi noi them "Chua chon cong", ly do loi SYT bi nuot, configError ghi 2 lan).
-                if (!hasLib && !hasHcc && !hasVlg && !hasSyt && !hasKdlsk && string.IsNullOrEmpty(configError))
+                if (!hasLib && !hasHcc && !hasVlg && !hasSyt && !hasKdlsk && !hasFacare && string.IsNullOrEmpty(configError))
                     reasons.Add("Chưa chọn cổng liên thông để đẩy");
                 // SYNC_FAILD_REASON VARCHAR2(4000 BYTE) (vCong 62522)
                 ado.SYNC_FAILD_REASON = IntegrationErrorMessage.TruncateUtf8(string.Join(" | ", reasons), 4000);
