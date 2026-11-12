@@ -183,6 +183,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
+                ApplyDriverTabVisibility();
                 this.currentLoginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 this.isLoginAdmin = IsLoginAdmin(this.currentLoginName);
                 lap("Init");
@@ -871,7 +872,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     || currentKskOther != null
                     || currentKsKOccupational != null;
 
-                int tab = ResolveDefaultTab();
+                int tab = MapToVisibleDriverTab(ResolveDefaultTab());
                 if (tab >= 0 && tab < xtraTabControl1.TabPages.Count
                     && xtraTabControl1.SelectedTabPageIndex != tab)
                 {
