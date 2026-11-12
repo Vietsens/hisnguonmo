@@ -63,6 +63,37 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// <summary>Câu trả lời tiền sử để đổ lên lưới (của Mẫu 5 đã lưu, hoặc của Mẫu 6 khi điền sẵn).</summary>
         private List<HIS_PERIOD_DRIVER_DITY> proDriverDitys;
 
+        #region Ẩn/hiện tab theo key
+
+        /// <summary>
+        /// Key HIS.Desktop.Plugins.EnterKskInfomantionVer2.IsUseKskDriverForm5 = "1": ẩn tab "Ksk lái xe" cũ, hiện tab Mẫu 5;
+        /// khác "1": hiện tab cũ, ẩn tab Mẫu 5. Gọi 1 lần khi mở form (sau HisConfigCFG.LoadConfig).
+        /// </summary>
+        private void ApplyDriverTabVisibility()
+        {
+            try
+            {
+                bool useForm5 = HIS.Desktop.Plugins.EnterKskInfomantionVer2.Config.HisConfigCFG.IsUseKskDriverForm5;
+                this.xtraTabPage4.PageVisible = !useForm5;
+                this.xtraTabPage18.PageVisible = useForm5;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Tab mặc định rơi vào tab lái xe đang bị ẩn thì chuyển sang tab lái xe đang hiện
+        /// (tab 3 = "Ksk lái xe" cũ, HIS_KSK_PERIOD_DRIVER).
+        /// </summary>
+        private int MapToVisibleDriverTab(int tab)
+        {
+            bool useForm5 = HIS.Desktop.Plugins.EnterKskInfomantionVer2.Config.HisConfigCFG.IsUseKskDriverForm5;
+            if (useForm5 && tab == 3) return TAB_PRO_DRIVER;
+            if (!useForm5 && tab == TAB_PRO_DRIVER) return 3;
+            return tab;
+        }
+
+        #endregion
+
         #region Khởi tạo / nạp tab
 
         private void InitTabProDriver()

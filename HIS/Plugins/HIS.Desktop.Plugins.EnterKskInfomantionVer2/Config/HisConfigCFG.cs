@@ -11,6 +11,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Config
     {
         private const string KEY__DisablePartExamByExecutor = "HIS.Desktop.Plugins.EnterKskInfomantionVer2.DisablePartExamByExecutor";
         private const string KEY__CheckReq = "HIS.Desktop.Plugins.EnterKskInfomantionVer2.CheckReq";
+        private const string KEY__IsUseKskDriverForm5 = "HIS.Desktop.Plugins.EnterKskInfomantionVer2.IsUseKskDriverForm5";
 
         /// <summary>
         /// Key kết nối các cổng nhận bản tin KSK theo QĐ 2062 (khai theo chi nhánh) — cùng key
@@ -27,6 +28,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Config
         internal static string DisablePartExamByExecutor;
         /// <summary>"1" = khi kết thúc khám (bấm nút hoặc tự động sau Lưu) cảnh báo nếu còn dịch vụ có y lệnh chưa hoàn thành.</summary>
         internal static string CheckReq;
+        /// <summary>
+        /// true (key = "1") = ẩn tab "Ksk lái xe" cũ (TTLT 24/2015), hiện tab "Ksk lái xe (Mẫu 5)" (TT 36/2024).
+        /// Khác "1" = giữ như cũ: hiện tab "Ksk lái xe" cũ, ẩn tab Mẫu 5.
+        /// </summary>
+        internal static bool IsUseKskDriverForm5;
 
         /// <summary>
         /// true = chi nhánh đang làm việc có khai kết nối cổng 2062 (đẩy hồ sơ KSK theo QĐ 2062) -> giới hạn
@@ -43,6 +49,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Config
             {
                 DisablePartExamByExecutor = HisConfigs.Get<string>(KEY__DisablePartExamByExecutor);
                 CheckReq = HisConfigs.Get<string>(KEY__CheckReq);
+                IsUseKskDriverForm5 = HisConfigs.Get<string>(KEY__IsUseKskDriverForm5) == "1";
                 LoadQd2062LengthCheck();
             }
             catch (Exception ex)
