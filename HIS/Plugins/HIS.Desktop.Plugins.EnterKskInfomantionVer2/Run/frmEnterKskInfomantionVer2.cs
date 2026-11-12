@@ -183,6 +183,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
+                ApplyDriverTabVisibility();
+                // Tab "Ksk định kỳ lái xe ô tô" (Mẫu 06 TT 25/2026) — thêm lúc chạy, TRƯỚC khi chọn tab mặc định.
+                InitTabProDriverM6Page();
                 this.currentLoginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 this.isLoginAdmin = IsLoginAdmin(this.currentLoginName);
                 lap("Init");
@@ -871,7 +874,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     || currentKskOther != null
                     || currentKsKOccupational != null;
 
-                int tab = ResolveDefaultTab();
+                int tab = MapToVisibleDriverTab(ResolveDefaultTab());
                 if (tab >= 0 && tab < xtraTabControl1.TabPages.Count
                     && xtraTabControl1.SelectedTabPageIndex != tab)
                 {
@@ -1354,6 +1357,27 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     sdo.KskGeneral = new KskGeneralV2SDO();
                     sdo.KskGeneral.HisKskGeneral = BuildKskGeneralForMental();
                 }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER)
+                {
+                    // Ksk lai xe Mau 5 (TT 36/2024): du lieu kham HIS_KSK_PRO_DRIVER (KSK_FORM_TYPE = 5) + the luc
+                    // + 22 dong tien su -> nhanh KskProDriver; nguoi + ngay ket luan -> HIS_KSK_GENERAL
+                    if (!ValidateProDriverBeforeSave())
+                    {
+                        WaitingManager.Hide();
+                        return;
+                    }
+                    sdo.KskProDriver = BuildKskProDriverSdo();
+                    sdo.KskGeneral = new KskGeneralV2SDO();
+                    sdo.KskGeneral.HisKskGeneral = BuildKskGeneralForMental();
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER_M6 && this.ucKskProDriverM6 != null)
+                {
+                    // Ksk dinh ky lai xe o to (Mau 06 TT 25/2026): giay -> HIS_KSK_PRO_DRIVER (KSK_FORM_TYPE = 6),
+                    // the luc -> HIS_DHST, 21 cau tien su -> HIS_PERIOD_DRIVER_DITY; nguoi + ngay ket luan -> HIS_KSK_GENERAL
+                    sdo.KskProDriver = BuildKskProDriverM6Sdo();
+                    sdo.KskGeneral = new KskGeneralV2SDO();
+                    sdo.KskGeneral.HisKskGeneral = BuildKskGeneralForMental();
+                }
                 // Kết luận theo bệnh (ICD-10) — UC chung → lưu vào HIS_KSK_GENERAL cho MỌI tab
                 int curTabIcd = xtraTabControl1.SelectedTabPageIndex;
                 if (dicIcdConclusionUc.ContainsKey(curTabIcd) && dicIcdConclusionUc[curTabIcd] != null)
@@ -1404,6 +1428,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     // Lưu tiếp bảng dữ liệu riêng của mẫu M4 — cần mã bản ghi KSK vừa trả về
                     // làm khóa liên kết nên phải chạy sau, không gộp vào cùng lệnh lưu trên.
                     SaveKskSytHcm(result.HisKskOverEighteen);
+                    // Tab Ksk lai xe Mau 5 / Mau 06 (chung bang HIS_KSK_PRO_DRIVER): giu ban ghi vua luu (co so giay)
+                    // + cap nhat du lieu tai san — tach theo KSK_FORM_TYPE de tab nay khong nhan nham giay cua tab kia.
+                    if (result.KskProDriver != null)
+                    {
+                        if (IsMau5(result.KskProDriver)) ApplyKskProDriverSaved(result.KskProDriver, sdo.KskProDriver);
+                        else ApplyKskProDriverM6Saved(result.KskProDriver, sdo.KskProDriver);
+                    }
                     if (result.HisKskPeriodDriver != null) currentKskPeriodDriver = result.HisKskPeriodDriver;
                     if (result.HisKskUnderEighteen != null) currentKskUnderEight = result.HisKskUnderEighteen;
                     if (result.HisKskOther != null) currentKskOther = result.HisKskOther;
@@ -1556,6 +1587,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     if (currentServiceReq != null)
                         IsEnable = true;
                 }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER)
+                {
+                    // Ksk lai xe Mau 5: phieu in (Mps000524) dung tu cac o tren tab
+                    if (currentServiceReq != null)
+                        IsEnable = true;
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER_M6)
+                {
+                    // Ksk dinh ky lai xe o to Mau 06 (Mps000525): dung tu du lieu da luu, chua luu thi tu form
+                    if (currentServiceReq != null)
+                        IsEnable = true;
+                }
                 btnPrint.Enabled = IsEnable;
             }
             catch (System.Exception ex)
@@ -1617,6 +1660,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     // Ksk tam than: Giay kham suc khoe tam than (Mps000520)
                     if (currentServiceReq != null)
                         PrintProcess(PRINT_TYPE.MPS000520);
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER)
+                {
+                    // Ksk lai xe Mau 5 TT 36/2024 (Mps000524)
+                    if (currentServiceReq != null)
+                        PrintProcess(PRINT_TYPE.MPS000524);
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER_M6)
+                {
+                    // Ksk dinh ky lai xe o to: Giay KSK dinh ky nguoi hanh nghe lai xe o to - Mau 06 TT 25/2026 (Mps000525)
+                    if (currentServiceReq != null)
+                        PrintProcess(PRINT_TYPE.MPS000525);
                 }
             }
             catch (System.Exception ex)
@@ -1900,7 +1955,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (isSuppressAutoTestIndexEvent) return;
                 if (chkAutoTestIndex.Checked)
                 {
-                    AutoGetTestIndexByGroup();
+                    // Tab Mau 06: ma tuy theo nhom chi so + bang noi chi so rieng (khong chay phan "theo dich vu"
+                    // cua tab tren 18 tuoi — o dich nam o tab do).
+                    if (xtraTabControl1.SelectedTabPageIndex == TAB_PRO_DRIVER_M6)
+                        AutoGetTestIndexProDriverM6();
+                    else
+                        AutoGetTestIndexByGroup();
                 }
             }
             catch (Exception ex)
@@ -2321,20 +2381,29 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // (Đường/Protein niệu nhóm 09/10 xử lý riêng ở DelegateAutoTestIndexGroup — gộp nhiều dòng vào memo XN nước tiểu.)
 
                 // ===== Chất gây nghiện: tab "KSK lái xe định kỳ" (index 3) & "KSK lái xe" (index 4) =====
-                case TestIndexGroupCode.MORPHIN: if (tab == 3) FillIfEmptyEnabled(txtMorphine, value); break;
-                case TestIndexGroupCode.HEROIN: if (tab == 3) FillIfEmptyEnabled(txtHeroin, value); break;
+                case TestIndexGroupCode.MORPHIN:
+                    if (tab == 3) FillIfEmptyEnabled(txtMorphine, value);
+                    else if (tab == TAB_PRO_DRIVER_M6) FillProDriverM6Test("TEST_MORPHIN", value);
+                    break;
+                case TestIndexGroupCode.HEROIN:
+                    if (tab == 3) FillIfEmptyEnabled(txtHeroin, value);
+                    else if (tab == TAB_PRO_DRIVER_M6) FillProDriverM6Test("TEST_HEROIN", value);
+                    break;
                 case TestIndexGroupCode.CODEIN:
-                    // Codein hiển thị ở ô gộp "Morphin/Heroin".
+                    // Codein hiển thị ở ô gộp "Morphin/Heroin" (tab lái xe cũ); Mẫu 06 có ô Codein riêng.
                     if (tab == 3) FillIfEmptyEnabled(txtMorphineHeroin4, value);
                     else if (tab == 4) FillIfEmptyEnabled(txtMorphineHeroin5, value);
+                    else if (tab == TAB_PRO_DRIVER_M6) FillProDriverM6Test("TEST_CODEIN", value);
                     break;
                 case TestIndexGroupCode.AMPHETAMIN:
                     if (tab == 3) FillIfEmptyEnabled(txtTestAmphetamin4, value);
                     else if (tab == 4) FillIfEmptyEnabled(txtAmphetamin5, value);
+                    else if (tab == TAB_PRO_DRIVER_M6) FillProDriverM6Test("TEST_AMPHETAMIN", value);
                     break;
                 case TestIndexGroupCode.MARIJUANA:
                     if (tab == 3) FillIfEmptyEnabled(txtTestMarijuna4, value);
                     else if (tab == 4) FillIfEmptyEnabled(txtTestMarijuna5, value);
+                    else if (tab == TAB_PRO_DRIVER_M6) FillProDriverM6Test("TEST_MARIJUANA", value);
                     break;
 
                 default:
@@ -2391,7 +2460,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 int tab = xtraTabControl1.SelectedTabPageIndex;
                 // Tab trên 18 tuổi (1): vùng xét nghiệm đã tách vào sub-tab "Cận lâm sàng" (index 2)
                 // nên chỉ enable khi đang đứng ở sub-tab đó.
-                bool allow = ((tab == 1 && xtraTabControl2.SelectedTabPageIndex == 2) || tab == 3 || tab == 4);
+                bool allow = ((tab == 1 && xtraTabControl2.SelectedTabPageIndex == 2) || tab == 3 || tab == 4
+                    || (tab == TAB_PRO_DRIVER_M6 && this.ucKskProDriverM6 != null)); // Mau 06
 
                 // Bỏ tích khi đổi tab mà KHÔNG kích hoạt lấy dữ liệu.
                 isSuppressAutoTestIndexEvent = true;

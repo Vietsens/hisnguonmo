@@ -9,6 +9,7 @@
  * FillData chạy), các bước wholesale (SetEnableControl/LoadIcd...) đều guard theo null.
  */
 using System;
+using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using Inventec.Common.Logging;
@@ -18,7 +19,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
     public partial class frmEnterKskInfomantionVer2
     {
         /// <summary>Cờ đã fill dữ liệu cho từng tab (index 0..8) — chống fill lại.</summary>
-        private readonly bool[] tabFilled = new bool[9];
+        private readonly bool[] tabFilled = new bool[11]; // 10 = Ksk định kỳ lái xe ô tô (Mẫu 06, thêm lúc chạy)
 
         /// <summary>Chỉ số 3 tab chọn theo tuổi khi y lệnh chưa có bản ghi KSK nào.</summary>
         private const int TAB_OVER_EIGHTEEN = 1;
@@ -73,6 +74,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             if (Cnt(preKskOthers) > 0) return 5;
             if (Cnt(preKskUnderSixes) > 0) return TAB_UNDER_SIX;
             if (Cnt(preKskMentals) > 0) return TAB_MENTAL;
+            if (preKskProDrivers != null && currentServiceReq != null
+                && preKskProDrivers.Any(o => o != null && o.SERVICE_REQ_ID == currentServiceReq.ID && IsMau5(o))) return TAB_PRO_DRIVER;
+            if (this.tabProDriverM6 != null && FindPreKskProDriverM6() != null) return TAB_PRO_DRIVER_M6; // Mẫu 06
             // Ksk nghề nghiệp hiển thị ở tab 0 — giữ nguyên hành vi cũ.
             if (Cnt(preKskOccupationals) > 0) return 0;
             return -1;
@@ -177,6 +181,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 if (tab == TAB_MENTAL)
                 {
                     LoadTabMental();
+                    return;
+                }
+                // Tab "Ksk lái xe (Mẫu 5)": luồng nạp riêng (bảng HIS_KSK_PRO_DRIVER, dịch vụ CRUD riêng).
+                if (tab == TAB_PRO_DRIVER)
+                {
+                    LoadTabProDriver();
+                    return;
+                }
+                // Tab "Ksk định kỳ lái xe ô tô" (Mẫu 06): luồng nạp riêng, cùng khuôn tab tâm thần.
+                if (tab == TAB_PRO_DRIVER_M6)
+                {
+                    LoadTabProDriverM6();
                     return;
                 }
                 // CHỐNG DÍNH DỮ LIỆU Y LỆNH TRƯỚC: xóa sạch mọi editor trên trang tab trước khi đổ dữ liệu.

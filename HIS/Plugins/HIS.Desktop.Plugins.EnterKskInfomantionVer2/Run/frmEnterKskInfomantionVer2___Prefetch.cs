@@ -118,6 +118,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     preKskOthers = sdo.HisKskOthers;
                     preKskUnderSixes = sdo.HisKskUnderSixs;
                     preKskMentals = sdo.HisKskMentals;
+                    // Mẫu 5 + Mẫu 6 lái xe (chung bảng HIS_KSK_PRO_DRIVER, mọi y lệnh của hồ sơ) + tiền sử gắn theo bản ghi
+                    preKskProDrivers = sdo.HisKskProDrivers;
+                    preDitysProDriver = sdo.HisPeriodDriverDitys != null
+                        ? sdo.HisPeriodDriverDitys.Where(x => x != null && x.KSK_PRO_DRIVER_ID.HasValue).ToList()
+                        : null;
                     preTreatments = sdo.HisTreatments;
                     preKskContracts = sdo.HisKskContracts;
                     preUneiVatys = sdo.HisKskUneiVatys;

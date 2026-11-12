@@ -313,6 +313,9 @@ namespace HIS.Desktop.Modules.Main
                     bsiServerConnectStatus.ItemAppearance.Normal.ForeColor = System.Drawing.Color.Black;
                     bsiServerConnectStatus.ItemAppearance.Normal.Font = new Font(bsiServerConnectStatus.ItemAppearance.Normal.Font, FontStyle.Regular);
                 }
+                //61963: trang thai ket noi doi do rong -> tinh lai do rong thong bao license
+                if (!String.IsNullOrEmpty(MessageLicenseFull) && this.IsHandleCreated)
+                    this.BeginInvoke(new Action(SetLicenseWidth));
             }
             catch (Exception ex)
             {

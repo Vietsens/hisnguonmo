@@ -223,6 +223,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000520.PDO.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000524.PDO">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000524.PDO.dll</HintPath>
+    </Reference>
+    <Reference Include="MPS.Processor.Mps000525.PDO">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000525.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.Processor.Mps000523.PDO">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000523.PDO.dll</HintPath>
@@ -493,6 +501,15 @@
     <Compile Include="Run\frmEnterKskInfomantionVer2___UnderSixNormalSign.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___ProDriver.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\UcKskProDriver.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\UcKskProDriver.Designer.cs">
+      <DependentUpon>UcKskProDriver.cs</DependentUpon>
+    </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___Mental.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -501,6 +518,16 @@
     </Compile>
     <Compile Include="Run\UcKskMental.Designer.cs">
       <DependentUpon>UcKskMental.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___ProDriverM6.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\UcKskProDriverM6.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Run\frmKskProDriverM6ClsMap.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Run\UcKskConclusionIcd.cs">
       <SubType>UserControl</SubType>
