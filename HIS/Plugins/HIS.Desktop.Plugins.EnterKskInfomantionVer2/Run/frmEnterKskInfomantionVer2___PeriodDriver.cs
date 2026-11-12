@@ -433,7 +433,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 if (currentKskPeriodDriver != null)
+                {
                     obj.ID = currentKskPeriodDriver.ID;
+                    // Giữ số KSK lái xe đã sinh: sửa lại hồ sơ không được làm mất/đổi số (vCong 62964)
+                    obj.KSK_PERIOD_DRIVER_CODE = currentKskPeriodDriver.KSK_PERIOD_DRIVER_CODE;
+                }
                 if (cboLicenseClass4.EditValue != null)
                 {
                     obj.LICENSE_CLASS_ID = (long?)Int64.Parse(cboLicenseClass4.EditValue.ToString());

@@ -337,7 +337,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 if (currentKsKOccupational != null)
+                {
                     obj.ID = currentKsKOccupational.ID;
+                    // Giữ số KSK nghề nghiệp đã sinh khi sửa lại hồ sơ (vCong 62964)
+                    obj.KSK_OCCUPATIONAL_CODE = currentKsKOccupational.KSK_OCCUPATIONAL_CODE;
+                }
                 obj.RECENT_WORK_ONE = txtRecentWork.Text;
                 obj.RECENT_WORK_TWO = txtRecentWork2.Text;
 

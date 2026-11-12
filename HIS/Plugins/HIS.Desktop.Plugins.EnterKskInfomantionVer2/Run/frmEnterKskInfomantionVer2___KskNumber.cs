@@ -7,7 +7,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
     {
         /// <summary>
         /// Hien thi "So thu tu KSK" o banner thong tin BN. BE tu sinh so (KskExecuteV2 goi PKG_KSK_CODE);
-        /// FE CHI HIEN THI. Chi 4 loai co so: tab 1 = tren 18, 2 = duoi 18, 5 = KSK khac, 7 = tre em duoi 6.
+        /// FE CHI HIEN THI. Loai co so: tab 1 = tren 18, 2 = duoi 18, 3 = lai xe, 5 = KSK khac, 6 = nghe nghiep,
+        /// 7 = tre em duoi 6, 8 = tam than (3 va 6 do trigger DB sinh khi co HEIN_MEDI_ORG_CODE).
         ///
         /// Nguon du lieu (QUAN TRONG - vi form LAZY-LOAD tab):
         ///   - current*  : chi set khi tab do da duoc fill (EnsureTabLoaded) HOAC sau khi Luu (tra ve tu API).
@@ -42,10 +43,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             string c = KskCodeForTab(tab);
             if (!string.IsNullOrWhiteSpace(c)) return c;
 
-            bool isNumberedTab = (tab == 1 || tab == 2 || tab == 5 || tab == 7 || tab == TAB_MENTAL);
+            bool isNumberedTab = (tab == 1 || tab == 2 || tab == 3 || tab == 5 || tab == 6 || tab == 7 || tab == TAB_MENTAL);
             if (!isNumberedTab)
             {
-                foreach (int t in new[] { 1, 2, 5, 7, TAB_MENTAL })
+                foreach (int t in new[] { 1, 2, 3, 5, 6, 7, TAB_MENTAL })
                 {
                     c = KskCodeForTab(t);
                     if (!string.IsNullOrWhiteSpace(c)) return c;
@@ -66,6 +67,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 case 2: // duoi 18
                     if (currentKskUnderEight != null) return currentKskUnderEight.KSK_UNDER_EIGHTEEN_CODE;
                     if (preKskUnderEighteens != null && preKskUnderEighteens.Count > 0) return preKskUnderEighteens[0].KSK_UNDER_EIGHTEEN_CODE;
+                    return null;
+                case 3: // ksk lai xe (so do trigger HIS_KSK_PERIOD_DRIVER_3 sinh) - vCong 62964
+                    if (currentKskPeriodDriver != null) return currentKskPeriodDriver.KSK_PERIOD_DRIVER_CODE;
+                    if (preKskPeriodDrivers != null && preKskPeriodDrivers.Count > 0) return preKskPeriodDrivers[0].KSK_PERIOD_DRIVER_CODE;
+                    return null;
+                case 6: // ksk nghe nghiep (trigger HIS_KSK_OCCUPATIONAL_3)
+                    if (currentKsKOccupational != null) return currentKsKOccupational.KSK_OCCUPATIONAL_CODE;
+                    if (preKskOccupationals != null && preKskOccupationals.Count > 0) return preKskOccupationals[0].KSK_OCCUPATIONAL_CODE;
                     return null;
                 case 5: // KSK khac
                     if (currentKskOther != null) return currentKskOther.KSK_OTHER_CODE;
