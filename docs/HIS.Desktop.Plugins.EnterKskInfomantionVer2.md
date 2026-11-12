@@ -159,7 +159,7 @@ Hồ sơ cổng SYT TP.HCM **không phải người cao tuổi** (`IsAdultM3Prin
 - [ ] Lưu từ sub-tab "Kết luận" khi ô thị lực (sub-tab Khám lâm sàng) vượt độ dài → tự mở sub-tab Khám lâm sàng, focus ô lỗi
 
 ### 10/11/2026 — Việc 60377: In Mẫu 4 người cao tuổi (Mps000523)
-- [ ] Chi nhánh có cổng SYT TP.HCM, hồ sơ M4 đối tượng "Người cao tuổi", máy có `Tmp\Mps\Mps000523` → nút In tab trên 18 ra Giấy KSK định kỳ cho người cao tuổi (8 trang)
+- [ ] Chi nhánh có cổng SYT TP.HCM, hồ sơ M4 đối tượng "Người cao tuổi", máy có `Tmp\Mps\Mps000523` → nút In tab trên 18 ra Giấy KSK định kỳ cho người cao tuổi (9 trang)
 - [ ] Cùng hồ sơ nhưng máy chưa có thư mục mẫu → in Mps000452 như cũ, log Warn "chua co mau in"
 - [ ] Chưa chạy script SAR_PRINT_TYPE Mps000523 (hoặc chưa đăng nhập lại sau khi chạy) → in Mps000452, không báo lỗi "không tồn tại mã in"
 - [ ] Sửa cân nặng / huyết áp ở tab trên 18 → Lưu → In (không đóng form) → giấy người cao tuổi in số mới

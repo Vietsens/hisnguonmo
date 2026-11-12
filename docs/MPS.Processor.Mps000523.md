@@ -69,7 +69,7 @@ Processor đọc cột của HIS_KSK_SYT_HCM / HIS_KSK_GENERAL **theo tên** (`M
 
 ## 6. Build & Deploy
 
-- Build PDO trước rồi processor (ProjectReference PDO). PDO chưa có trong `lib\MPSv2\MPS.PDO`: máy khác build EnterKskInfomantionVer2 cần PDO được đưa vào lib.
+- Build PDO trước rồi processor (ProjectReference PDO). PDO dùng để build plugin nằm ở `lib\MPSv2\MPS.PDO\MPS.Processor.Mps000523.PDO.dll` (repo lib): sửa PDO thì phải đưa bản mới vào lib, nếu không máy khác build EnterKskInfomantionVer2 theo bản cũ.
 - Deploy: processor → `x64\Plugins\MpsProcessor\MPS.Processor.Mps000523.dll`; PDO → `x64\ReferencedAssemblies\MPS.Processor.Mps000523.PDO.dll`; mẫu như mục 5. Khởi động lại HIS.
 - Namespace phải đúng `MPS.Processor.Mps000523` (ProcessorFactory lấy mã in từ namespace).
 
