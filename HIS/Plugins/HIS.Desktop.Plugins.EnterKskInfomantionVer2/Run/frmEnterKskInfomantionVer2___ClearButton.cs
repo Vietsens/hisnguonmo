@@ -60,6 +60,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 // multi-select) chạy SAU init nút clear deferred -> check Tag không đủ, phải skip tường minh.
                 if (this.cboObject != null && gle == this.cboObject) return;
                 if (this.ucKskMental != null && gle == this.ucKskMental.CboObject) return; // tab Ksk tâm thần
+                if (this.ucKskProDriverM6 != null && gle == this.ucKskProDriverM6.CboObject) return; // tab Ksk định kỳ lái xe ô tô (Mẫu 06)
                 if (gle.Properties.Tag is HIS.Desktop.Utilities.Extensions.GridCheckMarksSelection) return;
 
                 // BẮT BUỘC cho phép null thì set EditValue=null mới "dính" (nếu không DevExpress khôi phục

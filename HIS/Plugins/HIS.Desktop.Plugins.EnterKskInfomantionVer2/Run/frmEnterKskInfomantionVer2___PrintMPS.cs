@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             MPS000520, // Giấy khám sức khỏe tâm thần (Mẫu 04 TT 25/2026)
             MPS000523, // Giấy KSK định kỳ cho người cao tuổi (Mẫu 4 SYT TP.HCM, task 60377)
             MPS000524, // Giấy KSK của người lái xe (Mẫu 5 TT 36/2024/TT-BYT)
+            MPS000525, // Giấy KSK định kỳ người hành nghề lái xe ô tô (Mẫu 06 TT 25/2026)
         }
         /// <summary>Y lệnh KSK (entity HIS_SERVICE_REQ) — nạp 1 lần trước khi in, truyền vào PDO các Mps (key SREQ_).</summary>
         private HIS_SERVICE_REQ printKskServiceReq;
@@ -102,6 +103,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         break;
                     case PRINT_TYPE.MPS000524:
                         richEditorMain.RunPrintTemplate("Mps000524", DelegateRunPrinter);
+                        break;
+                    case PRINT_TYPE.MPS000525:
+                        richEditorMain.RunPrintTemplate("Mps000525", DelegateRunPrinter);
                         break;
                 }
             }
@@ -204,6 +208,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         break;
                     case "Mps000524":
                         LoadBieuMauPhieuMps000524(printTypeCode, fileName, ref result);
+                        break;
+                    case "Mps000525":
+                        LoadBieuMauPhieuMps000525(printTypeCode, fileName, ref result);
                         break;
                 }
             }

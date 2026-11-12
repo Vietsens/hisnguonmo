@@ -384,6 +384,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 preKskMentals = null; currentKskMentalEf = null; dhstMental = null; // tab Ksk tâm thần
                 preKskProDrivers = null; preDitysProDriver = null; // tab Ksk lái xe Mẫu 5
                 currentKskProDriver = null; prefillKskProDriver = null; dhstProDriver = null; proDriverDitys = null;
+                currentKskProDriverM6 = null; dhstProDriverM6 = null; // tab Ksk định kỳ lái xe ô tô (Mẫu 06)
                 preTreatments = null; preBabies = null; preKskContracts = null;
                 preDhstById = null; preUneiVatys = null; preDitysOverE = null; preDitysPeriodDriver = null;
                 preVaccineTypes = null; preDiseaseTypesOverE = null; preDiseaseTypesPeriodDriver = null;

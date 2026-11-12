@@ -42,10 +42,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             string c = KskCodeForTab(tab);
             if (!string.IsNullOrWhiteSpace(c)) return c;
 
-            bool isNumberedTab = (tab == 1 || tab == 2 || tab == 5 || tab == 7 || tab == TAB_MENTAL || tab == TAB_PRO_DRIVER);
+            bool isNumberedTab = (tab == 1 || tab == 2 || tab == 5 || tab == 7 || tab == TAB_MENTAL || tab == TAB_PRO_DRIVER || tab == TAB_PRO_DRIVER_M6);
             if (!isNumberedTab)
             {
-                foreach (int t in new[] { 1, 2, 5, 7, TAB_MENTAL, TAB_PRO_DRIVER })
+                foreach (int t in new[] { 1, 2, 5, 7, TAB_MENTAL, TAB_PRO_DRIVER, TAB_PRO_DRIVER_M6 })
                 {
                     c = KskCodeForTab(t);
                     if (!string.IsNullOrWhiteSpace(c)) return c;
@@ -82,6 +82,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 case TAB_PRO_DRIVER: // ksk lai xe Mau 5 - chi ban ghi Mau 5 cua y lenh dang mo
                     if (currentKskProDriver != null) return currentKskProDriver.KSK_PRO_DRIVER_CODE;
                     return null;
+                case TAB_PRO_DRIVER_M6: // ksk dinh ky lai xe o to Mau 06 - chi giay Mau 06 cua y lenh dang mo
+                    if (currentKskProDriverM6 != null) return currentKskProDriverM6.KSK_PRO_DRIVER_CODE;
+                    var m6 = FindPreKskProDriverM6();
+                    return m6 != null ? m6.KSK_PRO_DRIVER_CODE : null;
             }
             return null;
         }
