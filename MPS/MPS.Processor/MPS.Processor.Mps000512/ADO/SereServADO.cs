@@ -372,6 +372,9 @@ namespace MPS.Processor.Mps000512.ADO
                     ? (decimal?)Math.Round(this.PRIMARY_PRICE.Value * (1 + this.VAT_RATIO), 4, MidpointRounding.AwayFromZero)
                     : null;
 
+                //Backend không trả PRIMARY_PRICE thì lấy thay bằng VIR_PRICE (đã nhân tỉ lệ thanh toán)
+                bool isPrimaryPriceFromVirPrice = !this.PRIMARY_PRICE.HasValue;
+
                 if (!this.PRIMARY_PRICE.HasValue)
                     this.PRIMARY_PRICE = this.VIR_PRICE;
                 else
@@ -412,7 +415,10 @@ namespace MPS.Processor.Mps000512.ADO
                         || this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT))
                 {
                     decimal heSo = (this.SERVICE_PAY_RATE ?? 0) / 100;
-                    this.PRIMARY_PRICE = (this.PRIMARY_PRICE ?? 0) / heSo;
+                    //PRIMARY_PRICE backend trả về là giá gốc (chưa nhân tỉ lệ) -> chia nữa sẽ ra gấp đôi (50%) / 1,25 lần (80%).
+                    //Chỉ tính ngược khi PRIMARY_PRICE được lấy thay từ VIR_PRICE.
+                    if (isPrimaryPriceFromVirPrice)
+                        this.PRIMARY_PRICE = (this.PRIMARY_PRICE ?? 0) / heSo;
                     this.PRICE_VP = this.PRICE_VP / heSo;
                     this.VIR_PRICE = (this.VIR_PRICE ?? 0) / heSo;
                 }
