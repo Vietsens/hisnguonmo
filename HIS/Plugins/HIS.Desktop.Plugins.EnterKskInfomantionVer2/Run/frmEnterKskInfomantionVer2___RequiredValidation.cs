@@ -334,6 +334,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 else if (tabIndex == TAB_MENTAL) // Ksk tâm thần (Mẫu 04)
                     ValidateObjectAndPaySource(this.ucKskMental.CboObject, GetObjectValueExt(this.ucKskMental.CboObject),
                         this.ucKskMental.CboPaymentSource, messages);
+                else if (tabIndex == TAB_PRO_DRIVER_M6 && this.ucKskProDriverM6 != null) // Ksk định kỳ lái xe ô tô (Mẫu 06)
+                {
+                    ValidateObjectAndPaySource(this.ucKskProDriverM6.CboObject, GetObjectValueExt(this.ucKskProDriverM6.CboObject),
+                        this.ucKskProDriverM6.CboPaymentSource, messages);
+                    ValidateProDriverM6Conclusion(messages);
+                }
 
                 // 3. Huyết áp: đã nhập 1 ô thì phải nhập đủ cả tâm thu và tâm trương.
                 ValidateBloodPressure(tabIndex, messages);
@@ -406,6 +412,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 else if (tabIndex == 6) { spnMax = spnBloodPressureMax7; spnMin = spnBloodPressureMin7; }
                 else if (tabIndex == TAB_MENTAL) { spnMax = this.ucKskMental.SpnBloodPressureMax; spnMin = this.ucKskMental.SpnBloodPressureMin; }
                 else if (tabIndex == TAB_PRO_DRIVER) { spnMax = this.ucKskProDriver.SpnBloodPressureMax; spnMin = this.ucKskProDriver.SpnBloodPressureMin; }
+                else if (tabIndex == TAB_PRO_DRIVER_M6 && this.ucKskProDriverM6 != null) { spnMax = this.ucKskProDriverM6.SpnBloodPressureMax; spnMin = this.ucKskProDriverM6.SpnBloodPressureMin; }
                 else return;
                 if (spnMax == null || spnMin == null) return;
 

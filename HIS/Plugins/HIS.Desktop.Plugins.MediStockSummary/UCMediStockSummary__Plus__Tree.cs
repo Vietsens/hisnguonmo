@@ -440,7 +440,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         {
             try
             {
-                if (chkMaterial.Checked)
+                if (IsMaterialOrChemicalView())
                 {
                     if (noteData != null && noteData.IS_LEAF == 1 && this.mediStockIds.Count == 1)
                     {
@@ -488,7 +488,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         {
             try
             {
-                if (chkMaterial.Checked)
+                if (IsMaterialOrChemicalView())
                 {
                     if (noteData != null && noteData.IS_LEAF == 1 && this.mediStockIds.Count == 1)
                     {
