@@ -77,8 +77,8 @@ namespace HIS.Desktop.Plugins.RationSchedule.RationSchedule
         List<HIS_REFECTORY> lstReceptionRoomAll { get; set; }
         List<HIS_REFECTORY> lstReceptionRoomSA { get; set; }
         List<HIS_SERVICE_RATI> lstServiceRatiAll { get; set; }
-        List<HIS_SERVICE_ROOM> lstServiceRoomAll { get; set; }
-        List<HIS_SERVICE_ROOM> lstServiceRoomSA { get; set; }
+        List<V_HIS_SERVICE_ROOM> lstServiceRoomAll { get; set; }
+        List<V_HIS_SERVICE_ROOM> lstServiceRoomSA { get; set; }
         private MOS.SDO.WorkPlaceSDO WorkPlaceSDO;
         private string loginName;
         private bool IsAdmin;
@@ -290,7 +290,7 @@ namespace HIS.Desktop.Plugins.RationSchedule.RationSchedule
         {
             try
             {
-                lstServiceRoomAll = BackendDataWorker.Get<HIS_SERVICE_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                lstServiceRoomAll = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
             }
             catch (Exception ex)
             {
