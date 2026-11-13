@@ -48,5 +48,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
         public string TREATMENT_CODE { get; set; }
         public decimal? TREATMENT_DAY_COUNT { get; set; }
         public string Khoa { get; set; }
+        public string Tuoi { get; set; }
     }
 }
