@@ -103,6 +103,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 this.ucKskProDriver.InitUc(this.historyIcdDataSource, this.historyIcdPageSize);
+                // Mã ICD tiền sử gia đình: cùng nhóm Family như tab "Ksk lái xe" cũ — đồng bộ giữa các tab,
+                // lưu HIS_KSK_GENERAL.FAMILY_HISTORY_ICD_* qua FillKskHistoryIcdToGeneral.
+                UcKskHistoryIcd icdFamily = this.ucKskProDriver.IcdFamily;
+                icdFamily.Group = KskHistoryGroup.Family;
+                icdFamily.IcdChanged += OnHistoryIcdChanged;
+                RegisterHistoryUc(KskHistoryGroup.Family, icdFamily);
+                this.ucKskProDriver.FamilyHistoryNoSelected += () => OnHistoryIcdChanged(KskHistoryGroup.Family, "", "");
                 InitAdminCombosExt(this.ucKskProDriver.CboObject, this.ucKskProDriver.CboPaymentSource);
                 RegisterConcluderCombo(TAB_PRO_DRIVER, this.ucKskProDriver.CboConcluder);
                 foreach (var cbo in this.ucKskProDriver.DoctorCombos)
@@ -239,6 +246,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 this.ucKskProDriver.CboPaymentSource.EditValue = (show != null && show.KSK_PAY_SOURCE != null)
                     ? (object)show.KSK_PAY_SOURCE : null;
                 this.ucKskProDriver.SetDityRows(BuildProDriverDityRows());
+                this.ucKskProDriver.IcdFamily.SetData(GetHistoryIcdCode(KskHistoryGroup.Family), GetHistoryIcdName(KskHistoryGroup.Family));
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
