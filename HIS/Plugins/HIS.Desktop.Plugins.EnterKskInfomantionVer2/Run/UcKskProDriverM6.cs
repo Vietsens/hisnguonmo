@@ -671,7 +671,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         #region ===== Tiền sử bản thân (21 câu theo danh mục) =====
 
         /// <summary>
-        /// Dựng 21 câu theo danh mục bệnh "KSK lái xe định kỳ" (đã sắp theo thứ tự câu), 2 cột như trên giấy.
+        /// Số câu trên giấy Mẫu 06 của 1 mục danh mục bệnh: mã "01".."21" = câu 1..21 (giấy Mẫu 06 dùng đúng
+        /// thứ tự mã danh mục). Mã khác trả 0 (không thuộc 21 câu).
+        /// </summary>
+        public static int QuestionNo(HIS_DISEASE_TYPE d)
+        {
+            int n;
+            return (d != null && int.TryParse((d.DISEASE_TYPE_CODE ?? "").Trim(), out n) && n >= 1 && n <= 21) ? n : 0;
+        }
+
+        /// <summary>
+        /// Dựng 21 câu theo danh mục bệnh mã 01–21 (đã sắp theo số câu), 2 cột như trên giấy; số câu theo mã.
         /// Gọi mỗi lần nạp tab — dựng lại nếu danh mục khác lần trước.
         /// </summary>
         public void SetDiseaseCatalog(List<HIS_DISEASE_TYPE> diseases)
@@ -689,7 +699,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     int rowY = ((i < half) ? i : i - half) * ROW_H;
                     LabelControl l = new LabelControl();
                     l.AutoSizeMode = LabelAutoSizeMode.None;
-                    l.Text = (i + 1) + ". " + list[i].DISEASE_TYPE_NAME;
+                    int no = QuestionNo(list[i]);
+                    l.Text = (no > 0 ? no : i + 1) + ". " + list[i].DISEASE_TYPE_NAME;
                     l.ToolTip = l.Text;
                     l.Location = new Point(colX + 20, rowY + 3);
                     l.Size = new Size(275, 18);

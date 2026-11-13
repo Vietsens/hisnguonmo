@@ -152,7 +152,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
 
-        /// <summary>Danh mục câu tiền sử bản thân — cùng danh mục, cùng thứ tự với lưới tiền sử của tab Ksk lái xe.</summary>
+        /// <summary>
+        /// 21 câu tiền sử bản thân của giấy Mẫu 06 = danh mục bệnh mã 01–21 đang hoạt động, sắp theo số câu.
+        /// KHÔNG lọc theo cờ "KSK lái xe định kỳ": cờ này phục vụ tab Ksk lái xe cũ và có viện đã bỏ cờ ở mã 11
+        /// "Nghiện rượu, bia" (vẫn là câu 11 trên giấy Mẫu 06) — lọc theo cờ sẽ thiếu câu và lệch số câu khi in.
+        /// </summary>
         private List<HIS_DISEASE_TYPE> GetProDriverM6DiseaseTypes()
         {
             try
@@ -161,9 +165,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 CommonParam param = new CommonParam();
                 MOS.Filter.HisDiseaseTypeFilter filter = new MOS.Filter.HisDiseaseTypeFilter();
                 filter.IS_ACTIVE = 1;
-                filter.IS_KSK_PERIOD_DRIVER = 1;
                 var data = new BackendAdapter(param).Get<List<HIS_DISEASE_TYPE>>("api/HisDiseaseType/Get", ApiConsumers.MosConsumer, filter, param);
-                proDriverM6DiseaseTypes = (data ?? new List<HIS_DISEASE_TYPE>()).OrderBy(o => o.DISEASE_TYPE_CODE).ToList();
+                proDriverM6DiseaseTypes = (data ?? new List<HIS_DISEASE_TYPE>())
+                    .Where(o => UcKskProDriverM6.QuestionNo(o) > 0)
+                    .GroupBy(o => UcKskProDriverM6.QuestionNo(o)).Select(g => g.OrderBy(o => o.ID).First())
+                    .OrderBy(o => UcKskProDriverM6.QuestionNo(o)).ToList();
+                if (proDriverM6DiseaseTypes.Count != 21)
+                    LogSystem.Warn("KskProDriverM6: danh muc benh ma 01-21 dang hoat dong co " + proDriverM6DiseaseTypes.Count + " muc (giay Mau 06 can 21)");
             }
             catch (Exception ex) { LogSystem.Warn(ex); proDriverM6DiseaseTypes = new List<HIS_DISEASE_TYPE>(); }
             return proDriverM6DiseaseTypes;
@@ -444,9 +452,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 for (int i = 0; i < catalog.Count; i++)
                 {
                     var a = answers.FirstOrDefault(o => o.DISEASE_TYPE_ID == catalog[i].ID);
+                    int no = UcKskProDriverM6.QuestionNo(catalog[i]);
                     diseases.Add(new MPS.Processor.Mps000525.PDO.Mps000525DiseaseADO
                     {
-                        STT = i + 1,
+                        STT = no > 0 ? no : i + 1, // số câu theo mã danh mục — thiếu 1 mã thì các câu sau không bị đẩy lên
                         DISEASE_TYPE_NAME = catalog[i].DISEASE_TYPE_NAME,
                         IS_YES_NO = a != null ? a.IS_YES_NO : null
                     });

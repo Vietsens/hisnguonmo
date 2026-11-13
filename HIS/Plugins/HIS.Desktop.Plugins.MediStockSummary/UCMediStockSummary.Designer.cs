@@ -63,6 +63,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.btnXuatExcel = new DevExpress.XtraEditors.SimpleButton();
             this.btnPrint = new DevExpress.XtraEditors.SimpleButton();
             this.chkBlood = new DevExpress.XtraEditors.CheckEdit();
+            this.chkChemical = new DevExpress.XtraEditors.CheckEdit();
             this.chkMaterial = new DevExpress.XtraEditors.CheckEdit();
             this.chkMedicine = new DevExpress.XtraEditors.CheckEdit();
             this.panelControlMediMate = new DevExpress.XtraEditors.PanelControl();
@@ -77,6 +78,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciChemical = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -132,6 +134,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.chkAlertMinStock.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkShowLineZero.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBlood.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChemical.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMaterial.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMedicine.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlMediMate)).BeginInit();
@@ -147,6 +150,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChemical)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
@@ -206,6 +210,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControl3.Controls.Add(this.btnXuatExcel);
             this.layoutControl3.Controls.Add(this.btnPrint);
             this.layoutControl3.Controls.Add(this.chkBlood);
+            this.layoutControl3.Controls.Add(this.chkChemical);
             this.layoutControl3.Controls.Add(this.chkMaterial);
             this.layoutControl3.Controls.Add(this.chkMedicine);
             this.layoutControl3.Controls.Add(this.panelControlMediMate);
@@ -377,25 +382,38 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             // 
             // chkBlood
             // 
-            this.chkBlood.Location = new System.Drawing.Point(911, 2);
+            this.chkBlood.Location = new System.Drawing.Point(884, 2);
             this.chkBlood.Name = "chkBlood";
             this.chkBlood.Properties.Caption = "Máu";
             this.chkBlood.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.chkBlood.Properties.RadioGroupIndex = 1;
-            this.chkBlood.Size = new System.Drawing.Size(77, 19);
+            this.chkBlood.Size = new System.Drawing.Size(40, 19);
             this.chkBlood.StyleController = this.layoutControl3;
             this.chkBlood.TabIndex = 7;
             this.chkBlood.TabStop = false;
             this.chkBlood.CheckedChanged += new System.EventHandler(this.chkBlood_CheckedChanged);
-            // 
+            //
+            // chkChemical
+            //
+            this.chkChemical.Location = new System.Drawing.Point(928, 2);
+            this.chkChemical.Name = "chkChemical";
+            this.chkChemical.Properties.Caption = "Hóa chất";
+            this.chkChemical.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkChemical.Properties.RadioGroupIndex = 1;
+            this.chkChemical.Size = new System.Drawing.Size(60, 19);
+            this.chkChemical.StyleController = this.layoutControl3;
+            this.chkChemical.TabIndex = 14;
+            this.chkChemical.TabStop = false;
+            this.chkChemical.CheckedChanged += new System.EventHandler(this.chkChemical_CheckedChanged);
+            //
             // chkMaterial
-            // 
-            this.chkMaterial.Location = new System.Drawing.Point(851, 2);
+            //
+            this.chkMaterial.Location = new System.Drawing.Point(829, 2);
             this.chkMaterial.Name = "chkMaterial";
             this.chkMaterial.Properties.Caption = "Vật tư";
             this.chkMaterial.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.chkMaterial.Properties.RadioGroupIndex = 1;
-            this.chkMaterial.Size = new System.Drawing.Size(56, 19);
+            this.chkMaterial.Size = new System.Drawing.Size(51, 19);
             this.chkMaterial.StyleController = this.layoutControl3;
             this.chkMaterial.TabIndex = 6;
             this.chkMaterial.TabStop = false;
@@ -409,7 +427,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.chkMedicine.Properties.Caption = "Thuốc";
             this.chkMedicine.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.chkMedicine.Properties.RadioGroupIndex = 1;
-            this.chkMedicine.Size = new System.Drawing.Size(74, 19);
+            this.chkMedicine.Size = new System.Drawing.Size(52, 19);
             this.chkMedicine.StyleController = this.layoutControl3;
             this.chkMedicine.TabIndex = 5;
             this.chkMedicine.CheckedChanged += new System.EventHandler(this.chkMedicine_CheckedChanged);
@@ -458,6 +476,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControlItem7,
             this.layoutControlItem6,
             this.layoutControlItem9,
+            this.lciChemical,
             this.layoutControlItem8,
             this.layoutControlItem3,
             this.layoutControlItem10,
@@ -557,18 +576,27 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.chkBlood;
-            this.layoutControlItem9.Location = new System.Drawing.Point(909, 0);
+            this.layoutControlItem9.Location = new System.Drawing.Point(882, 0);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(81, 23);
+            this.layoutControlItem9.Size = new System.Drawing.Size(44, 23);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
-            // 
+            //
+            // lciChemical
+            //
+            this.lciChemical.Control = this.chkChemical;
+            this.lciChemical.Location = new System.Drawing.Point(926, 0);
+            this.lciChemical.Name = "lciChemical";
+            this.lciChemical.Size = new System.Drawing.Size(64, 23);
+            this.lciChemical.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChemical.TextVisible = false;
+            //
             // layoutControlItem8
-            // 
+            //
             this.layoutControlItem8.Control = this.chkMaterial;
-            this.layoutControlItem8.Location = new System.Drawing.Point(849, 0);
+            this.layoutControlItem8.Location = new System.Drawing.Point(827, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(60, 23);
+            this.layoutControlItem8.Size = new System.Drawing.Size(55, 23);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -577,7 +605,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControlItem3.Control = this.chkMedicine;
             this.layoutControlItem3.Location = new System.Drawing.Point(771, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(78, 23);
+            this.layoutControlItem3.Size = new System.Drawing.Size(56, 23);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -967,6 +995,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.chkAlertMinStock.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkShowLineZero.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBlood.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChemical.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMaterial.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMedicine.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlMediMate)).EndInit();
@@ -982,6 +1011,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChemical)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
@@ -1039,6 +1069,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraEditors.CheckEdit chkBlood;
+        private DevExpress.XtraEditors.CheckEdit chkChemical;
+        private DevExpress.XtraLayout.LayoutControlItem lciChemical;
         private DevExpress.XtraEditors.CheckEdit chkMaterial;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;

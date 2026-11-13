@@ -875,7 +875,10 @@ namespace MPS.Processor.Mps000062
         //de 10; de 9 thi chuoi ngay bi coi la dai qua o va bi cat cung thanh "14/09/202" + "6".
         private const int WRAP_NGAY_GIO = 10;
         //Dong ten thuoc chia doi: ten o AM..BD, so luong o BE..BO (canh le phai).
-        private const int WRAP_TEN_THUOC = 22;
+        //Viec 56831 (06/11/2026): nang 22 -> 24 = dung suc chua do duoc cua o AM..BD, vi ten dich vu du tru
+        //"Dinh luong Anti CCP [Mau]" rong 23,2 don vi bi gay "[Mau]" xuong dong rieng. Giua o ten va o so luong
+        //khong co duong ke doc, so luong lai canh le phai nen ten dai toi sat ranh o cung khong cham chu nao.
+        private const int WRAP_TEN_THUOC = 24;
 
         /// <summary>
         /// Ghi chu thu hoi. O so luong BE..BO chi rong 12 don vi nen khong nhet duoc chuoi nay
@@ -1055,6 +1058,12 @@ namespace MPS.Processor.Mps000062
             //AddReserveLines(lines, id, _ServiceReqTHDT, _ExpMestMetyReqADOCommonsTHDT, _ExpMestMatyReqADOsTHDT,
             //    "Đơn thuốc thực hiện dự trù ngày ", "Đơn vật tư thực hiện dự trù ngày ", false);
 
+            //2c. Dich vu can lam sang / thu thuat DU TRU - mau cu in ngay duoi khoi thuoc/vat tu du tru
+            //(o AM24 ServiceCLSDuTru va AM25 TTServicesDuTru). Truoc day duong A bo sot khoi nay nen
+            //y lenh CLS du tru khong len to dieu tri (muc 4 chi lay _ServiceCLSs, da loai y lenh du tru).
+            //Cung ly do voi 2b: chi in khoi du tru, khong in khoi "thuc hien du tru".
+            AddReserveServiceLines(lines, id);
+
             //3. Thuoc tu mua
             if (_ServiceReqMetyADOs != null)
                 foreach (var m in _ServiceReqMetyADOs.Where(o => o.TRACKING_ID == id))
@@ -1181,6 +1190,70 @@ namespace MPS.Processor.Mps000062
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Dich vu CLS / thu thuat DU TRU cua mot to dieu tri - tuong ung o ServiceCLSDuTru (AM24) va
+        /// TTServicesDuTru (AM25) cua mau cu, va khoi SERVICE_CLS_DuTru___DATA / TT_SERVICE_DuTru___DATA cua mau repx.
+        /// Nguon: _ServiceClsDuTru / _ServiceTtDuTru (MedicineDuTruAndThucHien da gan USE_TIME theo y lenh;
+        /// _ServiceCLSs va _TTServices da loai cac dong nay nen khong in trung voi muc 4, 5).
+        /// Gom theo NGAY du tru (ToUseDateKey3352 - cung khoa voi mau repx) de hai lan du tru cung ngay khac gio
+        /// chi sinh mot tieu de "Du tru ngay dd/MM/yyyy"; duoi tieu de la ten loai dich vu in dam roi tung dich vu
+        /// kem so luong + don vi tinh the hien NHU DONG THUOC DU TRU (ten in dam, "x 1,0 Lan" o cot canh le phai -
+        /// STYLE_MEDICINE) de hai khoi dong bo voi nhau; ghi chu chi dinh (neu co) in nghieng dong duoi nhu cach dung thuoc.
+        /// </summary>
+        private void AddReserveServiceLines(List<YLenhLine> lines, long trackingId)
+        {
+            List<ServiceCLS> services = new List<ServiceCLS>();
+            if (_ServiceClsDuTru != null)
+                services.AddRange(_ServiceClsDuTru.Where(o => o.TRACKING_ID == trackingId && (o.USE_TIME ?? 0) > 0));
+            if (_ServiceTtDuTru != null)
+                services.AddRange(_ServiceTtDuTru.Where(o => o.TRACKING_ID == trackingId && (o.USE_TIME ?? 0) > 0));
+            if (services.Count == 0)
+                return;
+
+            //HIS_SERE_SERV chi co TDL_SERVICE_UNIT_ID, khong co ten don vi -> tra bo dem HIS_SERVICE_UNIT
+            //(cung cach voi khoi SERVICE_MERGE_X01___DATA cua mau repx). Tra mot lan cho ca khoi.
+            List<HIS_SERVICE_UNIT> serviceUnits = null;
+            try { serviceUnits = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_UNIT>(); }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Error(ex); }
+
+            foreach (var byDate in services.OrderBy(o => o.USE_TIME).GroupBy(o => ToUseDateKey3352(o.USE_TIME)))
+            {
+                AddLines(lines, "Dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(byDate.Key ?? 0),
+                    "", Mps000062PrintRowADO.STYLE_BOLD);
+                foreach (var byType in byDate.GroupBy(o => o.TDL_SERVICE_TYPE_ID))
+                {
+                    var serviceType = rdo._ServiceTypes != null ? rdo._ServiceTypes.FirstOrDefault(p => p.ID == byType.Key) : null;
+                    AddLines(lines, (serviceType != null ? serviceType.SERVICE_TYPE_NAME : "Không xác định") + ":",
+                        "", Mps000062PrintRowADO.STYLE_BOLD);
+                    foreach (var service in byType)
+                    {
+                        string ten = string.IsNullOrEmpty(service.SERVICE_NAME) ? service.TDL_SERVICE_NAME : service.SERVICE_NAME;
+                        //Giong dong thuoc du tru: ten in dam, "x <SL> <don vi>" o cot so luong canh le phai
+                        AddMedicineNameLines(lines, ten, BuildServiceAmountText(service, serviceUnits));
+                        if (!string.IsNullOrEmpty(service.INSTRUCTION_NOTE))
+                            AddLines(lines, service.INSTRUCTION_NOTE, "", Mps000062PrintRowADO.STYLE_ITALIC);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Chuoi so luong cua dich vu du tru - cung dinh dang voi thuoc du tru (BuildReserveAmountText):
+        /// "x " + so luong + " " + ten don vi tinh, vi du "x 1,0 Lan". Khong tra duoc don vi thi chi in "x so luong".
+        /// </summary>
+        private static string BuildServiceAmountText(ServiceCLS service, List<HIS_SERVICE_UNIT> serviceUnits)
+        {
+            try
+            {
+                string s = "x " + service.AMOUNT;
+                var unit = serviceUnits != null ? serviceUnits.FirstOrDefault(o => o.ID == service.TDL_SERVICE_UNIT_ID) : null;
+                if (unit != null && !string.IsNullOrEmpty(unit.SERVICE_UNIT_NAME))
+                    s += " " + unit.SERVICE_UNIT_NAME;
+                return s;
+            }
+            catch { return ""; }
         }
 
         /// <summary>

@@ -80,7 +80,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private TextEdit txtCccdDate, txtCccdPlace, txtEthnic, txtResidence, txtPhone;
         // ----- Tiền sử -----
         private RadioGroup rdoFamily, rdoTreating, rdoMaternity;
-        private TextEdit txtFamily, txtOtherDisease;
+        private TextEdit txtOtherDisease;
+        /// <summary>Mã ICD tiền sử gia đình — cùng nhóm Family với các tab khác (lưu HIS_KSK_GENERAL.FAMILY_HISTORY_ICD_*).</summary>
+        private UcKskHistoryIcd icdFamily;
         private MemoEdit memTreating, memMaternity;
         private GridControl gridDity;
         private GridView gridViewDity;
@@ -124,6 +126,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         public SpinEdit SpnBloodPressureMin { get { return this.spnBloodMin; } }
         /// <summary>Các combo bác sĩ khám từng khoa / bác sĩ cận lâm sàng — form nạp danh sách nhân viên.</summary>
         public List<GridLookUpEdit> DoctorCombos { get { return this.doctorCombos; } }
+        /// <summary>Ô chọn mã ICD tiền sử gia đình — form đăng ký vào nhóm Family để đồng bộ/lưu như tab Ksk lái xe cũ.</summary>
+        public UcKskHistoryIcd IcdFamily { get { return this.icdFamily; } }
 
         #endregion
 
@@ -237,7 +241,32 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 r.Properties.Items.Add(new RadioGroupItem(value, items[i]));
             }
             r.Properties.Columns = items.Length <= 3 ? items.Length : 1;
+            // Lăn chuột khi radio đang có con trỏ thì DevExpress đổi lựa chọn — chặn, để lăn chuột chỉ cuộn màn hình.
+            r.MouseWheel += (s, e) =>
+            {
+                DevExpress.Utils.DXMouseEventArgs.GetMouseArgs(e).Handled = true;
+                ScrollParentByWheel(r, e.Delta);
+            };
             return r;
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
+        /// <summary>Chuyển lượt lăn chuột của radio lên LayoutControl chứa nó để màn hình vẫn cuộn như bình thường.</summary>
+        private static void ScrollParentByWheel(Control c, int delta)
+        {
+            try
+            {
+                Control p = c.Parent;
+                while (p != null && !(p is LayoutControl)) p = p.Parent;
+                if (p == null || !p.IsHandleCreated) return;
+                Point pt = Control.MousePosition;
+                IntPtr wParam = new IntPtr(delta << 16);
+                IntPtr lParam = new IntPtr((pt.Y << 16) | (pt.X & 0xFFFF));
+                SendMessage(p.Handle, 0x020A /* WM_MOUSEWHEEL */, wParam, lParam);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
         }
 
         private GridLookUpEdit Cbo(string name, bool isDoctor)
@@ -285,9 +314,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             g = Section_(col, "TIỀN SỬ BỆNH");
             this.rdoFamily = Rdo("rdoFamily", "Không", "Có");
             Add(g, "1. Tiền sử gia đình:", this.rdoFamily, height: 26);
-            this.txtFamily = Txt("txtFamily");
-            Add(g, "Tên bệnh:", this.txtFamily);
+            this.icdFamily = Icd("icdFamily");
+            Add(g, "Mã ICD tiền sử gia đình:", this.icdFamily, 140, height: 24);
             BuildDityGrid();
+            LabelControl lblDity = new LabelControl { Name = "lblDity", Text = "2. Tiền sử bệnh, tật của bản thân:" };
+            lblDity.Appearance.Font = new Font(lblDity.Appearance.Font, FontStyle.Bold);
+            Add(g, null, lblDity, height: 22);
             Add(g, null, this.gridDity, height: 530);
             this.txtOtherDisease = Txt("txtOtherDisease");
             Add(g, "Bệnh khác (ghi rõ):", this.txtOtherDisease);
@@ -345,7 +377,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
             GridColumn colStt = new GridColumn { Caption = "TT", FieldName = "STT", UnboundType = DevExpress.Data.UnboundColumnType.Integer, Visible = true, VisibleIndex = 0, Width = 30 };
             colStt.OptionsColumn.AllowEdit = false;
-            GridColumn colName = new GridColumn { Caption = "2. Tiền sử bệnh, tật của bản thân", FieldName = "DISEASE_TYPE_NAME", Visible = true, VisibleIndex = 1, Width = 260, ColumnEdit = wrap };
+            GridColumn colName = new GridColumn { Caption = "Bệnh, tật", FieldName = "DISEASE_TYPE_NAME", Visible = true, VisibleIndex = 1, Width = 260, ColumnEdit = wrap };
             colName.OptionsColumn.AllowEdit = false;
             GridColumn colYes = new GridColumn { Caption = "Có", FieldName = "IS_YES", Visible = true, VisibleIndex = 2, Width = 40, ColumnEdit = chk };
             GridColumn colNo = new GridColumn { Caption = "Không", FieldName = "IS_NO", Visible = true, VisibleIndex = 3, Width = 50, ColumnEdit = chk };
@@ -564,7 +596,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             try
             {
                 foreach (UcKskHistoryIcd u in this.icdEditors) u.InitUc(icdData, icdPageSize);
-                this.rdoFamily.EditValueChanged += (s, e) => ApplyYesNoText(this.rdoFamily, this.txtFamily);
+                this.rdoFamily.EditValueChanged += (s, e) => ApplyFamilyState();
                 this.rdoTreating.EditValueChanged += (s, e) => ApplyYesNoText(this.rdoTreating, this.memTreating);
                 this.rdoMaternity.EditValueChanged += (s, e) => ApplyYesNoText(this.rdoMaternity, this.memMaternity);
                 RefreshState();
@@ -575,7 +607,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// <summary>Sau khi form xóa trắng các ô: đưa các ô phụ thuộc về đúng trạng thái khóa/mở.</summary>
         public void RefreshState()
         {
-            ApplyYesNoText(this.rdoFamily, this.txtFamily);
+            ApplyFamilyState();
             ApplyYesNoText(this.rdoTreating, this.memTreating);
             ApplyYesNoText(this.rdoMaternity, this.memMaternity);
             foreach (Section s in this.sections) ApplyNormalState(s.ChkNormal, s.PreIcd, s.FinalIcd);
@@ -592,6 +624,30 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 bool isYes = rdo.EditValue != null && rdo.EditValue != DBNull.Value && Convert.ToInt32(rdo.EditValue) == 1;
                 if (!isYes) txt.EditValue = null;
                 txt.Enabled = isYes;
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Người dùng chọn "Không" ở tiền sử gia đình — form xóa mã ICD tiền sử gia đình (nhóm dùng chung các tab).
+        /// Chỉ phát khi người dùng tự bấm, không phát lúc đổ dữ liệu.
+        /// </summary>
+        public event Action FamilyHistoryNoSelected;
+
+        /// <summary>Mã ICD tiền sử gia đình chỉ chọn được khi "Có".</summary>
+        private void ApplyFamilyState()
+        {
+            try
+            {
+                object v = this.rdoFamily.EditValue;
+                bool isYes = v != null && v != DBNull.Value && Convert.ToInt32(v) == 1;
+                bool isNo = v != null && v != DBNull.Value && Convert.ToInt32(v) == 0;
+                this.icdFamily.SetReadOnly(!isYes);
+                if (isNo && this.rdoFamily.ContainsFocus)
+                {
+                    this.icdFamily.SetData(null, null);
+                    if (FamilyHistoryNoSelected != null) FamilyHistoryNoSelected();
+                }
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
@@ -691,7 +747,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 if (data != null)
                 {
-                    this.txtFamily.Text = data.FAMILY_HISTORY;
                     this.txtOtherDisease.Text = data.OTHER_DISEASE;
                     this.memTreating.Text = data.TREATING_MEDICINE;
                     this.memMaternity.Text = data.MATERNITY_HISTORY;
@@ -760,7 +815,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 data.LICENSE_ISSUE_TYPE = GetRadio(this.rdoLicenseIssue);
                 data.IS_FAMILY_HISTORY = GetRadio(this.rdoFamily);
-                data.FAMILY_HISTORY = data.IS_FAMILY_HISTORY == 1 ? NullIfEmpty(this.txtFamily.Text) : null;
+                // Tên bệnh tiền sử gia đình nay chọn bằng mã ICD (lưu HIS_KSK_GENERAL); cột chữ cũ chỉ bỏ khi "Không".
+                if (data.IS_FAMILY_HISTORY != 1) data.FAMILY_HISTORY = null;
                 data.OTHER_DISEASE = NullIfEmpty(this.txtOtherDisease.Text);
                 data.IS_TREATING = GetRadio(this.rdoTreating);
                 data.TREATING_MEDICINE = data.IS_TREATING == 1 ? NullIfEmpty(this.memTreating.Text) : null;
