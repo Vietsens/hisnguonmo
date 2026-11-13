@@ -23,6 +23,8 @@ using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraLayout;
+using DevExpress.XtraLayout.Utils;
 using DevExpress.XtraTab;
 using Inventec.Common.Logging;
 using MOS.EFMODEL.DataModels;
@@ -35,6 +37,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
     ///
     /// Dựng hoàn toàn bằng code (không Designer) theo 5 tab con đúng thứ tự trên giấy:
     ///   Hành chính - Tiền sử · Khám thể lực · Khám lâm sàng (14 mục) · Cận lâm sàng · Kết luận.
+    /// Mỗi tab con là 1 LayoutControl chia 2 cột, mỗi mục 1 khung có tiêu đề — cùng kiểu tab Ksk lái xe (Mẫu 5);
+    /// khám lâm sàng: mục 1–4 cột trái, mục 5 Mắt · 6 Tai - Mũi - Họng · 7 Răng - Hàm - Mặt cột phải.
     ///
     /// Nạp / lấy dữ liệu đi qua BẢNG NỐI tên cột HIS_KSK_PRO_DRIVER -> ô nhập (dicField / dicIcd), đọc ghi
     /// bằng phản chiếu: hơn 200 cột, viết tay từng dòng gán cho cả 2 chiều rất dễ sót.
@@ -45,9 +49,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
     {
         #region ===== Khai báo =====
 
-        private const int LBL_W = 150;
-        private const int ROW_H = 26;
-        private const int LEFT = 10;
+        /// <summary>Độ rộng nhãn mặc định trong 1 khung.</summary>
+        private const int TXT_W = 150;
+        /// <summary>Chiều cao 1 dòng ô nhập.</summary>
+        private const int ROW_H = 24;
 
         /// <summary>14 mục khám lâm sàng: tiền tố cột · nhãn mục · tiêu đề nhóm đặt trước (rỗng = không mở nhóm).</summary>
         internal static readonly string[][] SECTIONS = new string[][]
@@ -68,6 +73,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             new[] { "EXAM_STOMATOLOGY",  "7. Răng - Hàm - Mặt",     "" }
         };
 
+        /// <summary>Mục khám lâm sàng đặt ở cột phải: 5 Mắt, 6 Tai - Mũi - Họng, 7 Răng - Hàm - Mặt.</summary>
+        private static readonly HashSet<string> RIGHT_SECTIONS = new HashSet<string> { "EXAM_EYE", "EXAM_ENT", "EXAM_STOMATOLOGY" };
+
         private static readonly int[] TEETH_UPPER = { 18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28 };
         private static readonly int[] TEETH_LOWER = { 48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38 };
 
@@ -83,12 +91,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private readonly List<Control> femaleOnly = new List<Control>();
 
         private XtraTabControl tabs;
-        private XtraScrollableControl pnlAdmin, pnlPhysical, pnlClinical, pnlCls, pnlConclusion;
-        private PanelControl pnlDiseases;
-        private int diseaseTop;
+        private LayoutControl lcAdmin, lcPhysical, lcClinical, lcCls, lcConclusion;
+        /// <summary>Nhóm chứa các câu tiền sử bản thân — dựng lại theo danh mục bệnh.</summary>
+        private LayoutControlGroup grpDiseases;
+        private readonly List<BaseLayoutItem> diseaseItems = new List<BaseLayoutItem>();
+        private readonly List<SimpleLabelItem> diseaseLabels = new List<SimpleLabelItem>();
 
         private TextEdit txtEthnic, txtBlood, txtHeinCard, txtResidence, txtCareer, txtWorkPlace, txtPhone;
-        private GridLookUpEdit cboObject, cboPaymentSource, cboLicenseClass, cboConcluder;
+        private GridLookUpEdit cboObject, cboPaymentSource, cboLicenseClass, cboConcluder, cboDhstExecutor;
         private DateEdit dteConclusionTime;
         private SpinEdit spnHeight, spnWeight, spnPulse, spnBpMax, spnBpMin, spnBreathRate;
         private TextEdit txtBmi, txtReexam;
@@ -112,6 +122,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         public GridLookUpEdit CboPaymentSource { get { return this.cboPaymentSource; } }
         public GridLookUpEdit CboLicenseClass { get { return this.cboLicenseClass; } }
         public GridLookUpEdit CboConcluder { get { return this.cboConcluder; } }
+        /// <summary>Bác sĩ khám thể lực — lưu vào người đo (EXECUTE_LOGINNAME) của HIS_DHST.</summary>
+        public GridLookUpEdit CboDhstExecutor { get { return this.cboDhstExecutor; } }
         public DateEdit DteConclusionTime { get { return this.dteConclusionTime; } }
         public SpinEdit SpnBloodPressureMax { get { return this.spnBpMax; } }
         public SpinEdit SpnBloodPressureMin { get { return this.spnBpMin; } }
@@ -140,16 +152,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 tabs = new XtraTabControl();
                 tabs.Dock = DockStyle.Fill;
                 this.Controls.Add(tabs);
-                pnlAdmin = AddPage("Hành chính - Tiền sử");
-                pnlPhysical = AddPage("Khám thể lực");
-                pnlClinical = AddPage("Khám lâm sàng");
-                pnlCls = AddPage("Cận lâm sàng");
-                pnlConclusion = AddPage("Kết luận");
-                BuildAdmin();
-                BuildPhysical();
-                BuildClinical();
-                BuildCls();
-                BuildConclusion();
+                lcAdmin = AddPage("Hành chính - Tiền sử");
+                lcPhysical = AddPage("Khám thể lực");
+                lcClinical = AddPage("Khám lâm sàng");
+                lcCls = AddPage("Cận lâm sàng");
+                lcConclusion = AddPage("Kết luận");
+                Build(lcAdmin, BuildAdmin);
+                Build(lcPhysical, BuildPhysical);
+                Build(lcClinical, BuildClinical);
+                Build(lcCls, BuildCls);
+                Build(lcConclusion, BuildConclusion);
+                BlockWheelChange(this);
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
             finally { this.ResumeLayout(false); }
@@ -168,502 +181,688 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
 
-        #region ===== Dựng giao diện =====
+        #region ===== Bố cục (LayoutControl) =====
 
-        private XtraScrollableControl AddPage(string text)
+        private LayoutControl AddPage(string text)
         {
             XtraTabPage page = new XtraTabPage();
             page.Text = text;
-            XtraScrollableControl sc = new XtraScrollableControl();
-            sc.Dock = DockStyle.Fill;
-            sc.AutoScroll = true;
-            page.Controls.Add(sc);
+            LayoutControl lc = new LayoutControl();
+            lc.Dock = DockStyle.Fill;
+            lc.AllowCustomizationMenu = false;
+            lc.Root.GroupBordersVisible = false;
+            lc.Root.TextVisible = false;
+            page.Controls.Add(lc);
             tabs.TabPages.Add(page);
-            return sc;
+            return lc;
         }
 
-        private static LabelControl Lbl(Control parent, string text, int x, int y, int w, bool bold = false)
+        private static void Build(LayoutControl lc, Action<LayoutControlGroup> build)
         {
-            LabelControl l = new LabelControl();
-            l.AutoSizeMode = LabelAutoSizeMode.None;
-            l.Text = text;
-            l.Location = new Point(x, y + 3);
-            l.Size = new Size(w, 18);
-            if (bold) l.Appearance.Font = new Font(l.Appearance.Font ?? SystemFonts.DefaultFont, FontStyle.Bold);
-            parent.Controls.Add(l);
-            return l;
+            lc.BeginUpdate();
+            try { build(lc.Root); }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+            finally { lc.EndUpdate(); }
         }
 
-        private static LabelControl Title(Control parent, string text, ref int y)
+        /// <summary>Cột bố cục (không viền): cột đầu thêm cuối root, cột sau chèn bên phải cột trước — chia đôi bề ngang.</summary>
+        private static LayoutControlGroup Column(LayoutControlGroup root, LayoutControlGroup leftOf)
         {
-            y += 6;
-            LabelControl l = Lbl(parent, text, LEFT, y, 900, true);
-            l.Appearance.ForeColor = Color.FromArgb(0, 51, 153);
-            y += ROW_H;
-            return l;
-        }
-
-        private TextEdit Txt(Control parent, string column, int x, int y, int w, bool readOnly = false)
-        {
-            TextEdit t = new TextEdit();
-            t.Location = new Point(x, y);
-            t.Size = new Size(w, 20);
-            t.Properties.ReadOnly = readOnly;
-            parent.Controls.Add(t);
-            if (!string.IsNullOrEmpty(column)) dicField[column] = t;
-            return t;
-        }
-
-        private MemoEdit Memo(Control parent, string column, int x, int y, int w, int h)
-        {
-            MemoEdit m = new MemoEdit();
-            m.Location = new Point(x, y);
-            m.Size = new Size(w, h);
-            parent.Controls.Add(m);
-            if (!string.IsNullOrEmpty(column)) dicField[column] = m;
-            return m;
-        }
-
-        private CheckEdit Chk(Control parent, string column, string text, int x, int y, int w)
-        {
-            CheckEdit c = new CheckEdit();
-            c.Text = text;
-            c.Location = new Point(x, y);
-            c.Size = new Size(w, 20);
-            parent.Controls.Add(c);
-            if (!string.IsNullOrEmpty(column)) dicField[column] = c;
-            return c;
-        }
-
-        private RadioGroup Rdo(Control parent, string column, int x, int y, int w, int h, params object[] valueText)
-        {
-            RadioGroup r = new RadioGroup();
-            r.Location = new Point(x, y);
-            r.Size = new Size(w, h);
-            r.Properties.AllowFocused = false;
-            for (int i = 0; i + 1 < valueText.Length; i += 2)
-                r.Properties.Items.Add(new RadioGroupItem(valueText[i], (string)valueText[i + 1]));
-            r.EditValue = null;
-            parent.Controls.Add(r);
-            if (!string.IsNullOrEmpty(column)) dicField[column] = r;
-            return r;
-        }
-
-        private GridLookUpEdit Gle(Control parent, string column, int x, int y, int w)
-        {
-            GridLookUpEdit g = new GridLookUpEdit();
-            g.Location = new Point(x, y);
-            g.Size = new Size(w, 20);
-            g.Properties.NullText = "";
-            parent.Controls.Add(g);
-            if (!string.IsNullOrEmpty(column)) dicField[column] = g;
+            LayoutControlGroup g = new LayoutControlGroup();
+            g.GroupBordersVisible = false;
+            g.TextVisible = false;
+            if (leftOf == null) root.AddGroup(g);
+            else root.AddGroup(g, leftOf, InsertType.Right);
             return g;
         }
 
-        private GridLookUpEdit Rank(Control parent, string column, int x, int y, int w)
+        /// <summary>Ô trống cuối cột — dồn các khung lên trên.</summary>
+        private static void EndColumn(LayoutControlGroup col)
         {
-            GridLookUpEdit g = Gle(parent, column, x, y, w);
+            col.AddItem(new EmptySpaceItem());
+        }
+
+        /// <summary>Khung có tiêu đề (1 mục trên giấy).</summary>
+        private static LayoutControlGroup Box(LayoutControlGroup col, string title)
+        {
+            LayoutControlGroup g = col.AddGroup(title);
+            g.ExpandButtonVisible = false;
+            return g;
+        }
+
+        /// <summary>
+        /// Thêm 1 ô vào khung; <paramref name="rightOf"/> != null thì đặt cùng hàng, bên phải ô đó (chia đôi chỗ ô đó).
+        /// <paramref name="width"/> / <paramref name="height"/> &gt; 0 thì cố định kích thước ô (tính cả nhãn).
+        /// </summary>
+        private static LayoutControlItem Add(LayoutControlGroup g, string text, Control c, int textWidth = TXT_W,
+            BaseLayoutItem rightOf = null, int height = 0, int width = 0)
+        {
+            LayoutControlItem it = rightOf == null ? g.AddItem(text ?? "", c) : g.AddItem(text ?? "", c, rightOf, InsertType.Right);
+            if (string.IsNullOrEmpty(text))
+            {
+                it.TextVisible = false;
+            }
+            else
+            {
+                it.TextAlignMode = TextAlignModeItem.CustomSize;
+                it.TextSize = new Size(textWidth, 20);
+                it.TextToControlDistance = 4;
+            }
+            if (height > 0 || width > 0)
+            {
+                it.SizeConstraintsType = SizeConstraintsType.Custom;
+                it.MinSize = new Size(width > 0 ? width : 40, height > 0 ? height : ROW_H);
+                it.MaxSize = new Size(width > 0 ? width : 0, height > 0 ? height : 0);
+            }
+            return it;
+        }
+
+        /// <summary>Dòng chú thích chữ xám.</summary>
+        private static SimpleLabelItem Hint(LayoutControlGroup g, string text, BaseLayoutItem rightOf = null)
+        {
+            SimpleLabelItem s = new SimpleLabelItem();
+            s.Text = text;
+            s.AppearanceItemCaption.ForeColor = Color.DimGray;
+            s.AppearanceItemCaption.Options.UseForeColor = true;
+            if (rightOf == null) g.AddItem(s);
+            else g.AddItem(s, rightOf, InsertType.Right);
+            return s;
+        }
+
+        /// <summary>Ô trống bên phải 1 ô cố định độ rộng — để ô đó không bị kéo giãn.</summary>
+        private static void Filler(LayoutControlGroup g, BaseLayoutItem rightOf)
+        {
+            g.AddItem(new EmptySpaceItem(), rightOf, InsertType.Right);
+        }
+
+        /// <summary>
+        /// Nhóm con dạng bảng (không viền) cho các lưới ô thẳng cột (thị lực, thính lực, răng, chỉ số xét nghiệm).
+        /// <paramref name="cols"/>: &gt; 0 = độ rộng cố định (px), &lt; 0 = phần trăm phần còn lại.
+        /// </summary>
+        private static LayoutControlGroup Table(LayoutControlGroup parent, int[] cols, int[] rowHeights)
+        {
+            LayoutControlGroup t = new LayoutControlGroup();
+            t.GroupBordersVisible = false;
+            t.TextVisible = false;
+            parent.AddGroup(t);
+            t.LayoutMode = LayoutMode.Table;
+            OptionsTableLayoutGroup o = t.OptionsTableLayoutGroup;
+            int c0 = o.ColumnDefinitions.Count, r0 = o.RowDefinitions.Count;
+            foreach (int w in cols)
+                o.ColumnDefinitions.Add(w > 0
+                    ? new ColumnDefinition(t, w, System.Windows.Forms.SizeType.Absolute)
+                    : new ColumnDefinition(t, -w, System.Windows.Forms.SizeType.Percent));
+            foreach (int h in rowHeights)
+                o.RowDefinitions.Add(new RowDefinition(t, h, System.Windows.Forms.SizeType.Absolute));
+            for (int i = 0; i < c0; i++) o.ColumnDefinitions.RemoveAt(0);
+            for (int i = 0; i < r0; i++) o.RowDefinitions.RemoveAt(0);
+            return t;
+        }
+
+        private static int[] Rows(int count, int height)
+        {
+            return Enumerable.Repeat(height, count).ToArray();
+        }
+
+        private static void Place(BaseLayoutItem it, int row, int col)
+        {
+            it.OptionsTableLayoutItem.RowIndex = row;
+            it.OptionsTableLayoutItem.ColumnIndex = col;
+        }
+
+        /// <summary>Ô nhập trong bảng (không nhãn).</summary>
+        private static LayoutControlItem Cell(LayoutControlGroup t, Control c, int row, int col)
+        {
+            LayoutControlItem it = t.AddItem("", c);
+            it.TextVisible = false;
+            Place(it, row, col);
+            return it;
+        }
+
+        /// <summary>Chữ trong bảng; <paramref name="header"/> = tiêu đề cột (chữ xám, canh giữa).</summary>
+        private static SimpleLabelItem CellText(LayoutControlGroup t, string text, int row, int col, bool header = false)
+        {
+            SimpleLabelItem s = new SimpleLabelItem();
+            s.Text = text;
+            if (header)
+            {
+                s.AppearanceItemCaption.ForeColor = Color.DimGray;
+                s.AppearanceItemCaption.Options.UseForeColor = true;
+                s.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+                s.AppearanceItemCaption.Options.UseTextOptions = true;
+            }
+            t.AddItem(s);
+            Place(s, row, col);
+            return s;
+        }
+
+        #endregion
+
+        #region ===== Tạo ô nhập =====
+
+        private void Reg(string column, BaseEdit be)
+        {
+            if (!string.IsNullOrEmpty(column)) dicField[column] = be;
+        }
+
+        private TextEdit Txt(string column, bool readOnly = false)
+        {
+            TextEdit t = new TextEdit();
+            t.Properties.ReadOnly = readOnly;
+            Reg(column, t);
+            return t;
+        }
+
+        private MemoEdit Memo(string column)
+        {
+            MemoEdit m = new MemoEdit();
+            Reg(column, m);
+            return m;
+        }
+
+        private CheckEdit Chk(string column, string text)
+        {
+            CheckEdit c = new CheckEdit();
+            c.Properties.Caption = text;
+            Reg(column, c);
+            return c;
+        }
+
+        /// <summary>Ô chọn 1 trong nhiều: <paramref name="valueText"/> = giá trị, nhãn, giá trị, nhãn...</summary>
+        private RadioGroup Rdo(string column, int columns, params object[] valueText)
+        {
+            RadioGroup r = new RadioGroup();
+            r.Properties.AllowFocused = false;
+            r.Properties.Columns = columns;
+            for (int i = 0; i + 1 < valueText.Length; i += 2)
+                r.Properties.Items.Add(new RadioGroupItem(valueText[i], (string)valueText[i + 1]));
+            r.EditValue = null;
+            Reg(column, r);
+            return r;
+        }
+
+        private GridLookUpEdit Gle(string column)
+        {
+            GridLookUpEdit g = new GridLookUpEdit();
+            g.Properties.NullText = "";
+            Reg(column, g);
+            return g;
+        }
+
+        private GridLookUpEdit Rank(string column)
+        {
+            GridLookUpEdit g = Gle(column);
             rankCombos.Add(g);
             return g;
         }
 
-        private GridLookUpEdit Login(Control parent, string column, int x, int y, int w)
+        private GridLookUpEdit Login(string column)
         {
-            GridLookUpEdit g = Gle(parent, column, x, y, w);
+            GridLookUpEdit g = Gle(column);
             loginCombos.Add(g);
             return g;
         }
 
-        private SpinEdit Spin(Control parent, int x, int y, int w, bool isFloat, decimal max)
+        private static SpinEdit Spin(bool isFloat, decimal max)
         {
             SpinEdit s = new SpinEdit();
-            s.Location = new Point(x, y);
-            s.Size = new Size(w, 20);
             s.Properties.IsFloatValue = isFloat;
             s.Properties.MinValue = 0;
             s.Properties.MaxValue = max;
             s.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             s.EditValue = null;
-            parent.Controls.Add(s);
             return s;
         }
 
-        private UcKskHistoryIcd Icd(Control parent, string prefix, int x, int y, int w)
+        private UcKskHistoryIcd Icd(string prefix)
         {
             UcKskHistoryIcd uc = new UcKskHistoryIcd();
-            uc.Location = new Point(x, y);
-            uc.Size = new Size(w, 20);
-            parent.Controls.Add(uc);
             dicIcd[prefix] = uc;
             return uc;
         }
 
-        /// <summary>Tab con 1 — hành chính bổ sung, đối tượng - chi trả, tiền sử.</summary>
-        private void BuildAdmin()
+        private ComboBoxEdit ToothBox(int tooth)
         {
-            Control p = pnlAdmin;
-            int y = 4;
-            Title(p, "THÔNG TIN HÀNH CHÍNH (bổ sung — họ tên, ngày sinh, giới tính, CCCD ở khối thông tin bệnh nhân phía trên)", ref y);
-            Lbl(p, "Dân tộc:", LEFT, y, 100); txtEthnic = Txt(p, null, LEFT + 100, y, 160, true);
-            Lbl(p, "Nhóm máu:", 290, y, 80); txtBlood = Txt(p, null, 370, y, 100, true);
-            Lbl(p, "Số thẻ BHYT:", 500, y, 90); txtHeinCard = Txt(p, null, 590, y, 220, true);
-            y += ROW_H;
-            Lbl(p, "Nơi ở hiện tại:", LEFT, y, 100); txtResidence = Txt(p, null, LEFT + 100, y, 700, true);
-            y += ROW_H;
-            Lbl(p, "Nghề nghiệp:", LEFT, y, 100); txtCareer = Txt(p, null, LEFT + 100, y, 260, true);
-            Lbl(p, "Nơi làm việc:", 390, y, 90); txtWorkPlace = Txt(p, null, 480, y, 330, true);
-            y += ROW_H;
-            Lbl(p, "Xã, phường (nơi làm việc):", LEFT, y, 170); Txt(p, "WORK_COMMUNE_NAME", LEFT + 170, y, 300);
-            Lbl(p, "Điện thoại:", 500, y, 90); txtPhone = Txt(p, null, 590, y, 220, true);
-            y += ROW_H;
-            Lbl(p, "Hạng giấy phép lái xe:", LEFT, y, 170); cboLicenseClass = Gle(p, "LICENSE_CLASS_ID", LEFT + 170, y, 300);
-            y += ROW_H;
+            ComboBoxEdit c = new ComboBoxEdit();
+            c.Properties.TextEditStyle = TextEditStyles.DisableTextEditor;
+            c.Properties.Items.AddRange(new object[] { "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" });
+            dicField["TOOTH_" + tooth] = c;
+            return c;
+        }
 
-            Title(p, "THÔNG TIN ĐỐI TƯỢNG - CHI TRẢ", ref y);
-            Lbl(p, "Đối tượng:", LEFT, y, 100); cboObject = Gle(p, null, LEFT + 100, y, 710);
-            y += ROW_H;
-            Lbl(p, "Nguồn chi trả:", LEFT, y, 100); cboPaymentSource = Gle(p, null, LEFT + 100, y, 300);
-            Lbl(p, "Địa điểm khám:", 440, y, 100);
-            Rdo(p, "EXAM_PLACE_TYPE", 540, y - 2, 270, 24, 1, "Cơ sở KBCB", 2, "Khám lưu động");
-            y += ROW_H + 2;
+        #endregion
 
-            Title(p, "TIỀN SỬ BỆNH CỦA ĐỐI TƯỢNG KHÁM SỨC KHỎE", ref y);
-            Lbl(p, "1. Tiền sử gia đình (truyền nhiễm, tim mạch, đái tháo đường, lao, hen phế quản, ung thư, động kinh, rối loạn tâm thần, bệnh khác):", LEFT, y, 820);
-            y += ROW_H - 4;
-            rdoFamily = Rdo(p, "IS_FAMILY_HISTORY", LEFT + 20, y - 2, 140, 24, 0, "Không", 1, "Có");
-            Lbl(p, "Ghi cụ thể tên bệnh:", 180, y, 130); TextEdit txtFamily = Txt(p, "FAMILY_HISTORY", 310, y, 500);
+        #region ===== Lăn chuột không đổi giá trị =====
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
+        /// <summary>
+        /// Lăn chuột trên ô Có/Không, ô chọn, ô số, ô ngày, ô tích KHÔNG đổi giá trị (chỉ đổi khi bấm chuột / gõ phím) —
+        /// lượt lăn chuyển lên LayoutControl chứa ô để màn hình cuộn như bình thường. Cùng cách tab Ksk lái xe (Mẫu 5).
+        /// </summary>
+        private static void BlockWheelChange(Control root)
+        {
+            foreach (Control c in root.Controls)
+            {
+                if (c is RadioGroup || c is CheckEdit || c is SpinEdit || c is ComboBoxEdit || c is DateEdit || c is GridLookUpEdit)
+                    NoWheel((BaseEdit)c);
+                else if (!(c is UcKskHistoryIcd))
+                    BlockWheelChange(c);
+            }
+        }
+
+        private static void NoWheel(BaseEdit be)
+        {
+            be.MouseWheel += (s, e) =>
+            {
+                // Đang mở danh sách thả xuống thì để danh sách tự cuộn.
+                PopupBaseEdit pe = be as PopupBaseEdit;
+                if (pe != null && pe.IsPopupOpen) return;
+                DevExpress.Utils.DXMouseEventArgs.GetMouseArgs(e).Handled = true;
+                ScrollParentByWheel(be, e.Delta);
+            };
+        }
+
+        private static void ScrollParentByWheel(Control c, int delta)
+        {
+            try
+            {
+                Control p = c.Parent;
+                while (p != null && !(p is LayoutControl)) p = p.Parent;
+                if (p == null || !p.IsHandleCreated) return;
+                Point pt = Control.MousePosition;
+                IntPtr wParam = new IntPtr(delta << 16);
+                IntPtr lParam = new IntPtr((pt.Y << 16) | (pt.X & 0xFFFF));
+                SendMessage(p.Handle, 0x020A /* WM_MOUSEWHEEL */, wParam, lParam);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        #endregion
+
+        #region ===== Dựng các tab con =====
+
+        /// <summary>Tab con 1 — trái: hành chính, đề nghị khám, tiền sử gia đình / điều trị / thai sản; phải: 21 câu tiền sử bản thân.</summary>
+        private void BuildAdmin(LayoutControlGroup root)
+        {
+            LayoutControlGroup c1 = Column(root, null);
+            LayoutControlGroup c2 = Column(root, c1);
+
+            LayoutControlGroup g = Box(c1, "THÔNG TIN HÀNH CHÍNH");
+            Hint(g, "Họ tên, ngày sinh, giới tính, CCCD: xem ở khối thông tin bệnh nhân phía trên.");
+            txtEthnic = Txt(null, true);
+            LayoutControlItem it = Add(g, "Dân tộc:", txtEthnic, 140);
+            txtBlood = Txt(null, true);
+            Add(g, "Nhóm máu:", txtBlood, 80, it);
+            txtHeinCard = Txt(null, true);
+            it = Add(g, "Số thẻ BHYT:", txtHeinCard, 140);
+            txtPhone = Txt(null, true);
+            Add(g, "Điện thoại:", txtPhone, 80, it);
+            txtResidence = Txt(null, true);
+            Add(g, "Nơi ở hiện tại:", txtResidence, 140);
+            txtCareer = Txt(null, true);
+            it = Add(g, "Nghề nghiệp:", txtCareer, 140);
+            txtWorkPlace = Txt(null, true);
+            Add(g, "Nơi làm việc:", txtWorkPlace, 80, it);
+            Add(g, "Xã, phường nơi làm việc:", Txt("WORK_COMMUNE_NAME"), 140);
+
+            g = Box(c1, "THÔNG TIN ĐỀ NGHỊ KHÁM");
+            cboLicenseClass = Gle("LICENSE_CLASS_ID");
+            Add(g, "Hạng giấy phép lái xe:", cboLicenseClass, 140);
+            cboObject = Gle(null);
+            Add(g, "Đối tượng:", cboObject, 140);
+            cboPaymentSource = Gle(null);
+            Add(g, "Nguồn chi trả:", cboPaymentSource, 140);
+            it = Add(g, "Địa điểm khám:", Rdo("EXAM_PLACE_TYPE", 2, 1, "Cơ sở KBCB", 2, "Khám lưu động"), 140, height: 26, width: 144 + 260);
+            Filler(g, it);
+
+            g = Box(c1, "TIỀN SỬ BỆNH — 1. TIỀN SỬ GIA ĐÌNH");
+            rdoFamily = Rdo("IS_FAMILY_HISTORY", 2, 0, "Không", 1, "Có");
+            it = Add(g, "Tiền sử gia đình:", rdoFamily, 140, height: 26, width: 144 + 130);
+            TextEdit txtFamily = Txt("FAMILY_HISTORY");
+            Add(g, "Tên bệnh:", txtFamily, 60, it);
+            Hint(g, "Gia đình có ai mắc: truyền nhiễm, tim mạch, đái tháo đường, lao, hen phế quản, ung thư, động kinh, rối loạn tâm thần, bệnh khác.");
             rdoFamily.EditValueChanged += (s, e) => ApplyYesNoState(rdoFamily, txtFamily);
-            y += ROW_H + 2;
 
-            Lbl(p, "2. Tiền sử bệnh, tật của bản thân — ông (bà) đã/đang mắc bệnh, tình trạng nào sau đây:", LEFT, y, 820);
-            y += ROW_H - 4;
-            pnlDiseases = new PanelControl();
-            pnlDiseases.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            pnlDiseases.Location = new Point(LEFT, y);
-            pnlDiseases.Size = new Size(830, 40);
-            p.Controls.Add(pnlDiseases);
-            diseaseTop = y;
-            y += 44;
-            Lbl(p, "22. Bệnh khác (ghi rõ):", LEFT + 20, y, 160, false).Name = "lblOtherDisease";
-            Txt(p, "OTHER_DISEASE", LEFT + 180, y, 630).Name = "txtOtherDisease";
-            y += ROW_H + 2;
+            g = Box(c2, "TIỀN SỬ BỆNH — 2. BỆNH, TẬT CỦA BẢN THÂN: ông (bà) đã/đang mắc bệnh, tình trạng nào sau đây");
+            grpDiseases = new LayoutControlGroup();
+            grpDiseases.GroupBordersVisible = false;
+            grpDiseases.TextVisible = false;
+            g.AddGroup(grpDiseases);
+            Add(g, "22. Bệnh khác (ghi rõ):", Txt("OTHER_DISEASE"), 140);
 
-            Lbl(p, "3a. Ông (bà) có đang điều trị bệnh gì không? Nếu có, liệt kê thuốc đang dùng và liều lượng:", LEFT, y, 820);
-            y += ROW_H - 4;
-            rdoTreating = Rdo(p, "IS_TREATING", LEFT + 20, y - 2, 140, 24, 0, "Không", 1, "Có");
-            MemoEdit memTreating = Memo(p, "TREATING_MEDICINE", 180, y, 630, 40);
+            // 3a, 3b đặt cột phải dưới 21 câu (đúng thứ tự trên giấy, lấp khoảng trống bên phải).
+            g = Box(c2, "TIỀN SỬ BỆNH — 3. ĐIỀU TRỊ, THAI SẢN");
+            rdoTreating = Rdo("IS_TREATING", 2, 0, "Không", 1, "Có");
+            it = Add(g, "3a. Đang điều trị bệnh:", rdoTreating, 140, height: 26, width: 144 + 130);
+            Filler(g, it);
+            MemoEdit memTreating = Memo("TREATING_MEDICINE");
+            Add(g, "Thuốc, liều lượng:", memTreating, 140, height: 44);
             rdoTreating.EditValueChanged += (s, e) => ApplyYesNoState(rdoTreating, memTreating);
-            y += 46;
 
-            Lbl(p, "3b. Tiền sử thai sản (đối với phụ nữ):", LEFT, y, 820);
-            y += ROW_H - 4;
-            rdoMaternity = Rdo(p, "IS_MATERNITY_HISTORY", LEFT + 20, y - 2, 140, 24, 0, "Không", 1, "Có");
-            MemoEdit memMaternity = Memo(p, "MATERNITY_HISTORY", 180, y, 630, 40);
+            rdoMaternity = Rdo("IS_MATERNITY_HISTORY", 2, 0, "Không", 1, "Có");
+            it = Add(g, "3b. Tiền sử thai sản (nữ):", rdoMaternity, 140, height: 26, width: 144 + 130);
+            Filler(g, it);
+            MemoEdit memMaternity = Memo("MATERNITY_HISTORY");
+            Add(g, "Ghi rõ:", memMaternity, 140, height: 44);
             rdoMaternity.EditValueChanged += (s, e) => ApplyYesNoState(rdoMaternity, memMaternity);
             femaleOnly.Add(rdoMaternity);
             femaleOnly.Add(memMaternity);
-            y += 50;
-            RelocateBelowDiseases();
+
+            EndColumn(c1);
+            EndColumn(c2);
         }
 
         /// <summary>Tab con 2 — khám thể lực.</summary>
-        private void BuildPhysical()
+        private void BuildPhysical(LayoutControlGroup root)
         {
-            Control p = pnlPhysical;
-            int y = 4;
-            Title(p, "KHÁM THỂ LỰC", ref y);
-            Lbl(p, "Chiều cao (cm):", LEFT, y, 120); spnHeight = Spin(p, LEFT + 120, y, 100, true, 300);
-            Lbl(p, "Mạch (lần/phút):", 300, y, 130); spnPulse = Spin(p, 430, y, 100, false, 500);
-            y += ROW_H;
-            Lbl(p, "Cân nặng (kg):", LEFT, y, 120); spnWeight = Spin(p, LEFT + 120, y, 100, true, 500);
-            Lbl(p, "Huyết áp (mmHg):", 300, y, 130); spnBpMax = Spin(p, 430, y, 70, false, 400);
-            Lbl(p, "/", 505, y, 10); spnBpMin = Spin(p, 515, y, 70, false, 400);
-            y += ROW_H;
-            Lbl(p, "Chỉ số BMI:", LEFT, y, 120); txtBmi = Txt(p, null, LEFT + 120, y, 100, true);
-            Lbl(p, "Nhịp thở (lần/phút):", 300, y, 130); spnBreathRate = Spin(p, 430, y, 100, false, 200);
-            y += ROW_H + 6;
-            Lbl(p, "Phân loại thể lực:", LEFT, y, 120); Rank(p, "DHST_RANK", LEFT + 120, y, 200);
-            y += ROW_H;
-            Lbl(p, "Kết luận:", LEFT, y, 120); Txt(p, "DHST_CONCLUDE", LEFT + 120, y, 690);
+            LayoutControlGroup c1 = Column(root, null);
+            LayoutControlGroup c2 = Column(root, c1);
+
+            LayoutControlGroup g = Box(c1, "I. KHÁM THỂ LỰC");
+            spnHeight = Spin(true, 300);
+            LayoutControlItem it = Add(g, "Chiều cao (cm):", spnHeight, 120);
+            spnWeight = Spin(true, 500);
+            Add(g, "Cân nặng (kg):", spnWeight, 120, it);
+            txtBmi = Txt(null, true);
+            it = Add(g, "Chỉ số BMI:", txtBmi, 120);
+            spnBreathRate = Spin(false, 200);
+            Add(g, "Nhịp thở (lần/phút):", spnBreathRate, 120, it);
+            spnPulse = Spin(false, 500);
+            it = Add(g, "Mạch (lần/phút):", spnPulse, 120);
+            // Huyết áp: 2 ô tâm thu / tâm trương cùng độ rộng.
+            spnBpMax = Spin(false, 400);
+            LayoutControlItem itBp = Add(g, "Huyết áp (mmHg):", spnBpMax, 120, it, width: 124 + 90);
+            spnBpMin = Spin(false, 400);
+            LayoutControlItem itBpMin = Add(g, "/", spnBpMin, 8, itBp, width: 12 + 90);
+            Filler(g, itBpMin);
+            it = Add(g, "Phân loại thể lực:", Rank("DHST_RANK"), 120);
+            // Bác sĩ khám thể lực = người đo của HIS_DHST (như các tab khác) — không phải cột của HIS_KSK_PRO_DRIVER.
+            cboDhstExecutor = Login(null);
+            Add(g, "Bác sĩ:", cboDhstExecutor, 120, it);
+            Add(g, "Kết luận:", Txt("DHST_CONCLUDE"), 120);
             spnHeight.EditValueChanged += (s, e) => UpdateBmi();
             spnWeight.EditValueChanged += (s, e) => UpdateBmi();
+
+            EndColumn(c1);
+            EndColumn(c2);
         }
 
-        /// <summary>Tab con 3 — 14 mục khám lâm sàng.</summary>
-        private void BuildClinical()
+        /// <summary>Tab con 3 — 14 mục khám lâm sàng: mục 1–4 cột trái, mục 5–7 cột phải.</summary>
+        private void BuildClinical(LayoutControlGroup root)
         {
-            Control p = pnlClinical;
-            int y = 4;
-            Title(p, "KHÁM LÂM SÀNG — kết luận từng chuyên khoa: đủ / không đủ tiêu chuẩn theo Phụ lục 1 Thông tư 36/2024/TT-BYT", ref y);
+            Hint(root, "Kết luận từng chuyên khoa: đủ / không đủ tiêu chuẩn theo Phụ lục 1 Thông tư 36/2024/TT-BYT.");
+            LayoutControlGroup c1 = Column(root, null);
+            LayoutControlGroup c2 = Column(root, c1);
             foreach (string[] s in SECTIONS)
             {
-                string pre = s[0];
-                if (!string.IsNullOrEmpty(s[2])) Title(p, s[2], ref y);
-                int indent = s[1].StartsWith("a)") || s[1].StartsWith("b)") || s[1].StartsWith("c)") || s[1].StartsWith("d)")
-                    || s[1].StartsWith("đ)") || s[1].StartsWith("e)") || s[1].StartsWith("g)") || s[1].StartsWith("h)") ? 20 : 0;
-                LabelControl head = Lbl(p, s[1], LEFT + indent, y, 300, true);
-                List<Control> sectionCtrls = new List<Control>();
+                bool sub = s[1].Length > 1 && s[1][1] == ')';
+                BuildSection(RIGHT_SECTIONS.Contains(s[0]) ? c2 : c1, s[0], sub ? "1. Nội khoa — " + s[1] : s[1]);
+            }
+            EndColumn(c1);
+            EndColumn(c2);
+        }
 
-                if (pre == "EXAM_OBSTETRIC")
-                {
-                    CheckEdit chkRefuse = Chk(p, "IS_REFUSE_OBSTETRIC", "Từ chối khám sản phụ khoa", 330, y, 220);
-                    chkRefuse.CheckedChanged += (sd, e) => RefreshState();
-                    femaleOnly.Add(chkRefuse);
-                }
-                y += ROW_H - 2;
+        /// <summary>
+        /// 1 mục khám: [ô riêng của mục] · Chưa phát hiện bất thường | Phân loại | Bác sĩ · 2 ô ICD · Kết luận [...].
+        /// </summary>
+        private void BuildSection(LayoutControlGroup col, string pre, string title)
+        {
+            LayoutControlGroup g = Box(col, title);
+            CheckEdit chkRefuse = null;
+            if (pre == "EXAM_OBSTETRIC")
+            {
+                chkRefuse = Chk("IS_REFUSE_OBSTETRIC", "Từ chối khám sản phụ khoa");
+                chkRefuse.CheckedChanged += (sd, e) => RefreshState();
+                Add(g, null, chkRefuse, height: ROW_H);
+                femaleOnly.Add(chkRefuse);
+            }
+            else if (pre == "EXAM_EYE") BuildEyeTable(g);
+            else if (pre == "EXAM_ENT") BuildEntTable(g);
+            else if (pre == "EXAM_STOMATOLOGY") BuildTeeth(g);
 
-                if (pre == "EXAM_EYE")
-                {
-                    Lbl(p, "Thị lực", LEFT + 30, y, 100); Lbl(p, "Mắt phải", 170, y, 80); Lbl(p, "Mắt trái", 290, y, 80);
-                    Lbl(p, "Khúc xạ (nếu có)", 430, y, 120); Lbl(p, "Mắt phải", 560, y, 80); Lbl(p, "Mắt trái", 680, y, 80);
-                    y += 22;
-                    string[][] eye = { new[] { "Không kính", "EXAM_EYESIGHT_RIGHT", "EXAM_EYESIGHT_LEFT", "Độ cầu", "EXAM_EYE_SPHERE_RIGHT", "EXAM_EYE_SPHERE_LEFT" },
-                                       new[] { "Kính lỗ", "EXAM_EYESIGHT_PINHOLE_RIGHT", "EXAM_EYESIGHT_PINHOLE_LEFT", "Độ trụ", "EXAM_EYE_CYLINDER_RIGHT", "EXAM_EYE_CYLINDER_LEFT" },
-                                       new[] { "Có kính", "EXAM_EYESIGHT_GLASS_RIGHT", "EXAM_EYESIGHT_GLASS_LEFT", "Trục", "EXAM_EYE_AXIS_RIGHT", "EXAM_EYE_AXIS_LEFT" } };
-                    foreach (string[] r in eye)
-                    {
-                        Lbl(p, r[0], LEFT + 30, y, 120); Txt(p, r[1], 170, y, 110); Txt(p, r[2], 290, y, 110);
-                        Lbl(p, r[3], 430, y, 120); Txt(p, r[4], 560, y, 110); Txt(p, r[5], 680, y, 110);
-                        y += ROW_H;
-                    }
-                }
-                else if (pre == "EXAM_ENT")
-                {
-                    Lbl(p, "Thính lực (m)", LEFT + 30, y, 120); Lbl(p, "Nói thường", 170, y, 100); Lbl(p, "Nói thầm", 290, y, 100);
-                    y += 22;
-                    Lbl(p, "Tai trái", LEFT + 30, y, 120); Txt(p, "EXAM_ENT_LEFT_NORMAL", 170, y, 110); Txt(p, "EXAM_ENT_LEFT_WHISPER", 290, y, 110);
-                    y += ROW_H;
-                    Lbl(p, "Tai phải", LEFT + 30, y, 120); Txt(p, "EXAM_ENT_RIGHT_NORMAL", 170, y, 110); Txt(p, "EXAM_ENT_RIGHT_WHISPER", 290, y, 110);
-                    y += ROW_H;
-                }
-                else if (pre == "EXAM_STOMATOLOGY")
-                {
-                    y = BuildTeeth(p, y);
-                }
+            CheckEdit chkNormal = Chk(pre + "_IS_NORMAL", "Chưa phát hiện bất thường");
+            chkNormal.CheckedChanged += (sd, e) => RefreshState();
+            LayoutControlItem itChk = Add(g, null, chkNormal, height: ROW_H);
+            GridLookUpEdit login = Login(pre + "_LOGINNAME");
+            Add(g, "Bác sĩ:", login, 45, itChk);
+            GridLookUpEdit rank = Rank(pre + "_RANK");
+            Add(g, "Phân loại:", rank, 60, itChk);
 
-                CheckEdit chkNormal = Chk(p, pre + "_IS_NORMAL", "Chưa phát hiện bất thường", LEFT + 30 + indent, y, 220);
-                chkNormal.CheckedChanged += (sd, e) => RefreshState();
-                y += ROW_H;
-                Lbl(p, "Chẩn đoán sơ bộ (ICD):", LEFT + 30 + indent, y, 160); Icd(p, pre + "_PRE_ICD", 200 + indent, y, 610 - indent);
-                y += ROW_H;
-                Lbl(p, "Chẩn đoán xác định (ICD):", LEFT + 30 + indent, y, 160); Icd(p, pre + "_ICD", 200 + indent, y, 610 - indent);
-                y += ROW_H;
-                Lbl(p, "Phân loại:", LEFT + 30 + indent, y, 70); GridLookUpEdit rank = Rank(p, pre + "_RANK", 110 + indent, y, 130);
-                Lbl(p, "Kết luận:", 260, y, 60); TextEdit conclude = Txt(p, pre + "_CONCLUDE", 320, y, 270);
-                SimpleButton btnLib = new SimpleButton();
-                btnLib.Text = "...";
-                btnLib.Location = new Point(592, y);
-                btnLib.Size = new Size(26, 20);
-                btnLib.ToolTip = "Thư viện văn bản — cú pháp mẫu: nội dung;PL:Lx  (x = 1..5 tự chọn Phân loại)";
-                btnLib.Click += (sd, e) => { if (ConclusionTextLibRequested != null) ConclusionTextLibRequested(conclude, rank); };
-                p.Controls.Add(btnLib);
-                Lbl(p, "Bác sĩ:", 628, y, 45); Login(p, pre + "_LOGINNAME", 673, y, 137);
-                y += ROW_H + 8;
+            Add(g, "Chẩn đoán sơ bộ (ICD):", Icd(pre + "_PRE_ICD"), TXT_W, height: ROW_H);
+            Add(g, "Chẩn đoán xác định (ICD):", Icd(pre + "_ICD"), TXT_W, height: ROW_H);
+            TextEdit conclude = Txt(pre + "_CONCLUDE");
+            LayoutControlItem itConclude = Add(g, "Kết luận:", conclude, TXT_W);
+            SimpleButton btnLib = new SimpleButton();
+            btnLib.Text = "...";
+            btnLib.ToolTip = "Thư viện văn bản — cú pháp mẫu: nội dung;PL:Lx  (x = 1..5 tự chọn Phân loại)";
+            btnLib.Click += (sd, e) => { if (ConclusionTextLibRequested != null) ConclusionTextLibRequested(conclude, rank); };
+            Add(g, null, btnLib, rightOf: itConclude, height: ROW_H, width: 30);
 
-                if (pre == "EXAM_OBSTETRIC")
-                {
-                    femaleOnly.Add(chkNormal); femaleOnly.Add(rank); femaleOnly.Add(conclude); femaleOnly.Add(btnLib);
-                    femaleOnly.Add(dicIcd[pre + "_PRE_ICD"]); femaleOnly.Add(dicIcd[pre + "_ICD"]); femaleOnly.Add(dicField[pre + "_LOGINNAME"]);
-                }
+            if (pre == "EXAM_OBSTETRIC")
+            {
+                femaleOnly.Add(chkNormal); femaleOnly.Add(rank); femaleOnly.Add(conclude); femaleOnly.Add(btnLib);
+                femaleOnly.Add(dicIcd[pre + "_PRE_ICD"]); femaleOnly.Add(dicIcd[pre + "_ICD"]); femaleOnly.Add(login);
             }
         }
 
-        /// <summary>Sơ đồ 32 răng — mỗi răng 1 ô chọn mã 0–9 theo chú thích Mẫu 06.</summary>
-        private int BuildTeeth(Control p, int y)
+        /// <summary>Mắt: bảng thị lực (không kính / kính lỗ / có kính) và khúc xạ (độ cầu / độ trụ / trục), mắt phải · mắt trái.</summary>
+        private void BuildEyeTable(LayoutControlGroup g)
         {
-            int x0 = LEFT + 100;
-            int w = 42;
-            Lbl(p, "Hàm trên", LEFT + 30, y + 22, 70);
+            LayoutControlGroup t = Table(g, new[] { 90, 90, 90, 30, 110, 90, 90, -100 }, new[] { 20, ROW_H, ROW_H, ROW_H });
+            CellText(t, "Thị lực", 0, 0, true);
+            CellText(t, "Mắt phải", 0, 1, true);
+            CellText(t, "Mắt trái", 0, 2, true);
+            CellText(t, "Khúc xạ (nếu có)", 0, 4, true);
+            CellText(t, "Mắt phải", 0, 5, true);
+            CellText(t, "Mắt trái", 0, 6, true);
+            string[][] eye = { new[] { "Không kính", "EXAM_EYESIGHT_RIGHT", "EXAM_EYESIGHT_LEFT", "Độ cầu", "EXAM_EYE_SPHERE_RIGHT", "EXAM_EYE_SPHERE_LEFT" },
+                               new[] { "Kính lỗ", "EXAM_EYESIGHT_PINHOLE_RIGHT", "EXAM_EYESIGHT_PINHOLE_LEFT", "Độ trụ", "EXAM_EYE_CYLINDER_RIGHT", "EXAM_EYE_CYLINDER_LEFT" },
+                               new[] { "Có kính", "EXAM_EYESIGHT_GLASS_RIGHT", "EXAM_EYESIGHT_GLASS_LEFT", "Trục", "EXAM_EYE_AXIS_RIGHT", "EXAM_EYE_AXIS_LEFT" } };
+            for (int i = 0; i < eye.Length; i++)
+            {
+                int r = i + 1;
+                CellText(t, eye[i][0] + ":", r, 0);
+                Cell(t, Txt(eye[i][1]), r, 1);
+                Cell(t, Txt(eye[i][2]), r, 2);
+                CellText(t, eye[i][3] + ":", r, 4);
+                Cell(t, Txt(eye[i][4]), r, 5);
+                Cell(t, Txt(eye[i][5]), r, 6);
+            }
+        }
+
+        /// <summary>Tai - Mũi - Họng: thính lực (m) nói thường · nói thầm, tai trái · tai phải.</summary>
+        private void BuildEntTable(LayoutControlGroup g)
+        {
+            LayoutControlGroup t = Table(g, new[] { 90, 110, 110, -100 }, new[] { 20, ROW_H, ROW_H });
+            CellText(t, "Thính lực (m)", 0, 0, true);
+            CellText(t, "Nói thường", 0, 1, true);
+            CellText(t, "Nói thầm", 0, 2, true);
+            CellText(t, "Tai trái:", 1, 0);
+            Cell(t, Txt("EXAM_ENT_LEFT_NORMAL"), 1, 1);
+            Cell(t, Txt("EXAM_ENT_LEFT_WHISPER"), 1, 2);
+            CellText(t, "Tai phải:", 2, 0);
+            Cell(t, Txt("EXAM_ENT_RIGHT_NORMAL"), 2, 1);
+            Cell(t, Txt("EXAM_ENT_RIGHT_WHISPER"), 2, 2);
+        }
+
+        /// <summary>Răng - Hàm - Mặt: sơ đồ 32 răng — mỗi răng 1 ô chọn mã 0–9 theo chú thích Mẫu 06.</summary>
+        private void BuildTeeth(LayoutControlGroup g)
+        {
+            List<int> cols = new List<int> { 70 };
             for (int i = 0; i < TEETH_UPPER.Length; i++)
             {
-                int x = x0 + i * w + (i >= 8 ? 10 : 0);
-                Lbl(p, TEETH_UPPER[i].ToString(), x + 12, y, 30);
-                ToothBox(p, TEETH_UPPER[i], x, y + 20, w - 4);
+                if (i == 8) cols.Add(12);
+                cols.Add(40);
             }
-            y += 46;
-            Lbl(p, "Hàm dưới", LEFT + 30, y, 70);
-            for (int i = 0; i < TEETH_LOWER.Length; i++)
+            cols.Add(-100);
+            LayoutControlGroup t = Table(g, cols.ToArray(), new[] { 18, ROW_H, ROW_H, 18 });
+            CellText(t, "Hàm trên", 1, 0);
+            CellText(t, "Hàm dưới", 2, 0);
+            for (int i = 0; i < TEETH_UPPER.Length; i++)
             {
-                int x = x0 + i * w + (i >= 8 ? 10 : 0);
-                ToothBox(p, TEETH_LOWER[i], x, y, w - 4);
-                Lbl(p, TEETH_LOWER[i].ToString(), x + 12, y + 20, 30);
+                int col = 1 + i + (i >= 8 ? 1 : 0);
+                CellText(t, TEETH_UPPER[i].ToString(), 0, col, true);
+                Cell(t, ToothBox(TEETH_UPPER[i]), 1, col);
+                Cell(t, ToothBox(TEETH_LOWER[i]), 2, col);
+                CellText(t, TEETH_LOWER[i].ToString(), 3, col, true);
             }
-            y += 44;
-            Lbl(p, "Tình trạng răng: 0 Bình thường · 1 Sâu · 2 Trám sâu lại · 3 Trám tốt · 4 Mất do sâu · 5 Mất lý do khác · 6 Bít hố rãnh · 7 Trụ, cầu, implant · 8 Chưa mọc · 9 Loại trừ",
-                LEFT + 30, y, 800).Appearance.ForeColor = Color.DimGray;
-            return y + ROW_H;
+            Hint(g, "Tình trạng răng: 0 Bình thường · 1 Sâu · 2 Trám sâu lại · 3 Trám tốt · 4 Mất do sâu");
+            Hint(g, "5 Mất lý do khác · 6 Bít hố rãnh · 7 Trụ, cầu, implant · 8 Chưa mọc · 9 Loại trừ");
         }
 
-        private void ToothBox(Control p, int tooth, int x, int y, int w)
+        /// <summary>Bảng chỉ số 2 cặp mỗi dòng: nhãn · ô · đơn vị (nếu <paramref name="withUnit"/>).</summary>
+        private void ValueTable(LayoutControlGroup g, string[][] rows, bool withUnit, int labelW)
         {
-            ComboBoxEdit c = new ComboBoxEdit();
-            c.Location = new Point(x, y);
-            c.Size = new Size(w, 20);
-            c.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            c.Properties.Items.AddRange(new object[] { "", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" });
-            p.Controls.Add(c);
-            dicField["TOOTH_" + tooth] = c;
+            int[] cols = withUnit
+                ? new[] { labelW, -50, 56, 16, labelW, -50, 56 }
+                : new[] { labelW, -50, 16, labelW, -50 };
+            int per = withUnit ? 3 : 2;
+            LayoutControlGroup t = Table(g, cols, Rows((rows.Length + 1) / 2, ROW_H + 2));
+            for (int i = 0; i < rows.Length; i++)
+            {
+                int r = i / 2, c = (i % 2) * (per + 1);
+                CellText(t, rows[i][0] + ":", r, c);
+                Cell(t, Txt(rows[i][1]), r, c + 1);
+                if (withUnit && !string.IsNullOrEmpty(rows[i][2]))
+                {
+                    SimpleLabelItem u = CellText(t, rows[i][2], r, c + 2);
+                    u.AppearanceItemCaption.ForeColor = Color.DimGray;
+                    u.AppearanceItemCaption.Options.UseForeColor = true;
+                }
+            }
         }
 
-        /// <summary>Tab con 4 — cận lâm sàng.</summary>
-        private void BuildCls()
+        /// <summary>Tab con 4 — cận lâm sàng: trái XN bắt buộc, XN nữ, CĐHA, XN khác; phải XN máu, nước tiểu.</summary>
+        private void BuildCls(LayoutControlGroup root)
         {
-            Control p = pnlCls;
-            int y = 4;
+            LayoutControlGroup c1 = Column(root, null);
+            LayoutControlGroup c2 = Column(root, c1);
+
+            // Dòng nút nối chỉ số đặt đầu cột trái (đặt ở root sẽ làm 2 cột lệch theo độ rộng chú thích / nút).
             SimpleButton btnMap = new SimpleButton();
             btnMap.Text = "Nối chỉ số CLS…";
             btnMap.ToolTip = "Nối chỉ số xét nghiệm / dịch vụ của viện với từng ô dưới đây. Sau đó tích \"Tự động lấy kết quả xét nghiệm\" để điền tự động.";
-            btnMap.Location = new Point(680, y);
-            btnMap.Size = new Size(130, 22);
             btnMap.Click += (s, e) => { if (ClsMapRequested != null) ClsMapRequested(this, EventArgs.Empty); };
-            p.Controls.Add(btnMap);
+            LayoutControlItem itMap = Add(c1, null, btnMap, height: 26, width: 140);
+            Hint(c1, "Nối chỉ số xét nghiệm / dịch vụ của viện với từng ô, sau đó tích \"Tự động lấy kết quả CLS\" để điền tự động.", itMap);
 
-            Title(p, "1. CÁC XÉT NGHIỆM BẮT BUỘC", ref y);
-            Lbl(p, "a) Ma túy (sàng lọc và định tính):", LEFT + 20, y, 300);
-            y += ROW_H - 2;
-            string[][] drugs = { new[] { "Amphetamin", "TEST_AMPHETAMIN" }, new[] { "Marijuana", "TEST_MARIJUANA" }, new[] { "Morphin", "TEST_MORPHIN" },
-                                 new[] { "Codein", "TEST_CODEIN" }, new[] { "Heroin", "TEST_HEROIN" } };
-            int col = 0;
-            foreach (string[] d in drugs)
-            {
-                int x = LEFT + 40 + col * 260;
-                Lbl(p, d[0] + ":", x, y, 90); Txt(p, d[1], x + 90, y, 150);
-                col++;
-                if (col == 3) { col = 0; y += ROW_H; }
-            }
-            y += ROW_H;
-            Lbl(p, "b) Nồng độ cồn trong máu hoặc hơi thở:", LEFT + 20, y, 260); Txt(p, "TEST_ALCOHOL", 290, y, 300);
-            y += ROW_H;
-            Lbl(p, "Người thực hiện (ma túy, cồn):", LEFT + 40, y, 200); Login(p, "TEST_DRUG_LOGINNAME", 250, y, 250);
-            y += ROW_H + 4;
-            Lbl(p, "Riêng nữ (Phụ lục XXV TT 32/2023): Tế bào cổ tử cung / HPV (nếu có):", LEFT + 20, y, 450);
-            y += ROW_H - 4;
-            femaleOnly.Add(Memo(p, "TEST_CERVICAL", LEFT + 40, y, 770, 36));
-            y += 40;
-            Lbl(p, "X-quang nhũ / Siêu âm 02 tuyến vú (nếu có):", LEFT + 20, y, 450);
-            y += ROW_H - 4;
-            femaleOnly.Add(Memo(p, "TEST_BREAST", LEFT + 40, y, 770, 36));
-            y += 40;
-            Lbl(p, "Người thực hiện (XN nữ):", LEFT + 40, y, 200); femaleOnly.Add(Login(p, "TEST_FEMALE_LOGINNAME", 250, y, 250));
-            y += ROW_H + 4;
+            LayoutControlGroup g = Box(c1, "1. CÁC XÉT NGHIỆM BẮT BUỘC");
+            Hint(g, "a) Ma túy (sàng lọc và định tính):");
+            ValueTable(g, new[] { new[] { "Amphetamin", "TEST_AMPHETAMIN" }, new[] { "Marijuana", "TEST_MARIJUANA" }, new[] { "Morphin", "TEST_MORPHIN" },
+                                  new[] { "Codein", "TEST_CODEIN" }, new[] { "Heroin", "TEST_HEROIN" } }, false, 100);
+            Add(g, "b) Nồng độ cồn (máu / hơi thở):", Txt("TEST_ALCOHOL"), 180);
+            Add(g, "Người thực hiện (ma túy, cồn):", Login("TEST_DRUG_LOGINNAME"), 180);
 
-            Title(p, "2. CÁC XÉT NGHIỆM CHỈ THỰC HIỆN KHI CÓ CHỈ ĐỊNH CỦA BÁC SĨ KHÁM SỨC KHỎE", ref y);
-            Lbl(p, "a) Xét nghiệm máu — Huyết học: tổng phân tích tế bào máu ngoại vi", LEFT + 20, y, 600);
-            y += ROW_H - 2;
-            string[][] blood = {
+            g = Box(c1, "RIÊNG NỮ (Phụ lục XXV Thông tư 32/2023/TT-BYT)");
+            MemoEdit memCervical = Memo("TEST_CERVICAL");
+            Add(g, "Tế bào cổ tử cung / HPV:", memCervical, 180, height: 40);
+            MemoEdit memBreast = Memo("TEST_BREAST");
+            Add(g, "X-quang nhũ / Siêu âm vú:", memBreast, 180, height: 40);
+            GridLookUpEdit cboFemale = Login("TEST_FEMALE_LOGINNAME");
+            Add(g, "Người thực hiện (XN nữ):", cboFemale, 180);
+            femaleOnly.Add(memCervical);
+            femaleOnly.Add(memBreast);
+            femaleOnly.Add(cboFemale);
+
+            g = Box(c1, "2c. KẾT QUẢ CHẨN ĐOÁN HÌNH ẢNH (khi có chỉ định)");
+            Add(g, null, Memo("RESULT_DIIM"), height: 52);
+            Add(g, "Người thực hiện (CĐHA):", Login("DIIM_LOGINNAME"), 180);
+
+            g = Box(c1, "2d. CÁC XÉT NGHIỆM KHÁC (khi có chỉ định)");
+            Add(g, null, Memo("RESULT_OTHER_TEST"), height: 52);
+            Add(g, "Người thực hiện (XN khác):", Login("OTHER_TEST_LOGINNAME"), 180);
+
+            g = Box(c2, "2a. XÉT NGHIỆM MÁU (khi có chỉ định của bác sĩ khám sức khỏe)");
+            Hint(g, "Huyết học — tổng phân tích tế bào máu ngoại vi:");
+            ValueTable(g, new[] {
                 new[] { "Số lượng HC", "TEST_BLOOD_HC", "T/L" }, new[] { "Huyết sắc tố", "TEST_BLOOD_HGB", "g/L" },
                 new[] { "Hematocrit", "TEST_BLOOD_HCT", "L/L" }, new[] { "MCV", "TEST_BLOOD_MCV", "fL" },
                 new[] { "MCH", "TEST_BLOOD_MCH", "pg" }, new[] { "MCHC", "TEST_BLOOD_MCHC", "g/L" },
                 new[] { "RDW", "TEST_BLOOD_RDW", "%" }, new[] { "Số lượng bạch cầu", "TEST_BLOOD_BC", "G/L" },
                 new[] { "BC trung tính", "TEST_BLOOD_NEUT", "G/L" }, new[] { "BC lympho", "TEST_BLOOD_LYMPH", "G/L" },
                 new[] { "BC đơn nhân", "TEST_BLOOD_MONO", "G/L" }, new[] { "BC ái toan", "TEST_BLOOD_EOS", "G/L" },
-                new[] { "BC ái kiềm", "TEST_BLOOD_BASO", "G/L" }, new[] { "Số lượng tiểu cầu", "TEST_BLOOD_TC", "G/L" } };
-            y = Grid2(p, blood, y);
-            Lbl(p, "Sinh hóa máu:", LEFT + 20, y, 300);
-            y += ROW_H - 2;
-            string[][] bio = { new[] { "Đường máu", "TEST_BLOOD_GLUCO", "mmol/L" }, new[] { "Creatinin", "TEST_BLOOD_CREATININ", "µmol/L" },
-                               new[] { "ASAT (GOT)", "TEST_BLOOD_ASAT", "U/L" }, new[] { "ALAT (GPT)", "TEST_BLOOD_ALAT", "U/L" } };
-            y = Grid2(p, bio, y);
-            Lbl(p, "Người thực hiện (XN máu):", LEFT + 40, y, 200); Login(p, "TEST_BLOOD_LOGINNAME", 250, y, 250);
-            y += ROW_H + 4;
-            Lbl(p, "b) Xét nghiệm nước tiểu — tổng phân tích nước tiểu (máy tự động):", LEFT + 20, y, 600);
-            y += ROW_H - 2;
-            string[][] urine = {
+                new[] { "BC ái kiềm", "TEST_BLOOD_BASO", "G/L" }, new[] { "Số lượng tiểu cầu", "TEST_BLOOD_TC", "G/L" } }, true, 115);
+            Hint(g, "Sinh hóa máu:");
+            ValueTable(g, new[] { new[] { "Đường máu", "TEST_BLOOD_GLUCO", "mmol/L" }, new[] { "Creatinin", "TEST_BLOOD_CREATININ", "µmol/L" },
+                                  new[] { "ASAT (GOT)", "TEST_BLOOD_ASAT", "U/L" }, new[] { "ALAT (GPT)", "TEST_BLOOD_ALAT", "U/L" } }, true, 115);
+            Add(g, "Người thực hiện (XN máu):", Login("TEST_BLOOD_LOGINNAME"), 180);
+
+            g = Box(c2, "2b. XÉT NGHIỆM NƯỚC TIỂU — tổng phân tích nước tiểu (máy tự động)");
+            ValueTable(g, new[] {
                 new[] { "Tỉ trọng", "TEST_URINE_SG", "" }, new[] { "pH", "TEST_URINE_PH", "" },
                 new[] { "Bạch cầu", "TEST_URINE_LEU", "Leu/µL" }, new[] { "Hồng cầu", "TEST_URINE_ERY", "Ery/µL" },
                 new[] { "Nitrit", "TEST_URINE_NITRIT", "" }, new[] { "Protein", "TEST_URINE_PROTEIN", "g/L" },
                 new[] { "Glucose", "TEST_URINE_GLUCO", "mmol/L" }, new[] { "Thể cetonic", "TEST_URINE_KETONE", "mmol/L" },
-                new[] { "Bilirubin", "TEST_URINE_BILIRUBIN", "µmol/L" }, new[] { "Urobilinogen", "TEST_URINE_UBG", "µmol/L" } };
-            y = Grid2(p, urine, y);
-            Lbl(p, "Khác (nếu có):", LEFT + 40, y, 120); Txt(p, "TEST_URINE_OTHER", 170, y, 640);
-            y += ROW_H;
-            Lbl(p, "Người thực hiện (XN nước tiểu):", LEFT + 40, y, 200); Login(p, "TEST_URINE_LOGINNAME", 250, y, 250);
-            y += ROW_H + 4;
-            Lbl(p, "c) Kết quả chẩn đoán hình ảnh:", LEFT + 20, y, 300);
-            y += ROW_H - 4;
-            Memo(p, "RESULT_DIIM", LEFT + 40, y, 770, 48);
-            y += 52;
-            Lbl(p, "Người thực hiện (CĐHA):", LEFT + 40, y, 200); Login(p, "DIIM_LOGINNAME", 250, y, 250);
-            y += ROW_H + 4;
-            Lbl(p, "d) Các xét nghiệm khác:", LEFT + 20, y, 300);
-            y += ROW_H - 4;
-            Memo(p, "RESULT_OTHER_TEST", LEFT + 40, y, 770, 48);
-            y += 52;
-            Lbl(p, "Người thực hiện (XN khác):", LEFT + 40, y, 200); Login(p, "OTHER_TEST_LOGINNAME", 250, y, 250);
+                new[] { "Bilirubin", "TEST_URINE_BILIRUBIN", "µmol/L" }, new[] { "Urobilinogen", "TEST_URINE_UBG", "µmol/L" } }, true, 115);
+            Add(g, "Khác (nếu có):", Txt("TEST_URINE_OTHER"), 180);
+            Add(g, "Người thực hiện (XN nước tiểu):", Login("TEST_URINE_LOGINNAME"), 180);
+
+            EndColumn(c1);
+            EndColumn(c2);
         }
 
-        /// <summary>Lưới 2 cột "nhãn · ô · đơn vị" cho các chỉ số xét nghiệm.</summary>
-        private int Grid2(Control p, string[][] rows, int y)
+        /// <summary>Tab con 5 — trái: kết luận lái xe, bệnh tật; phải: phân loại sức khỏe, đề nghị, người kết luận.</summary>
+        private void BuildConclusion(LayoutControlGroup root)
         {
-            for (int i = 0; i < rows.Length; i++)
-            {
-                int x = LEFT + 40 + (i % 2) * 400;
-                Lbl(p, rows[i][0] + ":", x, y, 140);
-                Txt(p, rows[i][1], x + 140, y, 140);
-                if (!string.IsNullOrEmpty(rows[i][2])) Lbl(p, rows[i][2], x + 285, y, 70).Appearance.ForeColor = Color.DimGray;
-                if (i % 2 == 1 || i == rows.Length - 1) y += ROW_H;
-            }
-            return y + 2;
-        }
+            LayoutControlGroup c1 = Column(root, null);
+            LayoutControlGroup c2 = Column(root, c1);
 
-        /// <summary>Tab con 5 — kết luận.</summary>
-        private void BuildConclusion()
-        {
-            Control p = pnlConclusion;
-            int y = 4;
-            Title(p, "1. KẾT LUẬN — tình trạng sức khỏe để lái xe", ref y);
-            rdoConclusion = Rdo(p, "DRIVER_CONCLUSION_TYPE", LEFT + 20, y, 800, 130,
+            LayoutControlGroup g = Box(c1, "1. KẾT LUẬN — TÌNH TRẠNG SỨC KHỎE ĐỂ LÁI XE");
+            rdoConclusion = Rdo("DRIVER_CONCLUSION_TYPE", 1,
                 1, "Đủ điều kiện sức khỏe lái xe/điều khiển xe máy chuyên dùng hạng (ghi rõ hạng giấy phép lái xe)",
                 2, "Không đủ điều kiện sức khỏe lái xe/điều khiển xe máy chuyên dùng hạng (ghi rõ hạng giấy phép lái xe)",
                 3, "Đạt tiêu chuẩn sức khỏe lái xe/điều khiển xe máy chuyên dùng hạng (ghi rõ hạng) nhưng yêu cầu khám lại",
                 4, "Đủ điều kiện sức khỏe lái xe hạng A1 đối với người khuyết tật điều khiển xe mô tô ba bánh dùng cho người khuyết tật",
                 5, "Đủ điều kiện sức khỏe lái xe hạng B đối với người khuyết tật điều khiển xe ô tô số tự động có kết cấu phù hợp");
             rdoConclusion.EditValueChanged += (s, e) => RefreshState();
+            Add(g, null, rdoConclusion, height: 5 * 20 + 10);
             cboLicenseClass.EditValueChanged += (s, e) => UpdateConclusionLicenseLabel();
-            y += 134;
-            lblConclusionLicense = Lbl(p, "", LEFT + 40, y, 700);
-            y += ROW_H - 4;
-            Lbl(p, "Thời gian khám lại:", LEFT + 40, y, 130); txtReexam = Txt(p, "REEXAM_NOTE", 170, y, 640);
-            y += ROW_H + 4;
+            lblConclusionLicense = new LabelControl();
+            lblConclusionLicense.AutoSizeMode = LabelAutoSizeMode.None;
+            lblConclusionLicense.Appearance.ForeColor = Color.FromArgb(0, 51, 153);
+            Add(g, null, lblConclusionLicense, height: 22);
+            txtReexam = Txt("REEXAM_NOTE");
+            Add(g, "Thời gian khám lại:", txtReexam, 120);
 
-            Title(p, "2. CÁC BỆNH, TẬT (nếu có)", ref y);
-            CheckEdit chkNormal = Chk(p, "CONCLUSION_IS_NORMAL", "Chưa phát hiện bất thường", LEFT + 20, y, 220);
+            g = Box(c1, "2. CÁC BỆNH, TẬT (nếu có)");
+            CheckEdit chkNormal = Chk("CONCLUSION_IS_NORMAL", "Chưa phát hiện bất thường");
             chkNormal.CheckedChanged += (s, e) => RefreshState();
-            y += ROW_H;
-            Lbl(p, "Chẩn đoán sơ bộ (ICD):", LEFT + 20, y, 170); Icd(p, "CONCLUSION_PRE_ICD", 200, y, 610);
-            y += ROW_H;
-            Lbl(p, "Chẩn đoán xác định (ICD):", LEFT + 20, y, 170); Icd(p, "CONCLUSION_ICD", 200, y, 610);
-            y += ROW_H + 4;
+            Add(g, null, chkNormal, height: ROW_H);
+            Add(g, "Chẩn đoán sơ bộ (ICD):", Icd("CONCLUSION_PRE_ICD"), TXT_W, height: ROW_H);
+            Add(g, "Chẩn đoán xác định (ICD):", Icd("CONCLUSION_ICD"), TXT_W, height: ROW_H);
 
-            Title(p, "3. PHÂN LOẠI SỨC KHỎE", ref y);
-            Lbl(p, "Phân loại:", LEFT + 20, y, 80); Rank(p, "HEALTH_EXAM_RANK_ID", LEFT + 100, y, 200);
-            y += ROW_H + 4;
+            g = Box(c2, "3. PHÂN LOẠI SỨC KHỎE");
+            LayoutControlItem it = Add(g, "Phân loại:", Rank("HEALTH_EXAM_RANK_ID"), 120);
+            Filler(g, it);
 
-            Title(p, "4. ĐỀ NGHỊ", ref y);
-            rdoSuggest = Rdo(p, "SUGGEST_TYPE", LEFT + 20, y, 800, 110,
+            g = Box(c2, "4. ĐỀ NGHỊ");
+            rdoSuggest = Rdo("SUGGEST_TYPE", 1,
                 1, "Bình thường, hẹn khám định kỳ lần sau",
                 2, "Có yếu tố nguy cơ, cần theo dõi thêm",
                 3, "Đã có bệnh mạn tính, tiếp tục điều trị theo phác đồ/toa cũ",
                 4, "Chuyển cơ sở KBCB, khám chuyên khoa",
                 5, "Khác, ghi rõ (nếu có tư vấn chế độ ăn uống, tập luyện…)");
             rdoSuggest.EditValueChanged += (s, e) => RefreshState();
-            y += 114;
-            memSuggestNote = Memo(p, "SUGGEST_NOTE", LEFT + 40, y, 770, 40);
-            y += 46;
+            Add(g, null, rdoSuggest, height: 5 * 20 + 10);
+            memSuggestNote = Memo("SUGGEST_NOTE");
+            Add(g, "Ghi rõ:", memSuggestNote, 120, height: 44);
 
-            Title(p, "NGƯỜI KẾT LUẬN", ref y);
-            Lbl(p, "Người kết luận:", LEFT + 20, y, 110); cboConcluder = Gle(p, null, LEFT + 130, y, 260);
-            Lbl(p, "Ngày kết luận:", 430, y, 100);
+            g = Box(c2, "NGƯỜI KẾT LUẬN");
+            cboConcluder = Gle(null);
+            it = Add(g, "Người kết luận:", cboConcluder, 120);
             dteConclusionTime = new DateEdit();
-            dteConclusionTime.Location = new Point(530, y);
-            dteConclusionTime.Size = new Size(170, 20);
             dteConclusionTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             dteConclusionTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
             dteConclusionTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             dteConclusionTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             dteConclusionTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             dteConclusionTime.Properties.Mask.UseMaskAsDisplayFormat = true;
-            p.Controls.Add(dteConclusionTime);
+            Add(g, "Ngày kết luận:", dteConclusionTime, 90, it);
+
+            EndColumn(c1);
+            EndColumn(c2);
         }
 
         #endregion
@@ -681,8 +880,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         /// <summary>
-        /// Dựng 21 câu theo danh mục bệnh mã 01–21 (đã sắp theo số câu), 2 cột như trên giấy; số câu theo mã.
-        /// Gọi mỗi lần nạp tab — dựng lại nếu danh mục khác lần trước.
+        /// Dựng các câu theo danh mục bệnh mã 01–21 (đã sắp theo số câu), mỗi câu 1 dòng: nội dung · Có / Không;
+        /// số câu theo mã. Gọi mỗi lần nạp tab — chỉ dựng lại nếu danh mục khác lần trước.
         /// </summary>
         public void SetDiseaseCatalog(List<HIS_DISEASE_TYPE> diseases)
         {
@@ -690,50 +889,42 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 List<HIS_DISEASE_TYPE> list = diseases ?? new List<HIS_DISEASE_TYPE>();
                 if (dicDisease.Count == list.Count && list.All(o => dicDisease.ContainsKey(o.ID))) return;
-                pnlDiseases.Controls.Clear();
-                dicDisease.Clear();
-                int half = (list.Count + 1) / 2;
-                for (int i = 0; i < list.Count; i++)
+                lcAdmin.BeginUpdate();
+                try
                 {
-                    int colX = (i < half) ? 0 : 415;
-                    int rowY = ((i < half) ? i : i - half) * ROW_H;
-                    LabelControl l = new LabelControl();
-                    l.AutoSizeMode = LabelAutoSizeMode.None;
-                    int no = QuestionNo(list[i]);
-                    l.Text = (no > 0 ? no : i + 1) + ". " + list[i].DISEASE_TYPE_NAME;
-                    l.ToolTip = l.Text;
-                    l.Location = new Point(colX + 20, rowY + 3);
-                    l.Size = new Size(275, 18);
-                    pnlDiseases.Controls.Add(l);
-                    RadioGroup r = new RadioGroup();
-                    r.Location = new Point(colX + 298, rowY);
-                    r.Size = new Size(110, 22);
-                    r.Properties.AllowFocused = false;
-                    r.Properties.Items.Add(new RadioGroupItem(1, "Có"));
-                    r.Properties.Items.Add(new RadioGroupItem(0, "Không"));
-                    r.EditValue = null;
-                    pnlDiseases.Controls.Add(r);
-                    dicDisease[list[i].ID] = r;
+                    foreach (BaseLayoutItem old in diseaseItems)
+                    {
+                        grpDiseases.Remove(old);
+                        old.Dispose();
+                    }
+                    foreach (RadioGroup old in dicDisease.Values) old.Dispose();
+                    diseaseItems.Clear();
+                    diseaseLabels.Clear();
+                    dicDisease.Clear();
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        int no = QuestionNo(list[i]);
+                        SimpleLabelItem lbl = new SimpleLabelItem();
+                        lbl.Text = (no > 0 ? no : i + 1) + ". " + list[i].DISEASE_TYPE_NAME;
+                        lbl.OptionsToolTip.ToolTip = lbl.Text;
+                        lbl.TextAlignMode = TextAlignModeItem.CustomSize;
+                        lbl.TextSize = new Size(120, 20);
+                        grpDiseases.AddItem(lbl);
+                        RadioGroup r = new RadioGroup();
+                        r.Properties.AllowFocused = false;
+                        r.Properties.Columns = 2;
+                        r.Properties.Items.Add(new RadioGroupItem(1, "Có"));
+                        r.Properties.Items.Add(new RadioGroupItem(0, "Không"));
+                        r.EditValue = null;
+                        NoWheel(r);
+                        LayoutControlItem ri = Add(grpDiseases, null, r, rightOf: lbl, height: ROW_H, width: 140);
+                        diseaseItems.Add(lbl);
+                        diseaseItems.Add(ri);
+                        diseaseLabels.Add(lbl);
+                        dicDisease[list[i].ID] = r;
+                    }
                 }
-                pnlDiseases.Height = Math.Max(1, half) * ROW_H + 4;
-                RelocateBelowDiseases();
-            }
-            catch (Exception ex) { LogSystem.Warn(ex); }
-        }
-
-        /// <summary>Dời các ô nằm dưới lưới 21 câu theo chiều cao thực của lưới.</summary>
-        private void RelocateBelowDiseases()
-        {
-            try
-            {
-                int bottom = pnlDiseases.Top + pnlDiseases.Height + 4;
-                List<Control> below = pnlAdmin.Controls.Cast<Control>()
-                    .Where(c => c != pnlDiseases && c.Top >= diseaseTop && !(c is ScrollBar))
-                    .OrderBy(c => c.Top).ToList();
-                if (below.Count == 0) return;
-                int shift = bottom - below.Min(c => c.Top);
-                if (shift == 0) return;
-                foreach (Control c in below) c.Top += shift;
+                finally { lcAdmin.EndUpdate(); }
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
@@ -944,6 +1135,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 spnBpMax.EditValue = (dhst != null && dhst.BLOOD_PRESSURE_MAX.HasValue) ? (object)(decimal)dhst.BLOOD_PRESSURE_MAX.Value : null;
                 spnBpMin.EditValue = (dhst != null && dhst.BLOOD_PRESSURE_MIN.HasValue) ? (object)(decimal)dhst.BLOOD_PRESSURE_MIN.Value : null;
                 spnBreathRate.EditValue = (dhst != null && dhst.BREATH_RATE.HasValue) ? (object)dhst.BREATH_RATE.Value : null;
+                cboDhstExecutor.EditValue = (dhst != null && !string.IsNullOrEmpty(dhst.EXECUTE_LOGINNAME)) ? dhst.EXECUTE_LOGINNAME : null;
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
             finally { applyingState = false; }
