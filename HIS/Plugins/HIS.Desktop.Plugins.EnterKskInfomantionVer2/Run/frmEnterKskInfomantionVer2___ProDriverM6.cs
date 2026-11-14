@@ -359,12 +359,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 else if (currentKskProDriverM6 != null && currentKskProDriverM6.DHST_ID != null && currentKskProDriverM6.DHST_ID > 0)
                     dhst.ID = currentKskProDriverM6.DHST_ID.Value;
                 ucKskProDriverM6.GetDhst(dhst);
-                // Người đo = người kết luận (giống tab Ksk tâm thần)
-                object login = ucKskProDriverM6.CboConcluder.EditValue;
-                dhst.EXECUTE_LOGINNAME = login != null ? login.ToString() : null;
+                // Người đo = bác sĩ khám thể lực; để trống thì lấy người kết luận (như trước khi có ô bác sĩ thể lực).
+                object login = ucKskProDriverM6.CboDhstExecutor.EditValue;
+                if (login == null || string.IsNullOrWhiteSpace(login.ToString())) login = ucKskProDriverM6.CboConcluder.EditValue;
+                dhst.EXECUTE_LOGINNAME = login != null && !string.IsNullOrWhiteSpace(login.ToString()) ? login.ToString() : null;
                 if (!string.IsNullOrEmpty(dhst.EXECUTE_LOGINNAME))
                 {
-                    var emp = BackendDataWorker.Get<V_HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == dhst.EXECUTE_LOGINNAME);
+                    var emp = (BackendDataWorker.Get<V_HIS_EMPLOYEE>() ?? new List<V_HIS_EMPLOYEE>()).FirstOrDefault(o => o.LOGINNAME == dhst.EXECUTE_LOGINNAME);
                     dhst.EXECUTE_USERNAME = emp != null ? emp.TDL_USERNAME : null;
                 }
                 result.HisDhst = HasDhstData(dhst) ? dhst : null;
