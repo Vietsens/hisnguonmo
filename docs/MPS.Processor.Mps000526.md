@@ -54,7 +54,7 @@ Không có `InterviewAnswers` (mẫu này không có phần hỏi bệnh B, D1�
 - **Tầm soát cho nữ** (`CLS_PAP`, `CLS_HPV`, `CLS_MAMMO`, `CLS_BREAST_US`): lấy theo bảng nối CLS (dòng loại "DV": kết luận của dịch vụ, không có kết luận thì mô tả; dịch vụ đã thực hiện đầu tiên có kết quả), in dạng "tên xét nghiệm: kết quả"; chưa có kết quả hoặc bệnh nhân nam → để trống.
 - **Hạn chế đã biết**: màn khai báo bảng nối CLS (module KskSyncList) chỉ cho chọn dịch vụ thuộc loại có tên chứa "siêu âm", "phẫu thuật", "thủ thuật". Dịch vụ X-quang nhũ thuộc loại khác (ví dụ "Chẩn đoán hình ảnh") thì không nối được, dòng X-quang nhũ để trống — cả trên giấy lẫn khi đẩy cổng. Mở rộng danh sách loại là việc của module KskSyncList, cần BA quyết.
 - **Giữ nguyên như Mps000523**: sản phụ khoa (nam trống, quy tắc "Từ chối"), răng (mã cổng → số 0–9), khúc xạ, xét nghiệm (ô của màn KSK trước, rồi bảng nối CLS; không có giá trị nào thì in ghi chú tổng hợp), dòng 22 tiền sử, ô CCCD / BHYT, kết luận, chỉ đọc bản đã lưu.
-- `SetSingleKey` giữ giá trị **ghi đầu tiên**: key tính toán ghi trước các key cột gốc; hai bảng gốc có cột trùng tên thì key mang giá trị của bảng được ghi trước. Mẫu chỉ nên dùng các key liệt kê ở mục 3.
+- `SetSingleKey` giữ giá trị **ghi đầu tiên**: key tính toán ghi trước các key cột gốc. Cột của V_HIS_SERVICE_REQ được ghi trước, không tiền tố và đã bỏ "TDL_", nên các key `PATIENT_ADDRESS`, `PATIENT_PHONE`, `PATIENT_MOBILE`, `PATIENT_CCCD_NUMBER`, `PATIENT_CMND_NUMBER`, `PATIENT_PASSPORT_NUMBER` mang giá trị chụp trên y lệnh chứ không phải của HIS_PATIENT (giống Mps000523). Mẫu đang giao chỉ dùng key tính toán ở mục 3; viện tự thêm key cột gốc vào mẫu thì lưu ý điểm này.
 
 ## 5. Mẫu
 
