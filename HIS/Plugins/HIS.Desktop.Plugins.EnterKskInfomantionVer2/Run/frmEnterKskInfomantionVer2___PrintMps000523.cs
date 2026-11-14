@@ -241,7 +241,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
             catch (Exception ex)
             {
-                LogSystem.Warn("Mps000523: INTERVIEW_JSON khong doc duoc -> in trong muc hoi benh", ex);
+                LogSystem.Warn("Mps000523/Mps000526: INTERVIEW_JSON khong doc duoc -> in trong cac muc lay tu JSON nay (hoi benh, noi cong tac)", ex);
             }
             return rs;
         }
@@ -420,8 +420,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             return rs;
         }
 
-        /// <summary>Portal field code -> HIS test index code (upper case) from ControlState "KskSytClsMap" (only "XN" rows).</summary>
-        private static Dictionary<string, string> ReadClsMap()
+        /// <summary>
+        /// Portal field code -> HIS code (upper case) of the rows of ONE source kind in ControlState "KskSytClsMap":
+        /// "XN" = test index code (also the rows saved without a kind), "DV" = service code (Mps000526).
+        /// </summary>
+        private static Dictionary<string, string> ReadClsMap(string sourceKind = CLS_MAP_KIND__TEST_INDEX)
         {
             var rs = new Dictionary<string, string>();
             try
@@ -435,7 +438,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 {
                     string field = (string)it["FieldCode"], code = (string)it["TestIndexCode"], kind = (string)it["SourceKind"];
                     if (string.IsNullOrWhiteSpace(field) || string.IsNullOrWhiteSpace(code)) continue;
-                    if (!string.IsNullOrWhiteSpace(kind) && kind.Trim() != CLS_MAP_KIND__TEST_INDEX) continue;
+                    if ((string.IsNullOrWhiteSpace(kind) ? CLS_MAP_KIND__TEST_INDEX : kind.Trim()) != sourceKind) continue;
                     rs[field.Trim()] = code.Trim().ToUpperInvariant();
                 }
             }

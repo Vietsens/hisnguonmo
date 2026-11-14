@@ -1621,9 +1621,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 1)
                 {
-                    // Elderly record of the HCMC portal (Mẫu 4) -> Mps000523, otherwise the usual over-18 form
+                    // HCMC portal record: elderly (Mẫu 4) -> Mps000523, other adult (Mẫu 3) -> Mps000526; otherwise the usual over-18 form
                     if (currentKskOverEight != null)
-                        PrintProcess(IsElderlyM4Print() ? PRINT_TYPE.MPS000523 : PRINT_TYPE.MPS000452);
+                        PrintProcess(IsElderlyM4Print() ? PRINT_TYPE.MPS000523 : IsAdultM3Print() ? PRINT_TYPE.MPS000526 : PRINT_TYPE.MPS000452);
                 }
                 else if (xtraTabControl1.SelectedTabPageIndex == 2)
                 {
