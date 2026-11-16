@@ -1305,13 +1305,10 @@ namespace HIS.UC.UCPatientRaw
                 }
 
                 LogSystem.Debug("Bat dau tim kiem benh nhan theo filter.");
-                string dateDob = this.dtPatientDob.DateTime.ToString("yyyyMMdd");
-                string timeDob = "00";
-                if (this.txtAge.Enabled)
-                    //&& this.cboAge.Enabled)
-                    timeDob = string.Format("{0:00}", DateTime.Now.Hour - Inventec.Common.TypeConvert.Parse.ToInt32(this.txtAge.Text));
-
-                long dob = Inventec.Common.TypeConvert.Parse.ToInt64(dateDob + timeDob + "0000");
+                string strDobFilter = this.txtAge.Enabled
+                    ? this.GetDobByHourAge().ToString("yyyyMMddHH") + "0000"
+                    : this.dtPatientDob.DateTime.ToString("yyyyMMdd") + "000000";
+                long dob = Inventec.Common.TypeConvert.Parse.ToInt64(strDobFilter);
                 short ismale = Convert.ToInt16(this.cboGender.EditValue);
                 this.LoadDataSearchPatient("", this.txtPatientName.Text, dob, ismale, true);
                 this.cardSearch = null;
