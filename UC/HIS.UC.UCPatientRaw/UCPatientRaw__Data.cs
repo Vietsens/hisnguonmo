@@ -80,16 +80,10 @@ namespace HIS.UC.UCPatientRaw
 
                 if (this.dtPatientDob.EditValue != null)
 				{
-					string dateDob = this.dtPatientDob.DateTime.ToString("yyyyMMdd");
-					string timeDob = "00";
-					string minute = "00";
-					if (this.txtAge.Enabled)
-					{
-						timeDob = string.Format("{0:00}", DateTime.Now.Hour - Inventec.Common.TypeConvert.Parse.ToInt32(this.txtAge.Text));
-						minute = string.Format("{0:00}", DateTime.Now.Minute);
-					}
-					long dob = Inventec.Common.TypeConvert.Parse.ToInt64(dateDob + timeDob + minute + "00");
-					dataGet.DOB = dob;
+					string strDob = this.txtAge.Enabled
+						? this.GetDobByHourAge().ToString("yyyyMMddHHmm") + "00"
+						: this.dtPatientDob.DateTime.ToString("yyyyMMdd") + "000000";
+					dataGet.DOB = Inventec.Common.TypeConvert.Parse.ToInt64(strDob);
 				}
 				else
 				{
@@ -185,16 +179,10 @@ namespace HIS.UC.UCPatientRaw
 				dataGet.PATIENT_NAME = this.txtPatientName.Text.Trim();
 				if (this.dtPatientDob.EditValue != null)
 				{
-					string dateDob = this.dtPatientDob.DateTime.ToString("yyyyMMdd");
-					string timeDob = "00";
-					string minute = "00";
-					if (this.txtAge.Enabled)
-					{
-						timeDob = string.Format("{0:00}", DateTime.Now.Hour - Inventec.Common.TypeConvert.Parse.ToInt32(this.txtAge.Text));
-						minute = string.Format("{0:00}", DateTime.Now.Minute);
-					}
-					long dob = Inventec.Common.TypeConvert.Parse.ToInt64(dateDob + timeDob + minute + "00");
-					dataGet.DOB = dob;
+					string strDob = this.txtAge.Enabled
+						? this.GetDobByHourAge().ToString("yyyyMMddHHmm") + "00"
+						: this.dtPatientDob.DateTime.ToString("yyyyMMdd") + "000000";
+					dataGet.DOB = Inventec.Common.TypeConvert.Parse.ToInt64(strDob);
 				}
 				else
 				{
@@ -211,6 +199,20 @@ namespace HIS.UC.UCPatientRaw
 				Inventec.Common.Logging.LogSystem.Warn(ex);
 			}
 			return dataGet;
+		}
+
+		/// <summary>
+		/// Thời điểm sinh khi ô tuổi (giờ) được bật (BN sinh trong ngày): lùi từ thời điểm hiện tại đúng số giờ đã nhập.
+		/// Ngày tự lùi sang hôm trước khi số giờ lớn hơn giờ hiện tại (02:00 nhập 5 giờ => 21:mm hôm trước),
+		/// thay cho cách cũ lấy DateTime.Now.Hour - số giờ làm ra giờ âm và DOB sai định dạng.
+		/// Ô giờ không bắt buộc: để trống (hoặc ngoài khoảng 0-23 mà Valid_Text_Age_Control đã chặn) thì tính là 0 giờ.
+		/// </summary>
+		private DateTime GetDobByHourAge()
+		{
+			int hourAge = Inventec.Common.TypeConvert.Parse.ToInt32(this.txtAge.Text);
+			if (hourAge < 0 || hourAge > 23)
+				hourAge = 0;
+			return DateTime.Now.AddHours(-hourAge);
 		}
 
 		public bool IsChangeLayout()
