@@ -95,6 +95,8 @@ namespace HIS.UC.UCHeniInfo
         {
             try
             {
+                // Nap the khac => ma doi tuong KCB tinh lai theo the moi, bo ma da chon tay cua the truoc
+                this.isHeinPatientTypeChosenByUser = false;
                 this.patientTypeAlterOld = patyAlterBhyt;
                 if (patyAlterBhyt.HAS_BIRTH_CERTIFICATE == MOS.LibraryHein.Bhyt.HeinHasBirthCertificate.HeinHasBirthCertificateCode.TRUE)
                 {
@@ -223,6 +225,8 @@ namespace HIS.UC.UCHeniInfo
         {
             try
             {
+                // Nap du lieu the moi (quet the / tra cong) => tinh lai ma doi tuong KCB theo the moi
+                this.isHeinPatientTypeChosenByUser = false;
                 if (dataHein.HeinCardNumber == null)
                 {
                     this.txtSoThe.Text = oldHeinCardNumber;
@@ -542,6 +546,7 @@ namespace HIS.UC.UCHeniInfo
             try
             {
                 Inventec.Common.Logging.LogSystem.Info("FillDataHeinInsuranceBySelectedPatientTypeAlter");
+                this.isHeinPatientTypeChosenByUser = false;
                 this.isFillingHeinDataFromDb = true;
                 this.isPatientOld = true;
                 if (patientTypeAlter == null) throw new ArgumentNullException("patientTypeAlter is null");
@@ -905,6 +910,7 @@ namespace HIS.UC.UCHeniInfo
                     // Goi tuong minh vi neu gia tri o "Loai" khong doi thi su kien cua no khong ban ra.
                     if (isFocus && !isChooseCboPatientType)
                     {
+                        this.isHeinPatientTypeChosenByUser = false;
                         this.InitializeComboHeinPatientType();
                     }
                 }

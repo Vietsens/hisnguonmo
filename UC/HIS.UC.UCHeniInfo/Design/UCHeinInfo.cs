@@ -81,6 +81,9 @@ namespace HIS.UC.UCHeniInfo
         Action<bool> dlgEnableSave; 
         //qtcode
         public bool isChooseCboPatientType = false;
+        // Nguoi dung da chu dong chon ma doi tuong KCB tu danh sach => code tu gan (tich TT46, doi Loai bang code...)
+        // khong duoc ghi de. Tat khi lam moi form / nap the moi / nguoi dung chu dong doi Loai, noi DKKCB, Dien dieu tri.
+        bool isHeinPatientTypeChosenByUser = false;
         public ResultDataADO ResultDataADO { get; set; }
         UCHeinADO dataHein = new UCHeinADO();
         public string TreatmentTypeIdPicked { get; set; }
@@ -321,6 +324,7 @@ namespace HIS.UC.UCHeniInfo
                 //qtcode
                 this.transferInCode = null;
                 this.isTransferIn = false;
+                this.isHeinPatientTypeChosenByUser = false;
                 this.cboHeinPatientType.EditValue = null;
             }
             catch (Exception ex)
@@ -332,6 +336,11 @@ namespace HIS.UC.UCHeniInfo
         public void ReceiveIdFromUcOtherSviceReqInfo(string treatmentTypeId)
         {
             this.TreatmentTypeIdPicked = treatmentTypeId;
+            // Dang trong cboHeinPatientType_Closed: Dien dieu tri do chinh viec chon ma day sang => khong tinh lai, giu ma vua chon
+            if (this.isChooseCboPatientType)
+                return;
+            // Nguoi dung doi Dien dieu tri => tinh lai ma theo Dien moi
+            this.isHeinPatientTypeChosenByUser = false;
             InitializeComboHeinPatientType();
         }
         public void SetDelegateChangePatientDob(Action _dlgProcessChangePatientDob)
@@ -435,6 +444,19 @@ namespace HIS.UC.UCHeniInfo
         private bool IsMediOrgCodeListSpecific(string codes)
         {
             return !string.IsNullOrWhiteSpace(codes) && codes.Trim() != "*";
+        }
+
+        /// <summary>
+        /// Ban ghi danh muc khong khai dieu kien nao: Tuyen, Truong hop, Dien dieu tri, Ma co so deu de trong (hoac "*") va So thu tu NULL.
+        /// VD ma 9 "Nguoi benh khong KCB BHYT". Ban ghi nay khong bao gio duoc tu dong chon, nguoi dung phai chon tay.
+        /// </summary>
+        private bool IsHeinPatientTypeAllConditionsEmpty(HIS_HEIN_PATIENT_TYPE o)
+        {
+            return string.IsNullOrWhiteSpace(o.RIGHT_ROUTE_CODE)
+                && string.IsNullOrWhiteSpace(o.RIGHT_ROUTE_TYPE_CODE)
+                && string.IsNullOrWhiteSpace(o.TREATMENT_TYPE_IDS)
+                && !IsMediOrgCodeListSpecific(o.HEIN_MEDI_ORG_CODES)
+                && o.NUM_ORDER == null;
         }
 
         /// <summary>
@@ -550,25 +572,32 @@ namespace HIS.UC.UCHeniInfo
                     heinPatientTypeDataFiltered = heinPatientTypeDataFiltered.Where(o => ("," + o.TREATMENT_TYPE_IDS + ",").Contains("," + this.TreatmentTypeIdPicked + ",") || o.TREATMENT_TYPE_IDS == null).ToList();
                     heinPatientTypeDataNoRoute = heinPatientTypeDataNoRoute.Where(o => ("," + o.TREATMENT_TYPE_IDS + ",").Contains("," + this.TreatmentTypeIdPicked + ",") || o.TREATMENT_TYPE_IDS == null).ToList();
                 }
-                if (heinPatientTypeDataFiltered.Count > 0 || heinPatientTypeDataNoRoute.Count > 0)
+                if (this.isHeinPatientTypeChosenByUser)
+                {
+                    // Nguoi dung da chon tay => giu nguyen, khong tu dong ghi de
+                    Inventec.Common.Logging.LogSystem.Debug("ChonMaDoiTuongKCB: giu ma nguoi dung da chon tay=" + (cboHeinPatientType.EditValue != null ? cboHeinPatientType.EditValue.ToString() : "(trong)"));
+                }
+                else
                 {
                     // Xet them tieu chi "Ma co so KCB ban dau" tren tung ban ghi danh muc
                     string dkbdCode = (txtMaDKKCBBD.Text ?? "").Trim();
                     // Gop nhom "khai dung Loai dang chon" voi nhom "doi tuong bo trong" (= tat ca) roi chon chung:
                     // dong ghi dich danh ma CSKCB cua the thang -> So thu tu nho nhat (trong xep cuoi) -> ID lon nhat.
                     // Khong uu tien rieng nhom khai dung Loai nua: vien tu dieu khien thu tu bang cot So thu tu.
-                    var mergedList = heinPatientTypeDataFiltered.Union(heinPatientTypeDataNoRoute).ToList();
-                    HIS_HEIN_PATIENT_TYPE minItem = GetHeinPatientTypeByMediOrgPriority(mergedList, dkbdCode);
+                    // Dong danh muc trong het dieu kien (VD ma 9) khong co gi de xet => loai khoi danh sach tu chon.
+                    // Khong con dong nao phu hop => de TRONG, nguoi dung phai chon tay (tuyet doi khong tu dien ma 9).
+                    var mergedList = heinPatientTypeDataFiltered.Union(heinPatientTypeDataNoRoute)
+                        .Where(o => !IsHeinPatientTypeAllConditionsEmpty(o)).ToList();
+                    HIS_HEIN_PATIENT_TYPE minItem = mergedList.Count > 0 ? GetHeinPatientTypeByMediOrgPriority(mergedList, dkbdCode) : null;
                     if (minItem != null && !string.IsNullOrEmpty(minItem.HEIN_PATIENT_TYPE_CODE))
                         cboHeinPatientType.EditValue = minItem.HEIN_PATIENT_TYPE_CODE;
                     else
+                    {
                         cboHeinPatientType.EditValue = null;
-                    //this._previousHeinPatientTypeCode = minItem.HEIN_PATIENT_TYPE_CODE;
+                        if (mergedList.Count == 0)
+                            Inventec.Common.Logging.LogSystem.Debug("ChonMaDoiTuongKCB: khong co ban ghi danh muc phu hop -> de trong, nguoi dung chon tay");
+                    }
                 }
-                //else
-                //{
-                //    cboHeinPatientType.EditValue = null;
-                //}
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("HEIN_PATIENT_TYPE_CODE", "", 40, 1));
@@ -1794,6 +1823,8 @@ namespace HIS.UC.UCHeniInfo
             {
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
+                    // Nguoi dung chu dong chon Loai => tinh lai ma doi tuong KCB theo Loai moi
+                    this.isHeinPatientTypeChosenByUser = false;
                     InitializeComboHeinPatientType();
                     // this.FocusNextControlFreeCoPainTime();
                     //if (this.cboHeinRightRoute.EditValue.ToString() == MOS.LibraryHein.Bhyt.HeinRightRouteType.HeinRightRouteTypeCode.EMERGENCY)
@@ -2682,11 +2713,31 @@ namespace HIS.UC.UCHeniInfo
         private void cboHeinPatientType_Closed(object sender, ClosedEventArgs e)
         {
             isChooseCboPatientType = true;
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    // Nguoi dung chu dong chon ma => giu ma nay, code tu gan (tich TT46...) khong duoc ghi de
+                    this.isHeinPatientTypeChosenByUser = this.cboHeinPatientType.EditValue != null;
+                }
+                ProcessHeinPatientTypeChosen();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                // Luon tra co ve false (truoc day return som giua chung lam co ket true mai mai)
+                isChooseCboPatientType = false;
+            }
+        }
+
+        private void ProcessHeinPatientTypeChosen()
+        {
             string selectedHeinTypeCode = "";
             if (this.cboHeinPatientType.EditValue != null)
                 selectedHeinTypeCode = this.cboHeinPatientType.EditValue.ToString(); // ô mã đối tượng
-            //if (selectedHeinTypeCode == _previousHeinPatientTypeCode) return;
-            //_previousHeinPatientTypeCode = selectedHeinTypeCode;
             var selectedHeinType = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
                     .FirstOrDefault(o => o.HEIN_PATIENT_TYPE_CODE == selectedHeinTypeCode && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE); // lấy ra hein_patient_type trong db
             if (selectedHeinType == null) return;
@@ -2767,7 +2818,6 @@ namespace HIS.UC.UCHeniInfo
                     }
                 }
             }
-            isChooseCboPatientType = false;
         }
 
         public string patientTypeCodeOriginnal = "";
