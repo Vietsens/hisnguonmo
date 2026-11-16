@@ -78,7 +78,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
         public string ClsMapJson { get; set; }
     }
 
-    internal static class KskSytHcmBodyBuilder
+    internal static partial class KskSytHcmBodyBuilder
     {
         #region ===== Mã danh mục của cổng =====
 

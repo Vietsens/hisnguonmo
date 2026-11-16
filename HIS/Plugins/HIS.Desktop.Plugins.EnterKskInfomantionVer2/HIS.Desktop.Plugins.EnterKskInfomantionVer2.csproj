@@ -476,6 +476,24 @@
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ADO\KskM2Definition.cs" />
+    <Compile Include="ADO\KskM2RowADO.cs" />
+    <Compile Include="Run\frmEnterKskInfomantionVer2___M2Ui.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___M2Logic.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___M2Data.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Run\frmEnterKskInfomantionVer2___M2Print.cs">
+      <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Run\frmEnterKskInfomantionVer2___SytFamilyHistory.cs">
       <DependentUpon>frmEnterKskInfomantionVer2.cs</DependentUpon>
       <SubType>Form</SubType>

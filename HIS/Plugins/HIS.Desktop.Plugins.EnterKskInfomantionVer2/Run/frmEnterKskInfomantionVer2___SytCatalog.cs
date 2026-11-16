@@ -54,7 +54,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             "ChiTra", "NCT_HTChiTraKhamSucKhoe", "ChiTraChiTiet_NCT", "M3_DoiTuongKham", "KetLuan_DeNghi",
             "KSKDK_PhanLoai_SK", "KSKDK_DM_ChuyenKhoa", "KSKDK_TamSoatOption", "KSKDK_TinhTrangSuyYeu",
             "KSKDK_DanhMucCauHoiKhac", "NenTangKSK_TinhTrangRang", "AmTinh_DuongTinh", "YesNo", "CoChua",
-            "TS_BanThan_MacBenh_DanhSachBenh", "TS_GiaDinh_MacBenh_DanhSachBenh"
+            "TS_BanThan_MacBenh_DanhSachBenh", "TS_GiaDinh_MacBenh_DanhSachBenh",
+            // vCong61141 - Mau 02 / M2 (tre 6 - duoi 18 tuoi)
+            "KSKDK_DoiTuongKham", "M2_HTKhamSucKhoe", "M2_HTChiTraKhamSucKhoe", "TruongHoc", "MoiQuanHeVoiTre",
+            "Tinh_trang_tiem", "SanKhoa_GhiChu", "RoiLoanGiamChuY_6_18_tuoi", "PhoTuKy_6_11_tuoi",
+            "CotSong", "CongCotSong", "VeoCotSong", "MucDoVeoCotSong"
         };
 
         /// <summary>Một mục trong danh mục của cổng.</summary>
@@ -221,7 +225,13 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     string t = c.Trim();
                     if (t.Length > 0) rs.Add(t);
                 }
-                return rs.Count > 0 ? rs.ToArray() : SYT_CATALOG_CODES_DEFAULT;
+                if (rs.Count == 0) return SYT_CATALOG_CODES_DEFAULT;
+                // vCong61141: a hospital that listed its own codes (for M3/M4) still needs the M2 ones.
+                foreach (string m2 in M2_CATALOG_CODES)
+                {
+                    if (!rs.Contains(m2)) rs.Add(m2);
+                }
+                return rs.ToArray();
             }
             catch (Exception ex) { LogSystem.Warn(ex); return SYT_CATALOG_CODES_DEFAULT; }
         }

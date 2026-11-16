@@ -397,6 +397,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 rdo.KskPatient = printKskPatient;         // bệnh nhân HIS_PATIENT
                 // Kết luận theo bệnh (ICD-10) — lưu ở HIS_KSK_GENERAL (UC dùng chung mọi tab KSK)
                 rdo.HisKskGeneral = BuildKskGeneralForPrint();
+                // vCong61141: keys of the Mau 02 template (null when the portal is not declared).
+                rdo.M2SingleKeys = BuildM2PrintKeys();
                     PrintData(printTypeCode, fileName, rdo, ref result);
                 }
                 catch (Exception ex)

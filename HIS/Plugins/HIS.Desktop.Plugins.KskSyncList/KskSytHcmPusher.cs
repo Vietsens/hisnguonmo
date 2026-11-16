@@ -150,6 +150,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
         private const string SERVICE_CODE__M3 = "create-mau-phieu-m3";
         private const string SERVICE_CODE__M4 = "create-mau-phieu-m4";
+        /// <summary>vCong61141 - Mau 02, children from 6 to under 18.</summary>
+        internal const string SERVICE_CODE__M2 = "create-mau-phieu-m2";
         private const string URI__TOKEN = "/hin-auth/getToken";
         private const string URI__PUSH_PREFIX = "/hin-api-service/";
 
@@ -251,8 +253,12 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// true: hồ sơ khám sức khoẻ người cao tuổi -> gửi vào đầu mối của mẫu M4.
         /// Xem KskSytHcmBodyBuilder.IsElderlyForm — căn cứ là Đối tượng khám, không phải tuổi.
         /// </param>
+        /// <param name="serviceCode">
+        /// vCong61141: service name to call instead of M3/M4 (e.g. SERVICE_CODE__M2). Null = M3/M4 as before.
+        /// Token, signature and base url are shared by every form.
+        /// </param>
         internal static KskSytHcmPushResult Push(KskSytHcmConfig cfg, object body,
-            bool isElderlyForm = false)
+            bool isElderlyForm = false, string serviceCode = null)
         {
             KskSytHcmPushResult r = new KskSytHcmPushResult();
             try
@@ -300,7 +306,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 // vì cổng cũng bỏ khoảng trắng của thân nhận được rồi mới băm để đối chiếu.
                 // Dựng địa chỉ máy chủ TRƯỚC khi băm: cách băm phụ thuộc máy chủ đích.
                 string uri = URI__PUSH_PREFIX
-                    + (isElderlyForm ? SERVICE_CODE__M4 : SERVICE_CODE__M3);
+                    + (serviceCode ?? (isElderlyForm ? SERVICE_CODE__M4 : SERVICE_CODE__M3));
+                string mauLabel = (serviceCode == SERVICE_CODE__M2) ? "M2" : (isElderlyForm ? "M4" : "M3");
                 string baseUrl = ResolvePushBaseUrl(cfg, isElderlyForm);
 
                 // BAM THEO MAY CHU DICH, KHONG BAM THEO MAU.
@@ -380,7 +387,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                     // Ghi lại đủ thứ để đối chiếu với Sở, TRỪ bản tin và khóa.
                     Inventec.Common.Logging.LogSystem.Info(string.Format(
-                        "SytHcm: gui ban tin " + (isElderlyForm ? "M4" : "M3")
+                        "SytHcm: gui ban tin " + mauLabel
                         + (lan > 0 ? " (luot 2 — doi luat bam)" : "")
                         + " — X-Client-Id={0}; X-Timestamp={1}; X-Nonce={2}; "
                         + "A={3}; B={4}; do dai ban tin={5} byte; may chu={6}; bam B={7}",
@@ -412,7 +419,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         r.Message = "Xac thuc that bai (401) — da bo phieu truy cap, thu lai";
                         Inventec.Common.Logging.LogSystem.Warn("SytHcm: " + r.Message);
                         DumpBanTin(cfg, baseUrl + uri, json, timestamp, nonce, hashA, hashB,
-                            signature, isElderlyForm, bamBoKhoangTrang, r);
+                            signature, isElderlyForm, bamBoKhoangTrang, r, mauLabel);
                         return r;
                     }
 
@@ -452,7 +459,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 // chỉ bản bị từ chối mới được ghi lại nên không có gì để đối chiếu. Giữ lại cả bản
                 // đi lọt thì so hai bên là ra ngay chỗ lệch.
                 DumpBanTin(cfg, baseUrl + uri, json, timestamp, nonce, hashA, hashB,
-                    signature, isElderlyForm, bamBoKhoangTrang, r);
+                    signature, isElderlyForm, bamBoKhoangTrang, r, mauLabel);
 
                 // Cổng chê chữ ký thì ghi luôn CHẨN ĐOÁN, không thử lại dạng khác nữa.
                 //
@@ -830,11 +837,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         private static void DumpBanTin(KskSytHcmConfig cfg, string uri, string json,
             string timestamp, string nonce, string hashA, string hashB, string signature,
-            bool isElderlyForm, bool stripped, KskSytHcmPushResult r)
+            bool isElderlyForm, bool stripped, KskSytHcmPushResult r, string mauOverride = null)
         {
             try
             {
-                string mau = isElderlyForm ? "M4" : "M3";
+                string mau = mauOverride ?? (isElderlyForm ? "M4" : "M3");
                 string dir = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     Path.Combine("HIS", "KskSytHcm"));
