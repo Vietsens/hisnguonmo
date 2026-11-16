@@ -38,6 +38,8 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
         internal const string CONFIG_KEY__IsStartTimeMustBeGreaterThanInstructionTime = "HIS.Desktop.Plugins.StartTimeMustBeGreaterThanInstructionTime";
         internal const string CONFIG_KEY__HIS_QD_130_BYT_XML3_NGAY_TH_YL_OPTION = "HIS.QD_130_BYT.XML3.NGAY_TH_YL_OPTION";
         internal const string MOS_HIS_SERVICE_REQ_TEST_START_TIME_OPTION = "MOS.HIS_SERVICE_REQ.TEST_START_TIME_OPTION";
+        //Cau hinh tuy chon may CLS: 1 - chon theo dich vu - may; 2 - chon theo phong xu ly - may
+        internal const string CONFIG_KEY__HIS_MACHINE_SHOW_OPTION = "HIS.Desktop.Plugins.HisMachine_ShowOption";
 
         internal static string TestStartTimeOption;
         internal static string IsStartTimeMustBeGreaterThanInstructionTime { get; set; }
@@ -97,6 +99,13 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
             get
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IsMachineWarningOption);
+            }
+        }
+        internal static string MachineShowOption
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__HIS_MACHINE_SHOW_OPTION);
             }
         }
     }

@@ -398,7 +398,16 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                         hisSereServTeinSDO.HisService_MAX_TOTAL_PROCESS_TIME = item.HisService_MAX_TOTAL_PROCESS_TIME;
                         hisSereServTeinSDO.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
 
-                        if (_ServiceMachines != null && _ServiceMachines.Count > 0)
+                        if (AppConfigKeys.MachineShowOption == "2")
+                        {
+                            //Chon theo phong xu ly - may: phong chi co 1 may thi tu chon may do
+                            var roomMachineIds = GetMachineIdsInCurrentRoom();
+                            if (roomMachineIds.Count == 1)
+                            {
+                                hisSereServTeinSDO.MACHINE_ID = roomMachineIds[0];
+                            }
+                        }
+                        else if (_ServiceMachines != null && _ServiceMachines.Count > 0)
                         {
                             var ssMachine = _ServiceMachines.Where(p => p.SERVICE_ID == item.SERVICE_ID).ToList();
                             if (ssMachine != null && ssMachine.Count == 1)
@@ -1463,7 +1472,10 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                         {
                             if (item.MACHINE_ID == null
                                 && (!isOnlyCheckBhyt || item.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT)
-                                && serviceIdsHasMachineInRoom.Contains(item.SERVICE_ID))
+                                //Key HisMachine_ShowOption = 2: may chon theo phong => phong co may la phai chon
+                                && (AppConfigKeys.MachineShowOption == "2"
+                                    ? machineIdsInRoom.Count > 0
+                                    : serviceIdsHasMachineInRoom.Contains(item.SERVICE_ID)))
                             {
                                 if (!String.IsNullOrEmpty(item.SERVICE_NAME) && !listServiceNotHasMachine.Contains(item.SERVICE_NAME))
                                 {
@@ -2273,13 +2285,46 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
             }
         }
 
+        /// <summary>
+        /// Danh sach ID may dang hoat dong thuoc phong dang xu ly (RoomId nam trong HIS_MACHINE.ROOM_IDS).
+        /// Dung cho key HIS.Desktop.Plugins.HisMachine_ShowOption = 2 (chon theo phong xu ly - may).
+        /// </summary>
+        private List<long> GetMachineIdsInCurrentRoom()
+        {
+            List<long> result = new List<long>();
+            try
+            {
+                long currentRoomId = this.currentModule != null ? this.currentModule.RoomId : 0;
+                if (this._Machines == null || currentRoomId <= 0) return result;
+
+                string roomToken = "," + currentRoomId + ",";
+                result = this._Machines
+                    .Where(m => m.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                && !String.IsNullOrEmpty(m.ROOM_IDS)
+                                && ("," + m.ROOM_IDS + ",").Contains(roomToken))
+                    .Select(m => m.ID)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
         private void FillDataMachineCombo(ADO.HisSereServTeinSDO data, DevExpress.XtraEditors.GridLookUpEdit cbo)
         {
             try
             {
-                var _machineIds = this._ServiceMachines.Where(o => data != null && o.SERVICE_ID == data.SERVICE_ID).Select(o => o.MACHINE_ID).ToList();
+                //Key HIS.Desktop.Plugins.HisMachine_ShowOption = 2: chon theo phong xu ly - may (HIS_MACHINE.ROOM_IDS chua phong dang xu ly)
+                //Con lai (1 hoac khong khai bao): chon theo dich vu - may nhu cu
+                List<long> _machineIds = AppConfigKeys.MachineShowOption == "2"
+                    ? GetMachineIdsInCurrentRoom()
+                    : (this._ServiceMachines != null
+                        ? this._ServiceMachines.Where(o => data != null && o.SERVICE_ID == data.SERVICE_ID).Select(o => o.MACHINE_ID).ToList()
+                        : new List<long>());
                 List<HIS_MACHINE> dataMachines = new List<HIS_MACHINE>();
-                if (_machineIds != null && _machineIds.Count > 0)
+                if (_machineIds != null && _machineIds.Count > 0 && this._Machines != null)
                 {
                     dataMachines = this._Machines.Where(o => _machineIds.Contains(o.ID)).ToList();
                     dataMachines = dataMachines.Where(o => o.IS_ACTIVE == IMSys.DbConfig.LIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
