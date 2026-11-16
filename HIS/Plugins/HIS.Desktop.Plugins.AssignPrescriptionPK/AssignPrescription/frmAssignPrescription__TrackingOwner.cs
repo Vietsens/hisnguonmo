@@ -19,6 +19,7 @@ using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Base;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,6 +80,36 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Task 63152: key 1 + editing an order (one instruction date): the sheet the order is attached to, so (re)loading the sheets keeps
+        /// it selected instead of the sheet passed in or the ordering user's latest sheet. Null = nothing to keep: key off, new order,
+        /// order without a sheet, sheet not in this treatment, several instruction dates, or the instruction time was changed
+        /// (isChangeData) to a date other than the sheet's date.
+        /// </summary>
+        private HIS_TRACKING GetTrackingKeptForEdit(List<HIS_TRACKING> trackings, bool isChangeData)
+        {
+            HIS_TRACKING result = null;
+            try
+            {
+                if (trackings == null || this.chkMultiIntructionTime.Checked || this.GetTrackingOwnerOption() != EnumTrackingOwnerOption.OwnOnly)
+                    return null;
+
+                result = trackings.FirstOrDefault(o => o != null && this.IsTrackingKeptForEdit(o.ID));
+                if (result != null && isChangeData)
+                {
+                    long trackingDate = TrackingOwnerChecker.GetDate(result.TRACKING_TIME);
+                    if (this.intructionTimeSelecteds == null || !this.intructionTimeSelecteds.Exists(o => TrackingOwnerChecker.GetDate(o) == trackingDate))
+                        result = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;

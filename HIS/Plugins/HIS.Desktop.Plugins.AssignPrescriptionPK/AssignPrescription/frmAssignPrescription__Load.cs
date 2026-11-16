@@ -2482,7 +2482,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return null;
         }
 
-        private async Task LoadDataTracking(bool isChangeData = true)
+        /// <param name="isKeepTrackingForEdit">Viec 63152: false khi nguoi dung vua tao/sua to dieu tri bang nut "+" (khong ep giu to cu cua don dang sua)</param>
+        private async Task LoadDataTracking(bool isChangeData = true, bool isKeepTrackingForEdit = true)
         {
             try
             {
@@ -2600,8 +2601,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.Listtrackings.Add(trackingTemps[0]);
                     }
                 }
+                //Viec 63152: bat key + sua don: giu to dieu tri don dang gan, khong de to truyen vao hoac to moi nhat cua nguoi chi dinh
+                //(IsDefaultTracking) ghi de len. To tu chon trung to cua don thi chay nhu cu
+                HIS_TRACKING trackingKeptForEdit = (isTrackingOwnerCheck && isKeepTrackingForEdit) ? this.GetTrackingKeptForEdit(trackings, isChangeData) : null;
+                bool isKeepEditTracking = trackingKeptForEdit != null && trackIdSet != trackingKeptForEdit.ID;
+                if (isKeepEditTracking)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("LoadDataTracking: sua don, giu to dieu tri don dang gan___trackingId=" + trackingKeptForEdit.ID
+                        + "; trackIdSet=" + trackIdSet + "; isChangeData=" + isChangeData + "; requestLoginName=" + trackingOwnerLoginName);
+                    trackIdSet = 0;
+                    this.Listtrackings = new List<HIS_TRACKING>();
+                    this.Listtrackings.Add(trackingKeptForEdit);
+                }
                 this.InitComboTracking(cboPhieuDieuTri);
                 this.ValidateTrackingAndTreatment();
+                if (isKeepEditTracking)
+                {
+                    cboPhieuDieuTri.EditValue = trackingKeptForEdit.ID;
+                    cboPhieuDieuTri.Properties.Buttons[1].Visible = true;
+                }
                 if (trackIdSet > 0)
                 {
                     cboPhieuDieuTri.EditValue = trackIdSet;

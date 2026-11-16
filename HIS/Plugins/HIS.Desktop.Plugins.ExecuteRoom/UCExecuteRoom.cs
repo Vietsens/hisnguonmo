@@ -138,7 +138,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
         private List<HIS_PRIORITY_TYPE> lstPatientPrioty { get; set; }
 
-        public List<HIS_SERVICE_ROOM> lstServiceRoom { get; private set; }
+        public List<V_HIS_SERVICE_ROOM> lstServiceRoom { get; private set; }
         List<HIS_PATIENT_TYPE> lstPatientType { get; set; }
         List<HIS_DESK> deskList { get; set; }
         EpaymentDepositResultSDO epaymentDepositResultSDO;
@@ -543,7 +543,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 patientTypeList = lstPatientType.Where(o => o.IS_NOT_USE_FOR_PATIENT != 1).OrderBy(o => o.PATIENT_TYPE_NAME).ToList();
                 lstExecuteRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>().Where(o => o.ROOM_ID == this.roomId).ToList();
                 lstPatientPrioty = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().ToList();
-                lstServiceRoom = BackendDataWorker.Get<HIS_SERVICE_ROOM>();
+                lstServiceRoom = BackendDataWorker.Get<V_HIS_SERVICE_ROOM>();
                 deskList = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_DESK>();
                 Inventec.Common.Logging.LogSystem.Debug("GetDataFromRam.2");
             }

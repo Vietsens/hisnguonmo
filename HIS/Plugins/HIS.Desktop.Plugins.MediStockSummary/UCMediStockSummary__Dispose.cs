@@ -77,6 +77,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 this.btnPrint.Click -= new System.EventHandler(this.btnPrint_Click);
                 this.chkBlood.CheckedChanged -= new System.EventHandler(this.chkBlood_CheckedChanged);
                 this.chkMaterial.CheckedChanged -= new System.EventHandler(this.chkMaterial_CheckedChanged);
+                this.chkChemical.CheckedChanged -= new System.EventHandler(this.chkChemical_CheckedChanged);
                 this.chkMedicine.CheckedChanged -= new System.EventHandler(this.chkMedicine_CheckedChanged);
                 this.dtExpiredDate.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtExpiredDate_Closed);
                 this.txtKeyWork.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.txtKeyWork_KeyUp);
@@ -133,6 +134,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 layoutControlItem9 = null;
                 layoutControlItem8 = null;
                 chkMaterial = null;
+                chkChemical = null;
+                lciChemical = null;
                 chkBlood = null;
                 layoutControlItem3 = null;
                 emptySpaceItem3 = null;

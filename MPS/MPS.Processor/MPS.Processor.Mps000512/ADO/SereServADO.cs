@@ -367,6 +367,14 @@ namespace MPS.Processor.Mps000512.ADO
                 //    this.PRIMARY_PRICE = this.LIMIT_PRICE;
                 //}
 
+                //Giá theo chính sách giá của đối tượng phụ thu (gồm VAT), giữ lại trước khi PRIMARY_PRICE bị ghi đè bên dưới
+                decimal? primaryPriceWithVat = this.PRIMARY_PRICE.HasValue
+                    ? (decimal?)Math.Round(this.PRIMARY_PRICE.Value * (1 + this.VAT_RATIO), 4, MidpointRounding.AwayFromZero)
+                    : null;
+
+                //Backend không trả PRIMARY_PRICE thì lấy thay bằng VIR_PRICE (đã nhân tỉ lệ thanh toán)
+                bool isPrimaryPriceFromVirPrice = !this.PRIMARY_PRICE.HasValue;
+
                 if (!this.PRIMARY_PRICE.HasValue)
                     this.PRIMARY_PRICE = this.VIR_PRICE;
                 else
@@ -407,7 +415,10 @@ namespace MPS.Processor.Mps000512.ADO
                         || this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__TT))
                 {
                     decimal heSo = (this.SERVICE_PAY_RATE ?? 0) / 100;
-                    this.PRIMARY_PRICE = (this.PRIMARY_PRICE ?? 0) / heSo;
+                    //PRIMARY_PRICE backend trả về là giá gốc (chưa nhân tỉ lệ) -> chia nữa sẽ ra gấp đôi (50%) / 1,25 lần (80%).
+                    //Chỉ tính ngược khi PRIMARY_PRICE được lấy thay từ VIR_PRICE.
+                    if (isPrimaryPriceFromVirPrice)
+                        this.PRIMARY_PRICE = (this.PRIMARY_PRICE ?? 0) / heSo;
                     this.PRICE_VP = this.PRICE_VP / heSo;
                     this.VIR_PRICE = (this.VIR_PRICE ?? 0) / heSo;
                 }
@@ -422,7 +433,22 @@ namespace MPS.Processor.Mps000512.ADO
                     if (this.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__KH
                         || this.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH)
                     {
-                        this.PRICE_VP = this.PRICE_VP / ((this.SERVICE_PAY_RATE ?? 0) / 100);
+                        //Việc 62703: công khám BHYT có đối tượng phụ thu, backend chỉ nhân tỉ lệ (30%/10%) vào phần
+                        //trần BHYT, phần chênh lệch giữ nguyên trong PRICE (PRICE = chênh + HEIN_LIMIT_PRICE).
+                        //Chia cả PRICE cho tỉ lệ sẽ ra đơn giá sai (vd 114.580 / 30% = 381.933) -> lấy giá phụ thu.
+                        if (this.PRIMARY_PATIENT_TYPE_ID.HasValue && (primaryPriceWithVat ?? 0) > 0)
+                        {
+                            this.PRICE_VP = primaryPriceWithVat.Value;
+                        }
+                        else if (this.PRIMARY_PATIENT_TYPE_ID.HasValue && this.HEIN_LIMIT_PRICE.HasValue && this.PRICE_VP > this.HEIN_LIMIT_PRICE.Value)
+                        {
+                            //dữ liệu cũ chưa có PRIMARY_PRICE: chỉ chia phần trần BHYT, giữ nguyên phần chênh lệch
+                            this.PRICE_VP = (this.PRICE_VP - this.HEIN_LIMIT_PRICE.Value) + this.HEIN_LIMIT_PRICE.Value / ((this.SERVICE_PAY_RATE ?? 0) / 100);
+                        }
+                        else
+                        {
+                            this.PRICE_VP = this.PRICE_VP / ((this.SERVICE_PAY_RATE ?? 0) / 100);
+                        }
                     }
                     else if (HeinServiceTypeExt.HEIN_BED__IDs.Contains(this.HEIN_SERVICE_TYPE_ID ?? 0))
                     {

@@ -111,7 +111,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     lstMateInStocks,
                     lstBlood,
                      chkMedicine.Checked,
-                     chkMaterial.Checked,
+                     IsMaterialOrChemicalView(),
                      chkBlood.Checked
                );
                 MPS.ProcessorBase.Core.PrintData PrintData = null;

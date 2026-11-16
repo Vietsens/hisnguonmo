@@ -563,6 +563,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
                     result.TREATMENT_CODE = treatment.TREATMENT_CODE;
                     result.TREATMENT_DAY_COUNT = treatment.TREATMENT_DAY_COUNT;
 
+                    //Tuoi tinh tai thoi diem vao vien, giong key AGE (Base.General)
+                    if (treatment.TDL_PATIENT_DOB > 0 && treatment.IN_TIME > 0)
+                    {
+                        result.Tuoi = Inventec.Common.DateTime.Calculation.AgeString(treatment.TDL_PATIENT_DOB, "", "tháng", "ngày", "giờ", treatment.IN_TIME);
+                    }
+
                     CommonParam param = new CommonParam();
                     HisDepartmentTranLastFilter depaFilter = new HisDepartmentTranLastFilter();
                     depaFilter.TREATMENT_ID = treatment.ID;

@@ -138,6 +138,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             try
             {
                 SetCaptionByLanguageKey();
+                InitChemicalOption();
                 InitDescriptionDictionaries();
                 LoadDataGridMediStock();
                 InitCboIsActive();
@@ -262,6 +263,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
                         }
                     }
+                    RestoreChemicalControlState();
                 }
                 IsInitForm = false;
 
@@ -1055,7 +1057,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         }
                     }
                 }
-                else if (chkMaterial.Checked)
+                else if (IsMaterialOrChemicalView())
                 {
                     if (this.ucMaterialInfo != null)
                     {
@@ -1127,6 +1129,12 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                 }
                             }
                         }
+
+                        // vCong60286: dang chon "Hoa chat" -> chi giu loai vat tu danh dau "La hoa chat"
+                        if (IsChemicalView())
+                            lstMateInStocks = FilterChemicalOnly(lstMateInStocks);
+                        // Danh sach goc (dung khi bo cac o loc HSD / ton toi thieu) phai theo dung lan tai nay
+                        lstMateInStocksOriginal = null;
 
                         if (chkAlertMinStock.Checked)
                             chkAlertMinStock_CheckedChanged(null, null);
@@ -1745,7 +1753,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         #endregion
 
                         #region Vật tư
-                        else if (chkMaterial.Checked)
+                        else if (IsMaterialOrChemicalView())
                         {
                             Dictionary<long, MaterialInStockExportADO> dicData = new Dictionary<long, MaterialInStockExportADO>();
                             Dictionary<long, List<HIS_MATERIAL_PATY>> dicMaterialPaty = new Dictionary<long, List<HIS_MATERIAL_PATY>>();
@@ -1790,6 +1798,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                 lstMaterialBeans = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, mateFilterAll, param);
                                 // Bổ sung Nước SX / Hãng SX theo LÔ để Excel (chế độ toàn bộ) khớp với lưới
                                 FillNationalManufacturerForMaterial(lstMaterialBeans);
+                                // vCong60286: dang chon "Hoa chat" -> xuat toan bo nhung chi gom hoa chat
+                                if (IsChemicalView())
+                                    lstMaterialBeans = FilterChemicalOnly(lstMaterialBeans);
                                 if (lstMaterialBeans != null)
                                     lstMaterialBeans = lstMaterialBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
                             }
@@ -2314,7 +2325,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         }
                     }
                 }
-                else if (chkMaterial.Checked)
+                else if (IsMaterialOrChemicalView())
                 {
                     if (chkAlertMinStock.Checked)
                     {
@@ -2460,7 +2471,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         }
                     }
                 }
-                else if (chkMaterial.Checked)
+                else if (IsMaterialOrChemicalView())
                 {
                     if (ChkExpiredDate.Checked && chkAlertMinStock.Checked)
                     {
@@ -2603,7 +2614,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     }
 
                 }
-                else if (chkMaterial.Checked)
+                else if (IsMaterialOrChemicalView())
                 {
                     if (ChkNoExpiredDate.Checked && chkAlertMinStock.Checked)
                     {
@@ -2814,7 +2825,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         }
                     }
                 }
-                else if (chkMaterial.Checked)
+                else if (IsMaterialOrChemicalView())
                 {
 
                     //if (ChkValidToTime.Checked && chkAlertMinStock.Checked)
