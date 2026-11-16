@@ -110,6 +110,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
         internal const string EXPORT_XML_IN_TREATMENT__ON = "1";
         internal static string QD_130_BYT__EXPORT_XML_IN_TREATMENT;
 
+        //vCong60263: "1" = ghi nhật ký mỗi lần gửi XML 130 và hiện nút Nhật ký trên màn hình này.
+        //Khác "1"/không khai = viện không dùng = ẩn nút, máy trạm không gửi kèm thông tin nhật ký.
+        //Máy chủ vẫn là nơi quyết định cuối cùng có ghi hay không.
+        internal const string MOS_HIS_TREATMENT__XML130_SAVE_SEND_LOG = "MOS.HIS_TREATMENT.XML130_SAVE_SEND_LOG";
+        internal static string XML130_SAVE_SEND_LOG;
+
+        //vCong60263: số ngày giữ lại dòng nhật ký, chỉ dùng để hiển thị chú thích trên màn Nhật ký.
+        internal const string MOS_HIS_TREATMENT__XML130_SEND_LOG_KEEP_DAYS = "MOS.HIS_TREATMENT.XML130_SEND_LOG_KEEP_DAYS";
+        internal static string XML130_SEND_LOG_KEEP_DAYS;
+
         internal static void LoadConfig()
         {
             try
@@ -137,6 +147,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130.ADO
                 QD_130_BYT__XML1_CARD_INFO_WARNING = GetValue(HIS_QD_130_BYT__XML1_CARD_INFO_WARNING);
                 PATIENT_TYPE_ID__BHYT = GetPatientTypeId(GetValue(MOS_HIS_PATIENT_TYPE__PATIENT_TYPE_CODE__BHYT));
                 QD_130_BYT__EXPORT_XML_IN_TREATMENT = GetValue(HIS_QD_130_BYT__EXPORT_XML_IN_TREATMENT);
+
+                //vCong60263 - Nhật ký gửi XML 130
+                XML130_SAVE_SEND_LOG = GetValue(MOS_HIS_TREATMENT__XML130_SAVE_SEND_LOG);
+                XML130_SEND_LOG_KEEP_DAYS = GetValue(MOS_HIS_TREATMENT__XML130_SEND_LOG_KEEP_DAYS);
             }
             catch (Exception ex)
             {

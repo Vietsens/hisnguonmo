@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -472,6 +472,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 this.InitComboEmergencyClassify();
                 this.UpdateEmergencyClassifyVisibility();
                 this.LoadEmergencyClassifyValues();
+
+                // TT39/BYT: vung theo doi thoi gian luu Cap cuu (chi hien khi vien khai so gio + phong cap cuu)
+                this.InitEmergencyInPatientArea();
+                this.UpdateEmergencyInPatientVisibility();
+                this.LoadEmergencyInPatientValues();
 
                 // Tab "Phân loại phụ nữ" (MIMS Drug Pregnancy/Lactation) — chỉ tạo khi config bật + BN nữ
                 this.InitWomanClassifyTab();

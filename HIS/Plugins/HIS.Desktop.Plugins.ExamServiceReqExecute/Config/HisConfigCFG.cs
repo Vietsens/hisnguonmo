@@ -132,6 +132,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string KEY_MOS_HIS_TREATMENT_EMERGENCY_CLASSIFY = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY";
         internal static bool IsEnableEmergencyClassify;
 
+        // TT39/BYT: so gio luu phong Cap cuu de he thong tu chuyen BN sang dien dieu tri Noi tru.
+        // Khong khai bao hoac <= 0 => tat, man hinh giu nguyen nhu hien tai.
+        private const string KEY_MOS_HIS_TREATMENT_EMERGENCY_IN_PATIENT_HOURS = "MOS.HIS_TREATMENT.EMERGENCY_IN_PATIENT_HOURS";
+        internal static int EmergencyInPatientHours;
+
         // MIMS Drug Pregnancy/Lactation: bật tab "Phân loại phụ nữ" (PN mang thai / cho con bú)
         private const string KEY_HIS_DESKTOP_MIMS_IS_CHECK_PREGNANCY_LACTATION = "HIS.Desktop.Mims.IsCheckPregnancyLactation";
         internal static bool IsCheckMimsPregnancyLactation;
@@ -273,6 +278,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 NotUpdateExecuteLoginNameWhenFinishExam = GetValue(KEY_MOS_HIS_SERVICE_REQ_NOT_UPDATE_EXECUTE_LOGINNAME_WHEN_FINISH_EXAM);
                 HisDesktopPluginsRegisterV2RequestSkinCare = GetValue(KEY_HIS_DESKTOP_PLUGINS_REGISTER_V2_REQUEST_SKIN_CARE);
                 IsEnableEmergencyClassify = GetValue(KEY_MOS_HIS_TREATMENT_EMERGENCY_CLASSIFY) == GlobalVariables.CommonStringTrue;
+                int parsedEmergencyHours;
+                EmergencyInPatientHours = int.TryParse(GetValue(KEY_MOS_HIS_TREATMENT_EMERGENCY_IN_PATIENT_HOURS), out parsedEmergencyHours) && parsedEmergencyHours > 0
+                    ? parsedEmergencyHours
+                    : 0;
                 IsCheckMimsPregnancyLactation = GetValue(KEY_HIS_DESKTOP_MIMS_IS_CHECK_PREGNANCY_LACTATION) == GlobalVariables.CommonStringTrue;
 
                 string rawSevereCodes = GetValue(KEY__MOS_HIS_SEVERE_ILLNESS_INFO_MUST_INPUT_SEVERE_ILLNESS_HOME_CODES);

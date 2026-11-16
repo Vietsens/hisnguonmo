@@ -1,4 +1,4 @@
-﻿/* IVT
+/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -289,6 +289,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.InitXml48h();
                 //Việc 60261 - Cột cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính: chỉ tạo khi bật HIS.QD_130_BYT.XML1.CARD_INFO_WARNING.
                 this.InitCardInfoWarning();
+                //vCong60263 - thêm cột Thời gian gửi. Nhật ký gửi nằm ở menu chuột phải
+                //của lưới, không thêm nút vào hàng công cụ (hàng đã kín chỗ).
+                this.Xml130InitSendTimeColumn();
+                //vCong60263 - Ghi nhớ bật gửi tự động: mở lại màn hình thì chạy tiếp theo lịch đã khai.
+                this.Xml130AutoStartIfRemembered();
             }
             catch (Exception ex)
             {
@@ -3918,7 +3923,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
                 if (chkSignFileCertUtil.Checked == false)
                 {
-                    if (!isAutoSync && this.configSync != null && this.configSync.period > 0)
+                    if (!isAutoSync && this.Xml130CanStartAutoSync())
                     {
                         isNotFileSign = true;
                         isAutoSync = true;
@@ -3933,6 +3938,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         autoSync.Stop();
                         btnAutoSync.Text = Resources.ResourceMessageLang.DongBoTD;
                         btnAutoSync.ToolTip = Resources.ResourceMessageLang.DongBoTuDong;
+                        //vCong60263: tắt tiến trình thì xoá luôn ghi nhớ bật, để mở lại màn hình không tự chạy
+                        this.Xml130ForgetAutoStart();
                     }
                 }
                 else
@@ -3949,7 +3956,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         //btnAutoSync.Text = Resources.ResourceMessageLang.DangDongBo;
                         //btnAutoSync.ToolTip = Resources.ResourceMessageLang.DangChayTienTrinhDongBoDuLieuXml130LenCongBHYT;
                         //this.StartTimer();
-                        if (!isAutoSync && this.configSync != null && this.configSync.period > 0)
+                        if (!isAutoSync && this.Xml130CanStartAutoSync())
                         {
                             isNotFileSign = false;
                             isAutoSync = true;
@@ -3964,6 +3971,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             autoSync.Stop();
                             btnAutoSync.Text = Resources.ResourceMessageLang.DongBoTD;
                             btnAutoSync.ToolTip = Resources.ResourceMessageLang.DongBoTuDong;
+                            //vCong60263: tắt tiến trình thì xoá luôn ghi nhớ bật, để mở lại màn hình không tự chạy
+                            this.Xml130ForgetAutoStart();
                         }
                     }
                 }
@@ -3980,10 +3989,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.cancelAutoSyncRequested = false;   //bắt đầu lại tiến trình auto -> xoá cờ hủy
                 //Việc 61380 - tích xuất XML 48 giờ mà chưa khai thư mục thì nhắc một lần, không chặn
                 this.WarnXml48hFolderMissingOnAutoStart();
-                autoSync.Interval = (int)(configSync.period * 60000);
+                //vCong60263: chế độ mốc giờ kiểm tra theo nhịp ngắn; chế độ chu kỳ giữ nguyên như trước
+                autoSync.Interval = this.Xml130GetTimerInterval();
                 autoSync.Enabled = true;
                 this.autoSync_Tick(null, null);
                 autoSync.Start();
+                this.Xml130UpdateStatusCaption();
             }
             catch (Exception ex)
             {
@@ -4064,6 +4075,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     return;
                 }
                 timerTickIsRunning = true;
+                //vCong60263: chế độ Theo mốc giờ chỉ chạy khi đã tới mốc chưa chạy trong ngày.
+                //Chế độ Theo chu kỳ trả về true ngay nên hành vi của các viện đang dùng không đổi.
+                if (!this.Xml130TryBeginAutoRound())
+                {
+                    timerTickIsRunning = false;
+                    return;
+                }
                 if (this.configSync.isCheckCollinearXml)
                 {
                     listTreatmentSync = new List<V_HIS_TREATMENT_1>();
@@ -4081,6 +4099,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     if (listTreatmentEnd != null)
                         listTreatmentSync.AddRange(listTreatmentEnd);
                     this.configSync.isCheckOutTime = isCheckOutTimeOrigin;
+                    //vCong60263: hai lượt lọc có thể trả về cùng một hồ sơ -> khử trùng theo mã
+                    //để không gửi hai lần trong cùng một lượt.
+                    listTreatmentSync = this.Xml130DistinctById(listTreatmentSync);
                 }
                 else
                 {
@@ -4145,25 +4166,36 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
 
                     //isCheckOutTime = radio "Kết thúc điều trị" (frmSettingConfigSync.chkOutTime); false = radio "Khóa viện phí".
-                    //Mốc lọc: từ ĐẦU NGÀY HIỆN TẠI đến thời điểm hiện tại.
+                    //Mốc lọc: từ ĐẦU NGÀY của N ngày trước đến thời điểm hiện tại.
+                    //vCong60263: N = số ngày quét lùi; không khai (0) thì vẫn là đầu ngày hiện tại như trước.
+                    long scanFrom = Convert.ToInt64(this.Xml130GetScanFromDate().ToString("yyyyMMddHHmmss"));
                     if (configSync.isCheckOutTime)
                     {
                         //Kết thúc điều trị: lọc theo OUT_TIME + đã kết thúc điều trị.
-                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.ToString("yyyyMMddHHmmss"));
+                        filter.OUT_TIME_FROM = scanFrom;
                         filter.OUT_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                         filter.IS_PAUSE = true;
                     }
                     else
                     {
                         //Khóa viện phí: lọc theo FEE_LOCK_TIME.
-                        filter.FEE_LOCK_TIME_FROM = Convert.ToInt64(DateTime.Today.ToString("yyyyMMddHHmmss"));
+                        filter.FEE_LOCK_TIME_FROM = scanFrom;
                         filter.FEE_LOCK_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                     }
                     if (configSync.isCheckCollinearXml)
                         filter.XML130_RESULT = null;
+                    //vCong60263: bật "Gửi lại hồ sơ gửi lỗi" thì lấy cả hồ sơ chưa gửi lẫn hồ sơ gửi lỗi
+                    //(lọc hồ sơ lỗi làm ở bước lọc lại bên dưới, vì điều kiện lọc sẵn có chỉ nhận một giá trị).
                     filter.HAS_XML130_RESULT = false;
                     LogSystem.Debug("Treatment Filter: " + LogUtil.TraceData("Filter", filter));
                     result = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT_1>>("api/HisTreatment/GetView1", ApiConsumers.MosConsumer, filter, null);
+
+                    //vCong60263: lấy thêm hồ sơ đã gửi THẤT BẠI trong cùng khoảng quét để gửi lại ở lượt này.
+                    //Viện không bật thì không phát sinh truy vấn nào.
+                    if (this.configSync.isResendFailed)
+                    {
+                        result = this.Xml130AppendFailedTreatments(filter, result);
+                    }
                 }
             }
             catch (Exception ex)
@@ -4307,6 +4339,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
         private async void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            //vCong60263: đánh dấu đang ở trong một lượt gửi TỰ ĐỘNG, để cán bộ bấm gửi tay
+            //trong lúc tiến trình tự động đang bật vẫn được ghi đúng là gửi tay (QT13).
+            this.xml130IsAutoRound = true;
             try
             {
                 //LUỒNG 2 (ưu tiên, xử lý TRƯỚC): gửi cổng BHYT như cũ - lọc đầy đủ theo form (chi nhánh, đối tượng BN/TT, loại điều trị, trạng thái, thời gian).
@@ -4369,6 +4404,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            finally
+            {
+                this.xml130IsAutoRound = false;
+            }
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -4377,6 +4416,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 Inventec.Common.Logging.LogSystem.Info("Xong");
                 FillDataToGridTreatment();
+                //vCong60263: kết thúc lượt gửi tự động - cập nhật trạng thái, cảnh báo nếu có hồ sơ lỗi
+                this.Xml130EndAutoRound();
             }
             catch (Exception ex)
             {
@@ -4388,6 +4429,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                //vCong60263: mở một lượt gửi tay mới để cả đợt mang cùng một mã lượt trong nhật ký
+                this.Xml130BeginManualRound();
                 isXML130 = true;
                 isXML3176 = false;
                 await XML130();
@@ -4891,6 +4934,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                 xmlResultSDO.Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.TruncateUtf8(String.Join(". ", xmlDescription.Where(o => !String.IsNullOrEmpty(o)).Distinct()), 2000); // XML130_DESC 2000 byte (vCong 62522)
                                                 xmlResultSDO.CheckCode = String.Join(";", xmlCheckCode.Where(o => !String.IsNullOrEmpty(o)).Distinct());
                                                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
+                                                //vCong60263: gắn thời điểm gửi, hình thức gửi, máy và mã lượt trước khi ghi nhận kết quả
+                                                this.Xml130ApplySendInfo(xmlResultSDO);
                                                 var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
                                                 //luu file
                                                 if (configSync != null && !string.IsNullOrEmpty(configSync.folderPath))
@@ -4991,8 +5036,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                             xmlResultSDO.Description = Inventec.Common.IntegrationError.IntegrationErrorMessage.TruncateUtf8(syncResult.Message, 2000); // XML130_DESC 2000 byte (vCong 62522)
                                             xmlResultSDO.CheckCode = syncResult.CheckCode;
                                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
+                                            //vCong60263: gắn thời điểm gửi, hình thức gửi, máy và mã lượt trước khi ghi nhận kết quả
+                                            this.Xml130ApplySendInfo(xmlResultSDO);
                                             var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
-                                            Inventec.Common.Logging.LogSystem.Debug("Update thanh cong  : " + rs + " du lieu: " + treatment.TDL_PATIENT_NAME + " Ma dieu tri: " + treatment.TREATMENT_CODE);
+                                            Inventec.Common.Logging.LogSystem.Debug("Update thanh cong  : " + rs + " Ma dieu tri: " + treatment.TREATMENT_CODE);
 
 
                                         }
@@ -5004,6 +5051,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 string errMessage = "";
                                 bool success = false;
                                 bool signSuccess = true;
+                                //vCong60263: nhanh nay co the chi DUNG file XML roi luu ra thu muc, khong gui len cong.
+                                //Chi coi la da gui khi da ky va gui file thanh cong.
+                                bool hasSentToPortal = false;
 
                                 try
                                 {
@@ -5059,6 +5109,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                                 }
                                                 return;
                                             }
+                                            //sendXMLSign ky file roi gui len cong; vien dat "khong gui" thi chi xuat file.
+                                            hasSentToPortal = (this.configSync == null || !this.configSync.dontSend);
                                         }
                                     }
                                     HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
@@ -5073,6 +5125,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         )
                                     );
 
+                                    //vCong60263: chỉ xuất file XML thì không tính là đã gửi — không gắn thời điểm gửi,
+                                    //không ghi nhật ký, không tính vào kết quả của lượt.
+                                    xmlResultSDO.IsSent = hasSentToPortal;
+                                    if (hasSentToPortal)
+                                    {
+                                        this.Xml130ApplySendInfo(xmlResultSDO);
+                                    }
                                     var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
                                 }
                             }
@@ -6182,6 +6241,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                //vCong60263 - Nhật ký gửi: xem được kể cả khi chưa chọn hồ sơ nào,
+                //nên đặt ngoài nhánh "đang chọn hồ sơ" bên dưới.
+                if (this.Xml130IsShowSendLogMenu())
+                {
+                    e.Menu.Items.Add(new DXMenuItem("Nhật ký gửi", new EventHandler(this.Xml130OpenSendLog)));
+                }
+
 
                 if (listSelection != null && listSelection.Count > 0)
                 {
@@ -7041,6 +7107,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 isXML3176 = true;
                 isAutoSignXML3176 = false;
                 showMessSusscess = true;
+                //vCong60263: mở một lượt gửi tay mới để cả đợt mang cùng một mã lượt trong nhật ký
+                this.Xml130BeginManualRound();
                 await XML130();
                 FillDataToGridTreatment();
             }

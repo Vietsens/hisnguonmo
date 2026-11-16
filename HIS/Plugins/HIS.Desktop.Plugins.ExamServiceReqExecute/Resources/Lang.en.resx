@@ -1158,4 +1158,19 @@
   <data name="ExamServiceReqExecuteControl.lblMimsLactatingMonth.Text" xml:space="preserve">
     <value>Months of breastfeeding:</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.lciEmergencyStayTime.Text" xml:space="preserve">
+    <value>Emergency stay time</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciEmergencyStayStatus.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblEmergencyStayTime.Format" xml:space="preserve">
+    <value>{0}h {1}m</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblEmergencyStayStatus.NotYet" xml:space="preserve">
+    <value>Under {0} hours - Examination</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblEmergencyStayStatus.Done" xml:space="preserve">
+    <value>Over {0} hours - Switched to Inpatient</value>
+  </data>
 </root>
