@@ -199,6 +199,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     // Ô chọn bệnh của tab Khám lâm sàng HCM có thể đã dựng bằng danh mục ICD của HIS.
                     if (okIcd) RefreshHcmIcdFromSytCatalog();
 
+                    // vCong61141: Mau 02 tabs — bind the newly arrived catalogs; ICD boxes filled before
+                    // the ICD catalog arrived are empty -> refill them from the stored record.
+                    try
+                    {
+                        BindM2Catalogs();
+                        if (okIcd) RefillM2IcdFromRecord();
+                    }
+                    catch (Exception exM2) { LogSystem.Warn(exM2); }
+
                     // Cụm tiền sử gia đình: đổi ô chữ thành danh sách ô tích, và ô mã ICD thành ô
                     // chọn bệnh của cổng. Gọi ở đây vì lúc này danh mục CHẮC CHẮN đã có.
                     BuildSytFamilyHistory();

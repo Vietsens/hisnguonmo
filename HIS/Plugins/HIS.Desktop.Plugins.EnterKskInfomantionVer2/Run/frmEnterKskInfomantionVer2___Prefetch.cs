@@ -142,6 +142,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                     // Bảng dữ liệu riêng của mẫu M4 (Sở Y tế TP.HCM) — chỉ gọi khi viện đã khai báo cấu hình.
                     if (o18 != null) LoadKskSytHcm(o18.ID);
+                    // vCong61141: Mau 02 record of the under-18 record (portal declared only).
+                    var u18 = (preKskUnderEighteens != null) ? preKskUnderEighteens.FirstOrDefault() : null;
+                    if (u18 != null) LoadKskSytHcmM2(u18.ID);
                     if (sdo.HisPeriodDriverDitys != null)
                     {
                         if (o18 != null)
