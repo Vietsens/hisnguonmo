@@ -599,6 +599,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     chkSyncKcbHoc.Checked = configSync.isSyncKcbHoc;
                     chkSyncKcbCt.Checked = configSync.isSyncKcbCt;
                     chkAutoXml48h.Checked = configSync.isAutoXml48h;
+                    //vCong60263 - lịch gửi theo mốc giờ
+                    this.LoadScheduleToForm();
                 }
             }
             catch (Exception ex)
@@ -762,9 +764,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
-                if (spnPeriod.Value <= 0)
+                //vCong60263: chế độ Theo chu kỳ vẫn bắt buộc chu kỳ > 0 như trước;
+                //chế độ Theo mốc giờ kiểm tra danh sách mốc giờ thay cho chu kỳ.
+                if (!this.ValidateSchedule())
                 {
-                    XtraMessageBox.Show(Resources.ResourceMessageLang.ChuKyPhaiLonHon0);
                     return;
                 }
                 if (this.branchSelecteds != null && this.branchSelecteds.Count > 0)
@@ -816,6 +819,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.configSync.isSyncKcbHoc = chkSyncKcbHoc.Checked;
                 this.configSync.isSyncKcbCt = chkSyncKcbCt.Checked;
                 this.configSync.isAutoXml48h = chkAutoXml48h.Checked;
+                //vCong60263 - lịch gửi theo mốc giờ
+                this.SaveScheduleToConfig();
                 if (this.actAfterSave != null)
                 {
                     this.actAfterSave(this.configSync);

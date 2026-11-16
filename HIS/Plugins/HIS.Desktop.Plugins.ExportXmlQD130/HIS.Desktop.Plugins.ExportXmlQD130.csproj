@@ -284,6 +284,20 @@
     <Compile Include="UCExportXml___Xml48h.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExportXml___SendSchedule.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Base\Xml130Schedule.cs" />
+    <Compile Include="ADO\Xml130SendLogADO.cs" />
+    <Compile Include="frmSettingConfigSync___Schedule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmXml130SendLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmXml130SendLog.Designer.cs">
+      <DependentUpon>frmXml130SendLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ADO\XmlBatchDataADO.cs" />
     <Compile Include="Base\MdInsightConfig.cs" />
     <Compile Include="Base\MdInsightDescCodec.cs" />
