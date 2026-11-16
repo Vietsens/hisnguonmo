@@ -4367,7 +4367,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
 
                         ((Form)extenceInstance).ShowDialog();
 
-                        this.LoadDataTracking();
+                        //Viec 63152: vua tao/sua to dieu tri bang nut "+" thi chon to nhu cu, khong ep giu to cu cua don dang sua
+                        this.LoadDataTracking(true, false);
                     }
                 }
             }
