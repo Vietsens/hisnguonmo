@@ -72,7 +72,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (baseItem == null) return;
 
                 // AutoSizeMode mặc định (Default) để nhãn tự giãn theo độ dài chữ. Đặt None mà không cho kích thước
-                // thì ô chỉ rộng 51px, chữ bị cắt cụt ("0 giờ 2 phú", "Chưa đủ 4") — lỗi autotest bắt được ở lần chạy 3156.
+                // thì ô chỉ rộng 51px, chữ bị cắt cụt ("0 giờ 2 phú", "Chưa đủ 4") — autotest bắt được ở lần chạy 3156.
+                // KHÔNG ép MinSize cho ô layout: lần chạy 3159 cho thấy ép 240+330px làm hàng này vỡ,
+                // combo Phân loại cấp cứu bị co từ 199px xuống 50px và hai nhãn bị đẩy khỏi bố cục.
                 this.lblEmergencyStayTime = new LabelControl();
                 this.lblEmergencyStayTime.Name = "lblEmergencyStayTime";
                 this.lblEmergencyStayTime.AutoSizeMode = LabelAutoSizeMode.Default;
@@ -91,33 +93,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     this.lciEmergencyStayStatus = this.layoutControl3.AddItem(
                         this.GetEmergencyInPatientText("lciEmergencyStayStatus.Text"),
                         this.lblEmergencyStayStatus, this.lciEmergencyStayTime, InsertType.Right);
-
-                    // Chừa đủ bề ngang cho cả nhãn tiêu đề lẫn giá trị, nếu không chữ bị cắt khi layout co lại.
-                    // Trạng thái dài hơn ("Đã đủ 4 giờ — đã chuyển diện Nội trú") nên cần rộng hơn.
-                    SetMinWidth(this.lciEmergencyStayTime, 240);
-                    SetMinWidth(this.lciEmergencyStayStatus, 330);
                 }
                 finally
                 {
                     this.layoutControl3.EndUpdate();
                 }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        /// <summary>
-        /// Đặt bề ngang tối thiểu cho một ô layout để chữ không bị cắt.
-        /// </summary>
-        private static void SetMinWidth(LayoutControlItem item, int width)
-        {
-            try
-            {
-                if (item == null) return;
-                item.SizeConstraintsType = SizeConstraintsType.Custom;
-                item.MinSize = new Size(width, 20);
             }
             catch (Exception ex)
             {
