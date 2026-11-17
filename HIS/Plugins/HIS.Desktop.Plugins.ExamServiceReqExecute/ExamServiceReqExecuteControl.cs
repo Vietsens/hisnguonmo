@@ -525,6 +525,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 BuildBulletedInfoList();
                 InitViewFinishedExecute();
                 isLoadingSer = false;
+                AddExamWarningMarkCurrentIcdKnown();
 
             }
             catch (Exception ex)
@@ -6826,6 +6827,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 customGridControlSubIcdName.DataSource = null;
                 customGridControlSubIcdName.DataSource = this.icdSubcodeAdoChecks;
                 Inventec.Common.Logging.LogSystem.Debug("ReloadIcdSubContainerByCodeChanged.2");
+                CheckAddExamWarning();
             }
             catch (Exception ex)
             {
@@ -7383,6 +7385,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 txtIcdSubCode.Text = string.Join(IcdUtil.seperator, oldCodes);
                 txtIcdText.Text = string.Join(IcdUtil.seperator, oldNames);
                 isNotProcessWhileChangedTextSubIcd = false;
+                CheckAddExamWarning();
             }
             catch (Exception ex)
             {
@@ -7774,6 +7777,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                         // reload icd
                         ReloadIcdFinish(result.First());
+                        CheckAddExamWarning();
                     }
                 }
 
@@ -7938,6 +7942,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     //}
 
                     ReloadIcdFinish(icd);
+                    CheckAddExamWarning();
                 }
             }
             catch (Exception ex)
@@ -9275,6 +9280,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     }
                 }
                 txtIcdSubCode.Text = icdCodeList;//string.Join(";", icdCodeList);
+                CheckAddExamWarning();
             }
             catch (Exception ex)
             {

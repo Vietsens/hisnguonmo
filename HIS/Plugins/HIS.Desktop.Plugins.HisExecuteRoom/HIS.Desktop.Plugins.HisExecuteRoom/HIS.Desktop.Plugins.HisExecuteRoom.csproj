@@ -222,6 +222,13 @@
     <Compile Include="ADO\ConfigADO.cs" />
     <Compile Include="ADO\ConfigSettingsADO.cs" />
     <Compile Include="ADO\DirectorADO.cs" />
+    <Compile Include="ADO\AddExamTimeADO.cs" />
+    <Compile Include="HisExecuteRoom\frmAddExamWarning.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HisExecuteRoom\frmHisExecuteRoom___AddExamWarning.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="HisExecuteRoomProcessor.cs" />
     <Compile Include="HisExecuteRoom\frmHisExecuteRoom.cs">
