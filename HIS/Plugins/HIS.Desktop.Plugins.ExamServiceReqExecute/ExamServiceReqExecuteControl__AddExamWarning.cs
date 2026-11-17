@@ -104,7 +104,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (roomNames.Count == 0)
                         continue;
                     HIS_ICD icd = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => String.Equals(o.ICD_CODE, match.Key, StringComparison.OrdinalIgnoreCase));
-                    lines.Add(String.Format("Chẩn đoán {0} – {1} thuộc danh mục của phòng khám chuyên đề {2}.",
+                    lines.Add(String.Format("Chẩn đoán {0} – {1} thuộc danh mục của {2}.",
                         match.Key, icd != null ? icd.ICD_NAME : "", String.Join(", ", roomNames)));
                 }
                 if (lines.Count == 0)
