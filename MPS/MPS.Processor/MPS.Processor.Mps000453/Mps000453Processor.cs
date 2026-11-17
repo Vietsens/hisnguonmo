@@ -78,6 +78,8 @@ namespace MPS.Processor.Mps000453
                 // Người đưa trẻ đi khám (mục hành chính)
                 SetAccompanyKeysFromKskUnderEighteen();
                 SetSignatureKeyImageByCFG();
+                // vCong61141: Mau 02 keys (prefix "M2_"), only when the caller computed them.
+                SetM2SingleKeys();
 
                 if (rdo.lstUneiVaty == null)
                 {
@@ -215,6 +217,24 @@ namespace MPS.Processor.Mps000453
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>vCong61141 - Mau 02 (TT 25/2026) keys computed by the calling plugin.</summary>
+        private void SetM2SingleKeys()
+        {
+            try
+            {
+                if (rdo.M2SingleKeys == null) return;
+                foreach (KeyValuePair<string, object> kv in rdo.M2SingleKeys)
+                {
+                    if (string.IsNullOrEmpty(kv.Key)) continue;
+                    SetSingleKey(new KeyValue(kv.Key, kv.Value ?? ""));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

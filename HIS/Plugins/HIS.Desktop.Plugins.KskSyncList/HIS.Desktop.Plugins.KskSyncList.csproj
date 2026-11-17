@@ -210,6 +210,7 @@
     </Compile>
     <Compile Include="ADO\KskSytClsMapADO.cs" />
     <Compile Include="KskSytHcmBodyBuilder.cs" />
+    <Compile Include="KskSytHcmM2BodyBuilder.cs" />
     <Compile Include="KskSytHcmFakeData.cs" />
     <Compile Include="KskSytHcmPayload.cs" />
     <Compile Include="KskSytHcmPusher.cs" />

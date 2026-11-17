@@ -75,6 +75,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 InitComboObstetricAbnormal3();
                 SetCaptionAccompanyUnderEighteen();
                 FillDataUnderEighteen();
+                // vCong61141: Mau 02 tabs (no-op when the portal is not declared).
+                FillM2Controls();
             }
             catch (Exception ex)
             {

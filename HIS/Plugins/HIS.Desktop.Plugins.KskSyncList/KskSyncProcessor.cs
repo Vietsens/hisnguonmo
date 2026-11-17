@@ -55,6 +55,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         private readonly Dictionary<long, KskSytHcmSource> sytSourceBySr
             = new Dictionary<long, KskSytHcmSource>();
+
+        /// <summary>vCong61141: source of form M2 (under-18 records that have a Mau 02 record), key = KSK order id.</summary>
+        private readonly Dictionary<long, KskSytHcmM2Source> sytM2SourceBySr
+            = new Dictionary<long, KskSytHcmM2Source>();
+
+        /// <summary>vCong61141: KSK orders that are under-18 records (to explain why nothing is pushed).</summary>
+        private readonly HashSet<long> sytUnder18Srs = new HashSet<long>();
         private readonly bool sign;
         private readonly SettingSignADO signSetting;
 
@@ -765,6 +772,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 long sr = ToLong(GetProp(row, "SERVICE_REQ_ID"));
                 KskSytHcmSource src = ValOrNull(sytSourceBySr, sr);
+                // vCong61141: under-18 record with Mau 02 data -> form M2.
+                if (src == null && sytM2SourceBySr.ContainsKey(sr))
+                    return PushSytHcmM2OneRow(raw, sr, sytM2SourceBySr[sr]);
+                if (src == null && sytUnder18Srs.Contains(sr))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm/M2: y lenh " + sr
+                        + " la ho so duoi 18 tuoi nhung chua co ban ghi Mau 02 -> khong day");
+                    return new KskSytHcmPushResult { Message = "Hồ sơ chưa nhập dữ liệu Mẫu 02" };
+                }
                 if (src == null)
                 {
                     Inventec.Common.Logging.LogSystem.Warn("SytHcm: y lenh " + sr
@@ -1530,6 +1546,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 try { sytHcmByO18 = LoadSytHcmByO18(over18s); }
                 catch (Exception exSyt) { Inventec.Common.Logging.LogSystem.Warn(exSyt); }
             }
+            // vCong61141: Mau 02 records of the under-18 records (same JIT reason -> separate method).
+            System.Collections.IDictionary sytM2ByU18 = null;
+            if (!string.IsNullOrWhiteSpace(this.sytHcmConnectionInfo))
+            {
+                try { sytM2ByU18 = LoadSytHcmM2ByU18(under18s); }
+                catch (Exception exM2) { Inventec.Common.Logging.LogSystem.Warn(exM2); }
+            }
 
             // Danh muc chi nhanh (cache local) — MA_CSKCB = HEIN_MEDI_ORG_CODE theo BRANCH_ID.
             Dictionary<long, HIS_BRANCH> branchById = null;
@@ -1667,6 +1690,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             ClsMapJson = this.SytClsMapJson
                         };
                         if (sytHcmByO18 != null) AttachSytHcm(sytSourceBySr[sr], sytHcmByO18, over18.ID);
+                    }
+                    // vCong61141: under-18 record with a Mau 02 record -> form M2.
+                    if (under18 != null) sytUnder18Srs.Add(sr);
+                    if (!string.IsNullOrWhiteSpace(this.sytHcmConnectionInfo) && under18 != null
+                        && sytM2ByU18 != null && sytM2ByU18.Contains(under18.ID))
+                    {
+                        AttachSytHcmM2(sytM2SourceBySr, sr, sytM2ByU18, under18,
+                            (trea != null) ? ValOrNull(patById, trea.PATIENT_ID) : null, trea,
+                            ValOrNull(sreqById, sr), general, dhstOne ?? FirstDhstOfTreatment(dhstForInput), ranks);
                     }
                 }
                 catch (Exception exSytSrc) { Inventec.Common.Logging.LogSystem.Warn(exSytSrc); }
@@ -2328,6 +2360,85 @@ namespace HIS.Desktop.Plugins.KskSyncList
             Inventec.Common.Logging.LogSystem.Info("SytHcm: nap bang du lieu mau M3 cho "
                 + map.Count + "/" + o18Ids.Count + " ho so KSK tren 18 tuoi");
             return map;
+        }
+
+        /// <summary>
+        /// vCong61141: pushes one under-18 record as form M2 (create-mau-phieu-m2). Same config,
+        /// token and signature as M3/M4; required fields are checked first (R19).
+        /// </summary>
+        private KskSytHcmPushResult PushSytHcmM2OneRow(string raw, long sr, KskSytHcmM2Source src)
+        {
+            try
+            {
+                KskSytHcmConfig cfg = GetSytHcmConfigOnce(raw);
+                if (cfg == null || !cfg.CanPush)
+                {
+                    string missingCfgFields = sytHcmCfgMissing;
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm/M2: cau hinh thieu truong [" + missingCfgFields + "] -> khong day");
+                    return new KskSytHcmPushResult { Message = "Cấu hình cổng Sở Y tế TP.HCM còn thiếu: " + missingCfgFields };
+                }
+
+                Dictionary<string, object> body = KskSytHcmBodyBuilder.BuildM2(src);
+                List<string> missing = KskSytHcmBodyBuilder.DescribeMissingRequiredM2(body);
+                if (missing != null && missing.Count > 0)
+                {
+                    string msg = "Hồ sơ (Mẫu 02) còn thiếu " + missing.Count + " thông tin bắt buộc: "
+                        + string.Join("; ", missing.ToArray());
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm/M2: y lenh " + sr + " -> " + msg);
+                    return new KskSytHcmPushResult { Message = msg };
+                }
+
+                KskSytHcmPushResult r = KskSytHcmPusher.Push(cfg, body, false, KskSytHcmPusher.SERVICE_CODE__M2);
+                Inventec.Common.Logging.LogSystem.Info("SytHcm/M2: y lenh " + sr + " -> "
+                    + (r != null ? r.ToString() : "khong co ket qua"));
+                return r;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return new KskSytHcmPushResult { Message = IntegrationErrorMessage.TagException(ex, KSK_PARTNER_SYT) };
+            }
+        }
+
+        /// <summary>
+        /// vCong61141: loads HIS_KSK_SYT_HCM_M2 of the under-18 records (one call for the whole batch).
+        /// Separate method: an old MOS.EFMODEL without the type must not break the whole sync (JIT).
+        /// </summary>
+        private System.Collections.IDictionary LoadSytHcmM2ByU18(List<HIS_KSK_UNDER_EIGHTEEN> under18s)
+        {
+            var map = new Dictionary<long, HIS_KSK_SYT_HCM_M2>();
+            if (under18s == null || under18s.Count == 0) return map;
+            List<long> ids = under18s.Where(x => x != null).Select(x => x.ID).Distinct().ToList();
+            var list = GetList<HIS_KSK_SYT_HCM_M2>("api/HisKskSytHcmM2/Get",
+                new MOS.Filter.HisKskSytHcmM2Filter { KSK_UNDER_EIGHTEEN_IDs = ids });
+            HashSet<long> idSet = new HashSet<long>(ids);
+            if (list != null)
+                foreach (var x in list)
+                    if (x != null && idSet.Contains(x.KSK_UNDER_EIGHTEEN_ID) && !map.ContainsKey(x.KSK_UNDER_EIGHTEEN_ID))
+                        map[x.KSK_UNDER_EIGHTEEN_ID] = x;
+            Inventec.Common.Logging.LogSystem.Info("SytHcm/M2: nap ban ghi Mau 02 cho "
+                + map.Count + "/" + ids.Count + " ho so KSK duoi 18 tuoi");
+            return map;
+        }
+
+        /// <summary>vCong61141: builds the M2 source of one KSK order.</summary>
+        private static void AttachSytHcmM2(Dictionary<long, KskSytHcmM2Source> target, long sr,
+            System.Collections.IDictionary m2ByU18, HIS_KSK_UNDER_EIGHTEEN under18, HIS_PATIENT patient,
+            HIS_TREATMENT treatment, HIS_SERVICE_REQ serviceReq, HIS_KSK_GENERAL general, HIS_DHST dhst,
+            List<HIS_HEALTH_EXAM_RANK> ranks)
+        {
+            if (target == null || m2ByU18 == null || under18 == null || !m2ByU18.Contains(under18.ID)) return;
+            target[sr] = new KskSytHcmM2Source
+            {
+                Patient = patient,
+                Treatment = treatment,
+                ServiceReq = serviceReq,
+                Under18 = under18,
+                General = general,
+                Dhst = dhst,
+                HisRanks = ranks,
+                M2 = (HIS_KSK_SYT_HCM_M2)m2ByU18[under18.ID]
+            };
         }
 
         /// <summary>Gan HIS_KSK_SYT_HCM vao source KSK — tach rieng vi ly do JIT type-load nhu LoadSytHcmByO18.</summary>

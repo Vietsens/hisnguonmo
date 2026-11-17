@@ -637,6 +637,9 @@
     <Compile Include="ExamServiceReqExecuteControl__EmergencyClassify.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__EmergencyInPatient.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ExamServiceReqExecuteControl__InitLanguage.cs">
       <SubType>UserControl</SubType>
     </Compile>

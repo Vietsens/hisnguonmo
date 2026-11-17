@@ -217,6 +217,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
  // Tab "Hoi benh lam sang HCM" — dat ngay canh tab Kham lam sang HCM.
  InitInterviewHcmTab(); }
                 catch (Exception exHcm) { Inventec.Common.Logging.LogSystem.Error(exHcm); }
+                // vCong61141: Mau 02 sub-tabs of "Ksk duoi 18 tuoi" (portal SYT TP.HCM declared only).
+                try { InitM2Tabs(); }
+                catch (Exception exM2) { Inventec.Common.Logging.LogSystem.Error(exM2); }
                 lap("ClinicalExamHcm");
                 // Nhúng combo "Người khám" kết luận vào panel host (tab trên/dưới 18 tuổi).
                 InitConcluderComboForTabs();
@@ -1259,6 +1262,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 //  - Đối tượng / Nguồn chi trả: bắt buộc ở tab trên 18, dưới 18 và trẻ em dưới 6 tuổi.
                 lastSaveSucceeded = false;
                 if (!ValidateRequiredBeforeSave()) return;
+                // vCong61141: Mau 02 format checks (R17), only on tab "Ksk duoi 18 tuoi".
+                if (!ValidateM2BeforeSave()) return;
                 bool success = false;
                 // R: tab ≥18 — vùng nào ĐÃ nhập Người khám mà THIẾU kết quả/phân loại thì chặn Lưu (nêu rõ vùng + người khám).
                 if (xtraTabControl1.SelectedTabPageIndex == 1)
@@ -1309,6 +1314,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     sdo.KskUnderEighteen.HisDhst = HasDhstData(dhstUnderEightVal) ? dhstUnderEightVal : null;
                     sdo.KskUnderEighteen.HisKskUneiVatys = new System.Collections.Generic.List<HIS_KSK_UNEI_VATY>();
                     sdo.KskUnderEighteen.HisKskUneiVatys = GetUneiVaty();
+                    // vCong61141: Mau 02 values stored in the under-18 record itself (family history ids).
+                    ApplyM2ToUnderEighteen(sdo.KskUnderEighteen.HisKskUnderEighteen);
                     // Đối tượng + Nguồn chi trả (STUB DB — bật khi HIS_KSK_UNDER_EIGHTEEN có cột KSK_PATIENT_TYPES/KSK_PAY_SOURCE).
                     SaveAdminCombosUnderEighteen(sdo.KskUnderEighteen.HisKskUnderEighteen);
                 }
@@ -1437,6 +1444,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     }
                     if (result.HisKskPeriodDriver != null) currentKskPeriodDriver = result.HisKskPeriodDriver;
                     if (result.HisKskUnderEighteen != null) currentKskUnderEight = result.HisKskUnderEighteen;
+                    // vCong61141: then the Mau 02 record — needs the ID of the under-18 record just saved.
+                    SaveKskSytHcmM2(result.HisKskUnderEighteen);
                     if (result.HisKskOther != null) currentKskOther = result.HisKskOther;
                     if (result.KskOccupational != null) currentKsKOccupational = result.KskOccupational;
                     if (result.KskMental != null) currentKskMentalEf = result.KskMental; // tab Ksk tam than
