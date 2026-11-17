@@ -1006,6 +1006,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 this.icdDefaultFinish.ICD_CODE = icdInput.ICD_CODE;
                 this.icdDefaultFinish.ICD_NAME = icdInput.ICD_NAME;
+                AddExamWarningMarkCurrentIcdKnown();
             }
             catch (Exception ex)
             {

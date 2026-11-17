@@ -136,6 +136,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 {
                     executeRoom.KIDNEY_SHIFT_COUNT = null;
                 }
+                FillAddExamWarning(executeRoom);
             }
             catch (Exception ex)
             {

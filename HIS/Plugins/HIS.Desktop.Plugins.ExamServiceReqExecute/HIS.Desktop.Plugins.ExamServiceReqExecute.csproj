@@ -522,6 +522,9 @@
     <Compile Include="ExamServiceReqExecuteControl__InitUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__AddExamWarning.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ExamServiceReqExecuteControl__InitUCIcdCause.cs">
       <SubType>UserControl</SubType>
     </Compile>

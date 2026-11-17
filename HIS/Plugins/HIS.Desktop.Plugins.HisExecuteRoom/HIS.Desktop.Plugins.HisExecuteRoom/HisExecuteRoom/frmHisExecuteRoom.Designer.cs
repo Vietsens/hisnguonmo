@@ -322,6 +322,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.cboDefaultService = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView9 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboExpendMediStock = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.btnAddExamWarning = new DevExpress.XtraEditors.SimpleButton();
             this.gridViewExpendMediStock = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboDepositBook = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView8 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -396,6 +397,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.layoutControlItem36 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcDefaultService = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcExpendMediStock = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciAddExamWarning = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciAccountBook = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem59 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem56 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -643,6 +645,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcDefaultService)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcExpendMediStock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAddExamWarning)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAccountBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).BeginInit();
@@ -1962,6 +1965,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.lcEditorInfo.Controls.Add(this.cboAccountBook);
             this.lcEditorInfo.Controls.Add(this.cboDefaultService);
             this.lcEditorInfo.Controls.Add(this.cboExpendMediStock);
+            this.lcEditorInfo.Controls.Add(this.btnAddExamWarning);
             this.lcEditorInfo.Controls.Add(this.cboDepositBook);
             this.lcEditorInfo.Controls.Add(this.txtHein_card_number);
             this.lcEditorInfo.Controls.Add(this.spMaxPatientByDay);
@@ -2208,6 +2212,18 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.cboExpendMediStock.TabIndex = 47;
             this.cboExpendMediStock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboExpendMediStock_ButtonClick);
             this.cboExpendMediStock.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboExpendMediStock_KeyUp);
+            //
+            // btnAddExamWarning
+            //
+            this.btnAddExamWarning.Location = new System.Drawing.Point(3, 875);
+            this.btnAddExamWarning.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAddExamWarning.Name = "btnAddExamWarning";
+            this.btnAddExamWarning.Size = new System.Drawing.Size(579, 22);
+            this.btnAddExamWarning.StyleController = this.lcEditorInfo;
+            this.btnAddExamWarning.TabIndex = 48;
+            this.btnAddExamWarning.Text = "Thiết lập cảnh báo chuyển khám";
+            this.btnAddExamWarning.ToolTip = "Thiết lập cảnh báo chuyển khám đến phòng khám chuyên đề này theo mã ICD";
+            this.btnAddExamWarning.Click += new System.EventHandler(this.btnAddExamWarning_Click);
             // 
             // gridViewExpendMediStock
             // 
@@ -2855,6 +2871,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.layoutControlItem36,
             this.lcDefaultService,
             this.lcExpendMediStock,
+            this.lciAddExamWarning,
             this.lciAccountBook,
             this.layoutControlItem59,
             this.layoutControlItem56,
@@ -3293,6 +3310,15 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.lcExpendMediStock.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcExpendMediStock.TextSize = new System.Drawing.Size(130, 20);
             this.lcExpendMediStock.TextToControlDistance = 5;
+            //
+            // lciAddExamWarning
+            //
+            this.lciAddExamWarning.Control = this.btnAddExamWarning;
+            this.lciAddExamWarning.Location = new System.Drawing.Point(0, 872);
+            this.lciAddExamWarning.Name = "lciAddExamWarning";
+            this.lciAddExamWarning.Size = new System.Drawing.Size(585, 28);
+            this.lciAddExamWarning.TextSize = new System.Drawing.Size(0, 0);
+            this.lciAddExamWarning.TextVisible = false;
             // 
             // lciAccountBook
             // 
@@ -3393,9 +3419,9 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 872);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 900);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(585, 109);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(585, 81);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem61
@@ -4664,6 +4690,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcDefaultService)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcExpendMediStock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAddExamWarning)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAccountBook)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).EndInit();
@@ -4930,6 +4957,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
         private DevExpress.XtraEditors.GridLookUpEdit cboExpendMediStock;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewExpendMediStock;
         private DevExpress.XtraLayout.LayoutControlItem lcExpendMediStock;
+        private DevExpress.XtraEditors.SimpleButton btnAddExamWarning;
+        private DevExpress.XtraLayout.LayoutControlItem lciAddExamWarning;
         private DevExpress.XtraEditors.GridLookUpEdit cboAccountBook;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView10;
         private DevExpress.XtraLayout.LayoutControlItem lciAccountBook;

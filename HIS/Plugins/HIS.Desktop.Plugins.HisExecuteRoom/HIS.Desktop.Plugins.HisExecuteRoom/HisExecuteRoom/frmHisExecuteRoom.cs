@@ -395,6 +395,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 cboWaitingScreen.EditValue = null;
                 cboAccountBook.EditValue = null;
                 txtJsonQr.Text = null;
+                SetAddExamWarning(null);
                 if (cboDefaultDrug.EditValue != null)
                 {
                     cboDefaultDrug.EditValue = null;
@@ -1184,6 +1185,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     }
                     txtDirectorLoginName.Text = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
                     cboDirectorUserName.EditValue = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
+                    SetAddExamWarning(data);
                     SelectedOptions = selectedOptions;
                     this.ProcessSelectDepartment(selectedOptions);
                 }
@@ -2756,6 +2758,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 cboPayerBank.EditValue = null;
                 txtPayerAccount.Text = "";
                 cboExpendMediStock.EditValue = null;
+                SetAddExamWarning(null);
                 //qtcode
                 cboDefaultDrug.EditValue = null;
 
