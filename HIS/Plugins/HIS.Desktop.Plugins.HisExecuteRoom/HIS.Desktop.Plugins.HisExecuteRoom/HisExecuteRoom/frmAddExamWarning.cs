@@ -115,9 +115,11 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             layoutControl.Root.AddItem(lciIcd);
             layoutControl.Root.AddItem(lciRoom, lciIcd, InsertType.Bottom);
             layoutControl.Root.AddItem(lciOption, lciRoom, InsertType.Bottom);
-            layoutControl.Root.AddItem(lciAddTime, lciOption, InsertType.Bottom);
+            // Lưới đặt dưới hàng Vị trí ICD (rộng hết form), rồi mới chèn hàng nút Thêm khung giờ lên trên lưới;
+            // chèn lưới dưới lciAddTime thì lưới chỉ rộng bằng nút.
+            layoutControl.Root.AddItem(lciGrid, lciOption, InsertType.Bottom);
+            layoutControl.Root.AddItem(lciAddTime, lciGrid, InsertType.Top);
             layoutControl.Root.AddItem(new EmptySpaceItem(), lciAddTime, InsertType.Right);
-            layoutControl.Root.AddItem(lciGrid, lciAddTime, InsertType.Bottom);
             layoutControl.Root.AddItem(lciOk, lciGrid, InsertType.Bottom);
             layoutControl.Root.AddItem(new EmptySpaceItem(), lciOk, InsertType.Left);
             layoutControl.Root.AddItem(lciClose, lciOk, InsertType.Right);
