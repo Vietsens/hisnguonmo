@@ -229,8 +229,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             string xml = KskEnvelopeBuilder.Build(groupInputs, exportMacskcb, exportAsJson);
                             if (string.IsNullOrEmpty(xml)) { failed += idxs.Count; continue; }
 
-                            // Cau hinh USB token: ky CKS_NGUOI_KET_LUAN bang USB dang cam -> chi ky duoc nhom do
-                            // CHINH nguoi dang nhap ket luan; nhom cua nguoi khac KHONG xuat file, bao ly do.
+                            // Cau hinh USB token: ky CKS_NGUOI_KET_LUAN bang USB dang cam cho moi nhom (khong doi chieu
+                            // nguoi dang nhap); ky loi -> nhom do KHONG xuat file, bao ly do.
                             if (signer.IsUsbToken)
                             {
                                 string usbSigned = signer.SignXmlByConcluderUsb(xml, concLogin);
@@ -518,10 +518,9 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             if (signer != null && signer.IsUsbToken)
                             {
                                 // Cấu hình USB token: ký CKS_NGUOI_KET_LUAN bằng USB đang cắm TRƯỚC, rồi CKS_BENH_VIEN.
-                                // Hồ sơ do người khác kết luận -> trả null: không đẩy cổng nào, báo lý do.
+                                // Ký mọi hồ sơ bằng USB đang chọn (không đối chiếu người đăng nhập); ký lỗi -> null: không đẩy, báo lý do.
                                 string clUsb = SafeString(GetProp(rowList[i], "CONCLUDER_LOGINNAME"));
                                 concluderLogin = clUsb;
-                                signer.CheckUsbConcluder(clUsb);   // người khác kết luận -> ghi lý do, chặn ở dưới
                                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                                     "CKS_NGUOI_KET_LUAN: ho so {0} (treatment_code={1}): CONCLUDER_LOGINNAME={2}; ky bang USB token",
                                     i + 1, SafeString(GetProp(rowList[i], "TDL_TREATMENT_CODE")),
@@ -2639,12 +2638,11 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     string.IsNullOrEmpty(this.signSetting.SerialNumber) ? "(trong)" : this.signSetting.SerialNumber,
                     (rowList != null) ? rowList.Count : 0,
                     (concSigners != null) ? concSigners.Count : 0));
-                // Cau hinh USB token: CKS_NGUOI_KET_LUAN cung ky bang USB dang cam -> chi ky duoc ho so
-                // do chinh nguoi dang nhap ket luan; ho so nguoi khac khong day, bao ly do.
+                // Cau hinh USB token: CKS_NGUOI_KET_LUAN cung ky bang USB dang cam cho moi ho so.
                 if (!this.signSetting.IsHsm)
                 {
                     Inventec.Common.Logging.LogSystem.Info(prefix + ": ky CKS_NGUOI_KET_LUAN + CKS_BENH_VIEN bang USB token"
-                        + " — chi ky ho so do nguoi dang nhap ket luan, ho so nguoi khac KHONG day.");
+                        + " dang chon cho moi ho so (khong doi chieu nguoi dang nhap).");
                     return;
                 }
                 // Cau hinh HSM: CKS_NGUOI_KET_LUAN ky bang HSM cua nguoi ket luan. Dieu kien:
