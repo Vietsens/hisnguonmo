@@ -23,6 +23,7 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigCustomizaButton;
 using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.CallPatientVer5.Class;
 using HIS.Desktop.Plugins.CallPatientVer5.Template;
@@ -87,6 +88,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             try
             {
                 var employee = BackendDataWorker.Get<HIS_EMPLOYEE>().FirstOrDefault(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+                layoutControlItem22.ContentVisible = false;
                 lblDoctorName.Text = string.Format("{0}{1}", employee != null && !string.IsNullOrEmpty(employee.TITLE) ? employee.TITLE.ToUpper() + ": " : "", Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName().ToUpper());
 
                 //lblRoomName.Text = (room != null) ? (room.ROOM_NAME).ToUpper() : "";
@@ -718,7 +720,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                     var data = gridViewWatingExams.GetRow(e.RowHandle) as MOS.EFMODEL.DataModels.HIS_SERVICE_REQ;
                     if (data == null) return;
 
-                    string utStr = (data.PRIORITY ?? 0) > 0 ? "ƯT" : "";
+                    string utStr = (data.PRIORITY ?? 0) > 0 ? GetPriorityGridText() : "";
                     string hkStr = "";
 
                     // Lấy thông tin Hẹn Khám
@@ -812,7 +814,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                             {
                                 var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == uutien).ToList();
                                 if (priority != null)
-                                    utStr = "ƯT";
+                                    utStr = GetPriorityGridText();
                             }
 
                             string hkStr = "";
@@ -892,7 +894,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                             {
                                 var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == uutien).ToList();
                                 if (priority != null)
-                                    e.Value = "ƯT";
+                                    e.Value = GetPriorityGridText();
                             }
 
                         }
@@ -1333,19 +1335,20 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                     lblSoThuTuBenhNhan.Text = serviceReq1ADO.NUM_ORDER + "";
                     if (serviceReq1ADO.PRIORITY != null && serviceReq1ADO.PRIORITY > 0)
                     {
-                        lblUT.Text = "(ƯT)";
+                        lblUT.Text = GetPriorityText();
+                        layoutControlItem22.ContentVisible = true;
                         //var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == serviceReq1ADO.PRIORITY_TYPE_ID).ToList();
                         //if (priority != null)
                         //    lblUT.Text = "Trường hợp ưu tiên: " + priority.FirstOrDefault().PRIORITY_TYPE_NAME;
                     }
                     else
-                        lblUT.Text = "";
+                        layoutControlItem22.ContentVisible = false;
                 }
                 else
                 {
                     lblPatientName.Text = "";
                     lblSoThuTuBenhNhan.Text = "";
-                    lblUT.Text = "";
+                    layoutControlItem22.ContentVisible = false;
 
                 }
             }
@@ -1354,6 +1357,35 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// Chữ ưu tiên lấy theo "Tùy biến nút" của nhãn lblUT (lớp dùng chung không áp tùy biến cho LabelControl).
+        /// Không khai báo tùy biến thì dùng chữ mặc định "(ƯT)".
+        /// </summary>
+        private string GetPriorityText()
+        {
+            string result = "(ƯT)";
+            try
+            {
+                var customizes = ConfigCustomizaButtonWorker.GetByModule(this.ModuleLink);
+                var customize = customizes != null ? customizes.FirstOrDefault(o => !String.IsNullOrWhiteSpace(o.CAPTION) && o.BUTTON_PATH != null && (o.BUTTON_PATH == lblUT.Name || o.BUTTON_PATH.EndsWith("." + lblUT.Name))) : null;
+                if (customize != null)
+                    result = customize.CAPTION;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Chữ ưu tiên ở cột UT trong lưới: dùng chung tùy biến của lblUT, bỏ dấu ngoặc ngoài ("(Ưu tiên)" -> "Ưu tiên").
+        /// </summary>
+        private string GetPriorityGridText()
+        {
+            return GetPriorityText().Trim().TrimStart('(').TrimEnd(')').Trim();
+        }
+
         void executeThreadSetDataToCurentCallPatient()
         {
             try

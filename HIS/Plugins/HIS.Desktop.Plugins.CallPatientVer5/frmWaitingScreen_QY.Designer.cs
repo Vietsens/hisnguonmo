@@ -339,6 +339,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             this.lblUT.Size = new System.Drawing.Size(657, 27);
             this.lblUT.StyleController = this.layoutControl15;
             this.lblUT.TabIndex = 7;
+            this.lblUT.Text = "(ƯT)";
             // 
             // layoutControlGroup14
             // 
