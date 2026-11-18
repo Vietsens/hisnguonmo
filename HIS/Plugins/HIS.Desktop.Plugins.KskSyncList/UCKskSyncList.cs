@@ -1402,8 +1402,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     return;
                 }
 
-                // CKS_NGUOI_KET_LUAN luon ky bang HSM cua nguoi ket luan (khong phu thuoc USB token/HSM cua
-                // the CKS_BENH_VIEN) -> da tich ky so la doi hoi ho so nao cung co nguoi ket luan.
+                // CKS_NGUOI_KET_LUAN ky theo cau hinh (HSM cua nguoi ket luan / USB token cua nguoi dang nhap)
+                // -> da tich ky so la doi hoi ho so nao cung co nguoi ket luan.
                 if (chkSign.Checked && SettingSignADO != null)
                 {
                     string missConcluderMsg;
@@ -1826,7 +1826,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     int ok = (r != null) ? Convert.ToInt32(r[0]) : 0, failed = (r != null) ? Convert.ToInt32(r[1]) : 0, total = (r != null) ? Convert.ToInt32(r[2]) : 0;
                     string err = (r != null && r.Length > 3) ? r[3] as string : null;
                     // Loi validate (VD thieu nguoi ket luan khi ky so) -> bao va dung.
-                    if (!string.IsNullOrEmpty(err))
+                    if (!string.IsNullOrEmpty(err) && ok == 0)
                     {
                         XtraMessageBox.Show(err, "Không thể xuất XML", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
@@ -1838,7 +1838,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     }
                     XtraMessageBox.Show(string.Format(
                         "Đã xuất {0}/{1} hồ sơ ra XML{2}.{3}Khi ký số, hồ sơ được gom theo người kết luận (mỗi người 1 file).{3}Thư mục: {4}", ok, total,
-                        (failed > 0 ? (" (" + failed + " hồ sơ lỗi/thiếu dữ liệu)") : ""), Environment.NewLine, dir),
+                        (failed > 0 ? (" (" + failed + " hồ sơ lỗi/thiếu dữ liệu)") : ""), Environment.NewLine, dir)
+                        + (string.IsNullOrEmpty(err) ? "" : (Environment.NewLine + err)),
                         "Xuất XML", MessageBoxButtons.OK,
                         (failed > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information));
                 }

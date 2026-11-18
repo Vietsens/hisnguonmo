@@ -229,6 +229,29 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             string xml = KskEnvelopeBuilder.Build(groupInputs, exportMacskcb, exportAsJson);
                             if (string.IsNullOrEmpty(xml)) { failed += idxs.Count; continue; }
 
+                            // Cau hinh USB token: ky CKS_NGUOI_KET_LUAN bang USB dang cam -> chi ky duoc nhom do
+                            // CHINH nguoi dang nhap ket luan; nhom cua nguoi khac KHONG xuat file, bao ly do.
+                            if (signer.IsUsbToken)
+                            {
+                                string usbSigned = signer.SignXmlByConcluderUsb(xml, concLogin);
+                                if (usbSigned == null)
+                                {
+                                    failed += idxs.Count;
+                                    string reason = signer.GetConcluderFailReason(concLogin) ?? KskSyncSigner.CONCLUDER_FAIL_DEFAULT_REASON;
+                                    error = string.IsNullOrEmpty(error) ? reason : (error + Environment.NewLine + reason);
+                                    continue;
+                                }
+                                xml = signer.SignCksBenhVien(usbSigned);
+                                if (string.IsNullOrEmpty(xml)) { failed += idxs.Count; continue; }
+                                string usbBaseName = MakeGroupFileName(concLogin, idxs.Count);
+                                string usbName = usbBaseName; int u = 1;
+                                while (used.Contains(usbName)) { usbName = usbBaseName + "_" + (++u); }
+                                used.Add(usbName);
+                                System.IO.File.WriteAllText(System.IO.Path.Combine(dirPath, usbName + ".xml"), xml, new System.Text.UTF8Encoding(false));
+                                ok += idxs.Count;
+                                continue;
+                            }
+
                             // Ky CKS_NGUOI_KET_LUAN (chung thu nguoi ket luan cua nhom) -> roi ky CKS_BENH_VIEN.
                             EMR.EFMODEL.DataModels.EMR_SIGNER concEmr;
                             bool hasConcCert = concSigners.TryGetValue(concLogin, out concEmr);
@@ -492,7 +515,29 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             Func<string, string> dataSigner = null;
                             string concluderLogin = null;       // người kết luận cần ký thẻ (null = không ký thẻ này)
                             bool concluderSignFailed = false;   // ký thẻ người kết luận lỗi khi dựng bản tin hồ sơ này
-                            if (signer != null)
+                            if (signer != null && signer.IsUsbToken)
+                            {
+                                // Cấu hình USB token: ký CKS_NGUOI_KET_LUAN bằng USB đang cắm TRƯỚC, rồi CKS_BENH_VIEN.
+                                // Hồ sơ do người khác kết luận -> trả null: không đẩy cổng nào, báo lý do.
+                                string clUsb = SafeString(GetProp(rowList[i], "CONCLUDER_LOGINNAME"));
+                                concluderLogin = clUsb;
+                                signer.CheckUsbConcluder(clUsb);   // người khác kết luận -> ghi lý do, chặn ở dưới
+                                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                                    "CKS_NGUOI_KET_LUAN: ho so {0} (treatment_code={1}): CONCLUDER_LOGINNAME={2}; ky bang USB token",
+                                    i + 1, SafeString(GetProp(rowList[i], "TDL_TREATMENT_CODE")),
+                                    string.IsNullOrEmpty(clUsb) ? "(trong)" : clUsb));
+                                dataSigner = xml =>
+                                {
+                                    string concluderSigned = signer.SignXmlByConcluderUsb(xml, clUsb);
+                                    if (concluderSigned == null)
+                                    {
+                                        concluderSignFailed = true;
+                                        return null;
+                                    }
+                                    return signer.SignCksBenhVien(concluderSigned);
+                                };
+                            }
+                            else if (signer != null)
                             {
                                 EMR.EFMODEL.DataModels.EMR_SIGNER concEmr = null;
                                 string cl = SafeString(GetProp(rowList[i], "CONCLUDER_LOGINNAME"));
@@ -2594,8 +2639,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     string.IsNullOrEmpty(this.signSetting.SerialNumber) ? "(trong)" : this.signSetting.SerialNumber,
                     (rowList != null) ? rowList.Count : 0,
                     (concSigners != null) ? concSigners.Count : 0));
-                // CKS_NGUOI_KET_LUAN LUON ky bang HSM cua nguoi ket luan, khong phu thuoc cau hinh
-                // USB token/HSM (cau hinh do chi quyet dinh cach ky CKS_BENH_VIEN). Dieu kien duy nhat:
+                // Cau hinh USB token: CKS_NGUOI_KET_LUAN cung ky bang USB dang cam -> chi ky duoc ho so
+                // do chinh nguoi dang nhap ket luan; ho so nguoi khac khong day, bao ly do.
+                if (!this.signSetting.IsHsm)
+                {
+                    Inventec.Common.Logging.LogSystem.Info(prefix + ": ky CKS_NGUOI_KET_LUAN + CKS_BENH_VIEN bang USB token"
+                        + " — chi ky ho so do nguoi dang nhap ket luan, ho so nguoi khac KHONG day.");
+                    return;
+                }
+                // Cau hinh HSM: CKS_NGUOI_KET_LUAN ky bang HSM cua nguoi ket luan. Dieu kien:
                 // da chon he thong HSM (HsmType > 0) + nguoi ket luan co EMR_SIGNER.PCA_SERIAL.
                 if (this.signSetting.Id <= 0)
                 {
