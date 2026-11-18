@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *
@@ -8,9 +8,14 @@
  *   - Thời gian lưu Cấp cứu: tính từ giờ tiếp đón đến hiện tại
  *   - Trạng thái: chưa đủ N giờ (diện Khám) / đã đủ N giờ (đã chuyển diện Nội trú)
  *
- * KHÔNG có nút chuyển diện — việc chuyển diện do máy chủ tự làm (tiến trình chạy nền
- * + lớp rà soát tại chỗ khi mở hồ sơ, kê giường, nhập viện, ra viện). Màn hình chỉ
- * phản ánh trạng thái máy chủ trả về, không tự suy ra từ số giờ.
+ * KHÔNG có nút chuyển diện — việc chuyển diện do máy chủ tự làm. Màn hình chỉ phản ánh
+ * trạng thái máy chủ trả về, không tự suy ra từ số giờ.
+ *
+ * Máy chủ chuyển diện bằng hai đường: tiến trình chạy nền quét theo chu kỳ, và lớp rà soát
+ * tại chỗ gắn ở BỐN luồng có dính tiền — kê giường, nhập viện, ra viện, tạo yêu cầu thanh toán.
+ * MỞ HỒ SƠ KHÔNG rà soát (xác nhận bằng autotest KGCC-005, lần chạy 3262: vừa tiếp đón BN lùi
+ * 5 giờ rồi mở ngay màn này thì trạng thái vẫn là diện Khám). Chấp nhận được vì mọi đường
+ * sinh tiền đều đã có chốt riêng; màn hình chỉ chậm tối đa một chu kỳ quét.
  *
  * Hai nhãn được tạo LÚC CHẠY và chèn vào layoutControl3 nên không đụng Designer.
  * Viện không khai số giờ thì không tạo gì, màn hình giữ nguyên như hiện tại.
@@ -157,7 +162,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 }
                 else
                 {
-                    this.lblEmergencyStayTime.Text = "";
+                    // Không để chuỗi rỗng: nhãn tự giãn theo chữ nên rỗng sẽ co về 0px, người dùng không thấy ô đâu
+                    // và cũng không kiểm được bằng autotest (lần chạy 3167 mất hẳn nhãn này).
+                    this.lblEmergencyStayTime.Text = "—";
                 }
 
                 bool isInPatient = this.treatment.TDL_TREATMENT_TYPE_ID.HasValue
