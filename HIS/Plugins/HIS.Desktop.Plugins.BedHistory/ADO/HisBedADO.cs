@@ -33,6 +33,11 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
         public List<long> BedLogStartIds { get; set; }
         public List<long> BedLogFinishIds { get; set; }
         public List<long> BedLogAllIds { get; set; }
+        /// <summary>
+        /// Viec 63227 (khoa 01412 = 2): so nguoi dang giu giuong chua co ban ghi nam giuong trong khoang dang chon
+        /// (ban ghi chep mang ID am, khong co trong BedLogAllIds) nhung van tinh la dang nam
+        /// </summary>
+        public long HeldOnlyCount { get; set; }
         public HisBedADO() { }
 
         public HisBedADO(MOS.EFMODEL.DataModels.V_HIS_BED data)
@@ -42,7 +47,8 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
                 if (data != null)
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<HisBedADO>(this, data);
-                    this.AMOUNT_STR = 0 + "/" + this.MAX_CAPACITY;
+                    //Viec 63227: khoa 01412 = 2 thi giuong chua khai bao so nguoi nam toi da hien la 1 nguoi (khoa khac van la MAX_CAPACITY)
+                    this.AMOUNT_STR = 0 + "/" + HIS.Desktop.Plugins.BedHistory.HeldBedProcessor.GetCapacity(this.MAX_CAPACITY);
                     this.BED_CODE_ID = data.ID;
                 }
             }

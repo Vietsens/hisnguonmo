@@ -39,7 +39,8 @@ namespace HIS.Desktop.Plugins.AssignService.ADO
                 if (data != null)
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<HisBedADO>(this, data);
-                    this.AMOUNT_STR = 0 + "/" + this.MAX_CAPACITY;
+                    //Viec 63227: khoa 01412 = 2 thi giuong chua khai bao so nguoi nam toi da hien la 1 nguoi (khoa khac van la MAX_CAPACITY)
+                    this.AMOUNT_STR = 0 + "/" + HIS.Desktop.Plugins.AssignService.HeldBedProcessor.GetCapacity(this.MAX_CAPACITY);
                 }
             }
             catch (Exception ex)

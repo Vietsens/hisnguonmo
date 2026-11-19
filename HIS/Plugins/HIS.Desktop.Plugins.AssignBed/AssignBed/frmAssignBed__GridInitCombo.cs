@@ -73,15 +73,21 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         private long _lastLoadedBedServiceId = -1;
         private DateTime _lastLoadedTimeFrom = DateTime.MinValue;
         private DateTime _lastLoadedTimeTo = DateTime.MinValue;
+        //Viec 63227: cac ho so dang chi dinh cua lan nap danh sach giuong gan nhat (chi dung khi khoa 01412 = 2)
+        private string _lastLoadedAssigningKey = "";
 
         private void LoadBedDataByServiceId(long serviceId, DateTime timeFrom, DateTime timeTo)
         {
             try
             {
                 // ✅ Chỉ load lại nếu tham số thay đổi
+                //Viec 63227: khoa 01412 = 2 thi so dang nam phu thuoc cac ho so dang chi dinh (khong tinh chinh ho), doi danh sach
+                //nguoi benh duoc chon thi phai nap lai
+                string assigningKey = HeldBedProcessor.IsHoldBedOn ? string.Join(",", this.GetAssigningTreatmentIds().OrderBy(o => o)) : "";
                 if (serviceId == _lastLoadedBedServiceId
                     && timeFrom == _lastLoadedTimeFrom
-                    && timeTo == _lastLoadedTimeTo)
+                    && timeTo == _lastLoadedTimeTo
+                    && assigningKey == _lastLoadedAssigningKey)
                 {
                     return; // Không load lại, tránh trigger repaint grid 
                 }
@@ -89,6 +95,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 _lastLoadedBedServiceId = serviceId;
                 _lastLoadedTimeFrom = timeFrom;
                 _lastLoadedTimeTo = timeTo;
+                _lastLoadedAssigningKey = assigningKey;
 
                 List<V_HIS_BED> listBed = null;
 
@@ -125,6 +132,62 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             }
         }
 
+        /// <summary>
+        /// Cac ho so dang chi dinh, dung de khong tinh chinh cac nguoi benh nay la nguoi dang giu giuong (viec 63227).
+        /// Dung dung cac ho so se duoc luu, giong dieu kien chi dinh nhieu nguoi benh khi luu: mo tu Buong benh va chon tu
+        /// 2 nguoi benh tro len thi la cac nguoi benh duoc chon, con lai la ho so dang mo (khong lay them nguoi benh khac:
+        /// Backend van tinh ho la nguoi dang nam).
+        /// </summary>
+        private List<long> GetAssigningTreatmentIds()
+        {
+            List<long> ids = new List<long>();
+            try
+            {
+                if (this.workingAssignServiceADO != null && this.workingAssignServiceADO.OpenFromBedRoomPartial && this.patientSelectProcessor != null && this.ucPatientSelect != null)
+                {
+                    var lstPatientSelect = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
+                    if (lstPatientSelect != null && lstPatientSelect.Count > 1)
+                    {
+                        foreach (var item in lstPatientSelect)
+                        {
+                            if (item != null && item.TREATMENT_ID > 0 && !ids.Contains(item.TREATMENT_ID))
+                                ids.Add(item.TREATMENT_ID);
+                        }
+                        return ids;
+                    }
+                }
+                if (this.treatmentId > 0)
+                    ids.Add(this.treatmentId);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return ids;
+        }
+
+        /// <summary>
+        /// So nguoi benh se duoc gui chi dinh (viec 63227): mo tu Buong benh va chon tu 2 nguoi benh tro len thi la so nguoi
+        /// benh duoc chon (giong dieu kien chi dinh nhieu nguoi benh khi luu), con lai la 1.
+        /// </summary>
+        private int GetAssigningPatientCount()
+        {
+            try
+            {
+                if (this.workingAssignServiceADO != null && this.workingAssignServiceADO.OpenFromBedRoomPartial && this.patientSelectProcessor != null && this.ucPatientSelect != null)
+                {
+                    var lstPatientSelect = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
+                    if (lstPatientSelect != null && lstPatientSelect.Count > 1)
+                        return lstPatientSelect.Count;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return 1;
+        }
+
         private List<HisBedADO> ProcessDataBedAdo(List<V_HIS_BED> datas, DateTime timeFrom, DateTime timeTo)
         {
             List<HisBedADO> result = null;
@@ -157,6 +220,13 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     CommonParam param = new CommonParam();
                     Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api: HisBedLog/TakeBedsInUse. TakeBedsInUseSDO: " + Inventec.Common.Logging.LogUtil.TraceData("TakeBedsInUseSDO", sdo));
                     List<HIS_BED_LOG> dataBedLogs = new BackendAdapter(param).Post<List<HIS_BED_LOG>>("/api/HisBedLog/TakeBedsInUse", ApiConsumers.MosConsumer, sdo, param);
+
+                    //Viec 63227: khoa 01412 = 2 thi tinh ca nguoi dang giu giuong (chua roi buong, chua chuyen khoa,
+                    //chua ra vien) ke ca khi chua ke giuong cho ngay tiep theo. Khong tinh cac nguoi benh dang chi dinh.
+                    if (HeldBedProcessor.IsHoldBedOn)
+                    {
+                        dataBedLogs = HeldBedProcessor.AppendHeldBedLogs(dataBedLogs, bedIds, this.GetAssigningTreatmentIds(), startTimeFilter, finishTimeFilter);
+                    }
 
                     if (dataBedLogs != null && dataBedLogs.Count > 0)
                     {
@@ -207,9 +277,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                             if (dataByBedLogs != null && dataByBedLogs.Count > 0)
                             {
-                                if (itemADO.MAX_CAPACITY.HasValue)
+                                //Khoa 01412 = 2: giuong chua khai bao so nguoi nam toi da coi la 1 nguoi, giong Backend
+                                long? capacity = HeldBedProcessor.GetCapacity(itemADO.MAX_CAPACITY);
+                                if (capacity.HasValue)
                                 {
-                                    if (dataByBedLogs.Count >= itemADO.MAX_CAPACITY)
+                                    if (dataByBedLogs.Count >= capacity)
                                     {
                                         itemADO.IsKey = 2;
                                     }
@@ -227,10 +299,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                 {
                                     itemADO.IsKey = 0;
                                 }    
-                                itemADO.BedLogAllIds = dataByBedLogs.Select(o => o.ID).ToList();
+                                //Viec 63227: ban ghi chep cua nguoi dang giu giuong mang ID am, chi lay ID that
+                                itemADO.BedLogAllIds = dataByBedLogs.Where(o => o.ID > 0).Select(o => o.ID).ToList();
                                 itemADO.AMOUNT = dataByBedLogs.Count;
 
-                                itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + itemADO.MAX_CAPACITY;
+                                itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + capacity;
                                 itemADO.TREATMENT_BED_ROOM_IDs = dataByBedLogs.Select(o => o.TREATMENT_BED_ROOM_ID).ToList();
                                 //dicTreatmentBedRoom[itemADO.ID] = itemADO.TREATMENT_BED_ROOM_IDs;
                             }

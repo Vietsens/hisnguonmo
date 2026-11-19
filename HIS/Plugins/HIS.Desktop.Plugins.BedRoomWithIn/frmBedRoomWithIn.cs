@@ -1284,6 +1284,14 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                         CommonParam param = new CommonParam();
                         var dataBedLogs = new BackendAdapter(param).Get<List<HIS_BED_LOG>>("api/HisBedLog/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("dataBedLogs: ", dataBedLogs));
+
+                        //Viec 63227: khoa 01412 = 2 thi tinh ca nguoi dang giu giuong (chua roi buong, chua chuyen khoa,
+                        //chua ra vien) ke ca khi chua ke giuong cho ngay tiep theo. Khong tinh chinh nguoi benh dang tiep nhan.
+                        if (HeldBedProcessor.IsHoldBedOn)
+                        {
+                            dataBedLogs = HeldBedProcessor.AppendHeldBedLogs(dataBedLogs, listIds, new List<long> { this.treatmentId }, timeFilter, null);
+                        }
+
                         if (dataBedLogs != null && dataBedLogs.Count > 0)
                         {
                             var dataBedLogGroups = dataBedLogs.GroupBy(p => p.BED_ID).Select(p => p.ToList()).ToList();
@@ -1297,9 +1305,11 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                                 // Nhớ phải tạo 1 biến như ở dưới là isKey ấy, để tí nữa còn tô màu và sắp xếp danh sách dựa vào nó.
                                 if (dataByBedLogs != null && dataByBedLogs.Count > 0)
                                 {
-                                    if (itemADO.MAX_CAPACITY.HasValue)
+                                    //Khoa 01412 = 2: giuong chua khai bao so nguoi nam toi da coi la 1 nguoi, giong Backend
+                                    long? capacity = HeldBedProcessor.GetCapacity(itemADO.MAX_CAPACITY);
+                                    if (capacity.HasValue)
                                     {
-                                        if (dataByBedLogs.Count >= itemADO.MAX_CAPACITY)
+                                        if (dataByBedLogs.Count >= capacity)
                                             itemADO.IsKey = 2;
                                         else
                                             itemADO.IsKey = 1;
@@ -1308,7 +1318,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                                         itemADO.IsKey = 1;
 
                                     itemADO.AMOUNT = dataByBedLogs.Count;
-                                    itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + itemADO.MAX_CAPACITY;
+                                    itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + capacity;
                                 }
 
                             }

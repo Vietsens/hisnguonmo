@@ -117,9 +117,10 @@ namespace HIS.Desktop.Plugins.BedHistory
         // Bật cột "Thời gian thực hiện" (cột edit + cảnh báo cuối tuần + truyền UseTime) khi config = "1"
         string ConfigUseTimeBedHistory = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__BED_HISTORY_USE_TIME);
         private bool IsUseTimeBedHistoryOn { get { return this.ConfigUseTimeBedHistory == "1"; } }
-        // Mac dinh giuong theo lan chi dinh gan nhat trong buong benh nhan dang nam khi config = "1"
+        // Mac dinh giuong theo lan chi dinh gan nhat trong buong benh nhan dang nam khi config = "1" hoac "2"
+        // (2: them giu giuong toi khi roi buong, chuyen khoa, ra vien - viec 63227)
         string ConfigDefaultBedByLastAssigned = HisConfigs.Get<string>(HisConfigKeys.CONFIG_KEY__DEFAULT_BED_BY_LAST_ASSIGNED);
-        private bool IsDefaultBedByLastAssignedOn { get { return this.ConfigDefaultBedByLastAssigned == "1"; } }
+        private bool IsDefaultBedByLastAssignedOn { get { return this.ConfigDefaultBedByLastAssigned == "1" || this.ConfigDefaultBedByLastAssigned == "2"; } }
         RefeshReference refesh;
         Dictionary<long, List<V_HIS_BED_LOG>> dicBedLog = new Dictionary<long, List<V_HIS_BED_LOG>>();
         Dictionary<long, List<long>> dicTreatmentBedRoom = new Dictionary<long, List<long>>();
@@ -956,6 +957,26 @@ namespace HIS.Desktop.Plugins.BedHistory
             }
         }
 
+        /// <summary>
+        /// Ho so dang thao tac, dung de khong tinh chinh nguoi benh nay la nguoi dang giu giuong (viec 63227)
+        /// </summary>
+        private List<long> GetCurrentTreatmentIds()
+        {
+            List<long> ids = new List<long>();
+            try
+            {
+                if (this._TreatmentBedRoom != null && this._TreatmentBedRoom.TREATMENT_ID > 0)
+                    ids.Add(this._TreatmentBedRoom.TREATMENT_ID);
+                if (this.CurrentTreatment != null && this.CurrentTreatment.ID > 0 && !ids.Contains(this.CurrentTreatment.ID))
+                    ids.Add(this.CurrentTreatment.ID);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return ids;
+        }
+
         private List<HisBedADO> ProcessDataBedAdo(List<V_HIS_BED> datas, HisBedHistoryADO bedHistory)
         {
             List<HisBedADO> result = null;
@@ -988,6 +1009,13 @@ namespace HIS.Desktop.Plugins.BedHistory
                     CommonParam param = new CommonParam();
                     Inventec.Common.Logging.LogSystem.Debug("Du lieu goi den api: HisBedLog/TakeBedsInUse. TakeBedsInUseSDO: " + Inventec.Common.Logging.LogUtil.TraceData("TakeBedsInUseSDO", sdo));
                     List<HIS_BED_LOG> dataBedLogs = new BackendAdapter(param).Post<List<HIS_BED_LOG>>("/api/HisBedLog/TakeBedsInUse", ApiConsumers.MosConsumer, sdo, param);
+
+                    //Viec 63227: khoa 01412 = 2 thi tinh ca nguoi dang giu giuong (chua roi buong, chua chuyen khoa,
+                    //chua ra vien) ke ca khi chua ke giuong cho ngay tiep theo. Khong tinh chinh nguoi benh dang thao tac.
+                    if (HeldBedProcessor.IsHoldBedOn)
+                    {
+                        dataBedLogs = HeldBedProcessor.AppendHeldBedLogs(dataBedLogs, bedIds, this.GetCurrentTreatmentIds(), startTimeFilter, finishTimeFilter);
+                    }
 
                     if (dataBedLogs != null && dataBedLogs.Count > 0)
                     {
@@ -1039,30 +1067,36 @@ namespace HIS.Desktop.Plugins.BedHistory
                             dataByBedLogs.AddRange(dataByBedLogs_onStartTime);
                             dataByBedLogs.AddRange(dataByBedLogs_onFinishTime);
                             dataByBedLogs = dataByBedLogs.Distinct().ToList();
+                            //Viec 63227: chi lay ID that (> 0). Ban ghi chep cua nguoi dang giu giuong mang ID am, khong duoc dua vao
+                            //cac danh sach dung de cap nhat so nguoi nam ghep (api/HisBedLog/UpdateShareCount).
                             if (dataByBedLogs_onStartTime != null && dataByBedLogs_onStartTime.Count > 0)
                             {
-                                itemADO.BedLogStartIds = dataByBedLogs_onStartTime.Select(o => o.ID).ToList();
+                                itemADO.BedLogStartIds = dataByBedLogs_onStartTime.Where(o => o.ID > 0).Select(o => o.ID).ToList();
                             }
                             if (dataByBedLogs_onFinishTime != null && dataByBedLogs_onFinishTime.Count > 0)
                             {
-                                itemADO.BedLogFinishIds = dataByBedLogs_onFinishTime.Select(o => o.ID).ToList();
+                                itemADO.BedLogFinishIds = dataByBedLogs_onFinishTime.Where(o => o.ID > 0).Select(o => o.ID).ToList();
                             }
 
                             if (dataByBedLogs != null && dataByBedLogs.Count > 0)
                             {
-                                if (itemADO.MAX_CAPACITY.HasValue)
+                                //Khoa 01412 = 2: giuong chua khai bao so nguoi nam toi da coi la 1 nguoi, giong Backend
+                                long? capacity = HeldBedProcessor.GetCapacity(itemADO.MAX_CAPACITY);
+                                if (capacity.HasValue)
                                 {
-                                    if (dataByBedLogs.Count >= itemADO.MAX_CAPACITY)
+                                    if (dataByBedLogs.Count >= capacity)
                                         itemADO.IsKey = 2;
                                     else
                                         itemADO.IsKey = 1;
                                 }
                                 else
                                     itemADO.IsKey = 1;
-                                itemADO.BedLogAllIds = dataByBedLogs.Select(o => o.ID).ToList();
+                                itemADO.BedLogAllIds = dataByBedLogs.Where(o => o.ID > 0).Select(o => o.ID).ToList();
+                                //Viec 63227: nguoi dang giu giuong chua co ban ghi trong khoang (ID am) van tinh vao so nguoi nam ghep
+                                itemADO.HeldOnlyCount = dataByBedLogs.Count(o => o.ID < 0);
                                 itemADO.AMOUNT = dataByBedLogs.Count;
 
-                                itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + itemADO.MAX_CAPACITY;
+                                itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + capacity;
                                 itemADO.TREATMENT_BED_ROOM_IDs = dataByBedLogs.Select(o => o.TREATMENT_BED_ROOM_ID).ToList();
                                 dicTreatmentBedRoom[itemADO.ID] = itemADO.TREATMENT_BED_ROOM_IDs;
                             }
@@ -2309,7 +2343,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                         if (bedLogAllids != null && bedLogAllids.Count > 0 && IsRemoveShareCount)
                         {
                             var lstbedLogIds = bedLogAllids.Where(o => o != deleteVhisBedLog.ID).ToList();
-                            RemoveShareCount(lstbedLogIds);
+                            RemoveShareCount(lstbedLogIds, dataBedADOs.FirstOrDefault(o => o.ID == deleteVhisBedLog.BED_ID).HeldOnlyCount);
                         }
                     }
 
@@ -2447,6 +2481,8 @@ namespace HIS.Desktop.Plugins.BedHistory
                     if (outPut != null)
                     {
                         success = true;
+                        //Viec 63227: xac nhan doi giuong chi dung cho lan luu nay; sua dong nay lan sau (vd chi sua gio) khong gui lai
+                        row.IsConfirmedChangeBed = false;
                         if (!isClose)
                         {
                             if (isCreate)
@@ -2547,6 +2583,8 @@ namespace HIS.Desktop.Plugins.BedHistory
 
                 inPut.TreatmentBedRoomId = _TreatmentBedRoom.ID > 0 ? _TreatmentBedRoom.ID : this.WorkPlaceSDO.BedRoomId.Value;
                 inPut.WorkingRoomId = this.WorkPlaceSDO.RoomId;
+                //Viec 63227: nguoi dung da xac nhan doi sang giuong khac giuong duoc chi dinh gan nhat
+                inPut.IsConfirmedChangeBed = row.IsConfirmedChangeBed ? (short?)1 : null;
             }
             catch (Exception ex)
             {
@@ -2651,7 +2689,11 @@ namespace HIS.Desktop.Plugins.BedHistory
                     return true;
 
                 if (defaultBedId == selectedBed.ID)
+                {
+                    //Chon lai dung giuong gan nhat thi khong con la doi giuong
+                    row.IsConfirmedChangeBed = false;
                     return true;
+                }
 
                 var defaultBed = this.dataBedADOs != null ? this.dataBedADOs.FirstOrDefault(o => o.ID == defaultBedId) : null;
                 string defaultBedName = defaultBed != null ? defaultBed.BED_NAME : defaultBedId.ToString();
@@ -2664,6 +2706,9 @@ namespace HIS.Desktop.Plugins.BedHistory
                 {
                     return false;
                 }
+
+                //Viec 63227: gui kem xac nhan khi luu de Backend ghi nhat ky nguoi xac nhan chuyen giuong
+                row.IsConfirmedChangeBed = true;
             }
             catch (Exception ex)
             {
@@ -2726,9 +2771,11 @@ namespace HIS.Desktop.Plugins.BedHistory
                 }
 
                 // Giuong da du so nguoi nam toi da thi khong dien san, de nguoi dung chon giuong khac.
-                if (defaultBed.MAX_CAPACITY.HasValue && otherPatientCount + 1 > defaultBed.MAX_CAPACITY.Value)
+                // Khoa 01412 = 2: giuong chua khai bao so nguoi nam toi da coi la 1 nguoi (viec 63227)
+                long? defaultBedCapacity = HeldBedProcessor.GetCapacity(defaultBed.MAX_CAPACITY);
+                if (defaultBedCapacity.HasValue && otherPatientCount + 1 > defaultBedCapacity.Value)
                 {
-                    row.HintMessageBedId = string.Format("Giường {0} đã đủ {1}/{2} người, vui lòng chọn giường khác.", defaultBed.BED_NAME, otherPatientCount, defaultBed.MAX_CAPACITY.Value);
+                    row.HintMessageBedId = string.Format("Giường {0} đã đủ {1}/{2} người, vui lòng chọn giường khác.", defaultBed.BED_NAME, otherPatientCount, defaultBedCapacity.Value);
                     Inventec.Common.Logging.LogSystem.Warn("FillDefaultBedForNewRow => giuong gan nhat da day, de trong giuong. " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => bedId), bedId));
                     return;
                 }
@@ -2863,7 +2910,9 @@ namespace HIS.Desktop.Plugins.BedHistory
                                                     lstMax = bedLogAllids.Where(o => o != row.ID).ToList();
                                                 }
                                                 if (lstMax != null && lstMax.Count > 0)
-                                                    row.SHARE_COUNT = GetShareCount(lstMax);
+                                                    row.SHARE_COUNT = GetShareCount(lstMax, dataBed.HeldOnlyCount);
+                                                else if (dataBed.HeldOnlyCount > 0)
+                                                    row.SHARE_COUNT = dataBed.HeldOnlyCount + 1;
                                             }
                                         }
                                     }
@@ -3632,7 +3681,9 @@ namespace HIS.Desktop.Plugins.BedHistory
                                                 lstMax = bedLogAllids.Where(o => o != row.ID).ToList();
                                             }
                                             if (lstMax != null && lstMax.Count > 0)
-                                                row.SHARE_COUNT = GetShareCount(lstMax);
+                                                row.SHARE_COUNT = GetShareCount(lstMax, dataBed.HeldOnlyCount);
+                                            else if (dataBed.HeldOnlyCount > 0)
+                                                row.SHARE_COUNT = dataBed.HeldOnlyCount + 1;
                                         }
                                     }
                                 }
@@ -3715,7 +3766,9 @@ namespace HIS.Desktop.Plugins.BedHistory
                 }
                 lstMax = lstMax.Distinct().ToList();
                 if (lstMax != null && lstMax.Count > 0)
-                    max = GetShareCount(lstMax);
+                    max = GetShareCount(lstMax, dataBed.HeldOnlyCount);
+                else if (dataBed.HeldOnlyCount > 0)
+                    max = dataBed.HeldOnlyCount + 1;
             }
             catch (Exception ex)
             {
@@ -3737,7 +3790,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     lstMax = bedLogAllids.Where(o => o != row.ID).ToList();
                 }
                 if (lstMax != null && lstMax.Count > 0)
-                    max = RemoveShareCount(lstMax);
+                    max = RemoveShareCount(lstMax, dataBed.HeldOnlyCount);
             }
             catch (Exception ex)
             {
@@ -3746,11 +3799,12 @@ namespace HIS.Desktop.Plugins.BedHistory
             return max;
         }
 
-        private long? GetShareCount(List<long> bedLogids)
+        /// <param name="heldOnlyCount">Viec 63227: so nguoi dang giu giuong chua co ban ghi trong khoang (khong cap nhat duoc nhung van tinh)</param>
+        private long? GetShareCount(List<long> bedLogids, long heldOnlyCount = 0)
         {
             CommonParam param = new CommonParam();
             UpdateShareCountSDO sdo = new UpdateShareCountSDO();
-            sdo.ShareCount = bedLogids.Count + 1;
+            sdo.ShareCount = bedLogids.Count + 1 + heldOnlyCount;
             sdo.BedLogIds = bedLogids;
 
             Inventec.Common.Logging.LogSystem.Debug("__INPUT GetShareCount:___" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
@@ -3762,13 +3816,14 @@ namespace HIS.Desktop.Plugins.BedHistory
             return null;
         }
 
-        private long? RemoveShareCount(List<long> bedLogids)
+        /// <param name="heldOnlyCount">Viec 63227: so nguoi dang giu giuong chua co ban ghi trong khoang (khong cap nhat duoc nhung van tinh)</param>
+        private long? RemoveShareCount(List<long> bedLogids, long heldOnlyCount = 0)
         {
             if (bedLogids == null || bedLogids.Count == 0)
                 return null;
             CommonParam param = new CommonParam();
             UpdateShareCountSDO sdo = new UpdateShareCountSDO();
-            sdo.ShareCount = bedLogids.Count;
+            sdo.ShareCount = bedLogids.Count + heldOnlyCount;
             sdo.BedLogIds = bedLogids;
             if (sdo.ShareCount == 0)
                 sdo.ShareCount = null;

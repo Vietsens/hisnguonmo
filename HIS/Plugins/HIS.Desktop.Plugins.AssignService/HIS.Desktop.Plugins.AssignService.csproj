@@ -323,6 +323,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeBedWarning.cs" />
+    <Compile Include="HeldBedProcessor.cs" />
     <Compile Include="PayBeforeFinishWarning.cs" />
     <Compile Include="ADO\AcsUserADO.cs" />
     <Compile Include="ADO\ExecuteRoomConfirmADO.cs" />

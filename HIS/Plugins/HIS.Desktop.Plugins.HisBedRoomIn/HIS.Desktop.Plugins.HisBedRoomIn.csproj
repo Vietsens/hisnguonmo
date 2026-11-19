@@ -169,6 +169,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HeldBedProcessor.cs" />
     <Compile Include="ADO\HisBedADO.cs" />
     <Compile Include="BedRoomInListProcessor.cs" />
     <Compile Include="Config.cs" />
