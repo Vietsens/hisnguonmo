@@ -55,6 +55,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// </summary>
         private readonly Dictionary<long, KskSytHcmSource> sytSourceBySr
             = new Dictionary<long, KskSytHcmSource>();
+
+        /// <summary>vCong61141: source of form M2 (under-18 records that have a Mau 02 record), key = KSK order id.</summary>
+        private readonly Dictionary<long, KskSytHcmM2Source> sytM2SourceBySr
+            = new Dictionary<long, KskSytHcmM2Source>();
+
+        /// <summary>vCong61141: KSK orders that are under-18 records (to explain why nothing is pushed).</summary>
+        private readonly HashSet<long> sytUnder18Srs = new HashSet<long>();
         private readonly bool sign;
         private readonly SettingSignADO signSetting;
 
@@ -221,6 +228,29 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             // 1 envelope chua TAT CA ho so cung nguoi ket luan (SOLUONGHOSO = so ho so nhom).
                             string xml = KskEnvelopeBuilder.Build(groupInputs, exportMacskcb, exportAsJson);
                             if (string.IsNullOrEmpty(xml)) { failed += idxs.Count; continue; }
+
+                            // Cau hinh USB token: ky CKS_NGUOI_KET_LUAN bang USB dang cam cho moi nhom (khong doi chieu
+                            // nguoi dang nhap); ky loi -> nhom do KHONG xuat file, bao ly do.
+                            if (signer.IsUsbToken)
+                            {
+                                string usbSigned = signer.SignXmlByConcluderUsb(xml, concLogin);
+                                if (usbSigned == null)
+                                {
+                                    failed += idxs.Count;
+                                    string reason = signer.GetConcluderFailReason(concLogin) ?? KskSyncSigner.CONCLUDER_FAIL_DEFAULT_REASON;
+                                    error = string.IsNullOrEmpty(error) ? reason : (error + Environment.NewLine + reason);
+                                    continue;
+                                }
+                                xml = signer.SignCksBenhVien(usbSigned);
+                                if (string.IsNullOrEmpty(xml)) { failed += idxs.Count; continue; }
+                                string usbBaseName = MakeGroupFileName(concLogin, idxs.Count);
+                                string usbName = usbBaseName; int u = 1;
+                                while (used.Contains(usbName)) { usbName = usbBaseName + "_" + (++u); }
+                                used.Add(usbName);
+                                System.IO.File.WriteAllText(System.IO.Path.Combine(dirPath, usbName + ".xml"), xml, new System.Text.UTF8Encoding(false));
+                                ok += idxs.Count;
+                                continue;
+                            }
 
                             // Ky CKS_NGUOI_KET_LUAN (chung thu nguoi ket luan cua nhom) -> roi ky CKS_BENH_VIEN.
                             EMR.EFMODEL.DataModels.EMR_SIGNER concEmr;
@@ -485,7 +515,28 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             Func<string, string> dataSigner = null;
                             string concluderLogin = null;       // người kết luận cần ký thẻ (null = không ký thẻ này)
                             bool concluderSignFailed = false;   // ký thẻ người kết luận lỗi khi dựng bản tin hồ sơ này
-                            if (signer != null)
+                            if (signer != null && signer.IsUsbToken)
+                            {
+                                // Cấu hình USB token: ký CKS_NGUOI_KET_LUAN bằng USB đang cắm TRƯỚC, rồi CKS_BENH_VIEN.
+                                // Ký mọi hồ sơ bằng USB đang chọn (không đối chiếu người đăng nhập); ký lỗi -> null: không đẩy, báo lý do.
+                                string clUsb = SafeString(GetProp(rowList[i], "CONCLUDER_LOGINNAME"));
+                                concluderLogin = clUsb;
+                                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                                    "CKS_NGUOI_KET_LUAN: ho so {0} (treatment_code={1}): CONCLUDER_LOGINNAME={2}; ky bang USB token",
+                                    i + 1, SafeString(GetProp(rowList[i], "TDL_TREATMENT_CODE")),
+                                    string.IsNullOrEmpty(clUsb) ? "(trong)" : clUsb));
+                                dataSigner = xml =>
+                                {
+                                    string concluderSigned = signer.SignXmlByConcluderUsb(xml, clUsb);
+                                    if (concluderSigned == null)
+                                    {
+                                        concluderSignFailed = true;
+                                        return null;
+                                    }
+                                    return signer.SignCksBenhVien(concluderSigned);
+                                };
+                            }
+                            else if (signer != null)
                             {
                                 EMR.EFMODEL.DataModels.EMR_SIGNER concEmr = null;
                                 string cl = SafeString(GetProp(rowList[i], "CONCLUDER_LOGINNAME"));
@@ -765,6 +816,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
 
                 long sr = ToLong(GetProp(row, "SERVICE_REQ_ID"));
                 KskSytHcmSource src = ValOrNull(sytSourceBySr, sr);
+                // vCong61141: under-18 record with Mau 02 data -> form M2.
+                if (src == null && sytM2SourceBySr.ContainsKey(sr))
+                    return PushSytHcmM2OneRow(raw, sr, sytM2SourceBySr[sr]);
+                if (src == null && sytUnder18Srs.Contains(sr))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm/M2: y lenh " + sr
+                        + " la ho so duoi 18 tuoi nhung chua co ban ghi Mau 02 -> khong day");
+                    return new KskSytHcmPushResult { Message = "Hồ sơ chưa nhập dữ liệu Mẫu 02" };
+                }
                 if (src == null)
                 {
                     Inventec.Common.Logging.LogSystem.Warn("SytHcm: y lenh " + sr
@@ -1530,6 +1590,13 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 try { sytHcmByO18 = LoadSytHcmByO18(over18s); }
                 catch (Exception exSyt) { Inventec.Common.Logging.LogSystem.Warn(exSyt); }
             }
+            // vCong61141: Mau 02 records of the under-18 records (same JIT reason -> separate method).
+            System.Collections.IDictionary sytM2ByU18 = null;
+            if (!string.IsNullOrWhiteSpace(this.sytHcmConnectionInfo))
+            {
+                try { sytM2ByU18 = LoadSytHcmM2ByU18(under18s); }
+                catch (Exception exM2) { Inventec.Common.Logging.LogSystem.Warn(exM2); }
+            }
 
             // Danh muc chi nhanh (cache local) — MA_CSKCB = HEIN_MEDI_ORG_CODE theo BRANCH_ID.
             Dictionary<long, HIS_BRANCH> branchById = null;
@@ -1667,6 +1734,15 @@ namespace HIS.Desktop.Plugins.KskSyncList
                             ClsMapJson = this.SytClsMapJson
                         };
                         if (sytHcmByO18 != null) AttachSytHcm(sytSourceBySr[sr], sytHcmByO18, over18.ID);
+                    }
+                    // vCong61141: under-18 record with a Mau 02 record -> form M2.
+                    if (under18 != null) sytUnder18Srs.Add(sr);
+                    if (!string.IsNullOrWhiteSpace(this.sytHcmConnectionInfo) && under18 != null
+                        && sytM2ByU18 != null && sytM2ByU18.Contains(under18.ID))
+                    {
+                        AttachSytHcmM2(sytM2SourceBySr, sr, sytM2ByU18, under18,
+                            (trea != null) ? ValOrNull(patById, trea.PATIENT_ID) : null, trea,
+                            ValOrNull(sreqById, sr), general, dhstOne ?? FirstDhstOfTreatment(dhstForInput), ranks);
                     }
                 }
                 catch (Exception exSytSrc) { Inventec.Common.Logging.LogSystem.Warn(exSytSrc); }
@@ -2330,6 +2406,85 @@ namespace HIS.Desktop.Plugins.KskSyncList
             return map;
         }
 
+        /// <summary>
+        /// vCong61141: pushes one under-18 record as form M2 (create-mau-phieu-m2). Same config,
+        /// token and signature as M3/M4; required fields are checked first (R19).
+        /// </summary>
+        private KskSytHcmPushResult PushSytHcmM2OneRow(string raw, long sr, KskSytHcmM2Source src)
+        {
+            try
+            {
+                KskSytHcmConfig cfg = GetSytHcmConfigOnce(raw);
+                if (cfg == null || !cfg.CanPush)
+                {
+                    string missingCfgFields = sytHcmCfgMissing;
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm/M2: cau hinh thieu truong [" + missingCfgFields + "] -> khong day");
+                    return new KskSytHcmPushResult { Message = "Cấu hình cổng Sở Y tế TP.HCM còn thiếu: " + missingCfgFields };
+                }
+
+                Dictionary<string, object> body = KskSytHcmBodyBuilder.BuildM2(src);
+                List<string> missing = KskSytHcmBodyBuilder.DescribeMissingRequiredM2(body);
+                if (missing != null && missing.Count > 0)
+                {
+                    string msg = "Hồ sơ (Mẫu 02) còn thiếu " + missing.Count + " thông tin bắt buộc: "
+                        + string.Join("; ", missing.ToArray());
+                    Inventec.Common.Logging.LogSystem.Warn("SytHcm/M2: y lenh " + sr + " -> " + msg);
+                    return new KskSytHcmPushResult { Message = msg };
+                }
+
+                KskSytHcmPushResult r = KskSytHcmPusher.Push(cfg, body, false, KskSytHcmPusher.SERVICE_CODE__M2);
+                Inventec.Common.Logging.LogSystem.Info("SytHcm/M2: y lenh " + sr + " -> "
+                    + (r != null ? r.ToString() : "khong co ket qua"));
+                return r;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return new KskSytHcmPushResult { Message = IntegrationErrorMessage.TagException(ex, KSK_PARTNER_SYT) };
+            }
+        }
+
+        /// <summary>
+        /// vCong61141: loads HIS_KSK_SYT_HCM_M2 of the under-18 records (one call for the whole batch).
+        /// Separate method: an old MOS.EFMODEL without the type must not break the whole sync (JIT).
+        /// </summary>
+        private System.Collections.IDictionary LoadSytHcmM2ByU18(List<HIS_KSK_UNDER_EIGHTEEN> under18s)
+        {
+            var map = new Dictionary<long, HIS_KSK_SYT_HCM_M2>();
+            if (under18s == null || under18s.Count == 0) return map;
+            List<long> ids = under18s.Where(x => x != null).Select(x => x.ID).Distinct().ToList();
+            var list = GetList<HIS_KSK_SYT_HCM_M2>("api/HisKskSytHcmM2/Get",
+                new MOS.Filter.HisKskSytHcmM2Filter { KSK_UNDER_EIGHTEEN_IDs = ids });
+            HashSet<long> idSet = new HashSet<long>(ids);
+            if (list != null)
+                foreach (var x in list)
+                    if (x != null && idSet.Contains(x.KSK_UNDER_EIGHTEEN_ID) && !map.ContainsKey(x.KSK_UNDER_EIGHTEEN_ID))
+                        map[x.KSK_UNDER_EIGHTEEN_ID] = x;
+            Inventec.Common.Logging.LogSystem.Info("SytHcm/M2: nap ban ghi Mau 02 cho "
+                + map.Count + "/" + ids.Count + " ho so KSK duoi 18 tuoi");
+            return map;
+        }
+
+        /// <summary>vCong61141: builds the M2 source of one KSK order.</summary>
+        private static void AttachSytHcmM2(Dictionary<long, KskSytHcmM2Source> target, long sr,
+            System.Collections.IDictionary m2ByU18, HIS_KSK_UNDER_EIGHTEEN under18, HIS_PATIENT patient,
+            HIS_TREATMENT treatment, HIS_SERVICE_REQ serviceReq, HIS_KSK_GENERAL general, HIS_DHST dhst,
+            List<HIS_HEALTH_EXAM_RANK> ranks)
+        {
+            if (target == null || m2ByU18 == null || under18 == null || !m2ByU18.Contains(under18.ID)) return;
+            target[sr] = new KskSytHcmM2Source
+            {
+                Patient = patient,
+                Treatment = treatment,
+                ServiceReq = serviceReq,
+                Under18 = under18,
+                General = general,
+                Dhst = dhst,
+                HisRanks = ranks,
+                M2 = (HIS_KSK_SYT_HCM_M2)m2ByU18[under18.ID]
+            };
+        }
+
         /// <summary>Gan HIS_KSK_SYT_HCM vao source KSK — tach rieng vi ly do JIT type-load nhu LoadSytHcmByO18.</summary>
         private static void AttachSytHcm(KskSytHcmSource src, System.Collections.IDictionary sytHcmByO18, long over18Id)
         {
@@ -2483,8 +2638,14 @@ namespace HIS.Desktop.Plugins.KskSyncList
                     string.IsNullOrEmpty(this.signSetting.SerialNumber) ? "(trong)" : this.signSetting.SerialNumber,
                     (rowList != null) ? rowList.Count : 0,
                     (concSigners != null) ? concSigners.Count : 0));
-                // CKS_NGUOI_KET_LUAN LUON ky bang HSM cua nguoi ket luan, khong phu thuoc cau hinh
-                // USB token/HSM (cau hinh do chi quyet dinh cach ky CKS_BENH_VIEN). Dieu kien duy nhat:
+                // Cau hinh USB token: CKS_NGUOI_KET_LUAN cung ky bang USB dang cam cho moi ho so.
+                if (!this.signSetting.IsHsm)
+                {
+                    Inventec.Common.Logging.LogSystem.Info(prefix + ": ky CKS_NGUOI_KET_LUAN + CKS_BENH_VIEN bang USB token"
+                        + " dang chon cho moi ho so (khong doi chieu nguoi dang nhap).");
+                    return;
+                }
+                // Cau hinh HSM: CKS_NGUOI_KET_LUAN ky bang HSM cua nguoi ket luan. Dieu kien:
                 // da chon he thong HSM (HsmType > 0) + nguoi ket luan co EMR_SIGNER.PCA_SERIAL.
                 if (this.signSetting.Id <= 0)
                 {

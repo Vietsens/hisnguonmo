@@ -10,6 +10,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -52,7 +53,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
             try
             {
                 if (this.setting == null || string.IsNullOrEmpty(xml)) return xml;
-                string signed = this.setting.IsHsm ? SignByHsm(xml) : SignByUsbToken(xml);
+                string signed = this.setting.IsHsm ? SignByHsm(xml) : SignByUsbToken(xml, SIGN_TAG);
                 Inventec.Common.Logging.LogSystem.Info("CKS_BENH_VIEN: ky bang "
                     + (this.setting.IsHsm ? "HSM" : "USB token") + " -> "
                     + ((signed == null) ? "THAT BAI (null)"
@@ -106,8 +107,8 @@ namespace HIS.Desktop.Plugins.KskSyncList
         /// Ký số thẻ CKS_NGUOI_KET_LUAN NGAY TRÊN chuỗi XML thật của hồ sơ (không ký file rác) bằng chứng thư
         /// HSM của NGƯỜI KẾT LUẬN — thông tin lấy từ EMR_SIGNER (tài khoản/mật khẩu/CCCD/khóa bí mật/serial),
         /// HsmType theo cấu hình ký số của viện (setting.Id). Gọi api/EmrSign/SignXmlBhyt.
-        /// LUÔN ký bằng HSM, KHÔNG phụ thuộc cấu hình USB token/HSM của thẻ CKS_BENH_VIEN (USB token của máy
-        /// trạm không thể ký hộ người kết luận) — chỉ cần đã chọn hệ thống HSM (setting.Id > 0).
+        /// Dùng khi cấu hình ký số chọn HSM (chọn USB token -> SignXmlByConcluderUsb) — cần đã chọn hệ thống
+        /// HSM (setting.Id > 0).
         /// Gửi kèm SignerLoginname = người kết luận: server EMR ký hộ bằng PHIÊN ĐÃ LƯU của người kết luận,
         /// không mở phiên mới (mở phiên mới làm bác sĩ mất phiên đang dùng).
         /// Trả về:
@@ -149,6 +150,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         + " da ky loi trong luot nay, cho luot dong bo sau.");
                     return null;
                 }
+                long concluderHsmType = GetConcluderHsmType();
                 CommonParam param = new CommonParam();
                 KskSignXmlBhytSDO sdo = new KskSignXmlBhytSDO();
                 sdo.XmlBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(xml));
@@ -157,7 +159,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 sdo.ConfigData = new EMR.SDO.XmlConfigDataSDO()
                 {
                     HsmSerialNumber = signer.PCA_SERIAL,       // serialNumber
-                    HsmType = setting.Id,                      // loại HSM (cấu hình viện)
+                    HsmType = concluderHsmType,                // hệ thống HSM bác sĩ ký trên EMR (EMR.HSM.INTEGRATE_OPTION)
                     HsmUserCode = signer.HSM_USER_CODE,        // tài khoản
                     Password = signer.PASSWORD,                // mật khẩu
                     SecretKey = signer.SECRET_KEY,             // khóa bí mật
@@ -165,8 +167,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 };
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                     "CKS_NGUOI_KET_LUAN: goi api/EmrSign/SignXmlBhyt ky ho bang phien cua nguoi ket luan {0}"
-                    + " (HsmType={1}; the CKS_BENH_VIEN ky bang {2}; xmlSha256={3}).",
-                    concluderLoginname, setting.Id, setting.IsHsm ? "HSM" : "USB token", ShortSha256(sdo.XmlBase64)));
+                    + " (HsmType nguoi ket luan={1}; HsmType cau hinh ky so vien={2}; the CKS_BENH_VIEN ky bang {3};"
+                    + " xmlSha256={4}).",
+                    concluderLoginname, concluderHsmType, setting.Id, setting.IsHsm ? "HSM" : "USB token",
+                    ShortSha256(sdo.XmlBase64)));
                 string signedBase64 = new BackendAdapter(param).Post<string>(
                     "api/EmrSign/SignXmlBhyt", ApiConsumers.EmrConsumer, sdo, SessionManager.ActionLostToken, param);
                 SessionManager.ProcessTokenLost(param);
@@ -197,6 +201,44 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 MarkConcluderFailed(concluderLoginname, ex.Message);
                 return null;
             }
+        }
+
+        private const string EMR_HSM_INTEGRATE_OPTION_KEY = "EMR.HSM.INTEGRATE_OPTION";
+        private long? concluderHsmTypeCache;
+
+        /// <summary>
+        /// Hệ thống HSM để ký thẻ CKS_NGUOI_KET_LUAN = hệ thống bác sĩ đang ký văn bản trên EMR
+        /// (EMR_CONFIG EMR.HSM.INTEGRATE_OPTION), KHÔNG lấy setting.Id: setting.Id là hệ thống của chứng thư
+        /// viện dùng ký CKS_BENH_VIEN, có thể khác (vd viện ký VNPT, bác sĩ ký BKAV -> gửi nhầm VNPT là ký lỗi).
+        /// Không đọc được cấu hình EMR thì dùng setting.Id như cũ.
+        /// </summary>
+        private long GetConcluderHsmType()
+        {
+            if (this.concluderHsmTypeCache.HasValue) return this.concluderHsmTypeCache.Value;
+            long result = this.setting.Id;
+            try
+            {
+                var emrConfig = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<EMR.EFMODEL.DataModels.EMR_CONFIG>()
+                    .FirstOrDefault(o => o.KEY == EMR_HSM_INTEGRATE_OPTION_KEY);
+                string value = (emrConfig != null) ? (emrConfig.VALUE ?? emrConfig.DEFAULT_VALUE) : null;
+                long emrHsmType;
+                if (!string.IsNullOrWhiteSpace(value) && long.TryParse(value.Trim(), out emrHsmType) && emrHsmType > 0)
+                {
+                    result = emrHsmType;
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("CKS_NGUOI_KET_LUAN: khong doc duoc EMR_CONFIG "
+                        + EMR_HSM_INTEGRATE_OPTION_KEY + " (gia tri '" + value + "') -> dung HsmType cau hinh ky so vien = "
+                        + this.setting.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            this.concluderHsmTypeCache = result;
+            return result;
         }
 
         /// <summary>Lý do người kết luận đã ký lỗi trong lượt này (null nếu chưa lỗi).</summary>
@@ -275,8 +317,50 @@ namespace HIS.Desktop.Plugins.KskSyncList
             catch { return 0; }
         }
 
+        /// <summary>Cấu hình ký số đang chọn USB token (không phải HSM).</summary>
+        internal bool IsUsbToken
+        {
+            get { return this.setting != null && !this.setting.IsHsm; }
+        }
+
+        /// <summary>
+        /// Ký thẻ CKS_NGUOI_KET_LUAN bằng USB token đang cắm ở máy trạm — dùng khi cấu hình ký số chọn USB token.
+        /// Ký mọi hồ sơ bằng chứng thư USB đang chọn, KHÔNG đối chiếu người kết luận với người đăng nhập
+        /// (viện chốt bỏ chặn để 1 người đẩy hết).
+        /// Trả về:
+        /// - XML đã chèn chữ ký khi ký được;
+        /// - null khi ký lỗi -> người gọi KHÔNG đẩy hồ sơ (ghi lý do để báo).
+        /// GỌI TRƯỚC khi ký CKS_BENH_VIEN (để chữ ký viện bao trùm cả chữ ký người kết luận).
+        /// </summary>
+        internal string SignXmlByConcluderUsb(string xml, string concluderLoginname)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(xml) || this.setting == null) return xml;
+                if (GetConcluderFailReason(concluderLoginname) != null) return null;   // đã ký lỗi trong lượt này
+
+                string signed = SignByUsbToken(xml, CONCLUDER_SIGN_TAG);
+                if (signed == null || !HasSignatureValue(signed, CONCLUDER_SIGN_TAG))
+                {
+                    MarkConcluderFailed(concluderLoginname, "Ký bằng USB token thất bại (kiểm tra USB token đã cắm,"
+                        + " đúng chứng thư đã chọn và EMR.SignProcessor đang chạy)");
+                    return null;
+                }
+                Inventec.Common.Logging.LogSystem.Info("CKS_NGUOI_KET_LUAN: DA KY bang USB token cho nguoi ket luan "
+                    + concluderLoginname + "; do dai chu ky trong the = " + TagValueLength(signed, CONCLUDER_SIGN_TAG)
+                    + " ky tu.");
+                return signed;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                MarkConcluderFailed(concluderLoginname, ex.Message);
+                return null;
+            }
+        }
+
         // USB token: ký qua WCF SignProcessorClient.SignXml130 (ký file) — như ExportXmlQD130 nhánh USB
-        private string SignByUsbToken(string xml)
+        private string SignByUsbToken(string xml, string signTag)
         {
             string srcPath = null, outPath = null;
             try
@@ -297,7 +381,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 dco.SourceFile = srcPath;
                 dco.OutputFile = outPath;
                 dco.PIN = "";
-                dco.fieldSigned = SIGN_TAG;
+                dco.fieldSigned = signTag;
 
                 SignProcessorClient client = new SignProcessorClient();
                 var result = client.SignXml130(JsonConvert.SerializeObject(dco));

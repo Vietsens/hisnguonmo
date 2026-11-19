@@ -437,7 +437,10 @@ namespace MPS.Processor.Mps000092
 
                 if (rdo != null)
                 {
-                    if (rdo.Transaction != null)
+                    // 63299: màn Xuất bán truyền giao dịch rỗng (new V_HIS_TRANSACTION, ID = 0) khi phiếu chưa có hóa đơn.
+                    // Phiếu bán theo đơn có hồ sơ điều trị thì TDL_TREATMENT_CODE lệch -> mã duy nhất mất EXP_MEST_CODE,
+                    // mọi phiếu dùng chung 1 mã nên số lần in cộng dồn. Giao dịch rỗng phải xử lý như không có giao dịch.
+                    if (rdo.Transaction != null && rdo.Transaction.ID > 0)
                     {
                         Inventec.Common.Logging.LogSystem.Info("Transaction not null");
                         var lstExpMestCode = rdo._SaleExpMests.Where(p => p.TDL_TREATMENT_CODE == rdo.Transaction.TDL_TREATMENT_CODE).ToList();

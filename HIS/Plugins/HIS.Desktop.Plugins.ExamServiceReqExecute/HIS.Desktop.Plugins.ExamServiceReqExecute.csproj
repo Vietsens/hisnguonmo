@@ -522,6 +522,9 @@
     <Compile Include="ExamServiceReqExecuteControl__InitUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__AddExamWarning.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ExamServiceReqExecuteControl__InitUCIcdCause.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -635,6 +638,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ExamServiceReqExecuteControl__EmergencyClassify.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ExamServiceReqExecuteControl__EmergencyInPatient.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ExamServiceReqExecuteControl__InitLanguage.cs">

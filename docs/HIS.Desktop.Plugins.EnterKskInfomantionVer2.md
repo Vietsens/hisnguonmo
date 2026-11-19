@@ -50,9 +50,11 @@ Chỉ bật khi chi nhánh đang làm việc khai 1 trong các key cổng 2062 (
 | HIS_KSK_OTHER | Table | KSK khác |
 | HIS_DHST | Table | Dấu hiệu sinh tồn |
 | V_HIS_SERVICE_REQ | View | Yêu cầu dịch vụ |
-| HIS_KSK_SYT_HCM | Table | Mẫu M3/M4 cổng SYT TP.HCM (khám lâm sàng HCM, hỏi bệnh `INTERVIEW_JSON`, đối tượng/chi trả) — đọc để in Mps000523 |
-| HIS_PERIOD_DRIVER_DITY | Table | 22 câu tiền sử bản thân đã lưu của hồ sơ KSK trên 18 (in Mps000523) |
-| V_HIS_TREATMENT_4, V_HIS_SERE_SERV_TEIN | View | Hành chính + kết quả XN cho Mps000523 |
+| HIS_KSK_SYT_HCM | Table | Mẫu M3/M4 cổng SYT TP.HCM (khám lâm sàng HCM, hỏi bệnh `INTERVIEW_JSON`, đối tượng/chi trả) — đọc để in Mps000523 / Mps000526 |
+| HIS_PERIOD_DRIVER_DITY | Table | 22 câu tiền sử bản thân đã lưu của hồ sơ KSK trên 18 (in Mps000523 / Mps000526) |
+| V_HIS_TREATMENT_4, V_HIS_SERE_SERV_TEIN | View | Hành chính + kết quả XN cho Mps000523 / Mps000526 |
+| HIS_SERE_SERV, HIS_SERE_SERV_EXT | Table | Kết quả dịch vụ (kết luận / mô tả) của các chỉ tiêu tầm soát nữ nối theo DỊCH VỤ ở bảng nối CLS — in Mps000526 |
+| HIS_KSK_SYT_HCM_M2 | Table | (vCong61141) Dữ liệu riêng Mẫu 02 / cổng KSK Sở Y tế TP.HCM mẫu M2 — 1–1 với HIS_KSK_UNDER_EIGHTEEN (`KSK_UNDER_EIGHTEEN_ID`) |
 
 ## 4. UI Layout
 
@@ -77,6 +79,10 @@ Section 10 ("Nghề, công việc trước đây") trong tab General gồm:
 | In Mps000523 — hồ sơ điều trị | api/HisTreatment/GetView4 | MosConsumer |
 | In Mps000523 — tiền sử bản thân đã lưu | api/HisPeriodDriverDity/Get (`KSK_OVER_EIGHTEEN_ID`) + api/HisDiseaseType/Get (`IS_KSK_OVER_EIGHTEEN = 1`, khi chưa có cache) | MosConsumer |
 | In Mps000523 — kết quả XN (chỉ khi máy có bảng nối CLS) | api/HisSereServ/Get (XN đã thực hiện) + api/HisSereServTein/GetView | MosConsumer |
+| In Mps000526 — như Mps000523 (hồ sơ điều trị, tiền sử đã lưu, kết quả XN) | các API của 3 dòng trên | MosConsumer |
+| In Mps000526 — kết quả dịch vụ của chỉ tiêu nối kiểu "DV" (chỉ khi bảng nối CLS có dòng nối theo dịch vụ) | api/HisSereServ/Get (dịch vụ đã thực hiện của đợt điều trị) + api/HisSereServExt/Get (`TDL_TREATMENT_IDs`) | MosConsumer |
+| Get Mẫu 02 (M2) | api/HisKskSytHcmM2/Get (lọc `KSK_UNDER_EIGHTEEN_ID`) | MosConsumer |
+| Create / Update Mẫu 02 | api/HisKskSytHcmM2/Create · api/HisKskSytHcmM2/Update | MosConsumer |
 
 ## 6. Dependencies
 
@@ -92,8 +98,31 @@ MPS printers (xem `frmEnterKskInfomantionVer2___PrintMPS.cs`).
 |---------|--------------|-------------|----------|
 | Giấy KSK trên 18 tuổi (tab "Ksk trên 18 tuổi") | Mps000452 | MPS.Processor.Mps000452 | `Mps000452___KSK_TRÊN_18.xlsx` |
 | Giấy KSK định kỳ cho người cao tuổi (Mẫu 4 SYT TP.HCM) — cùng nút In của tab trên 18 | Mps000523 | MPS.Processor.Mps000523 (`docs/MPS.Processor.Mps000523.md`) | `Mau4_GiayKSKDinhKyNguoiCaoTuoi_A4.xlsx` |
+| Giấy KSK và KSK định kỳ dùng cho người từ đủ 18 tuổi trở lên (Mẫu 3 SYT TP.HCM) — cùng nút In của tab trên 18 | Mps000526 | MPS.Processor.Mps000526 (`docs/MPS.Processor.Mps000526.md`) | `Mau3_GiayKSKNguoiTuDu18Tuoi_A4.xlsx` |
 
 Chọn mẫu ở nút In tab trên 18 (`IsElderlyM4Print`, file `frmEnterKskInfomantionVer2___PrintMps000523.cs`): in **Mps000523** khi đủ 4 điều kiện — chi nhánh khai cổng SYT TP.HCM, có bản ghi HIS_KSK_SYT_HCM, đối tượng có "Người cao tuổi" (`SYT_PATIENT_TYPES` theo danh mục `M3_DoiTuongKham`; lưu khi chưa có danh mục cổng thì theo `KSK_PATIENT_TYPES` mã HIS = 1) và biểu in chạy được trên máy trạm — kiểm giống hệt RichEditor + MPS: có dòng `SAR_PRINT_TYPE` Mps000523 đang hoạt động trong `RichEditorConfig.PrintTypes` (nạp lúc đăng nhập) và thư mục `FileLocalStore.Rootpath\Mps000523` (= `Tmp\Mps\Mps000523`, đăng nhập gán từ `HIS.Desktop.LocalStorage.Location.PrintStoreLocation`) có mẫu Excel (tên kết thúc `.xls`/`.xlsx` như RichEditor liệt kê, bỏ tệp tạm `~$`); thiếu một điều kiện → in **Mps000452** như cũ (ghi log Warn khi thiếu mẫu / loại in). Mọi dữ liệu in đọc lại từ bản đã lưu — kể cả kết luận (không phủ ICD đang sửa trên màn hình) và DHST (gọi `api/HisDhst/Get`, bộ đệm mở form chỉ dùng khi API không trả); tên danh mục cổng lấy từ bộ nhớ đệm / tệp `SytHcmCatalog\<mã>.json`, không gọi cổng.
+
+Hồ sơ cổng SYT TP.HCM **không phải người cao tuổi** (`IsAdultM3Print`, file `frmEnterKskInfomantionVer2___PrintMps000526.cs`): in **Mps000526** khi chi nhánh khai cổng, có bản ghi HIS_KSK_SYT_HCM, đối tượng không có "Người cao tuổi" và máy trạm in được Mps000526 (cùng cách kiểm như Mps000523: dòng `SAR_PRINT_TYPE` đang hoạt động + mẫu Excel trong `Tmp\Mps\Mps000526`). Thứ tự xét ở nút In: người cao tuổi + in được Mps000523 → Mps000523; không phải người cao tuổi + in được Mps000526 → Mps000526; còn lại → Mps000452. Hồ sơ lưu đối tượng theo Id cổng mà máy chưa có danh mục `M3_DoiTuongKham` thì không biết có phải người cao tuổi hay không → in Mps000452 (ghi log Warn "Mps000526: ..."), không in nhầm sang Mẫu 3. Dữ liệu in dùng lại các hàm dựng của Mps000523 (bản đã lưu); riêng giá trị cận lâm sàng lấy thêm kết quả DỊCH VỤ (kết luận, không có thì mô tả, dịch vụ đã thực hiện đầu tiên có kết quả) cho các chỉ tiêu mà bảng nối CLS của màn Đồng bộ KSK nối theo dịch vụ (X-quang nhũ, siêu âm tuyến vú...) — cùng quy tắc với lúc đẩy cổng.
+
+**Mps000453 — Mẫu 02 (vCong61141):** khi viện đã khai báo `MOS.HIS_KSK_SYNC.SYT_HCM_CONNECTION_INFO`, plugin tính sẵn bộ key `M2_*` (`frmEnterKskInfomantionVer2___M2Print.cs`) và truyền qua `Mps000453PDO.M2SingleKeys`; file mẫu cũ không dùng key này nên in như cũ. File mẫu mới: `Mps000453___KSK_MAU_02.xlsx`. Nhóm key (giá trị ô tích = `"X"` hoặc rỗng):
+
+| Nhóm | Key |
+|------|-----|
+| Hành chính | `M2_HO_TEN`, `M2_NGAY_SINH`, `M2_GIOI_TINH_NAM_X/NU_X`, `M2_DAN_TOC`, `M2_NHOM_MAU`, `M2_CCCD`, `M2_BHYT`, `M2_NOI_O`, `M2_XA_PHUONG`, `M2_LY_DO_KHAM` |
+| Học tập, giám hộ | `M2_DI_HOC_CO_X/KHONG_X`, `M2_TRUONG`, `M2_LOP`, `M2_DIA_CHI_TRUONG`, `M2_XA_PHUONG_TRUONG`, `M2_GIAM_HO_TEN/CCCD/SDT`, `M2_QH_1_X`..`M2_QH_6_X` (Cha, Mẹ, Ông/bà, Anh/chị, Họ hàng, Khác) |
+| Đối tượng, chi trả | `M2_DOI_TUONG`, `M2_DOI_TUONG_ID`, `M2_DIA_DIEM_KHAM`, `M2_DDK_CSKBCB/LUU_DONG/TRAM_YT/TRUONG_HOC/TAI_NHA_X`, `M2_HT_CHI_TRA`, `M2_HT_CHI_TRA_CT`, `M2_CT_NGAN_SACH/HOP_DONG/PHI_DIA_GIOI/TU_CHI_TRA/NGUON_KHAC_X`, `M2_NGUON_KHAC` |
+| Tiền sử | `M2_TSGD_KHONG/CO_X`, `M2_TSGD_DS`, `M2_SK_BT/KBT_X`, `M2_SK_THIEU_THANG/THUA_CAN/CAN_THIEP/NGAT_X`, `M2_SK_DS`, `M2_ME_BENH`, `M2_TSBT_KHONG/CO_X`, `M2_TSBT_DS`, `M2_DIEU_TRI_KHONG/CO_X`, `M2_DIEU_TRI_THUOC` |
+| Tiêm chủng (23 mũi + dòng khác) | `M2_<TRUONG_M2>_DA_X/_CHUA_X/_KNR_X/_NGAY` (vd `M2_TIEM_LAO_M1_DA_X`), dòng khác `M2_TIEM_KHAC_TEN/_LICH/_MUI/_NGAY/_DA_X...` |
+| B1 / B2 | `M2_ADHD_NGAY`, `M2_ADHD_{1..18}_{1..3}_X`, `M2_ADHD_KET_QUA/GHI_CHU`; `M2_ASD_NGAY`, `M2_ASD_{1..10}_{1..4}_X`, `M2_ASD_DIEM`, `M2_ASD_KET_QUA/GHI_CHU` |
+| Lâm sàng | `M2_<MUC>_BT_X/_SB_X/_SB_ICD/_XD_X/_XD_ICD` với MUC = NOIKHOA, HOHAP, TIEUHOA, THANTIETNIEU, THANKINH, TAMTHAN, COTSONG_CLSKHAC, MAT, TMH, RHM; phân loại `M2_<MUC>_LOAI_{1..5}_X` + `M2_THE_LUC_LOAI_{1..5}_X`; cột sống `M2_COT_SONG_BT/BAT_THUONG_X`, `M2_GU/UON/BET_X`, `M2_VEO_S/C_X`, `M2_VEO_NHE/VUA/NANG_X`; răng `M2_RANG_<số răng>` (ký hiệu 0–9 răng vĩnh viễn, A–G răng sữa) |
+| CLS, đề nghị | `M2_XN_NGAY`, `M2_XN_DON_VI`, `M2_XN_KET_QUA`, `M2_CDHA_KET_QUA`, `M2_DN_TEN`, `M2_DN_{1..5}_X`, `M2_DN_GHI_RO` |
+| Đầu trang | `M2_SO_Y_TE` (tên đơn vị cấp trên của chi nhánh, trống thì "SỞ Y TẾ THÀNH PHỐ HỒ CHÍ MINH"), `M2_TEN_CO_SO` (tên chi nhánh) |
+| Ô số | `M2_CCCD_{1..12}`, `M2_GIAM_HO_CCCD_{1..12}`, `M2_BHYT_{1..15}` — mỗi ô một ký tự |
+| Bác sĩ | `M2_<MUC>_BS` (họ tên theo tài khoản khám, tra `V_HIS_EMPLOYEE`), `M2_CLS_BS` |
+| Kết luận | `M2_KL_BT/SB/XD_X`, `M2_KL_SB_ICD`, `M2_KL_XD_ICD` (theo `HIS_KSK_GENERAL.CONCLUSION_ICD_TYPE`), `M2_KL_LOAI_{1..5}_X` (`HEALTH_EXAM_RANK_ID`), `M2_KL_BS` (người kết luận) |
+| Ô tích dạng ký tự | Mọi key `…_X` có thêm key `…_O` = ☒ / ☐ (dùng cho ô tích trong dòng chữ; `…_X` dùng cho ô trong bảng). Thêm `M2_SK_ME_BENH_X/_O` |
+
+File mẫu 13/11/2026 dựng lại theo bố cục mẫu giấy (lưới 40 cột); bản dựng bằng script `_build_Mps000453_KSK_MAU_02.ps1` (cùng thư mục file mẫu thiết kế).
 
 ## 8. Changelog
 
@@ -112,8 +141,20 @@ Chọn mẫu ở nút In tab trên 18 (`IsElderlyM4Print`, file `frmEnterKskInfo
 | 10/11/2026 | dangth2 | (Việc 60377 — BV Xuyên Á Củ Chi) **In Mẫu 4 "Giấy KSK định kỳ cho người cao tuổi"** (Mps000523 mới) từ nút In tab "Ksk trên 18 tuổi": hồ sơ M4 người cao tuổi của cổng SYT TP.HCM + máy có mẫu → in Mps000523, ngược lại Mps000452 như cũ. Partial mới `frmEnterKskInfomantionVer2___PrintMps000523.cs` dựng PDO từ dữ liệu đã lưu: 22 câu tiền sử (HIS_PERIOD_DRIVER_DITY của hồ sơ), câu trả lời hỏi bệnh (`INTERVIEW_JSON`), tên các mã danh mục cổng (kể cả mã tạm HIS của địa điểm khám/đề nghị, mã răng HIS cũ), họ tên bác sĩ theo tài khoản, giá trị XN qua bảng nối CLS của module Đồng bộ KSK (không có bảng nối thì processor in ghi chú tổng hợp). Thêm tham chiếu `MPS.Processor.Mps000523.PDO`. Không đổi DB/BE (cần dòng SAR_PRINT_TYPE Mps000523). |
 | 10/11/2026 | dangth2 | (Việc 60377 — sửa theo phản biện độc lập) Điều kiện "máy có mẫu" kiểm đúng thư mục RichEditor dùng (`FileLocalStore.Rootpath`, trước đây đọc nhầm `Inventec.Desktop.Common.LocalStorage.Location.PrintStoreLocation` không ai gán nên luôn sai) + dòng SAR_PRINT_TYPE Mps000523 đang hoạt động + tệp Excel; DHST của Mps000523 gọi `api/HisDhst/Get` trước (Lưu cập nhật DHST tại chỗ, bộ đệm lúc mở form bị cũ); kết luận lấy bản đã lưu (`currentKskGeneral`) thay cho `BuildKskGeneralForPrint`. Thêm tham chiếu `SAR.EFMODEL`. |
 | 11/11/2026 | dangth2 | (Việc 60377 — phản biện vòng 2) Lọc tệp mẫu đúng như RichEditor (`EndsWith(".xls"/".xlsx")` phân biệt hoa thường); ghi log Warn khi máy chưa có danh mục cổng `M3_DoiTuongKham` (không nhận được người cao tuổi → in Mps000452). |
+| 13/11/2026 | dangth2 | (Việc 60376 — BV Xuyên Á Củ Chi) **In Mẫu 3 "Giấy KSK và KSK định kỳ dùng cho người từ đủ 18 tuổi trở lên"** (Mps000526 mới) từ nút In tab "Ksk trên 18 tuổi": hồ sơ cổng SYT TP.HCM không phải người cao tuổi + máy in được Mps000526 → in Mps000526; người cao tuổi vẫn Mps000523; còn lại Mps000452 như cũ. Partial mới `frmEnterKskInfomantionVer2___PrintMps000526.cs` (`IsAdultM3Print`, `LoadBieuMauPhieuMps000526`, `BuildM3ClsValues`) dùng lại các hàm dựng dữ liệu của Mps000523; thêm kết quả dịch vụ cho chỉ tiêu nối kiểu "DV" của bảng nối CLS (`ReadClsMap(sourceKind)`). Thêm tham chiếu `MPS.Processor.Mps000526.PDO`. Không đổi DB/BE (cần dòng SAR_PRINT_TYPE Mps000526). |
+| 12/11/2026 | huannh | (vCong61141 — Mẫu 02 TT 25/2026, cổng KSK Sở Y tế TP.HCM mẫu M2; PTTK_61141) Chỉ khi viện khai báo `MOS.HIS_KSK_SYNC.SYT_HCM_CONNECTION_INFO`: tab "Ksk dưới 18 tuổi" thêm 3 tab con dựng bằng code (`___M2Ui`) — **Hành chính, tiền sử** (đối tượng/địa điểm/hình thức chi trả theo danh mục cổng, học tập, CCCD + SĐT người giám hộ, tiền sử gia đình/sản khoa/bệnh tật/đang điều trị, lưới tiêm chủng 23 mũi + dòng khác có ngày), **Đánh giá tâm thần** (B1 18 câu, B2 10 câu chỉ trẻ 6–11 tuổi, tự gợi ý kết quả nhưng không đè chữ người dùng đã sửa), **Khám lâm sàng** (10 mục chưa phát hiện bất thường / ICD sơ bộ / ICD xác định theo danh mục ICD của cổng, khám cột sống, sơ đồ 32 răng vĩnh viễn + 20 răng sữa, 4 ô cận lâm sàng, đề nghị). Nạp/lưu bảng mới `HIS_KSK_SYT_HCM_M2` sau khi lưu hồ sơ dưới 18 (`___M2Data`); tiền sử gia đình lưu Id danh mục cổng vào `PATHOLOGICAL_HISTORY_FAMILY` (ẩn ô chữ cũ); đổi nhãn người đi cùng thành "Họ và tên mẹ hoặc người giám hộ"; tải thêm 13 danh mục cổng. In Mps000453: thêm bộ key `M2_*` (`___M2Print`). Viện chưa khai báo: không dựng gì, không gọi API/cổng. |
 
 ## 9. Test Cases
+
+### vCong61141 — Mẫu 02 (viện đã khai báo cổng Sở Y tế TP.HCM)
+- [ ] Viện chưa khai báo key cổng → tab Ksk dưới 18 tuổi không có 3 tab "Mẫu 02 - ...", nhãn người đi cùng như cũ.
+- [ ] Nhập đủ 3 tab Mẫu 02 → Lưu → mở lại hồ sơ thấy đủ (bảng `HIS_KSK_SYT_HCM_M2` có 1 dòng theo `KSK_UNDER_EIGHTEEN_ID`); lưu lần 2 là cập nhật, không tạo dòng thứ hai.
+- [ ] B1: 6 câu trong nhóm 1–9 chọn "Thỉnh thoảng"/"Thường xuyên" → ô Kết quả tự điền gợi ý giảm chú ý; sửa tay rồi đổi câu trả lời → không bị ghi đè.
+- [ ] Trẻ 14 tuổi → lưới B2 bị khóa, có dòng ghi chú lý do.
+- [ ] CCCD người giám hộ 11 số / SĐT 9 số → báo lỗi tại ô, không lưu.
+- [ ] Trẻ có đi học = Không → trường, lớp, địa chỉ, xã/phường trường bị khóa và xóa trắng.
+- [ ] Máy chưa tải được danh mục cổng → các ô theo danh mục trống, vẫn lưu được phần còn lại, không mất giá trị đã lưu.
+- [ ] In Mps000453 bằng file mẫu `Mps000453___KSK_MAU_02.xlsx` → đánh "X" đúng ô; file mẫu cũ in như trước.
 
 ### Mục 10 — Nghề, công việc trước đây
 - [ ] Form mở → ô "Công việc 1" và "Công việc 2" hiện ở phía trên ô "Thời gian làm việc" tương ứng
@@ -152,7 +193,7 @@ Chọn mẫu ở nút In tab trên 18 (`IsElderlyM4Print`, file `frmEnterKskInfo
 - [ ] Lưu từ sub-tab "Kết luận" khi ô thị lực (sub-tab Khám lâm sàng) vượt độ dài → tự mở sub-tab Khám lâm sàng, focus ô lỗi
 
 ### 10/11/2026 — Việc 60377: In Mẫu 4 người cao tuổi (Mps000523)
-- [ ] Chi nhánh có cổng SYT TP.HCM, hồ sơ M4 đối tượng "Người cao tuổi", máy có `Tmp\Mps\Mps000523` → nút In tab trên 18 ra Giấy KSK định kỳ cho người cao tuổi (8 trang)
+- [ ] Chi nhánh có cổng SYT TP.HCM, hồ sơ M4 đối tượng "Người cao tuổi", máy có `Tmp\Mps\Mps000523` → nút In tab trên 18 ra Giấy KSK định kỳ cho người cao tuổi (9 trang)
 - [ ] Cùng hồ sơ nhưng máy chưa có thư mục mẫu → in Mps000452 như cũ, log Warn "chua co mau in"
 - [ ] Chưa chạy script SAR_PRINT_TYPE Mps000523 (hoặc chưa đăng nhập lại sau khi chạy) → in Mps000452, không báo lỗi "không tồn tại mã in"
 - [ ] Sửa cân nặng / huyết áp ở tab trên 18 → Lưu → In (không đóng form) → giấy người cao tuổi in số mới
@@ -161,3 +202,15 @@ Chọn mẫu ở nút In tab trên 18 (`IsElderlyM4Print`, file `frmEnterKskInfo
 - [ ] Hồ sơ chưa trả lời mục hỏi bệnh → mục B1, D1–D8 để trống (không tích "Không")
 - [ ] 22 câu tiền sử in đúng câu trả lời đã lưu; tên bác sĩ hiện cạnh từng chuyên khoa
 - [ ] Máy có cấu hình bảng nối CLS ở màn Đồng bộ KSK → giá trị XN in đúng dòng; không có → in ghi chú tổng hợp huyết học/nước tiểu của màn hình
+
+### 13/11/2026 — Việc 60376: In Mẫu 3 người từ đủ 18 tuổi (Mps000526)
+- [ ] Chi nhánh có cổng SYT TP.HCM, hồ sơ có dữ liệu tab HCM, đối tượng KHÔNG có "Người cao tuổi", máy có `Tmp\Mps\Mps000526` + dòng SAR_PRINT_TYPE Mps000526 → nút In tab trên 18 ra giấy Mẫu 3
+- [ ] Cùng hồ sơ nhưng máy chưa có thư mục mẫu / chưa chạy script SAR / chưa đăng nhập lại → in Mps000452 như cũ, log Warn "Mps000526: ...", không báo lỗi
+- [ ] Hồ sơ người cao tuổi → vẫn in Mps000523 (máy không có mẫu Mps000523 thì in Mps000452, không nhảy sang Mẫu 3)
+- [ ] Hồ sơ lưu đối tượng theo Id cổng, máy chưa tải danh mục `M3_DoiTuongKham` → in Mps000452 (không đoán)
+- [ ] Nội khoa: 8 mục a–h in riêng từng mục (ô tích, ICD, phân loại, tên bác sĩ của đúng mục đó)
+- [ ] Nguồn chi trả "Người sử dụng lao động" → tích ô riêng, không tích "Nguồn khác"; địa điểm "Trường học" → tích ô Trường học
+- [ ] Khám thể lực: BMI, huyết áp in dạng "120/80"; thiếu một số thì in số còn lại, không in dấu "/" trơ trọi
+- [ ] Hai khối cận lâm sàng in cùng kết quả (khối 2 không có dòng Urê); "Cận lâm sàng khác": ô KQ khám CLS khác có chữ → tích Có + in chữ, trống → tích Không; ô "KHÁM SỨC KHỎE ĐỊNH KỲ — Kết quả" in ở mục d) khối 2 kèm tên người khám
+- [ ] Nữ có nối chỉ tiêu tầm soát ở bảng nối CLS (theo chỉ số xét nghiệm hoặc theo dịch vụ) → in "tên xét nghiệm: kết quả"; nam → 4 dòng để trống. Lưu ý: màn bảng nối CLS chỉ cho nối dịch vụ loại siêu âm / phẫu thuật / thủ thuật — X-quang nhũ thuộc loại khác thì chưa nối được, dòng đó để trống
+- [ ] Viện khác / chi nhánh không khai cổng → in Mps000452 như cũ

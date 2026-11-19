@@ -44,6 +44,12 @@ namespace MPS.Processor.Mps000453.PDO
         /// Tùy chọn; processor đổ key CONCLUSION_ICD_* + object tag {KskGeneral.x}.
         /// </summary>
         public HIS_KSK_GENERAL HisKskGeneral { get; set; }
+        /// <summary>
+        /// vCong61141 - single keys of the Mau 02 template (TT 25/2026, So Y te TP.HCM, prefix "M2_"),
+        /// computed by the calling plugin. Optional: null = old template, nothing changes.
+        /// Kept as a plain dictionary on purpose (no new EFMODEL type in the PDO).
+        /// </summary>
+        public Dictionary<string, object> M2SingleKeys { get; set; }
         public Mps000453PDO(
             HIS_KSK_UNDER_EIGHTEEN HisKskUnderEighteen,
            V_HIS_SERVICE_REQ HisServiceReq,

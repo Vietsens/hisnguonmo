@@ -72,6 +72,8 @@ Format value VLG: `MaDonVi|Username|Password|TokenUrl|PushUrl|SenderGtin` (tối
 | Danh sách hồ sơ | api/HisKskSync/GetView | MosConsumer |
 | Dữ liệu KSK batch | api/HisKskSync/GetKskData | MosConsumer |
 | Lưu kết quả | api/HisKskSync/SaveSyncResult | MosConsumer |
+| Dữ liệu Mẫu 02 (M2) | api/HisKskSytHcmM2/Get (lọc `KSK_UNDER_EIGHTEEN_IDs`, gọi 1 lần cho cả lô) | MosConsumer |
+| Cổng Sở Y tế TP.HCM — mẫu M2 | POST {địa chỉ}/hin-api-service/create-mau-phieu-m2 (dùng chung phiếu truy cập + chữ ký với M3/M4) | HttpWebRequest (TLS 1.2) |
 | Ký HSM | api/EmrSign/SignXmlBhyt | EmrConsumer |
 | Chữ ký ảnh/chứng thư | api/EmrSigner/Get | EmrConsumer |
 | Cổng ngoài (VLG) — đẩy | POST {TokenUrl}, POST {PushUrl} (`/api/platform/data-sync/push`) | HttpWebRequest trực tiếp (TLS 1.2) |
@@ -95,6 +97,7 @@ Không có chức năng in.
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 12/11/2026 | huannh | vCong61141 (PTTK_61141 — Mẫu 02 TT 25/2026, trẻ 6 – dưới 18 tuổi): cổng Sở Y tế TP.HCM thêm **mẫu M2**. Hồ sơ dưới 18 tuổi có bản ghi `HIS_KSK_SYT_HCM_M2` → dựng bản tin M2 (`KskSytHcmM2BodyBuilder.cs`, partial của `KskSytHcmBodyBuilder`: khối tthc, tiem_chung, tien_su, kham_thuc_the, adhd, asd chỉ khi trẻ 6–11 tuổi, kham_lam_san, can_lam_san, ket_luan; không gửi `noitiet_*`, ngày tiêm, dòng "vắc xin khác") → kiểm trường bắt buộc (`DescribeMissingRequiredM2`) → `KskSytHcmPusher.Push(..., serviceCode: create-mau-phieu-m2)`. Câu trả lời tiêm chủng/B1/B2 lưu mức nội bộ, quy đổi sang Id danh mục cổng (`Tinh_trang_tiem`, `RoiLoanGiamChuY_6_18_tuoi`, `PhoTuKy_6_11_tuoi`) theo TÊN; quan hệ với trẻ quy đổi sang `MoiQuanHeVoiTre`. Hồ sơ dưới 18 chưa có bản ghi M2 → báo "Hồ sơ chưa nhập dữ liệu Mẫu 02". Hồ sơ trên 18 tuổi giữ nguyên M3/M4. |
 | 30/10/2026 | dangth2 | 61297 (BV Nguyễn Tri Phương — Sở Y tế TP.HCM nhận rồi chuyển tiếp lên Bộ, viện không có Private Key): cổng Sở Y tế TP.HCM (`MOS.HIS_KSK_SYNC.SYT_HCM_CONNECTION_INFO`) **trường 7 khóa riêng không còn bắt buộc**. `KskSytHcmConfig.CanPush` bỏ điều kiện khóa, thêm `HasSigningKey`; bỏ trống trường 7 → vẫn đẩy, KHÔNG gửi tiêu đề `X-API-Signature`, cổng chê chữ ký thì không ký lại lượt 2 (chỉ ghi log hướng dẫn). Có khai khóa → giữ nguyên cách ký cũ. Màn khai báo nối chỉ số ghi trường 7 "(không bắt buộc)". Harness 18/18. |
 | 20/10/2026 | phuongnm + Claude | 58348 (chốt câu 4): combo "Lọc theo" chỉ còn **Ngày khám** (IN_TIME, mặc định) và **Ngày kết luận**; thêm cột **CCCD** (`CCCD_NUMBER` từ HIS_PATIENT) và **Diện điều trị** (`TREATMENT_TYPE_NAME`) sau Giới tính. Cột bind theo FieldName, code không gọi thẳng property mới → chạy được với MOS.EFMODEL cũ (2 cột để trống). Cần view V_HIS_KSK_SYNC mới + MOS.EFMODEL. Khoá Lang: bỏ `cboTimeType.InTime/OutTime/FeeLockTime`, thêm `cboTimeType.ExamTime`, `colCccd.Caption`, `colTreatmentType.Caption`. |
 | 13/10/2026 | phuongnm + Claude | 58348: cột **Phân loại** (`HEALTH_EXAM_RANK_NAME`, đọc 3 bảng theo nhóm KSK_TYPE_ID giống luồng đẩy cổng) + combo "Lọc theo" 4 mốc như KskSyncListQD831 (gán IN_/CONCLUSION_/OUT_/FEE_LOCK_TIME_FROM/TO qua SetPropSafe). |

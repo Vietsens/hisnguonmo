@@ -1160,4 +1160,19 @@
   <data name="ExamServiceReqExecuteControl.lblMimsLactatingMonth.Text" xml:space="preserve">
     <value>Con bú bao nhiêu tháng:</value>
   </data>
+  <data name="ExamServiceReqExecuteControl.lciEmergencyStayTime.Text" xml:space="preserve">
+    <value>Thời gian lưu Cấp cứu</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lciEmergencyStayStatus.Text" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblEmergencyStayTime.Format" xml:space="preserve">
+    <value>{0} giờ {1} phút</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblEmergencyStayStatus.NotYet" xml:space="preserve">
+    <value>Chưa đủ {0} giờ — diện Khám</value>
+  </data>
+  <data name="ExamServiceReqExecuteControl.lblEmergencyStayStatus.Done" xml:space="preserve">
+    <value>Đã đủ {0} giờ — đã chuyển diện Nội trú</value>
+  </data>
 </root>

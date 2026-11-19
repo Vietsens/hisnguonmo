@@ -64,6 +64,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.chkSyncKcbHoc = new DevExpress.XtraEditors.CheckEdit();
             this.chkSyncKcbCt = new DevExpress.XtraEditors.CheckEdit();
             this.chkAutoXml48h = new DevExpress.XtraEditors.CheckEdit();
+            this.cboSendMode = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.txtScheduleTimes = new DevExpress.XtraEditors.TextEdit();
+            this.cboScheduleDays = new DevExpress.XtraEditors.CheckedComboBoxEdit();
+            this.spnLookBackDays = new DevExpress.XtraEditors.SpinEdit();
+            this.chkResendFailed = new DevExpress.XtraEditors.CheckEdit();
+            this.chkAutoStart = new DevExpress.XtraEditors.CheckEdit();
+            this.lciSendMode = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciScheduleTimes = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciScheduleDays = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciLookBackDays = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceLookBack = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciResendFailed = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciAutoStart = new DevExpress.XtraLayout.LayoutControlItem();
             this.chkXML3176 = new DevExpress.XtraEditors.CheckEdit();
             this.txtFolder = new DevExpress.XtraEditors.ButtonEdit();
             this.chkDontSend = new DevExpress.XtraEditors.CheckEdit();
@@ -111,6 +124,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcbHoc.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcbCt.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoXml48h.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboSendMode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtScheduleTimes.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboScheduleDays.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spnLookBackDays.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkResendFailed.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoStart.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSendMode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciScheduleTimes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciScheduleDays)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLookBackDays)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceLookBack)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciResendFailed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAutoStart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkXML3176.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFolder.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkDontSend.Properties)).BeginInit();
@@ -218,6 +244,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControl1.Controls.Add(this.chkSyncKcbHoc);
             this.layoutControl1.Controls.Add(this.chkSyncKcbCt);
             this.layoutControl1.Controls.Add(this.chkAutoXml48h);
+            this.layoutControl1.Controls.Add(this.cboSendMode);
+            this.layoutControl1.Controls.Add(this.txtScheduleTimes);
+            this.layoutControl1.Controls.Add(this.cboScheduleDays);
+            this.layoutControl1.Controls.Add(this.spnLookBackDays);
+            this.layoutControl1.Controls.Add(this.chkResendFailed);
+            this.layoutControl1.Controls.Add(this.chkAutoStart);
             this.layoutControl1.Controls.Add(this.chkXML3176);
             this.layoutControl1.Controls.Add(this.txtFolder);
             this.layoutControl1.Controls.Add(this.chkDontSend);
@@ -236,7 +268,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControl1.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(389, 366);
+            this.layoutControl1.Size = new System.Drawing.Size(389, 510);
             this.layoutControl1.TabIndex = 5;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -304,6 +336,88 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.chkAutoXml48h.StyleController = this.layoutControl1;
             this.chkAutoXml48h.TabIndex = 28;
             this.chkAutoXml48h.ToolTip = "Mỗi chu kỳ gửi tự động, xuất XML 130 của hồ sơ điều trị ngoại trú/nội trú nhập viện đủ 48 giờ (chưa xuất thành công) ra Thư mục lưu XML hồ sơ đủ 48 giờ - khai ở nút Thư mục lưu. Mỗi hồ sơ chỉ tự xuất một lần; hồ sơ lỗi không tự xuất lại, sửa dữ liệu rồi chuột phải chọn Xuất XML hồ sơ đủ 48 giờ để xuất tay.";
+            // 
+            // cboSendMode
+            // 
+            this.cboSendMode.Location = new System.Drawing.Point(97, 338);
+            this.cboSendMode.MenuManager = this.barManager1;
+            this.cboSendMode.Name = "cboSendMode";
+            this.cboSendMode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboSendMode.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboSendMode.Size = new System.Drawing.Size(290, 20);
+            this.cboSendMode.StyleController = this.layoutControl1;
+            this.cboSendMode.TabIndex = 29;
+            this.cboSendMode.ToolTip = "Theo chu kỳ: lặp lại sau mỗi N phút (như trước nay). Theo mốc giờ: đến đúng mốc giờ đã khai mới quét và gửi.";
+            this.cboSendMode.SelectedIndexChanged += new System.EventHandler(this.cboSendMode_SelectedIndexChanged);
+            // 
+            // txtScheduleTimes
+            // 
+            this.txtScheduleTimes.Location = new System.Drawing.Point(97, 362);
+            this.txtScheduleTimes.MenuManager = this.barManager1;
+            this.txtScheduleTimes.Name = "txtScheduleTimes";
+            this.txtScheduleTimes.Size = new System.Drawing.Size(290, 20);
+            this.txtScheduleTimes.StyleController = this.layoutControl1;
+            this.txtScheduleTimes.TabIndex = 30;
+            this.txtScheduleTimes.ToolTip = "Các mốc giờ gửi trong ngày, dạng giờ:phút, nhiều mốc ngăn cách bởi dấu chấm phẩy. Ví dụ 10:00;16:00";
+            // 
+            // cboScheduleDays
+            // 
+            this.cboScheduleDays.Location = new System.Drawing.Point(97, 386);
+            this.cboScheduleDays.MenuManager = this.barManager1;
+            this.cboScheduleDays.Name = "cboScheduleDays";
+            this.cboScheduleDays.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboScheduleDays.Size = new System.Drawing.Size(290, 20);
+            this.cboScheduleDays.StyleController = this.layoutControl1;
+            this.cboScheduleDays.TabIndex = 31;
+            this.cboScheduleDays.ToolTip = "Những ngày trong tuần áp dụng lịch gửi. Không chọn ngày nào nghĩa là áp dụng tất cả các ngày.";
+            // 
+            // spnLookBackDays
+            // 
+            this.spnLookBackDays.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spnLookBackDays.Location = new System.Drawing.Point(97, 410);
+            this.spnLookBackDays.MenuManager = this.barManager1;
+            this.spnLookBackDays.Name = "spnLookBackDays";
+            this.spnLookBackDays.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spnLookBackDays.Properties.IsFloatValue = false;
+            this.spnLookBackDays.Properties.MaxValue = new decimal(new int[] {
+            31,
+            0,
+            0,
+            0});
+            this.spnLookBackDays.Properties.Mask.EditMask = "N00";
+            this.spnLookBackDays.Size = new System.Drawing.Size(129, 20);
+            this.spnLookBackDays.StyleController = this.layoutControl1;
+            this.spnLookBackDays.TabIndex = 32;
+            this.spnLookBackDays.ToolTip = "Mỗi lượt quét hồ sơ từ đầu ngày của N ngày trước đến hiện tại. 0 = chỉ trong ngày hiện tại. Khuyến nghị 1 để không bỏ sót hồ sơ cuối ngày hôm trước.";
+            // 
+            // chkResendFailed
+            // 
+            this.chkResendFailed.Location = new System.Drawing.Point(2, 434);
+            this.chkResendFailed.MenuManager = this.barManager1;
+            this.chkResendFailed.Name = "chkResendFailed";
+            this.chkResendFailed.Properties.Caption = "Gửi lại hồ sơ gửi lỗi ở lượt kế tiếp";
+            this.chkResendFailed.Size = new System.Drawing.Size(385, 19);
+            this.chkResendFailed.StyleController = this.layoutControl1;
+            this.chkResendFailed.TabIndex = 33;
+            this.chkResendFailed.ToolTip = "Lượt gửi lấy thêm các hồ sơ đã gửi thất bại trong khoảng quét để gửi lại, không phải gửi tay từng hồ sơ.";
+            // 
+            // chkAutoStart
+            // 
+            this.chkAutoStart.Location = new System.Drawing.Point(2, 458);
+            this.chkAutoStart.MenuManager = this.barManager1;
+            this.chkAutoStart.Name = "chkAutoStart";
+            this.chkAutoStart.Properties.Caption = "Ghi nhớ bật gửi tự động (mở lại màn hình là chạy tiếp)";
+            this.chkAutoStart.Size = new System.Drawing.Size(385, 19);
+            this.chkAutoStart.StyleController = this.layoutControl1;
+            this.chkAutoStart.TabIndex = 34;
+            this.chkAutoStart.ToolTip = "Chỉ nên bật trên MỘT máy trạm được cử làm máy gửi, để hai máy không cùng gửi một lúc.";
             //
             // txtFolder
             //
@@ -495,7 +609,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(274, 218);
+            this.btnSave.Location = new System.Drawing.Point(274, 482);
             this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(113, 22);
@@ -528,17 +642,24 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.lciSyncKcbVlg,
             this.lciSyncKcbHoc,
             this.lciSyncKcbCt,
-            this.lciAutoXml48h});
+            this.lciAutoXml48h,
+            this.lciSendMode,
+            this.lciScheduleTimes,
+            this.lciScheduleDays,
+            this.lciLookBackDays,
+            this.emptySpaceLookBack,
+            this.lciResendFailed,
+            this.lciAutoStart});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup1.Size = new System.Drawing.Size(389, 366);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(389, 510);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 336);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 480);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(272, 30);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -546,7 +667,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // layoutControlItem7
             //
             this.layoutControlItem7.Control = this.btnSave;
-            this.layoutControlItem7.Location = new System.Drawing.Point(272, 336);
+            this.layoutControlItem7.Location = new System.Drawing.Point(272, 480);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(117, 30);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -748,12 +869,86 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.lciAutoXml48h.Size = new System.Drawing.Size(389, 24);
             this.lciAutoXml48h.TextSize = new System.Drawing.Size(0, 0);
             this.lciAutoXml48h.TextVisible = false;
+            // 
+            // lciSendMode
+            // 
+            this.lciSendMode.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciSendMode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciSendMode.Control = this.cboSendMode;
+            this.lciSendMode.Location = new System.Drawing.Point(0, 336);
+            this.lciSendMode.Name = "lciSendMode";
+            this.lciSendMode.Size = new System.Drawing.Size(389, 24);
+            this.lciSendMode.Text = "Chế độ gửi:";
+            this.lciSendMode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciSendMode.TextSize = new System.Drawing.Size(90, 20);
+            // 
+            // lciScheduleTimes
+            // 
+            this.lciScheduleTimes.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciScheduleTimes.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciScheduleTimes.Control = this.txtScheduleTimes;
+            this.lciScheduleTimes.Location = new System.Drawing.Point(0, 360);
+            this.lciScheduleTimes.Name = "lciScheduleTimes";
+            this.lciScheduleTimes.Size = new System.Drawing.Size(389, 24);
+            this.lciScheduleTimes.Text = "Mốc giờ gửi:";
+            this.lciScheduleTimes.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciScheduleTimes.TextSize = new System.Drawing.Size(90, 20);
+            // 
+            // lciScheduleDays
+            // 
+            this.lciScheduleDays.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciScheduleDays.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciScheduleDays.Control = this.cboScheduleDays;
+            this.lciScheduleDays.Location = new System.Drawing.Point(0, 384);
+            this.lciScheduleDays.Name = "lciScheduleDays";
+            this.lciScheduleDays.Size = new System.Drawing.Size(389, 24);
+            this.lciScheduleDays.Text = "Ngày áp dụng:";
+            this.lciScheduleDays.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciScheduleDays.TextSize = new System.Drawing.Size(90, 20);
+            // 
+            // lciLookBackDays
+            // 
+            this.lciLookBackDays.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciLookBackDays.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciLookBackDays.Control = this.spnLookBackDays;
+            this.lciLookBackDays.Location = new System.Drawing.Point(0, 408);
+            this.lciLookBackDays.Name = "lciLookBackDays";
+            this.lciLookBackDays.Size = new System.Drawing.Size(228, 24);
+            this.lciLookBackDays.Text = "Quét lùi (ngày):";
+            this.lciLookBackDays.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciLookBackDays.TextSize = new System.Drawing.Size(90, 20);
+            // 
+            // emptySpaceLookBack
+            // 
+            this.emptySpaceLookBack.AllowHotTrack = false;
+            this.emptySpaceLookBack.Location = new System.Drawing.Point(228, 408);
+            this.emptySpaceLookBack.Name = "emptySpaceLookBack";
+            this.emptySpaceLookBack.Size = new System.Drawing.Size(161, 24);
+            this.emptySpaceLookBack.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // lciResendFailed
+            // 
+            this.lciResendFailed.Control = this.chkResendFailed;
+            this.lciResendFailed.Location = new System.Drawing.Point(0, 432);
+            this.lciResendFailed.Name = "lciResendFailed";
+            this.lciResendFailed.Size = new System.Drawing.Size(389, 24);
+            this.lciResendFailed.TextSize = new System.Drawing.Size(0, 0);
+            this.lciResendFailed.TextVisible = false;
+            // 
+            // lciAutoStart
+            // 
+            this.lciAutoStart.Control = this.chkAutoStart;
+            this.lciAutoStart.Location = new System.Drawing.Point(0, 456);
+            this.lciAutoStart.Name = "lciAutoStart";
+            this.lciAutoStart.Size = new System.Drawing.Size(389, 24);
+            this.lciAutoStart.TextSize = new System.Drawing.Size(0, 0);
+            this.lciAutoStart.TextVisible = false;
             //
             // frmSettingConfigSync
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(389, 395);
+            this.ClientSize = new System.Drawing.Size(389, 539);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -776,6 +971,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcbHoc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcbCt.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoXml48h.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboSendMode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtScheduleTimes.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboScheduleDays.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spnLookBackDays.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkResendFailed.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoStart.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSendMode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciScheduleTimes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciScheduleDays)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciLookBackDays)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceLookBack)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciResendFailed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciAutoStart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkSyncKcbVlg.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkXML3176.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFolder.Properties)).EndInit();
@@ -873,5 +1081,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private DevExpress.XtraLayout.LayoutControlItem lciSyncKcbCt;
         private DevExpress.XtraEditors.CheckEdit chkAutoXml48h;
         private DevExpress.XtraLayout.LayoutControlItem lciAutoXml48h;
+        //vCong60263 - lich gui theo moc gio
+        private DevExpress.XtraEditors.ComboBoxEdit cboSendMode;
+        private DevExpress.XtraEditors.TextEdit txtScheduleTimes;
+        private DevExpress.XtraEditors.CheckedComboBoxEdit cboScheduleDays;
+        private DevExpress.XtraEditors.SpinEdit spnLookBackDays;
+        private DevExpress.XtraEditors.CheckEdit chkResendFailed;
+        private DevExpress.XtraEditors.CheckEdit chkAutoStart;
+        private DevExpress.XtraLayout.LayoutControlItem lciSendMode;
+        private DevExpress.XtraLayout.LayoutControlItem lciScheduleTimes;
+        private DevExpress.XtraLayout.LayoutControlItem lciScheduleDays;
+        private DevExpress.XtraLayout.LayoutControlItem lciLookBackDays;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceLookBack;
+        private DevExpress.XtraLayout.LayoutControlItem lciResendFailed;
+        private DevExpress.XtraLayout.LayoutControlItem lciAutoStart;
     }
 }
