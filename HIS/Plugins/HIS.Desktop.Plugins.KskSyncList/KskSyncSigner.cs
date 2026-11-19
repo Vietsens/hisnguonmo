@@ -10,6 +10,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -149,6 +150,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                         + " da ky loi trong luot nay, cho luot dong bo sau.");
                     return null;
                 }
+                long concluderHsmType = GetConcluderHsmType();
                 CommonParam param = new CommonParam();
                 KskSignXmlBhytSDO sdo = new KskSignXmlBhytSDO();
                 sdo.XmlBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(xml));
@@ -157,7 +159,7 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 sdo.ConfigData = new EMR.SDO.XmlConfigDataSDO()
                 {
                     HsmSerialNumber = signer.PCA_SERIAL,       // serialNumber
-                    HsmType = setting.Id,                      // loại HSM (cấu hình viện)
+                    HsmType = concluderHsmType,                // hệ thống HSM bác sĩ ký trên EMR (EMR.HSM.INTEGRATE_OPTION)
                     HsmUserCode = signer.HSM_USER_CODE,        // tài khoản
                     Password = signer.PASSWORD,                // mật khẩu
                     SecretKey = signer.SECRET_KEY,             // khóa bí mật
@@ -165,8 +167,10 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 };
                 Inventec.Common.Logging.LogSystem.Info(string.Format(
                     "CKS_NGUOI_KET_LUAN: goi api/EmrSign/SignXmlBhyt ky ho bang phien cua nguoi ket luan {0}"
-                    + " (HsmType={1}; the CKS_BENH_VIEN ky bang {2}; xmlSha256={3}).",
-                    concluderLoginname, setting.Id, setting.IsHsm ? "HSM" : "USB token", ShortSha256(sdo.XmlBase64)));
+                    + " (HsmType nguoi ket luan={1}; HsmType cau hinh ky so vien={2}; the CKS_BENH_VIEN ky bang {3};"
+                    + " xmlSha256={4}).",
+                    concluderLoginname, concluderHsmType, setting.Id, setting.IsHsm ? "HSM" : "USB token",
+                    ShortSha256(sdo.XmlBase64)));
                 string signedBase64 = new BackendAdapter(param).Post<string>(
                     "api/EmrSign/SignXmlBhyt", ApiConsumers.EmrConsumer, sdo, SessionManager.ActionLostToken, param);
                 SessionManager.ProcessTokenLost(param);
@@ -197,6 +201,44 @@ namespace HIS.Desktop.Plugins.KskSyncList
                 MarkConcluderFailed(concluderLoginname, ex.Message);
                 return null;
             }
+        }
+
+        private const string EMR_HSM_INTEGRATE_OPTION_KEY = "EMR.HSM.INTEGRATE_OPTION";
+        private long? concluderHsmTypeCache;
+
+        /// <summary>
+        /// Hệ thống HSM để ký thẻ CKS_NGUOI_KET_LUAN = hệ thống bác sĩ đang ký văn bản trên EMR
+        /// (EMR_CONFIG EMR.HSM.INTEGRATE_OPTION), KHÔNG lấy setting.Id: setting.Id là hệ thống của chứng thư
+        /// viện dùng ký CKS_BENH_VIEN, có thể khác (vd viện ký VNPT, bác sĩ ký BKAV -> gửi nhầm VNPT là ký lỗi).
+        /// Không đọc được cấu hình EMR thì dùng setting.Id như cũ.
+        /// </summary>
+        private long GetConcluderHsmType()
+        {
+            if (this.concluderHsmTypeCache.HasValue) return this.concluderHsmTypeCache.Value;
+            long result = this.setting.Id;
+            try
+            {
+                var emrConfig = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<EMR.EFMODEL.DataModels.EMR_CONFIG>()
+                    .FirstOrDefault(o => o.KEY == EMR_HSM_INTEGRATE_OPTION_KEY);
+                string value = (emrConfig != null) ? (emrConfig.VALUE ?? emrConfig.DEFAULT_VALUE) : null;
+                long emrHsmType;
+                if (!string.IsNullOrWhiteSpace(value) && long.TryParse(value.Trim(), out emrHsmType) && emrHsmType > 0)
+                {
+                    result = emrHsmType;
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("CKS_NGUOI_KET_LUAN: khong doc duoc EMR_CONFIG "
+                        + EMR_HSM_INTEGRATE_OPTION_KEY + " (gia tri '" + value + "') -> dung HsmType cau hinh ky so vien = "
+                        + this.setting.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            this.concluderHsmTypeCache = result;
+            return result;
         }
 
         /// <summary>Lý do người kết luận đã ký lỗi trong lượt này (null nếu chưa lỗi).</summary>

@@ -1617,7 +1617,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     //Vien con lai: cot an mac dinh, nguoi dung tu keo ra tu bang chon cot.
                     if ((!((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1"))) && IsExistSplitReqBySampleType)
                     {
-                        grcSampleType.VisibleIndex = 21;
+                        //Mac dinh dat cot Loai mau XN ngay truoc cot Ghi chu (Ghi chu dich sang phai).
+                        grcSampleType.VisibleIndex = this.gridColumn_InstructionNote.VisibleIndex >= 0 ? this.gridColumn_InstructionNote.VisibleIndex : 7;
                     }
                     foreach (var item in serviceTypeIdSplitReq)
                     {
