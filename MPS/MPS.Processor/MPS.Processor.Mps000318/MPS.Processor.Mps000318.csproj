@@ -51,6 +51,18 @@
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient">
+      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter">
+      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.ApiConsumer">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ApiConsumer.dll</HintPath>
+    </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
