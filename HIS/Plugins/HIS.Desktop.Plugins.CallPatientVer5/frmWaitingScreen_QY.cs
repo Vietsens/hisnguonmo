@@ -614,6 +614,10 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
 
                 lblPatientName.Appearance.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeContentSTT, FontStyle.Bold);
                 lblUT.Appearance.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeContentSTT, FontStyle.Bold);
+                // Ô chứa lblUT thiết kế cao tối đa 42px → cỡ chữ lớn bị cắt dấu (VD "ƯU TIÊN" mất dấu mũ); đặt chiều cao ô theo cỡ chữ thực tế
+                int heightUT = TextRenderer.MeasureText("ẤỆ", lblUT.Appearance.Font).Height + 10;
+                layoutControlItem22.MinSize = new Size(10, heightUT);
+                layoutControlItem22.MaxSize = new Size(0, heightUT);
 
                 if (string.IsNullOrEmpty(_displayConfig.Content))
                     layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
