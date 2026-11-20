@@ -336,6 +336,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
             this.tc_NoteAdo.Name = "tc_NoteAdo";
             this.tc_NoteAdo.OptionsColumn.AllowEdit = false;
             this.tc_NoteAdo.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
+            this.tc_NoteAdo.Visible = true;
+            this.tc_NoteAdo.VisibleIndex = 4;
             this.tc_NoteAdo.Width = 136;
             // 
             // tc_RequestDepartmentName
@@ -347,7 +349,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
             this.tc_RequestDepartmentName.Name = "tc_RequestDepartmentName";
             this.tc_RequestDepartmentName.OptionsColumn.AllowEdit = false;
             this.tc_RequestDepartmentName.Visible = true;
-            this.tc_RequestDepartmentName.VisibleIndex = 4;
+            this.tc_RequestDepartmentName.VisibleIndex = 5;
             this.tc_RequestDepartmentName.Width = 342;
             // 
             // tc_TdlMedicineConcentra

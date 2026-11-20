@@ -144,6 +144,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
             }
         }
 
+        private const int SERVICE_NAME_MAX_WIDTH = 420;
+
         public void ReLoad(Action<ADO.SereServADO> editClick, List<SereServADO> SereServADOs, V_HIS_SPECIALIST_EXAM _RowCellClickBedRoom, Action<ADO.SereServADO> EditEnableButton_Click, Action<ADO.SereServADO> DeleteEnableButton_Click)
         {
             try
@@ -187,6 +189,9 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate
                 {
                     this.treeSereServ.BestFitColumns();
                     this.tc_ServiceCode.BestFit();
+                    // 57945: ten dich vu dai (BestFit gian het) day cot Thoi gian y lenh / Khoa yeu cau ra ngoai man hinh -> gioi han do rong cot ten
+                    if (this.tc_ServiceName.Width > SERVICE_NAME_MAX_WIDTH)
+                        this.tc_ServiceName.Width = SERVICE_NAME_MAX_WIDTH;
                     this.treeSereServ.OptionsView.ShowColumns = false;
                 }
                 catch (Exception ex)

@@ -404,7 +404,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         tabCDHA.PageVisible = true;
                         ucCDHA.tc_Number.Visible = false;
                         ucCDHA.tc_TdlMedicineConcentra.Visible = false;
-                        ucCDHA.tc_RequestDepartmentName.Visible = false;
                     }
                     // Tab Xét nghiệm: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 2
                     List<SereServADO> listXetNghiem = new List<SereServADO>();
@@ -414,7 +413,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         tabXetNghiem.PageVisible = true;
                         ucXetNghiem.tc_Number.Visible = false;
                         ucXetNghiem.tc_TdlMedicineConcentra.Visible = false;
-                        ucXetNghiem.tc_RequestDepartmentName.Visible = false;
                     }
                     ucXetNghiem.ReLoad(treeView_Click, listXetNghiem, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     // Tab thuốc/vt/máu: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 6,7, 14
@@ -437,7 +435,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         tabSieuAmNoiSoi.PageVisible = true;
                         ucSieuAm.tc_Number.Visible = false;
                         ucSieuAm.tc_TdlMedicineConcentra.Visible = false;
-                        ucSieuAm.tc_RequestDepartmentName.Visible = false;
                     }
                     ucSieuAm.ReLoad(treeView_Click, listSieuAm, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     //  Tab phẫn thuật thủ thật: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 11 ,4
@@ -449,7 +446,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         tabPhauThuatThuThuat.PageVisible = true;
                         ucPTTT.tc_Number.Visible = false;
                         ucPTTT.tc_TdlMedicineConcentra.Visible = false;
-                        ucPTTT.tc_RequestDepartmentName.Visible = false;
                     }
                     ucPTTT.ReLoad(treeView_Click, listPTTT, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                     //Tab giải phẫu bệnh: Dữ liệu lấy từ D_HIS_SERE_SERV_2 có TDL_SERVICE_TYPE_ID = 15
@@ -460,7 +456,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                         tabGiaiPhauBenh.PageVisible = true;
                         ucGPB.tc_Number.Visible = false;
                         ucGPB.tc_TdlMedicineConcentra.Visible = false;
-                        ucGPB.tc_RequestDepartmentName.Visible = false;
                     }
                     ucGPB.ReLoad(treeView_Click, listGPT, this.currentHisSpecialistExam, Edit_Click, Delete_Click);
                 }
