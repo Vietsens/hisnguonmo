@@ -147,6 +147,12 @@
   <data name="VuiLongChonHoSoCanLuuTru" xml:space="preserve">
     <value>သိမ်းဆည်းရန် မှတ်တမ်းကို ရွေးပါ။</value>
   </data>
+  <data name="VuiLongChonBenhAnCanIn" xml:space="preserve">
+    <value>Please select the medical records to print</value>
+  </data>
+  <data name="KhongCoBenhAnDeIn" xml:space="preserve">
+    <value>There are no medical records to print</value>
+  </data>
   <data name="XuatFileThanhCong" xml:space="preserve">
     <value>ဖိုင်တင်ပို့မှု အောင်မြင်သည်။</value>
   </data>

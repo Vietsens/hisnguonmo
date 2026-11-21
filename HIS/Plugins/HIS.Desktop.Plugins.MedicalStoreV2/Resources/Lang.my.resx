@@ -423,6 +423,18 @@
   <data name="UCMedicalStoreV2.btnImportStore.Text" xml:space="preserve">
     <value>စာရင်းတင်သွင်းခြင်း (Ctrl I)</value>
   </data>
+  <data name="UCMedicalStoreV2.btnPrintAll.Text" xml:space="preserve">
+    <value>Print all</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnPrintAll.ToolTip" xml:space="preserve">
+    <value>Print storage barcode for all medical records in the list</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnPrintSelected.Text" xml:space="preserve">
+    <value>Print selected</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnPrintSelected.ToolTip" xml:space="preserve">
+    <value>Print storage barcode for the checked medical records</value>
+  </data>
   <data name="UCMedicalStoreV2.btnSaveTreatment.Text" xml:space="preserve">
     <value>BA (Ctrl S) ကို ဖန်တီးပြီး သိမ်းဆည်းပါ</value>
   </data>

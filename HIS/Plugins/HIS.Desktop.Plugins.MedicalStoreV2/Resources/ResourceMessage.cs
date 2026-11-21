@@ -74,6 +74,40 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Resources
             }
         }
 
+        /// <summary>Vui lòng chọn bệnh án cần in</summary>
+        internal static string VuiLongChonBenhAnCanIn
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("VuiLongChonBenhAnCanIn", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
+        /// <summary>Không có bệnh án để in</summary>
+        internal static string KhongCoBenhAnDeIn
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("KhongCoBenhAnDeIn", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string TatCa
         {
             get
