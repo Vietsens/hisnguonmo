@@ -15,10 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+extern alias EmrLibrary;
+
 using EMR.EFMODEL.DataModels;
 using EMR.Filter;
 using EMR_MAIN;
 using EMR_MAIN.DATABASE.BenhAn;
+// Model này có trong cả hai DLL EMR; chọn định nghĩa từ thư viện dữ liệu dùng chung.
+using BenhAnNgoaiTru_HoTroSinhSan = EmrLibrary::EMR_MAIN.DATABASE.BenhAn.BenhAnNgoaiTru_HoTroSinhSan;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
@@ -293,6 +297,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 LogSystem.Debug("LoadDataEmr. 2.1.4.8");
 
                 _HanhChinhBenhNhan.HoTenDiaChiNguoiNha = _Patient.RELATIVE_NAME + " - " + _Patient.RELATIVE_ADDRESS;
+                _HanhChinhBenhNhan.QuanHeVoiNguoiNha = _Patient.RELATIVE_TYPE;
                 _HanhChinhBenhNhan.CMND = !String.IsNullOrEmpty(_Patient.CMND_NUMBER) ? _Patient.CMND_NUMBER : _Patient.CCCD_NUMBER;
                 _HanhChinhBenhNhan.NoiCap_CMND = !String.IsNullOrEmpty(_Patient.CMND_PLACE) ? _Patient.CMND_PLACE : _Patient.CCCD_PLACE;
                 _HanhChinhBenhNhan.NgayCap_CMND = _Patient.CMND_DATE != null ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(_Patient.CMND_DATE.Value) : _Patient.CCCD_DATE != null ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(_Patient.CCCD_DATE.Value) : null;
@@ -1096,12 +1101,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     BenhAnMatChanThuong benhAn = new BenhAnMatChanThuong();
                     Inventec.Common.Mapper.DataObjectMapper.Map<BenhAnMatChanThuong>(benhAn, _BenhAnCommonADO);
 
-                    var jObj = Newtonsoft.Json.Linq.JObject.FromObject(benhAn);
-
-                    jObj["XuatHuyet_MP"] = benhAn.XuatHuyet_MP ? 1 : 0;
-                    jObj["XuatHuyet_MT"] = benhAn.XuatHuyet_MT ? 1 : 0;
-
-                    json = jObj.ToString(Newtonsoft.Json.Formatting.None);
+                    json = Newtonsoft.Json.JsonConvert.SerializeObject(benhAn);
                 }
                 else if (_TYpe == LoaiBenhAnEMR.MatDayMat)
                 {
