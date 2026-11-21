@@ -45,6 +45,9 @@ namespace HIS.Desktop.Plugins.BedHistory.ADO
         // Nhac nhe vi sao khong dien san duoc giuong mac dinh. Chi de hien bieu tuong va chu giai
         // tren o giuong, KHONG duoc dung ErrorMessageBedId vi truong do lam dong bi bo tich va chan luu.
         public string HintMessageBedId { get; set; }
+        // Viec 63227: nguoi dung da chon "Co" o hop xac nhan doi sang giuong khac giuong duoc chi dinh gan nhat.
+        // Gui kem IsConfirmedChangeBed = 1 len api/HisBedLog/Create, Update de Backend ghi nhat ky.
+        public bool IsConfirmedChangeBed { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeFinishTime { get; set; }
         public string ErrorMessageFinishTime { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeStartTime { get; set; }

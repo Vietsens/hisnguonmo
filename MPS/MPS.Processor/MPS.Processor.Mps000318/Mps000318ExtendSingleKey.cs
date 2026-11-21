@@ -44,5 +44,7 @@ namespace MPS.Processor.Mps000318
         internal const string SERVICE_TYPE_AMOUNTs = "SERVICE_TYPE_AMOUNTs";
         /// <summary>So tien da thu tach theo tung loai dich vu - MOI loai co phat sinh, ke ca tien = 0</summary>
         internal const string SERVICE_TYPE_AMOUNT_ALLs = "SERVICE_TYPE_AMOUNT_ALLs";
+        /// <summary>Phong thuc hien cac dich vu kham duoc thanh toan trong giao dich, nhieu phong noi bang "; "</summary>
+        internal const string EXAM_ROOM_NAMEs = "EXAM_ROOM_NAMEs";
     }
 }

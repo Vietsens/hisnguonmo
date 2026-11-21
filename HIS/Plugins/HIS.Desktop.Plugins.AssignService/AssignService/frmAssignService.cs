@@ -9957,7 +9957,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             var lstPatientSelect = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
                             foreach (var item in lstPatientSelect)
                             {
-                                lst.Add(new HIS_TREATMENT() { TDL_TREATMENT_TYPE_ID = item.TDL_TREATMENT_TYPE_ID, TDL_PATIENT_NAME = item.TDL_PATIENT_NAME });
+                                //Viec 63227: gui kem ID ho so de cua so chon giuong tu dien giuong dang giu va khong tinh chinh nguoi benh
+                                lst.Add(new HIS_TREATMENT() { ID = item.TREATMENT_ID, TDL_TREATMENT_TYPE_ID = item.TDL_TREATMENT_TYPE_ID, TDL_PATIENT_NAME = item.TDL_PATIENT_NAME });
                             }
                         }
                         else

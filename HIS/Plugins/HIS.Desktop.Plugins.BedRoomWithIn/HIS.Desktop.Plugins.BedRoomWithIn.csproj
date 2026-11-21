@@ -167,6 +167,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HeldBedProcessor.cs" />
     <Compile Include="ADO\HisBedADO.cs" />
     <Compile Include="ADO\HisBedRoomV1.cs" />
     <Compile Include="ADO\ServicePatyConditionADO.cs" />

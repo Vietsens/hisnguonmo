@@ -2138,6 +2138,23 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         rs = new BackendAdapter(param).Post<HisServiceReqListResultSDO>(RequestUriStore.HIS_SERVICE_REQ__ASSIGN_SERVICE, ApiConsumers.MosConsumer, serviceReqSDO, ProcessLostToken, param);
                     }
                 }
+
+                //Viec 63227: khoa 01412 bat ma chon giuong khac giuong duoc chi dinh gan nhat thi Backend giu lai y lenh
+                //va hoi xac nhan chuyen giuong. Dong y thi gui lai dung y lenh do kem co xac nhan, giu nguyen co xac nhan
+                //cua canh bao QT16 o tren (Backend kiem tra QT16 truoc).
+                if (rs == null && ChangeBedWarning.IsNeedConfirm(param))
+                {
+                    string prefix = IsPatientSelect && !String.IsNullOrWhiteSpace(patientName) ? ("Bệnh nhân " + patientName + (!String.IsNullOrWhiteSpace(treatmentCode) ? " (" + treatmentCode + ")" : "") + ": ") : null;
+                    WaitingManager.Hide();
+                    bool isConfirmedChangeBed = ChangeBedWarning.Confirm(param, prefix);
+                    WaitingManager.Show();
+                    if (isConfirmedChangeBed)
+                    {
+                        ChangeBedWarning.SetConfirmed(serviceReqSDO);
+                        //Dung lai param da duoc xoa cau canh bao, de thong bao cua lan gui lai van hien duoc
+                        rs = new BackendAdapter(param).Post<HisServiceReqListResultSDO>(RequestUriStore.HIS_SERVICE_REQ__ASSIGN_SERVICE, ApiConsumers.MosConsumer, serviceReqSDO, ProcessLostToken, param);
+                    }
+                }
                 Inventec.Common.Logging.LogSystem.Info("this.serviceReqComboResultSDO: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
 
                 if (rs != null)

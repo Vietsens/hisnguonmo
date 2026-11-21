@@ -7210,6 +7210,22 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 Inventec.Common.Logging.LogSystem.Debug("Luu chi dinh____Du lieu dau vao____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqSDO), serviceReqSDO));
                 //Gọi api chỉ định dv
                 var rs = new BackendAdapter(param).Post<HisServiceReqListResultSDO>("api/HisServiceReq/AssignServiceByInstructionTimes", ApiConsumers.MosConsumer, serviceReqSDO, ProcessLostToken, param);
+
+                //Viec 63227: khoa 01412 bat ma chon giuong khac giuong duoc chi dinh gan nhat thi Backend giu lai y lenh
+                //va hoi xac nhan chuyen giuong. Dong y thi gui lai dung y lenh do kem co xac nhan.
+                if (rs == null && ChangeBedWarning.IsNeedConfirm(param))
+                {
+                    string prefix = !String.IsNullOrWhiteSpace(patientName) ? ("Bệnh nhân " + patientName + (!String.IsNullOrWhiteSpace(treatmentCode) ? " (" + treatmentCode + ")" : "") + ": ") : null;
+                    WaitingManager.Hide();
+                    bool isConfirmedChangeBed = ChangeBedWarning.Confirm(param, prefix);
+                    WaitingManager.Show();
+                    if (isConfirmedChangeBed)
+                    {
+                        ChangeBedWarning.SetConfirmed(serviceReqSDO);
+                        //Dung lai param da duoc xoa cau canh bao, de thong bao cua lan gui lai van hien duoc
+                        rs = new BackendAdapter(param).Post<HisServiceReqListResultSDO>("api/HisServiceReq/AssignServiceByInstructionTimes", ApiConsumers.MosConsumer, serviceReqSDO, ProcessLostToken, param);
+                    }
+                }
                 Inventec.Common.Logging.LogSystem.Info("this.serviceReqComboResultSDO: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
 
                 if (rs != null)
@@ -9642,7 +9658,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                 // Đếm số lần mỗi bed đang được chọn tạm thời trong form (ngoại trừ dòng hiện tại)
                 var pendingBedCounts = new Dictionary<long, int>();
-                if (this.DataGridAdo != null && this.DataGridAdo.Count > 0)
+                //Viec 63227: khoa 01412 = 2 khong dem cac dong khac trong form. Cac dong deu cua ho so dang chi dinh,
+                //Backend khong tinh nguoi benh voi chinh minh; dem vao thi giuong 1 nguoi bi chan o dong thu hai.
+                if (this.DataGridAdo != null && this.DataGridAdo.Count > 0 && !HeldBedProcessor.IsHoldBedOn)
                 {
                     foreach (var row in this.DataGridAdo)
                     {
@@ -9659,6 +9677,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     }
                 }
 
+                //Viec 63227: khoa 01412 = 2, chi dinh nhieu nguoi benh cung luc (mo tu Buong benh) thi moi nguoi benh deu duoc gui
+                //cung giuong: cong them so nguoi benh con lai de giuong khong du cho tat ca bi chan ngay khi chon (Backend chan tung
+                //nguoi benh vuot so toi da nen chi luu duoc mot phan); so nguoi nam ghep (so dang nam + 1) cung tinh ca ho.
+                int otherAssigningPatients = HeldBedProcessor.IsHoldBedOn ? Math.Max(0, this.GetAssigningPatientCount() - 1) : 0;
+
                 // Re-calc AMOUNT_STR from server-used (AMOUNT) + pending to avoid cumulative inflation
                 foreach (var bed in bedList)
                 {
@@ -9666,11 +9689,13 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     int pendingCount = 0;
                     pendingBedCounts.TryGetValue(bed.ID, out pendingCount);
 
-                    int totalCapacity = (int)(bed.MAX_CAPACITY ?? 0);
-                    int newUsed = usedFromServer + Math.Max(0, pendingCount);
+                    //Viec 63227: khoa 01412 = 2 thi giuong chua khai bao so nguoi nam toi da coi la 1 nguoi, giong Backend
+                    long? capacityValue = HeldBedProcessor.GetCapacity(bed.MAX_CAPACITY);
+                    int totalCapacity = (int)(capacityValue ?? 0);
+                    int newUsed = usedFromServer + Math.Max(0, pendingCount) + otherAssigningPatients;
 
                     // Keep existing style: when MAX_CAPACITY is null, show "X/" (not "X/0")
-                    string capacityDisplay = bed.MAX_CAPACITY.HasValue ? bed.MAX_CAPACITY.Value.ToString() : "";
+                    string capacityDisplay = capacityValue.HasValue ? capacityValue.Value.ToString() : "";
                     bed.AMOUNT_STR = newUsed + "/" + capacityDisplay;
 
                     if (totalCapacity > 0 && newUsed >= totalCapacity)

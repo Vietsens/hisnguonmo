@@ -57,6 +57,7 @@ namespace MPS.Processor.Mps000318
                 SetBarcodeKey();
                 SetQrCodeKey();
                 SetServiceTypeAmountKey();
+                SetExamRoomKey();
 
                 //ghi đè PrintLogData và UniqueCodeData
                 ProcessPrintLogData();
@@ -279,6 +280,57 @@ namespace MPS.Processor.Mps000318
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Key phong kham: phong thuc hien cac dich vu KHAM duoc thanh toan trong giao dich nay.
+        /// Nguon: HIS_SERE_SERV_BILL (BILL_ID = giao dich, TDL_SERVICE_TYPE_ID = loai Kham) -> V_HIS_SERE_SERV.EXECUTE_ROOM_NAME.
+        /// Nhieu phong -> noi bang "; " theo thu tu xuat hien, khong trung.
+        /// Luon set key (khong co du lieu -> chuoi rong) de o tren bieu mau de trong, khong hien ten key.
+        /// </summary>
+        void SetExamRoomKey()
+        {
+            List<string> roomNames = new List<string>();
+            try
+            {
+                if (rdo._Transaction != null && rdo._Transaction.ID > 0)
+                {
+                    var examType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_TYPE>()
+                        .FirstOrDefault(o => o != null && o.SERVICE_TYPE_CODE != null && o.SERVICE_TYPE_CODE.Trim().ToUpper() == "KH");
+                    if (examType != null)
+                    {
+                        CommonParam param = new CommonParam();
+                        MOS.Filter.HisSereServBillFilter ssBillFilter = new MOS.Filter.HisSereServBillFilter();
+                        ssBillFilter.BILL_ID = rdo._Transaction.ID;
+                        var ssBills = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_SERE_SERV_BILL>>("api/HisSereServBill/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, ssBillFilter, param);
+
+                        List<long> sereServIds = ssBills != null
+                            ? ssBills.Where(o => o.TDL_SERVICE_TYPE_ID == examType.ID).Select(o => o.SERE_SERV_ID).Distinct().ToList()
+                            : new List<long>();
+
+                        //Chia lo 100 ID: URL qua dai -> BackendAdapter tra null im lang
+                        List<V_HIS_SERE_SERV> sereServs = new List<V_HIS_SERE_SERV>();
+                        for (int skip = 0; skip < sereServIds.Count; skip += 100)
+                        {
+                            MOS.Filter.HisSereServViewFilter ssFilter = new MOS.Filter.HisSereServViewFilter();
+                            ssFilter.IDs = sereServIds.Skip(skip).Take(100).ToList();
+                            var batch = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_SERE_SERV>>("api/HisSereServ/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, ssFilter, param);
+                            if (batch != null) sereServs.AddRange(batch);
+                        }
+
+                        foreach (var ss in sereServs.OrderBy(o => o.TDL_INTRUCTION_TIME).ThenBy(o => o.ID))
+                        {
+                            if (!String.IsNullOrWhiteSpace(ss.EXECUTE_ROOM_NAME) && !roomNames.Contains(ss.EXECUTE_ROOM_NAME))
+                                roomNames.Add(ss.EXECUTE_ROOM_NAME);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            SetSingleKey(new KeyValue(Mps000318ExtendSingleKey.EXAM_ROOM_NAMEs, String.Join("; ", roomNames)));
         }
 
         /// <summary>

@@ -69,11 +69,42 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
             this.ListTreatment = treatment;
         }
 
+        //Viec 63227 (khoa 01412 = 2):
+        //- useHeldBedDeferredReload, bedListStale: doi gio nam giuong thi chi danh dau danh sach giuong da cu, nap lai khi roi o
+        //  gio hoac khi bam Luu. Khong nap trong luc dang go (khong bo dem): doc DateEdit.DateTime luc dang go se chot nua chung
+        //  phan dang go (go gio "1", dung, go "4" ra 04 thay vi 14).
+        //- isCheckingBed: dang kiem giuong da chon (co the dang hien hop hoi modal)
+        //- bedLogLoadFailCount, lastBedListLoadFailed: lan nap danh sach giuong co tra cuu loi thi so nguoi dang nam khong tin duoc
+        //- checkedBed*: giuong dang chon, so nguoi dang nam va khoang nam giuong luc vua kiem (chon giuong, dien san), de nut Luu
+        //  kiem lai khi khoang da doi
+        private bool useHeldBedDeferredReload;
+        private bool bedListStale;
+        private bool isCheckingBed;
+        private int bedLogLoadFailCount;
+        private bool lastBedListLoadFailed;
+        private long checkedBedId;
+        private long checkedBedAmount;
+        private long checkedBedIsKey;
+        private string checkedBedWindow;
+
         private void FormBedInfo_Load(object sender, EventArgs e)
         {
             try
             {
                 LoadDefaultValue();
+
+                //Viec 63227: khoa 01412 = 2 thi nguoi dang giu giuong co duoc tinh hay khong phu thuoc gio ket thuc nam giuong,
+                //doi gio ket thuc phai tinh lai danh sach giuong. Gan sau LoadDefaultValue de khong nap hai lan khi mo form.
+                //Doi gio chi danh dau danh sach giuong da cu; nap lai khi roi o gio (Enter sang o ma giuong, bam chon giuong) hoac khi
+                //bam Luu. Khong nap trong luc dang go (khong dung bo dem, khong dung che do Buffered cua DevExpress): doc gio luc dang
+                //go se chot nua chung phan dang go (go "1", dung, go "9" ra ngay 09 thay vi 19).
+                if (HeldBedProcessor.IsHoldBedOn)
+                {
+                    this.useHeldBedDeferredReload = true;
+                    this.dtBedFinishTime.EditValueChanged += this.dtBedFinishTime_EditValueChanged;
+                    this.dtBedStartTime.Leave += this.dtBedTime_LeaveHeldBed;
+                    this.dtBedFinishTime.Leave += this.dtBedTime_LeaveHeldBed;
+                }
 
                 ValidateControl();
                 SetCaptionByLanguageKeyNew();
@@ -171,6 +202,91 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
             }
         }
 
+        /// <summary>
+        /// Cac ho so dang chi dinh, dung de khong tinh chinh cac nguoi benh nay la nguoi dang giu giuong (viec 63227)
+        /// </summary>
+        private List<long> GetAssigningTreatmentIds()
+        {
+            List<long> ids = new List<long>();
+            try
+            {
+                if (this.ListTreatment != null)
+                {
+                    foreach (var item in this.ListTreatment)
+                    {
+                        if (item != null && item.ID > 0 && !ids.Contains(item.ID))
+                            ids.Add(item.ID);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return ids;
+        }
+
+        /// <summary>
+        /// Gio ket thuc nam giuong dang nhap (rong = khong gioi han)
+        /// </summary>
+        private long? GetFinishTimeFilter()
+        {
+            if (dtBedFinishTime.EditValue != null && dtBedFinishTime.DateTime != DateTime.MinValue)
+            {
+                return Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBedFinishTime.DateTime);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Viec 63227 (khoa 01412 = 1 hoac 2): dien san giuong nguoi benh dang giu (giuong duoc chi dinh gan nhat trong
+        /// buong dang nam, chua chuyen khoa, chua ra vien) khi dong dich vu giuong chua co giuong.
+        /// Chi dien khi chi dinh cho 1 nguoi benh, giuong co trong danh sach chon duoc va khong co nguoi benh khac dang
+        /// nam (truong hop nam ghep phai chon qua danh sach de hoi va tinh so nguoi nam ghep).
+        /// Goi trong luc isInit = true nen khong hien cac hop hoi cua viec chon giuong.
+        /// </summary>
+        private void FillDefaultBedByHeld()
+        {
+            try
+            {
+                if (!HeldBedProcessor.IsDefaultBedByLastAssignedOn)
+                    return;
+                if (this.ListTreatment == null || this.ListTreatment.Count != 1 || this.ListTreatment[0] == null)
+                    return;
+                if (this.dataBedADOs == null || this.dataBedADOs.Count == 0)
+                    return;
+
+                List<MOS.SDO.HisBedHeldSDO> helds = HeldBedProcessor.TakeBedsHeld(null, new List<long> { this.ListTreatment[0].ID });
+                if (helds == null || helds.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("FillDefaultBedByHeld => nguoi benh chua giu giuong nao, de trong giuong.");
+                    return;
+                }
+
+                foreach (var held in helds.OrderByDescending(o => o.StartTime))
+                {
+                    var bed = this.dataBedADOs.FirstOrDefault(o => o.ID == held.BedId);
+                    if (bed == null)
+                        continue;
+
+                    long otherCount = bed.TREATMENT_BED_ROOM_IDs != null ? bed.TREATMENT_BED_ROOM_IDs.Where(o => o != held.TreatmentBedRoomId).Distinct().LongCount() : 0;
+                    if (otherCount > 0)
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("FillDefaultBedByHeld => giuong dang giu co nguoi benh khac nam, de trong giuong. " + Inventec.Common.Logging.LogUtil.TraceData("BedId", bed.ID));
+                        return;
+                    }
+
+                    this.cboBed.EditValue = bed.ID;
+                    return;
+                }
+                Inventec.Common.Logging.LogSystem.Info("FillDefaultBedByHeld => giuong dang giu khong co trong danh sach chon duoc, de trong giuong.");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private List<HisBedADO> ProcessDataBedAdo(List<V_HIS_BED> datas)
         {
             List<HisBedADO> result = null;
@@ -204,6 +320,17 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
                         }
                         CommonParam param = new CommonParam();
                         var dataBedLogs = new BackendAdapter(param).Get<List<HIS_BED_LOG>>("api/HisBedLog/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                        //Viec 63227: ghi nhan doc ban ghi nam giuong loi (so nguoi dang nam khong tin duoc)
+                        if (dataBedLogs == null)
+                            this.bedLogLoadFailCount++;
+
+                        //Viec 63227: khoa 01412 = 2 thi tinh ca nguoi dang giu giuong (chua roi buong, chua chuyen khoa,
+                        //chua ra vien) ke ca khi chua ke giuong cho ngay tiep theo. Khong tinh cac nguoi benh dang chi dinh.
+                        if (HeldBedProcessor.IsHoldBedOn)
+                        {
+                            dataBedLogs = HeldBedProcessor.AppendHeldBedLogs(dataBedLogs, listIds, this.GetAssigningTreatmentIds(), timeFilter, this.GetFinishTimeFilter());
+                        }
+
                         if (dataBedLogs != null && dataBedLogs.Count > 0)
                         {
                             foreach (var itemADO in result)
@@ -212,9 +339,11 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
 
                                 if (dataByBedLogs != null && dataByBedLogs.Count > 0)
                                 {
-                                    if (itemADO.MAX_CAPACITY.HasValue)
+                                    //Khoa 01412 = 2: giuong chua khai bao so nguoi nam toi da coi la 1 nguoi, giong Backend
+                                    long? capacity = HeldBedProcessor.GetCapacity(itemADO.MAX_CAPACITY);
+                                    if (capacity.HasValue)
                                     {
-                                        if (dataByBedLogs.Count >= itemADO.MAX_CAPACITY)
+                                        if (dataByBedLogs.Count >= capacity)
                                             itemADO.IsKey = 2;
                                         else
                                             itemADO.IsKey = 1;
@@ -223,7 +352,7 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
                                         itemADO.IsKey = 1;
 
                                     itemADO.AMOUNT = dataByBedLogs.Count;
-                                    itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + itemADO.MAX_CAPACITY;
+                                    itemADO.AMOUNT_STR = dataByBedLogs.Count + "/" + capacity;
                                     itemADO.TREATMENT_BED_ROOM_IDs = dataByBedLogs.Select(o => o.TREATMENT_BED_ROOM_ID).ToList();
                                 }
                             }
@@ -250,6 +379,11 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
                 this.dtBedStartTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.sereServADO.BedStartTime ?? this.IntructionTime);
                 this.spShareCount.EditValue = this.sereServADO.ShareCount;
                 this.cboBed.EditValue = this.sereServADO.BedId;
+                //Viec 63227: dong dich vu giuong chua co giuong thi dien san giuong nguoi benh dang giu
+                if (this.sereServADO.BedId == null || this.sereServADO.BedId <= 0)
+                {
+                    this.FillDefaultBedByHeld();
+                }
                 this.isInit = false;
             }
             catch (Exception ex)
@@ -260,6 +394,10 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
 
         private void cboBed_EditValueChanged(object sender, EventArgs e)
         {
+            //Viec 63227 (khoa 01412 = 2): danh dau dang kiem giuong de bo dem doi gio khong nap chen vao luc dang hien hop hoi
+            bool wasCheckingBed = this.isCheckingBed;
+            if (this.useHeldBedDeferredReload)
+                this.isCheckingBed = true;
             try
             {
                 this.txtBedCode.Text = "";
@@ -275,7 +413,13 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
                         if (!this.isInit)
                         {
                             var treatmentTYpe = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().Where(o => ListTreatment.Select(p => p.TDL_TREATMENT_TYPE_ID).ToList().Exists(p => p == o.ID)).ToList();
-                            if (row.IsKey == 1 || (row.IsKey == 0 && !(ListTreatment.Count + row.AMOUNT > row.MAX_CAPACITY)))
+                            //Viec 63227: khoa 01412 = 2 thi giuong chua khai bao so nguoi nam toi da coi la 1 nguoi (chi dinh nhieu
+                            //nguoi benh cung luc cung phai bi chan nhu Backend). Khoa khac 2 thi bang MAX_CAPACITY nhu cu.
+                            long? groupCapacity = HeldBedProcessor.GetCapacity(row.MAX_CAPACITY);
+                            //Viec 63227: khoa 01412 = 2 thi giuong dang co nguoi nam (IsKey 1) cung phai du cho moi nguoi benh dang chi dinh
+                            //(nhanh else if ben duoi bao giuong da vuot qua suc chua)
+                            bool isGroupOverCapacity = HeldBedProcessor.IsHoldBedOn && row.IsKey == 1 && ListTreatment.Count + row.AMOUNT > groupCapacity;
+                            if ((row.IsKey == 1 && !isGroupOverCapacity) || (row.IsKey == 0 && !(ListTreatment.Count + row.AMOUNT > groupCapacity)))
                             {
                                 if (treatmentTYpe != null)
                                 {
@@ -305,11 +449,17 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
                                             return;
                                         }
 
-                                        this.spShareCount.Value = row.AMOUNT + 1;
+                                        //Viec 63227: khoa 01412 = 2 thi tinh ca moi nguoi benh dang chi dinh cung giuong
+                                        this.spShareCount.Value = row.AMOUNT + (HeldBedProcessor.IsHoldBedOn ? Math.Max(1, ListTreatment.Count) : 1);
+                                    }
+                                    else if (HeldBedProcessor.IsHoldBedOn && ListTreatment.Count > 1)
+                                    {
+                                        //Viec 63227: khoa 01412 = 2, giuong trong ma chi dinh nhieu nguoi benh cung giuong thi cac nguoi benh nay nam ghep
+                                        this.spShareCount.Value = row.AMOUNT + ListTreatment.Count;
                                     }
                                 }
                             }
-                            else if (row.IsKey == 2 || (ListTreatment.Count + row.AMOUNT > row.MAX_CAPACITY))
+                            else if (row.IsKey == 2 || (ListTreatment.Count + row.AMOUNT > groupCapacity))
                             {
                                 DevExpress.XtraEditors.XtraMessageBox.Show(Resources.ResourceMessage.GiuongDaVuotQuaSucChua, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                                 cboBed.EditValue = null;
@@ -322,6 +472,13 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                //Viec 63227: ghi nhan giuong vua kiem (chon giuong, dien san) de nut Luu biet khoang nam giuong da doi hay chua
+                if (HeldBedProcessor.IsHoldBedOn)
+                    this.SnapshotCheckedBed();
+                this.isCheckingBed = wasCheckingBed;
             }
         }
 
@@ -441,6 +598,19 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
             try
             {
                 this.positionHandleControl = -1;
+                //Viec 63227 (khoa 01412 = 2): nap lai danh sach giuong neu da cu, roi kiem lai giuong da chon neu khoang nam giuong
+                //da doi tu luc chon giuong (co the hoi nam ghep, hoi giam so nguoi nam ghep, hoac bao giuong da du nguoi va bo chon)
+                if (this.useHeldBedDeferredReload)
+                {
+                    //Doc khoang truoc: chot phan sua con treo cua o ngay (vd cuon chuot khi o khong co focus) de danh dau danh sach da cu
+                    this.GetBedWindowKey();
+                    if (this.bedListStale)
+                    {
+                        this.bedListStale = false;
+                        this.ReloadBedList();
+                    }
+                    this.RecheckSelectedBedBeforeSave();
+                }
                 if (!dxValidationProvider1.Validate())
                 {
                     return;
@@ -511,11 +681,143 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
         {
             try
             {
-                InitCboBed();
+                //Viec 63227: khoa 01412 = 2 (sau khi mo form) thi chi danh dau danh sach giuong da cu; con lai nap ngay nhu cu
+                if (this.useHeldBedDeferredReload)
+                    this.bedListStale = true;
+                else
+                    InitCboBed();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void dtBedFinishTime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                //Viec 63227 (khoa 01412 = 2): chi danh dau danh sach giuong da cu, nap lai khi roi o gio hoac khi bam Luu
+                this.bedListStale = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 63227 (khoa 01412 = 2): roi o gio ma danh sach giuong da cu thi nap lai (chi nap danh sach, khong hoi). Luc nay o
+        /// ngay da chot phan dang go (MaskBox chot truoc khi DateEdit.Leave chay) nen doc gio khong lam sai gio vua nhap.
+        /// </summary>
+        private void dtBedTime_LeaveHeldBed(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.bedListStale && !this.isCheckingBed)
+                {
+                    this.bedListStale = false;
+                    this.ReloadBedList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 63227: nap lai danh sach giuong va ghi nhan lan nap co tra cuu loi khong (doc ban ghi nam giuong, nguoi dang
+        /// giu giuong, ho so cua chinh nguoi benh). Tra cuu loi thi so nguoi dang nam co the thieu hoac thua.
+        /// </summary>
+        private void ReloadBedList()
+        {
+            int heldFailBefore = HeldBedProcessor.HeldLookupFailCount;
+            int bedLogFailBefore = this.bedLogLoadFailCount;
+            InitCboBed();
+            this.lastBedListLoadFailed = HeldBedProcessor.HeldLookupFailCount != heldFailBefore || this.bedLogLoadFailCount != bedLogFailBefore;
+        }
+
+        /// <summary>
+        /// Khoang nam giuong dang nhap (gio bat dau|gio ket thuc)
+        /// </summary>
+        private string GetBedWindowKey()
+        {
+            string start = this.dtBedStartTime.EditValue != null && this.dtBedStartTime.DateTime != DateTime.MinValue ? this.dtBedStartTime.DateTime.ToString("yyyyMMddHHmmss") : "";
+            string finish = this.dtBedFinishTime.EditValue != null && this.dtBedFinishTime.DateTime != DateTime.MinValue ? this.dtBedFinishTime.DateTime.ToString("yyyyMMddHHmmss") : "";
+            return start + "|" + finish;
+        }
+
+        /// <summary>
+        /// Viec 63227 (khoa 01412 = 2): ghi nhan giuong dang chon, so nguoi dang nam va khoang nam giuong luc vua kiem
+        /// </summary>
+        private void SnapshotCheckedBed()
+        {
+            try
+            {
+                //Doc khoang truoc: chot phan sua con treo cua o ngay; neu vi vay danh sach giuong thanh cu thi khong ghi khoang de nut
+                //Luu nap lai va kiem lai
+                string window = this.GetBedWindowKey();
+                long bedId = this.cboBed.EditValue != null ? Inventec.Common.TypeConvert.Parse.ToInt64(this.cboBed.EditValue.ToString()) : 0;
+                HisBedADO row = bedId > 0 && this.dataBedADOs != null ? this.dataBedADOs.FirstOrDefault(o => o.ID == bedId) : null;
+                this.checkedBedId = row != null ? row.ID : 0;
+                this.checkedBedAmount = row != null ? row.AMOUNT : 0;
+                this.checkedBedIsKey = row != null ? row.IsKey : 0;
+                this.checkedBedWindow = this.bedListStale ? null : window;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Viec 63227 (khoa 01412 = 2), truoc khi luu: khoang nam giuong da doi tu luc chon giuong thi kiem lai giuong dang chon
+        /// theo danh sach giuong moi nhat. Day hon (them nguoi nam hoac thanh du nguoi) thi kiem nhu luc chon giuong: bao giuong
+        /// da du nguoi va bo chon, hoac hoi nam ghep va tinh lai so nguoi nam ghep. It nguoi hon thi giu giuong va hoi truoc khi
+        /// giam so nguoi nam ghep (anh huong tien giuong; Backend nuot loi doc DB thanh danh sach rong nen may tram khong phan
+        /// biet duoc voi "khong co ai nam"). Lan nap co tra cuu loi, hoac gio ket thuc khong sau gio bat dau, thi giu nguyen.
+        /// </summary>
+        private void RecheckSelectedBedBeforeSave()
+        {
+            long bedId = this.cboBed.EditValue != null ? Inventec.Common.TypeConvert.Parse.ToInt64(this.cboBed.EditValue.ToString()) : 0;
+            if (bedId <= 0 || this.lastBedListLoadFailed)
+                return;
+            //Thieu gio hoac gio ket thuc khong sau gio bat dau: chua kiem lai, kiem tra cua nut Luu se bao truoc
+            if (this.dtBedStartTime.EditValue == null || this.dtBedStartTime.DateTime == DateTime.MinValue
+                || this.dtBedFinishTime.EditValue == null || this.dtBedFinishTime.DateTime == DateTime.MinValue
+                || this.dtBedFinishTime.DateTime <= this.dtBedStartTime.DateTime)
+                return;
+            if (this.checkedBedId == bedId && this.checkedBedWindow == this.GetBedWindowKey())
+                return;
+            HisBedADO now = this.dataBedADOs != null ? this.dataBedADOs.FirstOrDefault(o => o.ID == bedId) : null;
+            if (now == null)
+                return;
+            if (this.checkedBedId != bedId || now.AMOUNT > this.checkedBedAmount || now.IsKey > this.checkedBedIsKey)
+            {
+                this.cboBed_EditValueChanged(this.cboBed, EventArgs.Empty);
+            }
+            else if (now.AMOUNT < this.checkedBedAmount && this.spShareCount.EditValue != null)
+            {
+                int assigningCount = this.ListTreatment != null ? Math.Max(1, this.ListTreatment.Count) : 1;
+                long shareCount = now.AMOUNT + assigningCount;
+                long currentShareCount = (long)this.spShareCount.Value;
+                if ((shareCount > 1 && shareCount == currentShareCount) || (shareCount <= 1 && currentShareCount <= 1))
+                {
+                    //So nguoi nam ghep khong doi: khong hoi
+                    this.SnapshotCheckedBed();
+                    return;
+                }
+                string newShareText = shareCount > 1 ? shareCount.ToString() : "không nằm ghép";
+                string message = string.Format("Khoảng nằm giường đã đổi: giường {0} còn {1} người bệnh khác nằm cùng. Cập nhật số người nằm ghép từ {2} thành {3}?", now.BED_NAME, now.AMOUNT, this.spShareCount.Value, newShareText);
+                if (DevExpress.XtraEditors.XtraMessageBox.Show(message, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    if (shareCount > 1)
+                        this.spShareCount.Value = shareCount;
+                    else
+                        this.spShareCount.EditValue = null;
+                }
+                this.SnapshotCheckedBed();
             }
         }
 	}
