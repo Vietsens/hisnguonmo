@@ -348,6 +348,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.actionType = GlobalVariables.ActionAdd;
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.AssignService.Resources.Lang", typeof(HIS.Desktop.Plugins.AssignService.AssignService.frmAssignService).Assembly);
                 HisConfigCFG.LoadConfig();
+                //Cot Loai mau XN an mac dinh truoc khi ApplyRestoreLayout khoi phuc bo cuc da ghim (luc nay chua gan su kien tu luu layout).
+                this.grcSampleType.VisibleIndex = -1;
 
                 this.currentModule = module;
                 this.InitUC();
