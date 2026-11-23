@@ -707,12 +707,15 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.isNotLoadWhileChangeControlStateInFirst = true;
                 bool isChecked = Key.HisConfigCFG.GhiToDieuTriKhiDuyetHoiChan;
                 bool isHideWriteTracking = Key.HisConfigCFG.IsHideWriteTracking;
+                //WriteTrackingOption = 3: an o tich, luon hien va gui Dien bien, PP xu ly (MOS chi luu tren phieu, khong ghi to dieu tri)
+                bool isContentExamOnly = Key.HisConfigCFG.IsContentExamOnly;
                 try
                 {
                     this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
                     this.currentControlStateRDO = this.controlStateWorker.GetData(MODULE_LINK__CONTROL_STATE);
                     //WriteTrackingOption = 2: bo qua lua chon da luu tren may tram, luon khong ghi to dieu tri
-                    if (!isHideWriteTracking && this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    //WriteTrackingOption = 3: bo qua lua chon da luu tren may tram, luon hien 2 o
+                    if (!isHideWriteTracking && !isContentExamOnly && this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
                     {
                         var state = this.currentControlStateRDO.FirstOrDefault(o => o.KEY == CONTROL_STATE_KEY__TAO_TO_DIEU_TRI);
                         if (state != null)
@@ -723,8 +726,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 {
                     Inventec.Common.Logging.LogSystem.Error(ex);
                 }
-                this.chkTaoToDieuTri.Checked = isChecked && !isHideWriteTracking;
-                this.layoutControlItemTaoToDieuTri.Visibility = isHideWriteTracking
+                this.chkTaoToDieuTri.Checked = isContentExamOnly || (isChecked && !isHideWriteTracking);
+                this.layoutControlItemTaoToDieuTri.Visibility = (isHideWriteTracking || isContentExamOnly)
                     ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
                     : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
             }
