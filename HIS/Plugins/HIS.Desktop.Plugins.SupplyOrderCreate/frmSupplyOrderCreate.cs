@@ -30,6 +30,7 @@ namespace HIS.Desktop.Plugins.SupplyOrderCreate
         private List<V_HIS_SUPPLY_ORDER> drafts = new List<V_HIS_SUPPLY_ORDER>();
         private List<V_HIS_MEDI_STOCK> supplyStocks = new List<V_HIS_MEDI_STOCK>();
         private Dictionary<string, ItemTypeADO> dicItemType = new Dictionary<string, ItemTypeADO>();
+        private List<ItemTypeADO> allItems = new List<ItemTypeADO>();
         private List<HIS_SUPPLIER> suppliers = new List<HIS_SUPPLIER>();
         private V_HIS_SUPPLY_ORDER viewOrder;
         private object lastStockValue;
@@ -85,6 +86,15 @@ namespace HIS.Desktop.Plugins.SupplyOrderCreate
                 else
                 {
                     long? stockId = this.openOrder != null ? (long?)this.openOrder.MEDI_STOCK_ID : this.initMediStockId;
+                    if (!stockId.HasValue && this.moduleData != null)
+                    {
+                        // Mac dinh kho dang lam viec (L1)
+                        V_HIS_MEDI_STOCK workingStock = this.supplyStocks.FirstOrDefault(o => o.ROOM_ID == this.moduleData.RoomId);
+                        if (workingStock != null)
+                        {
+                            stockId = workingStock.ID;
+                        }
+                    }
                     if (!stockId.HasValue && this.supplyStocks.Count == 1)
                     {
                         stockId = this.supplyStocks[0].ID;
@@ -362,6 +372,9 @@ namespace HIS.Desktop.Plugins.SupplyOrderCreate
                     ado.IMP_UNIT_CONVERT_RATIO = o.IMP_UNIT_CONVERT_RATIO;
                     ado.PACKING = !String.IsNullOrWhiteSpace(o.PACKING_TYPE_NAME) ? o.PACKING_TYPE_NAME : o.CONCENTRA;
                     ado.KIND_NAME = o.IS_CHEMICAL_SUBSTANCE == IS_TRUE ? kindChemical : kindMedicine;
+                    ado.IS_BUSINESS = o.IS_BUSINESS;
+                    ado.IS_DRUG_STORE = o.IS_DRUG_STORE;
+                    ado.MEDICINE_LINE_ID = o.MEDICINE_LINE_ID;
                     ado.IMP_PRICE = o.IMP_PRICE;
                     ado.IMP_VAT_RATIO = o.IMP_VAT_RATIO;
                     ado.SUPPLIER_IDS = ItemTypeADO.ParseIds(o.SUPPLIER_IDS);
@@ -381,6 +394,8 @@ namespace HIS.Desktop.Plugins.SupplyOrderCreate
                     ado.IMP_UNIT_CONVERT_RATIO = o.IMP_UNIT_CONVERT_RATIO;
                     ado.PACKING = !String.IsNullOrWhiteSpace(o.PACKING_TYPE_NAME) ? o.PACKING_TYPE_NAME : o.CONCENTRA;
                     ado.KIND_NAME = o.IS_CHEMICAL_SUBSTANCE == IS_TRUE ? kindChemical : kindMaterial;
+                    ado.IS_BUSINESS = o.IS_BUSINESS;
+                    ado.IS_DRUG_STORE = o.IS_DRUG_STORE;
                     ado.IMP_PRICE = o.IMP_PRICE;
                     ado.IMP_VAT_RATIO = o.IMP_VAT_RATIO;
                     ado.SUPPLIER_IDS = ItemTypeADO.ParseIds(o.SUPPLIER_IDS);
@@ -390,12 +405,15 @@ namespace HIS.Desktop.Plugins.SupplyOrderCreate
                 this.dicItemType = items.GroupBy(o => o.KEY).ToDictionary(g => g.Key, g => g.First());
                 this.suppliers = BackendDataWorker.Get<HIS_SUPPLIER>().Where(o => o.IS_ACTIVE == IS_TRUE).OrderBy(o => o.SUPPLIER_NAME).ToList();
 
-                this.cboItem.Properties.DataSource = items.OrderBy(o => o.TYPE_NAME).ToList();
+                this.allItems = items.OrderBy(o => o.TYPE_NAME).ToList();
+                this.RefreshItemComboByStock();
                 this.cboItem.Properties.ValueMember = "KEY";
                 this.cboItem.Properties.DisplayMember = "DISPLAY";
                 this.cboItem.Properties.NullText = "";
                 this.cboItem.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
                 this.cboItem.Properties.ImmediatePopup = true;
+                // Tat tu hoan thanh: go de loc danh sach, chi them dong khi chon (Enter / bam chuot)
+                this.cboItem.Properties.AutoComplete = false;
                 this.cboItem.Properties.PopupFormSize = new Size(760, 300);
                 DevExpress.XtraGrid.Views.Grid.GridView popup = this.cboItem.Properties.View;
                 popup.Columns.Clear();
@@ -422,6 +440,23 @@ namespace HIS.Desktop.Plugins.SupplyOrderCreate
             col.VisibleIndex = visibleIndex;
         }
 
+        /// <summary>
+        /// O them mat hang chi con mat hang nhap duoc vao kho dang chon (cung quy tac man Nhap thuoc vat tu)
+        /// </summary>
+        private void RefreshItemComboByStock()
+        {
+            try
+            {
+                long? stockId = this.GetSelectedStockId();
+                V_HIS_MEDI_STOCK stock = stockId.HasValue ? this.supplyStocks.FirstOrDefault(o => o.ID == stockId.Value) : null;
+                this.cboItem.Properties.DataSource = stock != null ? this.allItems.Where(o => ItemTypeADO.IsImportableToStock(o, stock)).ToList() : this.allItems;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private long? GetSelectedStockId()
         {
             return this.cboStock.EditValue != null ? (long?)Convert.ToInt64(this.cboStock.EditValue) : null;
@@ -445,6 +480,7 @@ namespace HIS.Desktop.Plugins.SupplyOrderCreate
         {
             try
             {
+                this.RefreshItemComboByStock();
                 if (this.isBinding)
                 {
                     return;
