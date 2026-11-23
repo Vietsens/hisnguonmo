@@ -382,11 +382,42 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 {
                     this.materialProcessor.Reload(this.ucMaterialTypeTree, this.FilterMaterialTypeBySupplyOrder(this.listMaterialType));
                 }
+                this.WarnSupplyOrderItemNotImportable();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        /// <summary>
+        /// Mat hang trong don ma danh sach nhap cua kho nay khong co (thuoc/vat tu kinh doanh vao kho thuong, sai dong thuoc, ngung nhap...):
+        /// bao de nguoi dung biet vi sao khong chon duoc. Dang loc theo thau/hop dong thi danh sach chi con mat hang thau nen khong bao
+        /// </summary>
+        private void WarnSupplyOrderItemNotImportable()
+        {
+            long? orderId = this.GetSupplyOrderId();
+            if (!orderId.HasValue || this.dicSupplyOrderDetail.Count == 0 || this.currentBid != null || this.currentContract != null
+                || this.listMedicineType == null || this.listMaterialType == null || this.listMedicineType.Count + this.listMaterialType.Count == 0)
+            {
+                return;
+            }
+            HashSet<string> importable = new HashSet<string>(this.listMedicineType.Select(o => SupplyOrderDetailKey(false, o.ID)));
+            importable.UnionWith(this.listMaterialType.Select(o => SupplyOrderDetailKey(true, o.ID)));
+            List<HisSupplyOrderDetailSDO> missing = this.dicSupplyOrderDetail.Where(o => !importable.Contains(o.Key)).Select(o => o.Value).ToList();
+            if (missing.Count == 0)
+            {
+                return;
+            }
+            V_HIS_SUPPLY_ORDER order = this.supplyOrders.FirstOrDefault(o => o.ID == orderId.Value);
+            StringBuilder message = new StringBuilder();
+            message.AppendLine(string.Format("Đơn {0} có {1} mặt hàng không nhập được vào kho này (thuốc/vật tư kinh doanh nhập vào kho không kinh doanh hoặc ngược lại, sai dòng thuốc của kho, ngừng nhập hoặc không hoạt động):",
+                order != null ? order.SUPPLY_ORDER_CODE : "", missing.Count));
+            foreach (HisSupplyOrderDetailSDO d in missing)
+            {
+                message.AppendLine(" - " + d.TYPE_CODE + " - " + d.TYPE_NAME);
+            }
+            DevExpress.XtraEditors.XtraMessageBox.Show(message.ToString(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -412,6 +443,42 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 }
             }
             return (ratio.HasValue && ratio.Value > 0) ? ratio.Value : 1;
+        }
+
+        /// <summary>
+        /// Luong (DVT) cua chinh phieu dang sua da duoc may chu tinh vao "Da ve" cua don: phieu gan dung don va o Yeu cau / Da duyet
+        /// </summary>
+        private Dictionary<string, decimal> GetOwnArrivedAmounts(long orderId)
+        {
+            Dictionary<string, decimal> result = new Dictionary<string, decimal>();
+            if (this._currentImpMestUp == null || this._currentImpMestUp.ID <= 0 || this._currentImpMestUp.SUPPLY_ORDER_ID != orderId
+                || (this._currentImpMestUp.IMP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_STT.ID__REQUEST
+                    && this._currentImpMestUp.IMP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_STT.ID__APPROVAL))
+            {
+                return result;
+            }
+            CommonParam param = new CommonParam();
+            HisImpMestMedicineViewFilter mediFilter = new HisImpMestMedicineViewFilter();
+            mediFilter.IMP_MEST_ID = this._currentImpMestUp.ID;
+            List<V_HIS_IMP_MEST_MEDICINE> medicines = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MEDICINE>>(HisRequestUriStore.HIS_IMP_MEST_MEDICINE_GETVIEW, ApiConsumers.MosConsumer, mediFilter, param);
+            if (medicines != null)
+            {
+                foreach (var g in medicines.GroupBy(o => o.MEDICINE_TYPE_ID))
+                {
+                    result[SupplyOrderDetailKey(false, g.Key)] = g.Sum(o => o.AMOUNT);
+                }
+            }
+            HisImpMestMaterialViewFilter mateFilter = new HisImpMestMaterialViewFilter();
+            mateFilter.IMP_MEST_ID = this._currentImpMestUp.ID;
+            List<V_HIS_IMP_MEST_MATERIAL> materials = new BackendAdapter(param).Get<List<V_HIS_IMP_MEST_MATERIAL>>(HisRequestUriStore.HIS_IMP_MEST_MATERIAL_GETVIEW, ApiConsumers.MosConsumer, mateFilter, param);
+            if (materials != null)
+            {
+                foreach (var g in materials.GroupBy(o => o.MATERIAL_TYPE_ID))
+                {
+                    result[SupplyOrderDetailKey(true, g.Key)] = g.Sum(o => o.AMOUNT);
+                }
+            }
+            return result;
         }
 
         private static string SupplyOrderDetailKey(bool isMaterial, long typeId)
@@ -477,6 +544,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 }
                 StringBuilder over = new StringBuilder();
                 List<string> outside = new List<string>();
+                // Sua phieu: "Da ve" cua may chu da gom luong cu cua chinh phieu nay -> tru ra de khong cong trung
+                Dictionary<string, decimal> ownAmounts = this.GetOwnArrivedAmounts(orderId.Value);
+                string arrivedLabel = ownAmounts.Count > 0 ? "phiếu khác đã về" : "đã về";
                 foreach (var g in this.listServiceADO.GroupBy(o => SupplyOrderDetailKey(!o.IsMedicine, o.MEDI_MATE_ID)))
                 {
                     VHisServiceADO first = g.First();
@@ -486,13 +556,16 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         outside.Add(first.MEDI_MATE_CODE + " - " + first.MEDI_MATE_NAME);
                         continue;
                     }
+                    decimal own;
+                    ownAmounts.TryGetValue(g.Key, out own);
+                    decimal arrived = Math.Max(detail.ARRIVED_AMOUNT - own, 0);
                     // Mat hang co don vi nhap: so luong nhap tren man theo don vi nhap, don dat theo DVT -> quy doi truoc khi so
                     decimal importing = g.Sum(o => o.IMP_AMOUNT) * GetImpUnitConvertRatio(first);
-                    if (detail.ARRIVED_AMOUNT + detail.IMPORTED_AMOUNT + importing > detail.AMOUNT)
+                    if (arrived + detail.IMPORTED_AMOUNT + importing > detail.AMOUNT)
                     {
-                        over.AppendLine(string.Format(" - {0} - {1}: đặt {2}, đã về {3}, đã nhập {5}, nhập lần này {4}",
+                        over.AppendLine(string.Format(" - {0} - {1}: đặt {2}, {6} {3}, đã nhập {5}, nhập lần này {4}",
                             first.MEDI_MATE_CODE, first.MEDI_MATE_NAME,
-                            detail.AMOUNT.ToString(SUPPLY__FORMAT_AMOUNT), detail.ARRIVED_AMOUNT.ToString(SUPPLY__FORMAT_AMOUNT), importing.ToString(SUPPLY__FORMAT_AMOUNT), detail.IMPORTED_AMOUNT.ToString(SUPPLY__FORMAT_AMOUNT)));
+                            detail.AMOUNT.ToString(SUPPLY__FORMAT_AMOUNT), arrived.ToString(SUPPLY__FORMAT_AMOUNT), importing.ToString(SUPPLY__FORMAT_AMOUNT), detail.IMPORTED_AMOUNT.ToString(SUPPLY__FORMAT_AMOUNT), arrivedLabel));
                     }
                 }
                 if (over.Length == 0 && outside.Count == 0)
