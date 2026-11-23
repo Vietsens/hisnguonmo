@@ -231,6 +231,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetTabDefault();
                 SetEnableControl();
                 lap("Concluder+TabDefault+Enable");
+                // vCong61141: mouse wheel must never change a radio selection (whole form, incl. controls added later).
+                HookRadioGroupNoWheel(this);
                 // Wire event cho checkbox tự động lấy kết quả (KHÔNG lưu/khôi phục trạng thái tích).
                 this.chkAutoTestIndex.CheckedChanged += new System.EventHandler(this.chkAutoTestIndex_CheckedChanged);
                 InitAutoClsSettingButtonIcon();

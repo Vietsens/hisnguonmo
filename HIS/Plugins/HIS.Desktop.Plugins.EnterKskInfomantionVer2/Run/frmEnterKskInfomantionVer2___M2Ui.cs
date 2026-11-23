@@ -200,6 +200,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 ApplyM2GuardianCaption();
                 HideM2ReplacedControls();
+                ShowM2PhysicalRank();
                 BindM2Catalogs();
                 ApplyM2EnableRules();
                 isM2Inited = true;
@@ -754,6 +755,44 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
         #endregion
 
+        #region ===== Radio: selection changes on click only =====
+
+        /// <summary>
+        /// Every RadioGroup under <paramref name="root"/> ignores the mouse wheel (same handler as the
+        /// under-6 tab), so scrolling over a radio never jumps to another option; only a click changes it.
+        /// Containers also hook ControlAdded, which covers radios built later (lazy tabs, rebuilt lists).
+        /// Attaching is idempotent (-= then +=).
+        /// </summary>
+        private void HookRadioGroupNoWheel(Control root)
+        {
+            try
+            {
+                if (root == null) return;
+                RadioGroup rg = root as RadioGroup;
+                if (rg != null)
+                {
+                    rg.MouseWheel -= RdoUnderSix_MouseWheel;
+                    rg.MouseWheel += RdoUnderSix_MouseWheel;
+                    return;
+                }
+                root.ControlAdded -= RadioNoWheel_ControlAdded;
+                root.ControlAdded += RadioNoWheel_ControlAdded;
+                foreach (Control c in root.Controls) HookRadioGroupNoWheel(c);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        private void RadioNoWheel_ControlAdded(object sender, ControlEventArgs e)
+        {
+            try
+            {
+                if (e != null) HookRadioGroupNoWheel(e.Control);
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        #endregion
+
         #region ===== Captions on existing tabs =====
 
         /// <summary>
@@ -791,6 +830,45 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     DevExpress.XtraLayout.LayoutControlItem lci = FindLayoutItemOf(c);
                     if (lci != null) lci.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
+            }
+            catch (Exception ex) { LogSystem.Warn(ex); }
+        }
+
+        /// <summary>
+        /// Mau 02 prints "Phân loại thể lực" and the portal M2 requires kham_thuc_the.phanloai, both read from
+        /// the under-18 DHST_RANK. Its combo (already loaded/saved/enabled by the existing code) sits in the
+        /// Designer's hidden items, so bring it back above "Người khám" — only when Mau 02 is built
+        /// (portal declared); other hospitals keep the current layout.
+        /// </summary>
+        private void ShowM2PhysicalRank()
+        {
+            try
+            {
+                if (this.layoutControlItem211 == null || this.layoutControlItem445 == null || this.layoutControl22 == null) return;
+                this.layoutControl22.BeginUpdate();
+                try
+                {
+                    if (this.layoutControlItem211.IsHidden)
+                    {
+                        this.layoutControlItem211.RestoreFromCustomization(this.layoutControlItem445,
+                            DevExpress.XtraLayout.Utils.InsertType.Top);
+                        // Keep the combo short like the other inputs; the rest of the row is empty space.
+                        DevExpress.XtraLayout.EmptySpaceItem fill = new DevExpress.XtraLayout.EmptySpaceItem();
+                        fill.Name = "esM2PhysicalRank";
+                        fill.TextSize = new Size(0, 0);
+                        this.layoutControlItem211.Parent.AddItem(fill, this.layoutControlItem211,
+                            DevExpress.XtraLayout.Utils.InsertType.Right);
+                        this.layoutControlItem211.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+                        this.layoutControlItem211.MinSize = new Size(250, 24);
+                        this.layoutControlItem211.MaxSize = new Size(this.layoutControlItem201.Width, 24);
+                    }
+                    // Label width is shared by the whole tab (85 px) -> short caption, full name in the tooltip.
+                    this.layoutControlItem211.Text = "Phân loại:";
+                    this.layoutControlItem211.TextSize = this.layoutControlItem445.TextSize;
+                    this.layoutControlItem211.OptionsToolTip.ToolTip = "Phân loại thể lực — in vào Mẫu 02, bắt buộc khi đẩy cổng Sở Y tế (mẫu M2)";
+                    this.layoutControlItem211.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+                finally { this.layoutControl22.EndUpdate(); }
             }
             catch (Exception ex) { LogSystem.Warn(ex); }
         }
