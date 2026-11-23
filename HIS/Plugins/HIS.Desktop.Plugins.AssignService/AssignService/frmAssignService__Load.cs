@@ -1488,6 +1488,16 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
+        /// <summary>
+        /// Vien dung loai mau cua he thong XN ngoai (thiet ke 60357/60780):
+        /// MOS.LIS.INTEGRATION_VERSION = 1 va MOS.LIS.INTEGRATE_OPTION = 1, hoac MOS.LIS.INTEGRATION_VERSION = 2 va MOS.LIS.INTEGRATION_TYPE = 1.
+        /// </summary>
+        private bool IsUseExternalLisSampleType()
+        {
+            return (HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1")
+                || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1");
+        }
+
         private void LoadDataToGrid(bool isResetSearchtext)
         {
             try
@@ -1601,7 +1611,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //{
                 //    listSereServADO = listSereServADO.Where(o => o.TDL_HEIN_SERVICE_BHYT_CODE != null && o.TDL_HEIN_SERVICE_BHYT_CODE.ToLower().Contains(txtServiceBhytCode_Search.Text.ToLower().Trim())).ToList();
                 //}
-                grcSampleType.VisibleIndex = -1;
+                //Vien dung loai mau cua he thong XN ngoai: cot Loai mau XN an mac dinh (dat o constructor), nguoi dung tu keo ra
+                //va ghim bang HIS.Desktop.ApplyRestoreLayout.ModuleLinks. KHONG dat lai VisibleIndex o day: moi lan doi vi tri cot
+                //RestoreLayoutProcess (su kien ColumnPositionChanged) tu luu lai file ModuleDesign -> ghi de mat cot da ghim.
+                bool isUseExternalLisSampleType = this.IsUseExternalLisSampleType();
+                if (!isUseExternalLisSampleType)
+                {
+                    grcSampleType.VisibleIndex = -1;
+                }
                 serviceTypeIdSplitReq = new List<long>();
                 serviceTypeIdRequired = new List<long>();
                 if (serviceTypeIds != null && serviceTypeIds.Count > 0)
@@ -1615,7 +1632,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
                     //Chi tu hien cot voi vien khong dung loai mau cua he thong XN ngoai.
                     //Vien con lai: cot an mac dinh, nguoi dung tu keo ra tu bang chon cot.
-                    if ((!((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue == "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue == "1"))) && IsExistSplitReqBySampleType)
+                    if (!isUseExternalLisSampleType && IsExistSplitReqBySampleType)
                     {
                         //Mac dinh dat cot Loai mau XN ngay truoc cot Ghi chu (Ghi chu dich sang phai).
                         grcSampleType.VisibleIndex = this.gridColumn_InstructionNote.VisibleIndex >= 0 ? this.gridColumn_InstructionNote.VisibleIndex : 7;

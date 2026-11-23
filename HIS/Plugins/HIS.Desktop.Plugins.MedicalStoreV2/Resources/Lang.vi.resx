@@ -423,6 +423,18 @@
   <data name="UCMedicalStoreV2.btnImportStore.Text" xml:space="preserve">
     <value>Nhập kho (Ctrl I)</value>
   </data>
+  <data name="UCMedicalStoreV2.btnPrintAll.Text" xml:space="preserve">
+    <value>In toàn bộ</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnPrintAll.ToolTip" xml:space="preserve">
+    <value>In phiếu mã vạch lưu trữ cho tất cả bệnh án trên lưới</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnPrintSelected.Text" xml:space="preserve">
+    <value>In đã chọn</value>
+  </data>
+  <data name="UCMedicalStoreV2.btnPrintSelected.ToolTip" xml:space="preserve">
+    <value>In phiếu mã vạch lưu trữ cho các bệnh án đã tích</value>
+  </data>
   <data name="UCMedicalStoreV2.btnSaveTreatment.Text" xml:space="preserve">
     <value>Tạo và lưu BA (Ctrl S)</value>
   </data>

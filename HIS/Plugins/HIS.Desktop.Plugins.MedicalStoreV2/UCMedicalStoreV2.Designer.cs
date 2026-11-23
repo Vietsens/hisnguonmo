@@ -164,6 +164,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.ucPagingMediRecord = new Inventec.UC.Paging.UcPaging();
             this.ucPagingTreatment = new Inventec.UC.Paging.UcPaging();
             this.btnImportStore = new DevExpress.XtraEditors.SimpleButton();
+            this.btnPrintAll = new DevExpress.XtraEditors.SimpleButton();
+            this.btnPrintSelected = new DevExpress.XtraEditors.SimpleButton();
             this.rdoStatus__Stored = new DevExpress.XtraEditors.CheckEdit();
             this.rdoStatus__UnStored = new DevExpress.XtraEditors.CheckEdit();
             this.rdoStatus__All = new DevExpress.XtraEditors.CheckEdit();
@@ -370,6 +372,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciPrintAll = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciPrintSelected = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -511,6 +515,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPrintAll)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPrintSelected)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
@@ -528,6 +534,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.layoutControl1.Controls.Add(this.ucPagingMediRecord);
             this.layoutControl1.Controls.Add(this.ucPagingTreatment);
             this.layoutControl1.Controls.Add(this.btnImportStore);
+            this.layoutControl1.Controls.Add(this.btnPrintAll);
+            this.layoutControl1.Controls.Add(this.btnPrintSelected);
             this.layoutControl1.Controls.Add(this.rdoStatus__Stored);
             this.layoutControl1.Controls.Add(this.rdoStatus__UnStored);
             this.layoutControl1.Controls.Add(this.rdoStatus__All);
@@ -706,6 +714,30 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.btnImportStore.TabIndex = 42;
             this.btnImportStore.Text = "Nhập kho (Ctrl I)";
             this.btnImportStore.Click += new System.EventHandler(this.btnImportStore_Click);
+            //
+            // btnPrintAll
+            //
+            this.btnPrintAll.Location = new System.Drawing.Point(1170, 117);
+            this.btnPrintAll.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPrintAll.Name = "btnPrintAll";
+            this.btnPrintAll.Size = new System.Drawing.Size(110, 27);
+            this.btnPrintAll.StyleController = this.layoutControl1;
+            this.btnPrintAll.TabIndex = 49;
+            this.btnPrintAll.Text = "In toàn bộ";
+            this.btnPrintAll.ToolTip = "In phiếu mã vạch lưu trữ cho tất cả bệnh án trên lưới";
+            this.btnPrintAll.Click += new System.EventHandler(this.btnPrintAll_Click);
+            //
+            // btnPrintSelected
+            //
+            this.btnPrintSelected.Location = new System.Drawing.Point(1286, 117);
+            this.btnPrintSelected.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPrintSelected.Name = "btnPrintSelected";
+            this.btnPrintSelected.Size = new System.Drawing.Size(108, 27);
+            this.btnPrintSelected.StyleController = this.layoutControl1;
+            this.btnPrintSelected.TabIndex = 50;
+            this.btnPrintSelected.Text = "In đã chọn";
+            this.btnPrintSelected.ToolTip = "In phiếu mã vạch lưu trữ cho các bệnh án đã tích";
+            this.btnPrintSelected.Click += new System.EventHandler(this.btnPrintSelected_Click);
             // 
             // rdoStatus__Stored
             // 
@@ -2330,7 +2362,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.txtKeywordMediRecord.Name = "txtKeywordMediRecord";
             this.txtKeywordMediRecord.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeywordMediRecord.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtKeywordMediRecord.Size = new System.Drawing.Size(348, 22);
+            this.txtKeywordMediRecord.Size = new System.Drawing.Size(118, 22);
             this.txtKeywordMediRecord.StyleController = this.layoutControl1;
             toolTipItem1.Text = "Mã được cấp cho bệnh nhân trong chương trình";
             superToolTip1.Items.Add(toolTipItem1);
@@ -2928,6 +2960,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.layoutControlItem4,
             this.layoutControlItem23,
             this.layoutControlItem6,
+            this.lciPrintAll,
+            this.lciPrintSelected,
             this.emptySpaceItem2,
             this.layoutControlItem5,
             this.layoutControlItem10,
@@ -3122,6 +3156,24 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.layoutControlItem6.Size = new System.Drawing.Size(124, 33);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
+            //
+            // lciPrintAll
+            //
+            this.lciPrintAll.Control = this.btnPrintAll;
+            this.lciPrintAll.Location = new System.Drawing.Point(398, 111);
+            this.lciPrintAll.Name = "lciPrintAll";
+            this.lciPrintAll.Size = new System.Drawing.Size(116, 33);
+            this.lciPrintAll.TextSize = new System.Drawing.Size(0, 0);
+            this.lciPrintAll.TextVisible = false;
+            //
+            // lciPrintSelected
+            //
+            this.lciPrintSelected.Control = this.btnPrintSelected;
+            this.lciPrintSelected.Location = new System.Drawing.Point(514, 111);
+            this.lciPrintSelected.Name = "lciPrintSelected";
+            this.lciPrintSelected.Size = new System.Drawing.Size(114, 33);
+            this.lciPrintSelected.TextSize = new System.Drawing.Size(0, 0);
+            this.lciPrintSelected.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
@@ -3167,7 +3219,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.lciKeywordMediRecord.Control = this.txtKeywordMediRecord;
             this.lciKeywordMediRecord.Location = new System.Drawing.Point(274, 111);
             this.lciKeywordMediRecord.Name = "lciKeywordMediRecord";
-            this.lciKeywordMediRecord.Size = new System.Drawing.Size(354, 33);
+            this.lciKeywordMediRecord.Size = new System.Drawing.Size(124, 33);
             this.lciKeywordMediRecord.TextSize = new System.Drawing.Size(0, 0);
             this.lciKeywordMediRecord.TextVisible = false;
             // 
@@ -3336,6 +3388,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPrintAll)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPrintSelected)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
@@ -3526,6 +3580,10 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraEditors.SimpleButton btnImportStore;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
+        private DevExpress.XtraEditors.SimpleButton btnPrintAll;
+        private DevExpress.XtraEditors.SimpleButton btnPrintSelected;
+        private DevExpress.XtraLayout.LayoutControlItem lciPrintAll;
+        private DevExpress.XtraLayout.LayoutControlItem lciPrintSelected;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn33;

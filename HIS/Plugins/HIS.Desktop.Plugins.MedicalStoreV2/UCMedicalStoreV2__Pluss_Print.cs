@@ -72,6 +72,146 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             }
         }
 
+        /// <summary>
+        /// Medical records waiting to be printed by the batch print buttons.
+        /// Only set while the (modal) template chooser runs, cleared right after.
+        /// </summary>
+        List<MediRecordADO> printMediRecords = null;
+
+        /// <summary>
+        /// "In toàn bộ": print the storage barcode of every medical record on the grid
+        /// (current page), stored or not.
+        /// </summary>
+        private void btnPrintAll_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var mediRecords = gridControlMediRecord.DataSource as List<MediRecordADO>;
+                if (mediRecords == null || !mediRecords.Any())
+                {
+                    MessageManager.Show(Resources.ResourceMessage.KhongCoBenhAnDeIn);
+                    return;
+                }
+                PrintMediRecords(mediRecords.ToList());
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// "In đã chọn": print the storage barcode of the ticked medical records only.
+        /// </summary>
+        private void btnPrintSelected_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var mediRecords = gridControlMediRecord.DataSource as List<MediRecordADO>;
+                var mediRecordChecks = mediRecords != null ? mediRecords.Where(o => o.CheckStore).ToList() : null;
+                if (mediRecordChecks == null || !mediRecordChecks.Any())
+                {
+                    MessageManager.Show(Resources.ResourceMessage.VuiLongChonBenhAnCanIn);
+                    return;
+                }
+                PrintMediRecords(mediRecordChecks);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void PrintMediRecords(List<MediRecordADO> mediRecords)
+        {
+            try
+            {
+                btnPrintAll.Enabled = false;
+                btnPrintSelected.Enabled = false;
+                this.printMediRecords = mediRecords;
+
+                Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
+                // RunPrintTemplate shows the template chooser modally, so the callback runs before it returns
+                richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__IN_BARCODE_MEDI_RECORD_CODE__MPS000094, DelegateRunPrinterMediRecords);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                this.printMediRecords = null;
+                btnPrintAll.Enabled = true;
+                btnPrintSelected.Enabled = true;
+            }
+        }
+
+        /// <summary>
+        /// Prints one barcode sheet per medical record, in grid order. Print now or preview
+        /// follows the application print mode. A failed sheet is logged and the rest go on.
+        /// </summary>
+        bool DelegateRunPrinterMediRecords(string printTypeCode, string fileName)
+        {
+            bool result = false;
+            try
+            {
+                if (this.printMediRecords == null || !this.printMediRecords.Any())
+                    return false;
+
+                bool isPrintNow = ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2;
+                MPS.ProcessorBase.PrintConfig.PreviewType previewType = isPrintNow ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
+                HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor emrGenerateProcessor = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor();
+                long roomId = this.currentModule != null ? this.currentModule.RoomId : 0;
+                List<string> failStoreCodes = new List<string>();
+
+                if (isPrintNow)
+                    WaitingManager.Show();
+                foreach (var item in this.printMediRecords)
+                {
+                    try
+                    {
+                        MPS.Processor.Mps000094.Mps000094PDO mps = CreateMps000094PDO(item);
+                        MPS.ProcessorBase.Core.PrintData printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps, previewType, "");
+                        printData.EmrInputADO = emrGenerateProcessor.GenerateInputADOWithPrintTypeCode(item.TDL_TREATMENT_CODES ?? "", printTypeCode, roomId);
+
+                        if (MPS.MpsPrinter.Run(printData))
+                            result = true;
+                        else
+                            failStoreCodes.Add(item.STORE_CODE);
+                    }
+                    catch (Exception exItem)
+                    {
+                        failStoreCodes.Add(item.STORE_CODE);
+                        Inventec.Common.Logging.LogSystem.Warn(exItem);
+                    }
+                }
+                WaitingManager.Hide();
+
+                if (failStoreCodes.Any())
+                    Inventec.Common.Logging.LogSystem.Warn("Batch print MPS000094 not printed for STORE_CODE: " + String.Join(",", failStoreCodes));
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Builds the MPS000094 data for a medical record. The current Mps000094 PDO only has the
+        /// V_HIS_TREATMENT_9 constructor (the V_HIS_MEDI_RECORD_1 one was removed) and the template
+        /// only prints the barcode of STORE_CODE, so the record's storage code is carried on a
+        /// treatment object. This constructor exists in both old and new PDO builds.
+        /// </summary>
+        private MPS.Processor.Mps000094.Mps000094PDO CreateMps000094PDO(MediRecordADO mediRecord)
+        {
+            V_HIS_TREATMENT_9 treatment = new V_HIS_TREATMENT_9();
+            treatment.STORE_CODE = mediRecord != null ? mediRecord.STORE_CODE : null;
+            return new MPS.Processor.Mps000094.Mps000094PDO(treatment);
+        }
+
         internal enum PrintTypeMediRecord
         {
             IN_BARCODE_MEDI_RECORD_CODE,
@@ -126,9 +266,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             try
             {
                 WaitingManager.Show();
-                V_HIS_MEDI_RECORD_1 mediRecord = new V_HIS_MEDI_RECORD_1();
-                Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_MEDI_RECORD_1>(mediRecord, currentMediRecord);
-                MPS.Processor.Mps000094.Mps000094PDO mps = new MPS.Processor.Mps000094.Mps000094PDO(mediRecord);
+                MPS.Processor.Mps000094.Mps000094PDO mps = CreateMps000094PDO(currentMediRecord);
 
                 MPS.ProcessorBase.Core.PrintData printData = null;
 

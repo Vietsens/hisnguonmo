@@ -147,6 +147,12 @@
   <data name="VuiLongChonHoSoCanLuuTru" xml:space="preserve">
     <value>Vui lòng chọn hồ sơ cần lưu trữ</value>
   </data>
+  <data name="VuiLongChonBenhAnCanIn" xml:space="preserve">
+    <value>Vui lòng chọn bệnh án cần in</value>
+  </data>
+  <data name="KhongCoBenhAnDeIn" xml:space="preserve">
+    <value>Không có bệnh án để in</value>
+  </data>
   <data name="XuatFileThanhCong" xml:space="preserve">
     <value>Xuất file thành công</value>
   </data>
