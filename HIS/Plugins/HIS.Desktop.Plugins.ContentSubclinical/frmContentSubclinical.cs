@@ -87,6 +87,11 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
         /// (xem SendStringResult). Mặc định false → gửi string như cũ.
         /// </summary>
         internal bool IsWithExecutor { get; set; }
+        /// <summary>
+        /// Plugin gọi truyền cờ VALUE_ONLY (ContentSubclinicalBehavior.ARG__VALUE_ONLY): chế độ headless theo serviceIds
+        /// chỉ trả "giá trị đơn vị" của từng chỉ số, không kèm tên (xem BuildValueOnlyText). Mặc định false.
+        /// </summary>
+        internal bool IsValueOnly { get; set; }
         // Chế độ headless theo serviceIds: ép danh sách "đã chọn" thay cho GetListCheck (không xét trạng thái tích).
         internal List<TreeSereServADO> overrideChecks = null;
 
@@ -646,6 +651,12 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                     .Where(o => o != null && ids.Contains(o.SERVICE_ID) && HasResult(o))
                     .OrderBy(o => o.NUM_ORDER).ToList();
 
+                if (this.IsValueOnly)
+                {
+                    SendStringResult(BuildValueOnlyText(leaves), leaves);
+                    return;
+                }
+
                 this.isReturnObject = false;
                 this.overrideChecks = leaves;
                 btnSave_Click(null, null);   // build chuỗi từ overrideChecks -> gọi _DelegateSelectData
@@ -674,6 +685,30 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
             }
             catch { }
             return false;
+        }
+
+        /// <summary>
+        /// Chuỗi kết quả chế độ VALUE_ONLY: "giá trị đơn vị" của từng dòng, KHÔNG kèm tên chỉ số/dịch vụ, nối "; ".
+        /// Dịch vụ có dòng chỉ số XN (IsLeaf) thì lấy các dòng chỉ số; dịch vụ không có dòng chỉ số (vd XN chỉ nhập
+        /// kết luận) thì lấy kết quả của chính dịch vụ. Dòng không có giá trị bị bỏ qua.
+        /// </summary>
+        private string BuildValueOnlyText(List<TreeSereServADO> leaves)
+        {
+            try
+            {
+                if (leaves == null || leaves.Count == 0) return "";
+                HashSet<long> sereServHasIndex = new HashSet<long>(leaves.Where(o => o.IsLeaf).Select(o => o.ID));
+                List<string> values = leaves
+                    .Where(o => !string.IsNullOrWhiteSpace(o.VALUE_RANGE) && (o.IsLeaf || !sereServHasIndex.Contains(o.ID)))
+                    .Select(o => (o.VALUE_RANGE.Trim() + " " + (o.TEST_INDEX_UNIT_NAME ?? "")).Trim())
+                    .ToList();
+                return string.Join("; ", values);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return "";
+            }
         }
 
         /// <summary>

@@ -47,6 +47,13 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
         /// </summary>
         public const string ARG__WITH_EXECUTOR = "WITH_EXECUTOR";
 
+        /// <summary>
+        /// Cờ trong List&lt;string&gt; args, chỉ dùng cho chế độ headless theo serviceIds: chuỗi kết quả CHỈ gồm
+        /// "giá trị đơn vị" của từng chỉ số (không kèm tên), nối "; " — cho ô một chỉ số (vd ô Đường máu form KSK).
+        /// Không truyền cờ → chuỗi "tên: giá trị đơn vị" như cũ.
+        /// </summary>
+        public const string ARG__VALUE_ONLY = "VALUE_ONLY";
+
         object[] entity;
         Inventec.Desktop.Common.Modules.Module currentModule;
         long treatmentId = 0;
@@ -74,6 +81,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                     HIS.Desktop.Common.DelegateSelectTestIndexGroupData _DelegateTestIndexGroup = null;
                     string _serviceIds = null; // có = chế độ headless lấy kết quả theo serviceIds
                     bool withExecutor = false; // cờ WITH_EXECUTOR: kết quả chuỗi bọc kèm người thực hiện y lệnh
+                    bool valueOnly = false; // cờ VALUE_ONLY: headless theo serviceIds chỉ trả "giá trị đơn vị"
                     bool isClsTab = false; // Viec 57971: flag CLS_TAB - view-only mode shows the results in service group tabs
                     string clsTabInitCode = null; // Viec 57971: flag CLS_TAB_INIT:<group code> - tab opened first
 
@@ -117,6 +125,10 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                             {
                                 withExecutor = true;
                             }
+                            if (flags.Contains(ARG__VALUE_ONLY))
+                            {
+                                valueOnly = true;
+                            }
                             if (flags.Contains(Base.ClsTabGroupStore.ARG__CLS_TAB))
                             {
                                 isClsTab = true;
@@ -147,6 +159,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ContentSubclinical
                         // Headless: lấy kết quả các dịch vụ con theo serviceIds đã cấu hình, trả chuỗi (giống "+").
                         frmContentSubclinical frm = new frmContentSubclinical(currentModule, treatmentId, _DelegateSelectData, false);
                         frm.IsWithExecutor = withExecutor;
+                        frm.IsValueOnly = valueOnly;
                         frm.RunHeadlessByServiceIds(_serviceIds);
                         result = frm; // plugin gọi sẽ Dispose
                     }
