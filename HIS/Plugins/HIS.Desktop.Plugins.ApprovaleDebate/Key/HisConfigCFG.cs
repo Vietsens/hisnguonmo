@@ -72,6 +72,18 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.Key
             }
         }
 
+        /// <summary>
+        /// WriteTrackingOption = 3: an o ghi to dieu tri, luon hien va gui 2 o Dien bien, PP xu ly
+        /// (bo qua lua chon da luu tren may tram); MOS chi luu tren phieu hoi chan, khong ghi to dieu tri.
+        /// </summary>
+        internal static bool IsContentExamOnly
+        {
+            get
+            {
+                return WriteTrackingOption == "3";
+            }
+        }
+
         internal static bool IsHideApproveAndSign
         {
             get
