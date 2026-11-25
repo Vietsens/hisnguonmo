@@ -925,8 +925,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtKskContract.Text = dataKskContract.KSK_CONTRACT_CODE;
                     }
 
-                    // Avatar: ưu tiên TDL_PATIENT_AVATAR_URL trên HIS_SERVICE_REQ;
-                    // nếu trống thì lấy AVATAR_URL từ HIS_PATIENT; nếu vẫn trống thì dùng ảnh mặc định.
+                    // Avatar: ưu tiên AVATAR_URL trên HIS_PATIENT (ảnh mới nhất — chụp ảnh ở form này chỉ ghi vào
+                    // HIS_PATIENT, TDL_PATIENT_AVATAR_URL của y lệnh vẫn là ảnh lúc tiếp đón); HIS_PATIENT trống
+                    // thì lấy TDL_PATIENT_AVATAR_URL trên HIS_SERVICE_REQ; nếu vẫn trống thì dùng ảnh mặc định.
                     // TẢI NỀN (không chặn UI khi FSS chậm): hiện ảnh mặc định trước, có ảnh thì thay sau.
                     string pathLocal = GetPathDefault();
                     pictureEdit1.Image = Image.FromFile(pathLocal);
@@ -936,10 +937,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     {
                         try
                         {
-                            string avatarUrl = avatarUrlHint;
+                            string avatarUrl = GetPatientAvatarUrl(avatarPatientId);
                             if (String.IsNullOrEmpty(avatarUrl))
                             {
-                                avatarUrl = GetPatientAvatarUrl(avatarPatientId);
+                                avatarUrl = avatarUrlHint;
                             }
                             if (String.IsNullOrEmpty(avatarUrl)) return;
                             System.IO.MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(avatarUrl);
@@ -949,6 +950,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             if (this.IsHandleCreated && !this.IsDisposed)
                                 this.BeginInvoke((System.Windows.Forms.MethodInvoker)(() =>
                                 {
+                                    // Đã chuyển sang y lệnh của bệnh nhân khác trong lúc tải thì bỏ ảnh này.
+                                    if (currentServiceReq == null || currentServiceReq.TDL_PATIENT_ID != avatarPatientId) return;
                                     pictureEdit1.Image = img;
                                 }));
                         }

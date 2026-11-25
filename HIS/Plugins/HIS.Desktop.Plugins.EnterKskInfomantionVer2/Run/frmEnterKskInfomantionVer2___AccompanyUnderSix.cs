@@ -68,16 +68,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 string newPhone = txtAccompanyPhone8.Text != null ? txtAccompanyPhone8.Text.Trim() : "";
 
                 CommonParam param = new CommonParam();
-                // Dùng HIS_PATIENT đã cache lúc mở tab (LoadAccompanyInfoUnderSix) — KHÔNG GET lại cho nhanh.
+                // So sánh bằng HIS_PATIENT đã cache lúc mở tab (LoadAccompanyInfoUnderSix) — không đổi thì khỏi gọi API.
                 // Chỉ GET dự phòng khi chưa có cache.
                 HIS_PATIENT pat = currentPatientUnderSix;
+                bool isFreshPatient = false;
+                MOS.Filter.HisPatientFilter filter = new MOS.Filter.HisPatientFilter();
+                filter.ID = currentServiceReq.TDL_PATIENT_ID;
                 if (pat == null)
                 {
-                    MOS.Filter.HisPatientFilter filter = new MOS.Filter.HisPatientFilter();
-                    filter.ID = currentServiceReq.TDL_PATIENT_ID;
                     var patients = new BackendAdapter(param).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
                     if (patients == null || patients.Count == 0) return;
                     pat = patients[0];
+                    isFreshPatient = true;
                 }
 
                 string curCccd = pat.RELATIVE_CMND_NUMBER ?? "";
@@ -86,11 +88,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             || !string.Equals(newPhone, curPhone, StringComparison.Ordinal);
                 if (!changed) return;
 
+                // MOS ghi đè cả bản ghi HIS_PATIENT -> có thay đổi thì lấy lại bản mới nhất ngay trước khi cập nhật,
+                // không gửi bản cache lúc mở tab (có thể đã cũ: vừa chụp ảnh chân dung / vừa sửa thông tin bệnh nhân).
+                if (!isFreshPatient)
+                {
+                    var freshPatients = new BackendAdapter(param).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
+                    if (freshPatients == null || freshPatients.Count == 0) return;
+                    pat = freshPatients[0];
+                }
+
                 pat.RELATIVE_CMND_NUMBER = string.IsNullOrWhiteSpace(newCccd) ? null : newCccd;
                 pat.RELATIVE_PHONE = string.IsNullOrWhiteSpace(newPhone) ? null : newPhone;
 
                 MOS.SDO.HisPatientUpdateSDO sdo = new MOS.SDO.HisPatientUpdateSDO();
                 sdo.HisPatient = pat;
+                // Không gửi ảnh: MOS mặc định sẽ xóa AVATAR_URL / BHYT_URL của bệnh nhân -> báo không cập nhật ảnh.
+                sdo.IsNotUpdateImage = true;
                 var res = new BackendAdapter(param).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, sdo, param);
                 if (res != null) currentPatientUnderSix = res;
             }
