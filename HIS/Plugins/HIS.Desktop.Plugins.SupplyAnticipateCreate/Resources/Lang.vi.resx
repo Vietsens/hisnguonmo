@@ -320,7 +320,7 @@
     <value>Gửi phiếu đi duyệt? Sau khi gửi, người lập không sửa được phiếu.</value>
   </data>
   <data name="Message.ConfirmPharmacy" xml:space="preserve">
-    <value>Xác nhận dự trù hóa chất và chuyển kế toán duyệt?</value>
+    <value>Dược xác nhận phiếu dự trù và chuyển kế toán duyệt?</value>
   </data>
   <data name="Message.ConfirmApprove" xml:space="preserve">
     <value>Duyệt phiếu dự trù? Sau khi duyệt số lượng duyệt bị khóa.</value>

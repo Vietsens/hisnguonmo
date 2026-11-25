@@ -108,6 +108,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private const string CONTENT_SUBCLINICAL_ARG__WITH_EXECUTOR = "WITH_EXECUTOR";
 
         /// <summary>
+        /// Cờ truyền cho plugin ContentSubclinical (ContentSubclinicalBehavior.ARG__VALUE_ONLY): headless theo serviceIds
+        /// chỉ trả "giá trị đơn vị" (không kèm tên chỉ số) → dùng cho các ô 1b Sinh hóa máu (đường máu, urê...).
+        /// </summary>
+        private const string CONTENT_SUBCLINICAL_ARG__VALUE_ONLY = "VALUE_ONLY";
+
+        /// <summary>
         /// Combo "Người khám" đang bị THU HẸP datasource theo người thực hiện y lệnh (mục 4 KQ khám CLS khác → combo (4),
         /// KSK định kỳ → combo (5)). Nguồn: Tự động lấy CLS theo cấu hình hoặc nút "+" chọn tay (THAY THẾ, không gộp).
         /// Xóa trống kết quả / không còn ai thực hiện / nạp bản ghi khác → trả combo về danh mục đầy đủ (RestoreExamLoginCombo).
@@ -231,6 +237,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 SetTabDefault();
                 SetEnableControl();
                 lap("Concluder+TabDefault+Enable");
+                // vCong61141: mouse wheel must never change a radio selection (whole form, incl. controls added later).
+                HookRadioGroupNoWheel(this);
                 // Wire event cho checkbox tự động lấy kết quả (KHÔNG lưu/khôi phục trạng thái tích).
                 this.chkAutoTestIndex.CheckedChanged += new System.EventHandler(this.chkAutoTestIndex_CheckedChanged);
                 InitAutoClsSettingButtonIcon();
@@ -919,8 +927,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         txtKskContract.Text = dataKskContract.KSK_CONTRACT_CODE;
                     }
 
-                    // Avatar: ưu tiên TDL_PATIENT_AVATAR_URL trên HIS_SERVICE_REQ;
-                    // nếu trống thì lấy AVATAR_URL từ HIS_PATIENT; nếu vẫn trống thì dùng ảnh mặc định.
+                    // Avatar: ưu tiên AVATAR_URL trên HIS_PATIENT (ảnh mới nhất — chụp ảnh ở form này chỉ ghi vào
+                    // HIS_PATIENT, TDL_PATIENT_AVATAR_URL của y lệnh vẫn là ảnh lúc tiếp đón); HIS_PATIENT trống
+                    // thì lấy TDL_PATIENT_AVATAR_URL trên HIS_SERVICE_REQ; nếu vẫn trống thì dùng ảnh mặc định.
                     // TẢI NỀN (không chặn UI khi FSS chậm): hiện ảnh mặc định trước, có ảnh thì thay sau.
                     string pathLocal = GetPathDefault();
                     pictureEdit1.Image = Image.FromFile(pathLocal);
@@ -930,10 +939,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     {
                         try
                         {
-                            string avatarUrl = avatarUrlHint;
+                            string avatarUrl = GetPatientAvatarUrl(avatarPatientId);
                             if (String.IsNullOrEmpty(avatarUrl))
                             {
-                                avatarUrl = GetPatientAvatarUrl(avatarPatientId);
+                                avatarUrl = avatarUrlHint;
                             }
                             if (String.IsNullOrEmpty(avatarUrl)) return;
                             System.IO.MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(avatarUrl);
@@ -943,6 +952,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                             if (this.IsHandleCreated && !this.IsDisposed)
                                 this.BeginInvoke((System.Windows.Forms.MethodInvoker)(() =>
                                 {
+                                    // Đã chuyển sang y lệnh của bệnh nhân khác trong lúc tải thì bỏ ảnh này.
+                                    if (currentServiceReq == null || currentServiceReq.TDL_PATIENT_ID != avatarPatientId) return;
                                     pictureEdit1.Image = img;
                                 }));
                         }
@@ -2006,21 +2017,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 //     Examiner = ô "Người khám" của mục; chỉ truyền khi dòng đó tick "Lấy người thực hiện" trong Thiết lập
                 //     (6 dòng nhóm máu chung ô (1) nên form Thiết lập chỉ cho tick 1 dòng). Mục 4 + KSK định kỳ không có
                 //     tùy chọn này: SourceCombo = combo Người khám của mục, nạp lại datasource = người thực hiện (bác sĩ tự chọn).
-                //     FillTarget = false (các ô 1b Sinh hóa máu + 1c XN máu khác): CHỈ lấy Người thực hiện, KHÔNG điền kết quả
-                //     (giữ nguyên giá trị trần do OpenTestIndexGroupHeadless điền ở (1) — tránh đè thành định dạng "dịch vụ: kết quả").
+                //     "Lấy người thực hiện" CHỈ thêm việc điền ô Người khám — mọi dòng (kể cả 1b Sinh hóa máu, 1c XN máu khác)
+                //     vẫn điền kết quả vào ô của mình (việc 63742: 1b không điền kết quả là sai).
+                //     ValueOnly = true (5 ô 1b, mỗi ô một chỉ số): chỉ điền "giá trị đơn vị", vd "5.6 mmol/L", không kèm tên chỉ số.
                 var autoClsTargets = new[]
                 {
-                    new { Key = frmAutoClsSetting.KEY_BLOOD,              Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodFormula2,    Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = true  }, // 1a. Công thức máu
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_GLUCO,        Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodGluco2,      Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false }, // 1b. Đường máu
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_URE,          Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodUre2,        Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false }, // 1b. Urê
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_CREATININ,    Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodCreatinin2,  Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false }, // 1b. Creatinin
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_ASAT,         Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodAsat2,       Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false }, // 1b. ASAT (GOT)
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_ALAT,         Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodAlat2,       Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false }, // 1b. ALAT (GPT)
-                    new { Key = frmAutoClsSetting.KEY_BLOOD_OTHER,        Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodOther2,      Examiner = (DevExpress.XtraEditors.GridLookUpEdit)null, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = false },                  // 1c. XN máu - Khác
-                    new { Key = frmAutoClsSetting.KEY_URINE,              Target = (DevExpress.XtraEditors.BaseEdit)txtTestUrineFormula2,    Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestUrineLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = true  }, // 2. XN nước tiểu
-                    new { Key = frmAutoClsSetting.KEY_DIIM,               Target = (DevExpress.XtraEditors.BaseEdit)txtResultDiim2,          Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboDiimLoginName2, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, FillTarget = true  },     // 3. CĐHA - Kết quả
-                    new { Key = frmAutoClsSetting.KEY_OTHER_PARACLINICAL, Target = (DevExpress.XtraEditors.BaseEdit)txtResultSubclinical2,   Examiner = (DevExpress.XtraEditors.GridLookUpEdit)null, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)cboExamSubclinicalLoginName2, FillTarget = true  },                  // 4. KQ khám CLS khác
-                    new { Key = frmAutoClsSetting.KEY_PERIODIC,           Target = (DevExpress.XtraEditors.BaseEdit)txtResultSubclinical2_2, Examiner = (DevExpress.XtraEditors.GridLookUpEdit)null, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)cboExamSubclinicalLoginName2_2, FillTarget = true  },                  // KSK định kỳ - Kết quả
+                    new { Key = frmAutoClsSetting.KEY_BLOOD,              Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodFormula2,    Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, ValueOnly = false }, // 1a. Công thức máu
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_GLUCO,        Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodGluco2,      Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, ValueOnly = true  }, // 1b. Đường máu
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_URE,          Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodUre2,        Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, ValueOnly = true  }, // 1b. Urê
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_CREATININ,    Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodCreatinin2,  Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, ValueOnly = true  }, // 1b. Creatinin
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_ASAT,         Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodAsat2,       Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, ValueOnly = true  }, // 1b. ASAT (GOT)
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_ALAT,         Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodAlat2,       Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestBloodLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, ValueOnly = true  }, // 1b. ALAT (GPT)
+                    new { Key = frmAutoClsSetting.KEY_BLOOD_OTHER,        Target = (DevExpress.XtraEditors.BaseEdit)txtTestBloodOther2,      Examiner = (DevExpress.XtraEditors.GridLookUpEdit)null, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, ValueOnly = false },                  // 1c. XN máu - Khác
+                    new { Key = frmAutoClsSetting.KEY_URINE,              Target = (DevExpress.XtraEditors.BaseEdit)txtTestUrineFormula2,    Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboTestUrineLoginName, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, ValueOnly = false }, // 2. XN nước tiểu
+                    new { Key = frmAutoClsSetting.KEY_DIIM,               Target = (DevExpress.XtraEditors.BaseEdit)txtResultDiim2,          Examiner = (DevExpress.XtraEditors.GridLookUpEdit)cboDiimLoginName2, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)null, ValueOnly = false },     // 3. CĐHA - Kết quả
+                    new { Key = frmAutoClsSetting.KEY_OTHER_PARACLINICAL, Target = (DevExpress.XtraEditors.BaseEdit)txtResultSubclinical2,   Examiner = (DevExpress.XtraEditors.GridLookUpEdit)null, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)cboExamSubclinicalLoginName2, ValueOnly = false },                  // 4. KQ khám CLS khác
+                    new { Key = frmAutoClsSetting.KEY_PERIODIC,           Target = (DevExpress.XtraEditors.BaseEdit)txtResultSubclinical2_2, Examiner = (DevExpress.XtraEditors.GridLookUpEdit)null, SourceCombo = (DevExpress.XtraEditors.GridLookUpEdit)cboExamSubclinicalLoginName2_2, ValueOnly = false },                  // KSK định kỳ - Kết quả
                 };
                 foreach (var item in autoClsTargets)
                 {
@@ -2033,7 +2045,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                     bool narrowSource = item.SourceCombo != null
                         && GetAutoClsStateValue(states, frmAutoClsSetting.ExaminerStateKey(item.Key)) == "1";
                     List<string> executors = narrowSource ? new List<string>() : null;
-                    OpenClsByServiceIds(serviceIds, item.Target, takeExaminer ? item.Examiner : null, executors, item.FillTarget);
+                    OpenClsByServiceIds(serviceIds, item.Target, takeExaminer ? item.Examiner : null, executors, item.ValueOnly);
                     if (item.SourceCombo != null && !narrowSource)
                         RestoreExamLoginCombo(item.SourceCombo, item.Key);
                     else if (executors != null && !string.IsNullOrEmpty(serviceIds))
@@ -2248,8 +2260,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         /// và đổ vào ô "Người khám" (chỉ khi kết quả đã điền được vào ô).
         /// <paramref name="collectExecutors"/> != null: truyền cờ WITH_EXECUTOR, gom TẤT CẢ người thực hiện vào list
         /// (mục 4 + KSK định kỳ → nạp lại datasource combo Người khám cho bác sĩ tự chọn).
+        /// <paramref name="valueOnly"/> = true: truyền cờ VALUE_ONLY, kết quả chỉ gồm "giá trị đơn vị" (ô 1b một chỉ số).
         /// </summary>
-        private void OpenClsByServiceIds(string serviceIds, DevExpress.XtraEditors.BaseEdit target, DevExpress.XtraEditors.GridLookUpEdit examiner = null, List<string> collectExecutors = null, bool fillTarget = true)
+        private void OpenClsByServiceIds(string serviceIds, DevExpress.XtraEditors.BaseEdit target, DevExpress.XtraEditors.GridLookUpEdit examiner = null, List<string> collectExecutors = null, bool valueOnly = false)
         {
             if (string.IsNullOrEmpty(serviceIds) || target == null) return;
             try
@@ -2290,14 +2303,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         if (text == null || !target.Enabled) return;
                         string val = JoinResultBySemicolon(text);
                         if (string.IsNullOrEmpty(val)) return;
-                        // fillTarget = false (ô 1b Sinh hóa máu/1c): chỉ lấy Người thực hiện, KHÔNG đè ô kết quả
-                        // (giữ giá trị trần do OpenTestIndexGroupHeadless điền, tránh định dạng "dịch vụ: kết quả").
-                        if (fillTarget) target.Text = val;
+                        target.Text = val;
                     };
                     listArgs.Add(del);
                     listArgs.Add(serviceIds); // string -> ContentSubclinical chạy chế độ headless theo serviceIds
+                    List<string> flags = new List<string>();
                     if (examiner != null || collectExecutors != null)
-                        listArgs.Add(new List<string>() { CONTENT_SUBCLINICAL_ARG__WITH_EXECUTOR });
+                        flags.Add(CONTENT_SUBCLINICAL_ARG__WITH_EXECUTOR);
+                    if (valueOnly)
+                        flags.Add(CONTENT_SUBCLINICAL_ARG__VALUE_ONLY);
+                    if (flags.Count > 0)
+                        listArgs.Add(flags);
                     var extenceInstance = PluginInstance.GetPluginInstance(
                         HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), listArgs);
                     var contentForm = extenceInstance as System.Windows.Forms.Form;

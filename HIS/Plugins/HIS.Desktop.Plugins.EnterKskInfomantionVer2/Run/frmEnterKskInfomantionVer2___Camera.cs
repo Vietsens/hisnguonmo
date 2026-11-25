@@ -102,8 +102,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         /// <summary>
-        /// Callback nhận ảnh từ chức năng Camera: hiển thị lên picture và lưu vào ImgAvatarData
-        /// qua api/HisPatient/UpdateSdo (giống HIS.Desktop.Plugins.PatientUpdate).
+        /// Callback nhận ảnh từ chức năng Camera: lưu vào ImgAvatarData qua api/HisPatient/UpdateSdo
+        /// (giống HIS.Desktop.Plugins.PatientUpdate), lưu được thì mới hiển thị lên picture.
         /// </summary>
         internal void FillImageAvatarFromModuleCamera(object dataImage)
         {
@@ -115,15 +115,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
 
                 Image img = (Image)dataImage;
-                pictureEdit1.Image = img;
-                if (img.Tag != null)
-                {
-                    pictureEdit1.Image.Tag = img.Tag;
-                }
-                pictureEdit1.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Squeeze;
-
                 byte[] avatarData = ImageToByteArray(img);
-                SaveAvatarToPatient(avatarData);
+                // Chỉ hiện ảnh mới khi đã lưu được vào HIS_PATIENT — tránh thấy ảnh trên form nhưng mở lại thì mất.
+                if (!SaveAvatarToPatient(avatarData))
+                {
+                    return;
+                }
+
+                pictureEdit1.Image = img;
+                pictureEdit1.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Squeeze;
             }
             catch (Exception ex)
             {
@@ -147,36 +147,69 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
-        private void SaveAvatarToPatient(byte[] avatarData)
+        /// <summary>
+        /// Lưu ảnh chân dung vào HIS_PATIENT. Trả về true khi MOS đã lưu được ảnh (có AVATAR_URL trả về).
+        /// </summary>
+        private bool SaveAvatarToPatient(byte[] avatarData)
         {
             CommonParam param = new CommonParam();
             bool success = false;
             try
             {
-                if (currentServiceReq == null || currentServiceReq.TDL_PATIENT_ID <= 0 || avatarData == null)
+                if (currentServiceReq != null && currentServiceReq.TDL_PATIENT_ID > 0 && avatarData != null)
                 {
-                    return;
-                }
+                    WaitingManager.Show();
 
-                WaitingManager.Show();
+                    HisPatientFilter filter = new HisPatientFilter();
+                    filter.ID = currentServiceReq.TDL_PATIENT_ID;
+                    var patients = new BackendAdapter(param).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
+                    HIS_PATIENT patient = (patients != null && patients.Count > 0) ? patients[0] : null;
+                    if (patient != null)
+                    {
+                        string oldAvatarUrl = patient.AVATAR_URL;
+                        string oldBhytUrl = patient.BHYT_URL;
 
-                HisPatientFilter filter = new HisPatientFilter();
-                filter.ID = currentServiceReq.TDL_PATIENT_ID;
-                var patients = new BackendAdapter(param).Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, filter, null);
-                if (patients == null || patients.Count == 0)
-                {
+                        // MOS (HisPatientUpdateInfo.ProcessPatientImage) xóa cả AVATAR_URL lẫn BHYT_URL rồi chỉ gán lại
+                        // theo dữ liệu ảnh gửi kèm -> phải gửi kèm lại ảnh thẻ BHYT hiện có, không thì mất ảnh thẻ.
+                        byte[] bhytData = null;
+                        if (!String.IsNullOrEmpty(oldBhytUrl))
+                        {
+                            bhytData = DownloadFssFile(oldBhytUrl);
+                            if (bhytData == null)
+                            {
+                                WaitingManager.Hide();
+                                if (DevExpress.XtraEditors.XtraMessageBox.Show(this,
+                                    "Không tải được ảnh thẻ BHYT hiện có của bệnh nhân. Nếu tiếp tục lưu ảnh chân dung thì ảnh thẻ BHYT sẽ bị xóa. Bạn có muốn tiếp tục không?",
+                                    "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                                {
+                                    return false;
+                                }
+                                WaitingManager.Show();
+                            }
+                        }
+
+                        MOS.SDO.HisPatientUpdateSDO patientUpdateSdo = new MOS.SDO.HisPatientUpdateSDO();
+                        patientUpdateSdo.HisPatient = patient;
+                        patientUpdateSdo.ImgAvatarData = avatarData;
+                        patientUpdateSdo.ImgBhytData = bhytData;
+
+                        var resultData = new BackendAdapter(param).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, param);
+                        // Đẩy ảnh lên FSS thất bại thì MOS vẫn trả về bệnh nhân (AVATAR_URL rỗng) -> phải có URL mới tính là lưu được.
+                        success = resultData != null && !String.IsNullOrEmpty(resultData.AVATAR_URL);
+                        if (success)
+                        {
+                            // Biểu in và lần hiển thị sau lấy ảnh theo TDL_PATIENT_AVATAR_URL của y lệnh đang mở.
+                            currentServiceReq.TDL_PATIENT_AVATAR_URL = resultData.AVATAR_URL;
+                        }
+                        else if (resultData != null && (!String.IsNullOrEmpty(oldAvatarUrl) || !String.IsNullOrEmpty(oldBhytUrl)))
+                        {
+                            // MOS đã ghi rỗng 2 đường dẫn ảnh cũ trước khi đẩy ảnh mới -> ghi trả lại để không mất ảnh cũ.
+                            RestorePatientImageUrl(resultData, oldAvatarUrl, oldBhytUrl);
+                        }
+                    }
+
                     WaitingManager.Hide();
-                    return;
                 }
-
-                MOS.SDO.HisPatientUpdateSDO patientUpdateSdo = new MOS.SDO.HisPatientUpdateSDO();
-                patientUpdateSdo.HisPatient = patients[0];
-                patientUpdateSdo.ImgAvatarData = avatarData;
-
-                var resultData = new BackendAdapter(param).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, patientUpdateSdo, param);
-                success = resultData != null;
-
-                WaitingManager.Hide();
             }
             catch (Exception ex)
             {
@@ -184,6 +217,57 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             MessageManager.Show(this, param, success);
+            return success;
+        }
+
+        /// <summary>
+        /// Tải nội dung 1 file trên FSS. Trả về null khi không tải được.
+        /// </summary>
+        private byte[] DownloadFssFile(string url)
+        {
+            try
+            {
+                using (MemoryStream stream = Inventec.Fss.Client.FileDownload.GetFile(url))
+                {
+                    if (stream != null && stream.Length > 0)
+                    {
+                        return stream.ToArray();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Ghi trả lại AVATAR_URL / BHYT_URL cũ của bệnh nhân khi lưu ảnh mới thất bại
+        /// (IsNotUpdateImage = true để MOS không xử lý ảnh, chỉ cập nhật bản ghi).
+        /// </summary>
+        private void RestorePatientImageUrl(HIS_PATIENT patient, string oldAvatarUrl, string oldBhytUrl)
+        {
+            try
+            {
+                patient.AVATAR_URL = oldAvatarUrl;
+                patient.BHYT_URL = oldBhytUrl;
+
+                MOS.SDO.HisPatientUpdateSDO restoreSdo = new MOS.SDO.HisPatientUpdateSDO();
+                restoreSdo.HisPatient = patient;
+                restoreSdo.IsNotUpdateImage = true;
+
+                CommonParam restoreParam = new CommonParam();
+                var restored = new BackendAdapter(restoreParam).Post<HIS_PATIENT>("api/HisPatient/UpdateSdo", ApiConsumers.MosConsumer, restoreSdo, restoreParam);
+                if (restored == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Ghi tra lai duong dan anh cu cua benh nhan that bai. PatientId=" + patient.ID);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

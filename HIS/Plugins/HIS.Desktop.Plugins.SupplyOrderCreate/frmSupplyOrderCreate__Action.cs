@@ -250,8 +250,12 @@ namespace HIS.Desktop.Plugins.SupplyOrderCreate
                 {
                     return;
                 }
+                // May chu chi tinh so du cho mat hang duoc truyen vao (danh sach rong -> tra rong): truyen moi mat hang nhap duoc vao kho
+                List<ItemTypeADO> candidates = (this.cboItem.Properties.DataSource as List<ItemTypeADO>) ?? this.allItems;
                 HisSupplyOrderBalanceFilter filter = new HisSupplyOrderBalanceFilter();
                 filter.MediStockId = stockId.Value;
+                filter.MedicineTypeIds = candidates.Where(o => !o.IS_MATERIAL).Select(o => o.TYPE_ID).ToList();
+                filter.MaterialTypeIds = candidates.Where(o => o.IS_MATERIAL).Select(o => o.TYPE_ID).ToList();
                 WaitingManager.Show();
                 List<HisSupplyOrderBalanceSDO> balances = new BackendAdapter(param).Post<List<HisSupplyOrderBalanceSDO>>(RequestUriStore.HIS_SUPPLY_ORDER__GET_BALANCE, ApiConsumers.MosConsumer, filter, param);
                 WaitingManager.Hide();

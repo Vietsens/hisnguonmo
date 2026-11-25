@@ -64,11 +64,11 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
-                // Đảm bảo avatar truyền sang MPS: nếu TDL_PATIENT_AVATAR_URL trên service_req trống
-                // thì lấy AVATAR_URL từ HIS_PATIENT để biểu in vẫn hiển thị ảnh chân dung.
-                EnsurePatientAvatarUrlForPrint();
                 // Nạp y lệnh (HIS_SERVICE_REQ) + bệnh nhân (HIS_PATIENT) truyền vào PDO các Mps.
                 LoadServiceReqAndPatientForPrint();
+                // Đảm bảo avatar truyền sang MPS là ảnh mới nhất của bệnh nhân (AVATAR_URL trên HIS_PATIENT vừa nạp);
+                // HIS_PATIENT không có ảnh thì giữ TDL_PATIENT_AVATAR_URL trên service_req.
+                EnsurePatientAvatarUrlForPrint();
                 Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(ApiConsumers.SarConsumer, ConfigSystems.URI_API_SAR, LanguageManager.GetLanguage(), Inventec.Desktop.Common.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
                 switch (printType)
                 {
@@ -120,16 +120,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         }
 
         /// <summary>
-        /// Nếu HIS_SERVICE_REQ.TDL_PATIENT_AVATAR_URL trống thì lấy AVATAR_URL từ HIS_PATIENT
-        /// gán vào currentServiceReq để các PDO (Mps000315/452/453/454/499...) in được ảnh chân dung.
+        /// Lấy AVATAR_URL từ HIS_PATIENT (ảnh mới nhất — ảnh chụp ở form này không cập nhật vào
+        /// HIS_SERVICE_REQ.TDL_PATIENT_AVATAR_URL) gán vào currentServiceReq để các PDO
+        /// (Mps000315/452/453/454/499...) in đúng ảnh chân dung đang hiển thị. Gọi sau LoadServiceReqAndPatientForPrint.
         /// </summary>
         private void EnsurePatientAvatarUrlForPrint()
         {
             try
             {
                 if (currentServiceReq == null) return;
-                if (!string.IsNullOrEmpty(currentServiceReq.TDL_PATIENT_AVATAR_URL)) return;
-                string url = GetPatientAvatarUrl(currentServiceReq.TDL_PATIENT_ID);
+                string url = printKskPatient != null
+                    ? printKskPatient.AVATAR_URL
+                    : GetPatientAvatarUrl(currentServiceReq.TDL_PATIENT_ID);
                 if (!string.IsNullOrEmpty(url))
                     currentServiceReq.TDL_PATIENT_AVATAR_URL = url;
             }
