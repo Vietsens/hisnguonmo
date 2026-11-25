@@ -184,6 +184,16 @@ namespace HIS.Desktop.Plugins.AggrMobaImpMests
                     _OddNumbers = new List<MediMateTypeADO>();
                     List<long> _ImpMestIds = lstMobaImpMestChecks.Select(p => p.ID).ToList();
 
+                    //Tat ca phieu tra deu nhap ve kho le (IS_ODD) thi kho nhan da nhan duoc so luong le:
+                    //khong tach phan le sang phieu khac, tong hop thang (giong MOS dang xu ly voi thuoc GN-HT).
+                    //Neu van tach thi phieu le sinh ra lai nhap ve chinh kho do va khong tong hop duoc ("tat ca deu le").
+                    List<long> oddMediStockIds = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => p.IS_ODD == 1).Select(p => p.ID).ToList();
+                    if (lstMobaImpMestChecks.All(p => oddMediStockIds.Contains(p.MEDI_STOCK_ID)))
+                    {
+                        SaveAggrByImpMestIds(_ImpMestIds, null, null, 0);
+                        return;
+                    }
+
                     //#20597
                     List<MediMateTypeADO> _MediMateChecks = new List<MediMateTypeADO>();
                     _MediMateChecks = LoadDetailImpMestMatyMetyByImpMestId(_ImpMestIds);
@@ -460,8 +470,11 @@ namespace HIS.Desktop.Plugins.AggrMobaImpMests
                 if (_DataMediStocks != null && _DataMediStocks.Count > 0)
                 {
                     _DataMediStocks = _DataMediStocks.OrderBy(p => p.MEDI_STOCK_NAME).ToList();
-                    cboMediStockImport.EditValue = _DataMediStocks[0].ID;
-                    txtMediStockImportCode.Text = _DataMediStocks[0].MEDI_STOCK_CODE;
+                    //Uu tien chon san kho le la kho nhan cua cac phieu tra dang chon, khong co moi lay kho dau tien
+                    List<long> impMestStockIds = lstMobaImpMestChecks != null ? lstMobaImpMestChecks.Select(p => p.MEDI_STOCK_ID).Distinct().ToList() : new List<long>();
+                    V_HIS_MEDI_STOCK defaultStock = _DataMediStocks.FirstOrDefault(p => impMestStockIds.Contains(p.ID)) ?? _DataMediStocks[0];
+                    cboMediStockImport.EditValue = defaultStock.ID;
+                    txtMediStockImportCode.Text = defaultStock.MEDI_STOCK_CODE;
                 }
             }
             catch (Exception ex)
