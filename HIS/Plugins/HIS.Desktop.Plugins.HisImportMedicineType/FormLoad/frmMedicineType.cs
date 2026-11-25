@@ -2602,6 +2602,22 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         mediAdo.TT_THAU = item.TT_THAU;
                     }
 
+                    mediAdo.VEN_CODE = null;
+                    if (!string.IsNullOrWhiteSpace(item.VEN_CODE))
+                    {
+                        string venCode = item.VEN_CODE.Trim().ToUpper();
+                        if (venCode == "V" || venCode == "E" || venCode == "N")
+                        {
+                            mediAdo.VEN_CODE = venCode;
+                        }
+                        else
+                        {
+                            error += string.Format("Nhóm VEN {0} không hợp lệ (chỉ nhập V, E hoặc N)|", item.VEN_CODE);
+                            mediAdo.VEN_CODE = item.VEN_CODE;
+                            mediAdo.VEN_CODE_ERROR = 1;
+                        }
+                    }
+
                     mediAdo.ERROR = error;
                     mediAdo.ID = i;
                     mediAdo.IS_LEAF = 1;

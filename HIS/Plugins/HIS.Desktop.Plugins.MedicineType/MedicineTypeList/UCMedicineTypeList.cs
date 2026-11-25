@@ -135,7 +135,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
                     "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_ID", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO",
-                    "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON", "ALERT_EXPIRED_DATE", "ALERT_MIN_IN_STOCK", "PACKING_TYPE_NAME", "MEDICINE_LINE_NAME", "DOSAGE_FORM", "DESCRIPTION", "IS_STOP_IMP", "IS_NUTRITION_FOOD", "CREATE_TIME", "CREATOR"};
+                    "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON", "ALERT_EXPIRED_DATE", "ALERT_MIN_IN_STOCK", "PACKING_TYPE_NAME", "MEDICINE_LINE_NAME", "DOSAGE_FORM", "DESCRIPTION", "IS_STOP_IMP", "IS_NUTRITION_FOOD", "CREATE_TIME", "CREATOR", "VEN_CODE"};
                 filter.ColumnParams = ColnParams;
 
                 this.medicineTypes = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GetViewDynamic, ApiConsumers.MosConsumer, filter, param);
@@ -183,7 +183,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
                     "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_ID", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO","IS_BUSINESS", "IS_DRUG_STORE", "DOSAGE_FORM", "DESCRIPTION",
-                    "IS_LEAF", "IS_ACTIVE", "IS_STOP_IMP", "IS_NUTRITION_FOOD", "CREATE_TIME", "CREATOR" };
+                    "IS_LEAF", "IS_ACTIVE", "IS_STOP_IMP", "IS_NUTRITION_FOOD", "CREATE_TIME", "CREATOR", "VEN_CODE" };
                 filter.ColumnParams = colunmParam;
                 var medicineTypes = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GetViewDynamic, ApiConsumers.MosConsumer, filter, param);
                 if (mediStock != null && mediStock.IS_BUSINESS == 1 && mediStock.IS_SHOW_DRUG_STORE == 1)
@@ -544,6 +544,11 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 MedicineTypeColumn creatorCol = new MedicineTypeColumn("Người tạo", "CREATOR", 100, false);
                 creatorCol.VisibleIndex = 27;
                 ado.MedicineTypeColumns.Add(creatorCol);
+
+                //Column Nhóm VEN
+                MedicineTypeColumn venCol = new MedicineTypeColumn("Nhóm VEN", "VEN_CODE", 70, false);
+                venCol.VisibleIndex = 28;
+                ado.MedicineTypeColumns.Add(venCol);
 
                 //MedicineTypeColumn expiredDate = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_ALERT_EXPIRED_DATE", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ALERT_EXPIRED_DATE", 100, false);
                 //expiredDate.VisibleIndex = -1;

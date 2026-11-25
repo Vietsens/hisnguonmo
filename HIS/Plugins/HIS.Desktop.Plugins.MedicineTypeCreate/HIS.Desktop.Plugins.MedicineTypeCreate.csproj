@@ -270,6 +270,7 @@
     <Compile Include="ADO\RankADO.cs" />
     <Compile Include="ADO\SourceMedicineADO.cs" />
     <Compile Include="ADO\SupplierADO.cs" />
+    <Compile Include="ADO\VenADO.cs" />
     <Compile Include="ADO\VHisServicePatyADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="CustomParse.cs" />
