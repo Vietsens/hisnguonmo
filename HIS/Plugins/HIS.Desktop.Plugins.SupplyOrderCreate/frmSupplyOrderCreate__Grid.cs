@@ -362,15 +362,28 @@ namespace HIS.Desktop.Plugins.SupplyOrderCreate
         /// <summary>
         /// Pick an item: add a line with the first catalog supplier, amount left empty, load F/O/R/N
         /// </summary>
-        private void cboItem_EditValueChanged(object sender, EventArgs e)
+        private void cboItem_CloseUp(object sender, DevExpress.XtraEditors.Controls.CloseUpEventArgs e)
         {
             try
             {
-                if (this.isBinding || this.cboItem.EditValue == null)
+                // Chi them dong khi nguoi dung chon that (Enter / bam chuot); go phim chi de loc danh sach
+                if (this.isBinding || e.CloseMode != DevExpress.XtraEditors.PopupCloseMode.Normal || !e.AcceptValue || e.Value == null)
                 {
                     return;
                 }
-                string key = this.cboItem.EditValue.ToString();
+                string key = e.Value.ToString();
+                this.BeginInvoke(new MethodInvoker(() => this.AddItemByKey(key)));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void AddItemByKey(string key)
+        {
+            try
+            {
                 ItemTypeADO item;
                 if (!this.dicItemType.TryGetValue(key, out item))
                 {

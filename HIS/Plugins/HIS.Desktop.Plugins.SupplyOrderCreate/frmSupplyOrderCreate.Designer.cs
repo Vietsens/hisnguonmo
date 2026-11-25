@@ -139,7 +139,7 @@ namespace HIS.Desktop.Plugins.SupplyOrderCreate
             this.cboItem.Properties.View = this.cboItemView;
             this.cboItem.Size = new System.Drawing.Size(500, 20);
             this.cboItem.TabIndex = 1;
-            this.cboItem.EditValueChanged += new System.EventHandler(this.cboItem_EditValueChanged);
+            this.cboItem.CloseUp += new DevExpress.XtraEditors.Controls.CloseUpEventHandler(this.cboItem_CloseUp);
             //
             // cboItemView
             //

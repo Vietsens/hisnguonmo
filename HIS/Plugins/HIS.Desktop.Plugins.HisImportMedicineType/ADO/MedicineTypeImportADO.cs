@@ -80,6 +80,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public string SUPPLIER_IDS { get; set; }
         public int? SUPPLIER_CODE_ERROR { get; set; }
         public int TT_THAU_ERROR { get; set; }
+        public int VEN_CODE_ERROR { get; set; }
 
         public MedicineTypeImportADO()
         {

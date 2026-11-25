@@ -1178,6 +1178,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 txtRecordingTransaction.Text = "";
                 cboGender.EditValue = null;
                 cboRank.EditValue = null;
+                cboVen.EditValue = null;
                 spinAlertExpiredDate.EditValue = null;
                 cboMedicineLine.Properties.Buttons[1].Visible = false;
                 cboServiceUnit.Properties.Buttons[1].Visible = false;
@@ -1758,6 +1759,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     cboRank.EditValue = null;
                 }
 
+                cboVen.EditValue = String.IsNullOrEmpty(hIS_MEDICINE_TYPE.VEN_CODE) ? null : hIS_MEDICINE_TYPE.VEN_CODE;
+
 
 
                 txtMedicineNationalCode.Text = hIS_MEDICINE_TYPE.MEDICINE_NATIONAL_CODE ?? "";
@@ -2227,6 +2230,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 InitHeinServiceType();
                 InitComboGender();
                 InitRank();
+                InitVen();
                 LoadDatatoComboPatientType();
                 InitMedicineType();
                 InitHowToUse();
@@ -2576,6 +2580,42 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 aColumnCode.Visible = true;
                 aColumnCode.VisibleIndex = 1;
                 aColumnCode.Width = 30;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitVen()
+        {
+            try
+            {
+                List<VenADO> venADOs = new List<VenADO>();
+                venADOs.Add(new VenADO("V", "Tối cần"));
+                venADOs.Add(new VenADO("E", "Thiết yếu"));
+                venADOs.Add(new VenADO("N", "Không thiết yếu"));
+
+                cboVen.Properties.DataSource = venADOs;
+                cboVen.Properties.DisplayMember = "VEN_CODE";
+                cboVen.Properties.ValueMember = "VEN_CODE";
+                cboVen.Properties.TextEditStyle = TextEditStyles.Standard;
+                cboVen.Properties.ImmediatePopup = true;
+                cboVen.ForceInitialize();
+                cboVen.Properties.View.Columns.Clear();
+                cboVen.Properties.PopupFormSize = new System.Drawing.Size(150, 90);
+
+                DevExpress.XtraGrid.Columns.GridColumn colCode = cboVen.Properties.View.Columns.AddField("VEN_CODE");
+                colCode.Caption = "Mã";
+                colCode.Visible = true;
+                colCode.VisibleIndex = 1;
+                colCode.Width = 40;
+
+                DevExpress.XtraGrid.Columns.GridColumn colName = cboVen.Properties.View.Columns.AddField("VEN_NAME");
+                colName.Caption = "Tên";
+                colName.Visible = true;
+                colName.VisibleIndex = 2;
+                colName.Width = 110;
             }
             catch (Exception ex)
             {
@@ -3218,6 +3258,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 {
                     medicineType.RANK = null;
                 }
+
+                medicineType.VEN_CODE = cboVen.EditValue != null && !String.IsNullOrEmpty(cboVen.EditValue.ToString()) ? cboVen.EditValue.ToString() : null;
 
                 medicineType.MEDICINE_NATIONAL_CODE = txtMedicineNationalCode.Text;
                 if (this.activeIngredients != null)
@@ -4157,6 +4199,21 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboRank.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboVen_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboVen.EditValue = null;
                 }
             }
             catch (Exception ex)
