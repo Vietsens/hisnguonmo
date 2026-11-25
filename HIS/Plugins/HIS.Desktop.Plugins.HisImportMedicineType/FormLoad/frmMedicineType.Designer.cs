@@ -137,6 +137,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn71 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn70 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn78 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnVen = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_ErrorLine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.BtnExportErrorLine = new DevExpress.XtraEditors.SimpleButton();
@@ -294,7 +295,8 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn69,
             this.gridColumn71,
             this.gridColumn70,
-            this.gridColumn78});
+            this.gridColumn78,
+            this.gridColumnVen});
             this.gridViewMedicineType.GridControl = this.gridControlMedicineType;
             this.gridViewMedicineType.Name = "gridViewMedicineType";
             this.gridViewMedicineType.OptionsCustomization.AllowFilter = false;
@@ -1094,6 +1096,16 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn78.Visible = true;
             this.gridColumn78.VisibleIndex = 77;
             this.gridColumn78.Width = 117;
+            //
+            // gridColumnVen
+            //
+            this.gridColumnVen.Caption = "Nhóm VEN";
+            this.gridColumnVen.FieldName = "VEN_CODE";
+            this.gridColumnVen.Name = "gridColumnVen";
+            this.gridColumnVen.OptionsColumn.AllowEdit = false;
+            this.gridColumnVen.Visible = true;
+            this.gridColumnVen.VisibleIndex = 78;
+            this.gridColumnVen.Width = 70;
             // 
             // Btn_ErrorLine
             // 
@@ -1487,5 +1499,6 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnSupplier;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn78;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn79;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnVen;
     }
 }

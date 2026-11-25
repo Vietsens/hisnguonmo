@@ -613,6 +613,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.spinNumOrder = new DevExpress.XtraEditors.SpinEdit();
             this.cboLoaiThuoc = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
             this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.cboVen = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewVen = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtTransferMediOrgCode = new DevExpress.XtraEditors.ButtonEdit();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciMedicineTypeCode = new DevExpress.XtraLayout.LayoutControlItem();
@@ -674,7 +676,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem406 = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtVolume = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem407 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem35 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.lciVen = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem412 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -1720,6 +1722,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.spinNumOrder.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboLoaiThuoc.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboVen.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewVen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTransferMediOrgCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciMedicineTypeCode)).BeginInit();
@@ -1781,7 +1785,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem406)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem407)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem35)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciVen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem412)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
@@ -6581,6 +6585,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControl6.Controls.Add(this.txtActiveIngrBhytName);
             this.layoutControl6.Controls.Add(this.spinNumOrder);
             this.layoutControl6.Controls.Add(this.cboLoaiThuoc);
+            this.layoutControl6.Controls.Add(this.cboVen);
             this.layoutControl6.Controls.Add(this.txtTransferMediOrgCode);
             this.layoutControl6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl6.Location = new System.Drawing.Point(3, 17);
@@ -7500,7 +7505,31 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.customGridLookUpEditWithFilterMultiColumn1View.Name = "customGridLookUpEditWithFilterMultiColumn1View";
             this.customGridLookUpEditWithFilterMultiColumn1View.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.customGridLookUpEditWithFilterMultiColumn1View.OptionsView.ShowGroupPanel = false;
-            // 
+            //
+            // cboVen
+            //
+            this.cboVen.Location = new System.Drawing.Point(160, 535);
+            this.cboVen.MenuManager = this.barManager1;
+            this.cboVen.Name = "cboVen";
+            this.cboVen.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboVen.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboVen.Properties.NullText = "";
+            this.cboVen.Properties.PopupSizeable = false;
+            this.cboVen.Properties.View = this.gridViewVen;
+            this.cboVen.Size = new System.Drawing.Size(71, 20);
+            this.cboVen.StyleController = this.layoutControl6;
+            this.cboVen.TabIndex = 87;
+            this.cboVen.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboVen_ButtonClick);
+            //
+            // gridViewVen
+            //
+            this.gridViewVen.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewVen.Name = "gridViewVen";
+            this.gridViewVen.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewVen.OptionsView.ShowGroupPanel = false;
+            //
             // txtTransferMediOrgCode
             // 
             this.txtTransferMediOrgCode.Location = new System.Drawing.Point(101, 561);
@@ -7577,7 +7606,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem406,
             this.txtVolume,
             this.layoutControlItem407,
-            this.emptySpaceItem35,
+            this.lciVen,
             this.layoutControlItem412,
             this.layoutControlItem31,
             this.layoutControlItem33,
@@ -8361,13 +8390,19 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.layoutControlItem407.TextSize = new System.Drawing.Size(92, 20);
             this.layoutControlItem407.TextToControlDistance = 5;
             // 
-            // emptySpaceItem35
-            // 
-            this.emptySpaceItem35.AllowHotTrack = false;
-            this.emptySpaceItem35.Location = new System.Drawing.Point(125, 684);
-            this.emptySpaceItem35.Name = "emptySpaceItem35";
-            this.emptySpaceItem35.Size = new System.Drawing.Size(108, 26);
-            this.emptySpaceItem35.TextSize = new System.Drawing.Size(0, 0);
+            // lciVen
+            //
+            this.lciVen.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciVen.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciVen.Control = this.cboVen;
+            this.lciVen.Location = new System.Drawing.Point(125, 684);
+            this.lciVen.Name = "lciVen";
+            this.lciVen.OptionsToolTip.ToolTip = "Nhóm VEN theo Thông tư 21/2013/TT-BYT: V - Tối cần, E - Thiết yếu, N - Không thiết yếu";
+            this.lciVen.Size = new System.Drawing.Size(108, 26);
+            this.lciVen.Text = "VEN:";
+            this.lciVen.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciVen.TextSize = new System.Drawing.Size(28, 20);
+            this.lciVen.TextToControlDistance = 5;
             // 
             // layoutControlItem412
             // 
@@ -17421,6 +17456,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.spinNumOrder.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboLoaiThuoc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboVen.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewVen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtTransferMediOrgCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciMedicineTypeCode)).EndInit();
@@ -17482,7 +17519,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem406)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtVolume)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem407)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem35)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciVen)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem412)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
@@ -19254,7 +19291,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         private DevExpress.XtraLayout.LayoutControlItem txtVolume;
         private DevExpress.XtraEditors.CheckButton btnEditInfo;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem407;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem35;
+        private DevExpress.XtraLayout.LayoutControlItem lciVen;
+        private DevExpress.XtraEditors.GridLookUpEdit cboVen;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewVen;
         private DevExpress.XtraEditors.CheckEdit chkBlockInTreat;
         private DevExpress.XtraEditors.CheckEdit chkWarningInTreat;
         private DevExpress.XtraEditors.SpinEdit spinUseInTreat;
