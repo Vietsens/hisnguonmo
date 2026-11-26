@@ -52,6 +52,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
         List<V_HIS_SERVICE_REQ_11> ListSelectedData = new List<V_HIS_SERVICE_REQ_11>();
         // Set while the code itself changes the search grid's ticks (reload, delete button) so SelectionChanged leaves ListSelectedData alone
         bool isSyncingSearchSelection = false;
+        // IDs ticked on the search grid at the last handled change: only these can be "unticked by the user" (a filter unticks the rows it hides)
+        HashSet<long> lastTickedIds = new HashSet<long>();
 
         public FormPrescription(Module module, ChoosePrescription choose)
             : base(module)
@@ -77,8 +79,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             {
                 InitComboStatus();
                 SetDefaultData();
-                gridViewServiceReqSearch.StartGrouping += gridViewServiceReqSearch_StartGrouping;
-                gridViewServiceReqSearch.EndGrouping += gridViewServiceReqSearch_EndGrouping;
+                // In check box mode grouping clears every tick and makes group rows selectable (no data row); a paged list does not need it
+                gridViewServiceReqSearch.OptionsCustomization.AllowGroup = false;
                 gridViewServiceReqSearch.ColumnFilterChanged += gridViewServiceReqSearch_ColumnFilterChanged;
                 FillDataToGrid();
                 timer1.Start();
@@ -163,6 +165,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
 
         private void FillDataToGridSearch(object param)
         {
+            bool wasSyncing = isSyncingSearchSelection;
             try
             {
                 isSyncingSearchSelection = true;
@@ -194,6 +197,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
                 gridControlServiceReqSearch.DataSource = listData;
                 gridControlServiceReqSearch.EndUpdate();
                 SelectChosenRowsOnSearchGrid();
+                RememberTickedRows();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -203,7 +207,28 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             }
             finally
             {
-                isSyncingSearchSelection = false;
+                isSyncingSearchSelection = wasSyncing;
+            }
+        }
+
+        private void RememberTickedRows()
+        {
+            try
+            {
+                lastTickedIds = new HashSet<long>();
+                int[] selectRows = gridViewServiceReqSearch.GetSelectedRows();
+                if (selectRows == null)
+                    return;
+                foreach (int handle in selectRows)
+                {
+                    V_HIS_SERVICE_REQ_11 row = gridViewServiceReqSearch.GetRow(handle) as V_HIS_SERVICE_REQ_11;
+                    if (row != null)
+                        lastTickedIds.Add(row.ID);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -536,43 +561,15 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             }
         }
 
-        // Grouping clears every tick on the search grid: ignore that SelectionChanged, then tick the chosen rows again
-        private void gridViewServiceReqSearch_StartGrouping(object sender, EventArgs e)
-        {
-            try
-            {
-                isSyncingSearchSelection = true;
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void gridViewServiceReqSearch_EndGrouping(object sender, EventArgs e)
-        {
-            try
-            {
-                isSyncingSearchSelection = true;
-                SelectChosenRowsOnSearchGrid();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            finally
-            {
-                isSyncingSearchSelection = false;
-            }
-        }
-
-        // A filter unticks the rows it hides: tick the chosen rows again so they are not dropped by a later untick
+        // A filter or the find panel unticks the rows it hides: tick the chosen rows again when they show up
         private void gridViewServiceReqSearch_ColumnFilterChanged(object sender, EventArgs e)
         {
+            bool wasSyncing = isSyncingSearchSelection;
             try
             {
                 isSyncingSearchSelection = true;
                 SelectChosenRowsOnSearchGrid();
+                RememberTickedRows();
             }
             catch (Exception ex)
             {
@@ -580,13 +577,14 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             }
             finally
             {
-                isSyncingSearchSelection = false;
+                isSyncingSearchSelection = wasSyncing;
             }
         }
 
         // Untick the deleted row on the search grid too, otherwise the next tick there would add it back
         private void UnselectSearchRow(long serviceReqId)
         {
+            bool wasSyncing = isSyncingSearchSelection;
             try
             {
                 isSyncingSearchSelection = true;
@@ -599,6 +597,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
                         break;
                     }
                 }
+                RememberTickedRows();
             }
             catch (Exception ex)
             {
@@ -606,7 +605,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
             }
             finally
             {
-                isSyncingSearchSelection = false;
+                isSyncingSearchSelection = wasSyncing;
             }
         }
 
@@ -642,19 +641,24 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.FormChoosePrescription
                 {
                     for (int i = 0; i < selectRows.Count(); i++)
                     {
-                        impMestCheckeds.Add((V_HIS_SERVICE_REQ_11)gridViewServiceReqSearch.GetRow(selectRows[i]));
+                        // A group row has no data row
+                        V_HIS_SERVICE_REQ_11 checkedRow = gridViewServiceReqSearch.GetRow(selectRows[i]) as V_HIS_SERVICE_REQ_11;
+                        if (checkedRow != null)
+                            impMestCheckeds.Add(checkedRow);
                     }
                 }
 
-                // Rows shown on the search grid but no longer ticked leave the chosen list; rows of other pages/searches stay
-                HashSet<long> checkedIds = new HashSet<long>(impMestCheckeds.Where(o => o != null).Select(o => o.ID));
+                // Only rows the user unticked leave the chosen list: ticked last time, still shown, not ticked now.
+                // Rows of other pages/searches and rows a filter hid and then shows again unticked stay.
+                HashSet<long> checkedIds = new HashSet<long>(impMestCheckeds.Select(o => o.ID));
                 HashSet<long> uncheckedIds = new HashSet<long>();
                 for (int i = 0; i < gridViewServiceReqSearch.DataRowCount; i++)
                 {
                     V_HIS_SERVICE_REQ_11 row = gridViewServiceReqSearch.GetRow(i) as V_HIS_SERVICE_REQ_11;
-                    if (row != null && !checkedIds.Contains(row.ID))
+                    if (row != null && lastTickedIds.Contains(row.ID) && !checkedIds.Contains(row.ID))
                         uncheckedIds.Add(row.ID);
                 }
+                lastTickedIds = checkedIds;
                 ListSelectedData.RemoveAll(o => uncheckedIds.Contains(o.ID));
                 collapsedServiceReqIds.ExceptWith(uncheckedIds);
 
