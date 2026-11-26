@@ -419,12 +419,70 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                         transReqLst = transReqLst.Where(o => o.TRANS_REQ_TYPE == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_TYPE.ID__BY_SERVICE).ToList();
                     if (transReqLst != null && transReqLst.Count > 0)
                         transReq = transReqLst.OrderByDescending(o => o.CREATE_TIME).ToList()[0];
+                    //vCong 63875: yeu cau thanh toan da het hieu luc thi khong in tong tien va ma QR cu len phieu
+                    if (transReq != null && !IsTransReqUsable(transReq))
+                        transReq = null;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Khi dich vu vien phi cuoi cung cua ho so bi xoa (hoac doi sang doi tuong khong phai tra tien), may chu khong tao
+        /// yeu cau thanh toan moi va cung khong huy yeu cau cu, nen yeu cau moi nhat van mang so tien cu (vCong 63875).
+        /// Yeu cau bi coi la het hieu luc khi: da huy, hoac co dich vu gan voi no da bi xoa / khong con tien benh nhan phai tra.
+        /// Khong kiem tra duoc (api loi, yeu cau khong gan dich vu) thi giu nguyen nhu truoc.
+        /// </summary>
+        private bool IsTransReqUsable(HIS_TRANS_REQ data)
+        {
+            bool result = true;
+            try
+            {
+                if (data.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__CANCEL)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("Yeu cau thanh toan da huy, khong in QR len phieu huong dan. TRANS_REQ_CODE: " + data.TRANS_REQ_CODE);
+                    return false;
+                }
+
+                CommonParam param = new CommonParam();
+                HisSeseTransReqFilter seseFilter = new HisSeseTransReqFilter();
+                seseFilter.TRANS_REQ_ID = data.ID;
+                var seseTransReqs = new BackendAdapter(param).Get<List<HIS_SESE_TRANS_REQ>>("api/HisSeseTransReq/Get", ApiConsumers.MosConsumer, seseFilter, param);
+                if (seseTransReqs == null || seseTransReqs.Count == 0)
+                    return true;
+
+                HisSereServFilter ssFilter = new HisSereServFilter();
+                ssFilter.IDs = seseTransReqs.Select(s => s.SERE_SERV_ID).Distinct().ToList();
+                var sereServs = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, ssFilter, param);
+                if (sereServs == null)
+                    return true;
+
+                List<long> invalidSereServIds = new List<long>();
+                foreach (var sese in seseTransReqs)
+                {
+                    var sereServ = sereServs.FirstOrDefault(o => o.ID == sese.SERE_SERV_ID);
+                    if (sereServ == null || sereServ.IS_DELETE == 1
+                        || (sese.PRICE > 0 && (sereServ.VIR_TOTAL_PATIENT_PRICE ?? 0) <= 0))
+                    {
+                        invalidSereServIds.Add(sese.SERE_SERV_ID);
+                    }
+                }
+
+                if (invalidSereServIds.Count > 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("Yeu cau thanh toan co dich vu da xoa hoac khong con tien benh nhan phai tra, khong in QR len phieu huong dan. TRANS_REQ_CODE: " + data.TRANS_REQ_CODE + ", SERE_SERV_ID: " + String.Join(",", invalidSereServIds));
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = true;
+            }
+            return result;
         }
 
         private decimal GetDefaultHeinRatio(string heinCardNumber, string treatmentTypeCode, string levelCode, string rightRouteCode, string facilityClassCode, string formerLevelCode = null, long point = 0)
