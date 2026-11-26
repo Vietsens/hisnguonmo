@@ -48,6 +48,7 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 - Nút `btnCollapseAll` "Thu gọn tất cả" (thêm mọi y lệnh đang có vào `collapsedServiceReqIds` + `CollapseAllDetails`) và `btnExpandAll` "Mở rộng tất cả" (xóa `collapsedServiceReqIds` + `ExpandMediMateRows`), bên trái nút Đồng ý (thay `emptySpaceItem2`). Không gọi API.
 - Chưa có cột giá: BA chốt cần Đơn giá bán, VAT bán, Thành tiền bán (24/10), đang hỏi lại nguồn giá vì form DS chưa giữ tồn.
 - Bảng thuốc/vật tư bắt đầu thẳng cột xóa (`LevelIndent = 45` = độ rộng cột STT) và không có thanh cuộn ngang riêng (`HorzScrollVisibility = Never`): cuộn theo thanh cuộn của lưới phải (cột Tên không ghim trái để trượt cùng nhịp với dòng bệnh nhân) — `LeftCoordChanged`/`TopRowChanged` của lưới phải gán `LeftCoord` cho mọi chi tiết đang mở (`SyncDetailLeftCoord`; TopRowChanged vì chi tiết nằm ngoài màn chưa nhận được vị trí cuộn); chi tiết tự cuộn (bấm ô bị khuất) thì bị kéo về theo lưới phải. Theo góp ý tester 26/10.
+- Đồng bộ dấu tích hai lưới (26/11/2026, anh Việt HAGL báo "tích rồi bỏ tích mà ô bên phải không làm mới"): bỏ tích ở lưới trái → bỏ đơn đó khỏi lưới phải (`gridViewServiceReqSearch_SelectionChanged` bỏ các đơn đang hiện ở lưới trái mà không còn tích; đơn của trang/lần tìm khác giữ nguyên). Tìm lại / chuyển trang → tích sẵn các đơn đã chọn (`SelectChosenRowsOnSearchGrid`). Nút xóa ở lưới phải bỏ tích luôn dòng bên trái (`UnselectSearchRow`), để lần tích sau không kéo đơn vừa xóa quay lại. Cờ `isSyncingSearchSelection` chặn SelectionChanged khi code tự đổi dấu tích. **Bẫy DevExpress 15.2:** nhóm cột xóa hết dấu tích, lọc/tìm nhanh bỏ tích các dòng bị ẩn → `StartGrouping`/`EndGrouping`/`ColumnFilterChanged` (gắn trong Load) tích lại các đơn đã chọn.
 
 ### Điều kiện nghiệp vụ
 - Không kê vượt tồn khả dụng (validation khi thêm dòng).
@@ -138,6 +139,7 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 26/11/2026 | dangth | **Việc 57699 (BV HAGL, anh Việt báo 26/11)** — Form DS (F3): bỏ tích đơn ở lưới trái thì bỏ đơn đó khỏi lưới đơn đã chọn (trước đây chỉ thêm, không bớt); tìm lại / chuyển trang tích sẵn các đơn đã chọn; nút xóa ở lưới phải bỏ tích dòng bên trái; nhóm / lọc / tìm nhanh ở lưới trái không làm mất đơn đã chọn. |
 | 24/10/2026 | dangth | **Việc 57699 / tài liệu 3485 (BV HAGL)** — Form DS (F3) "Danh sách đơn mua ngoài": lưới đơn đã chọn thành master-detail, mỗi dòng bệnh nhân có nút +/− hiện/ẩn thuốc/vật tư đã kê (Tên, Mã thuốc, Hàm lượng, Hoạt chất, Số lượng, ĐVT). Lấy bằng `api/HisServiceReqMety/Get` + `api/HisServiceReqMaty/Get` theo y lệnh mới chọn (chỉ đọc, không giữ tồn, ghi nhớ trong lần mở form), dựng dòng như `ProcessorSearch` của màn chính; mặc định mở rộng, nhớ dòng người dùng thu gọn. Không có cột giá. Partial mới `FormPrescription__MediMate.cs`. Đồng ý và màn chính không đổi. |
 | 24/10/2026 | dangth | **Việc 57699 / tài liệu 3485 — theo BA VIETNT trả lời mục I.6:** hiện thuốc/vật tư kê ngoài danh mục (tên kèm "(ngoài danh mục)", gộp theo tên; key `Plugins_ExpMestSaleCreate__NgoaiDanhMuc` trong Message.Lang vi/en); thêm nút "Thu gọn tất cả" / "Mở rộng tất cả" dưới lưới phải. Cột giá bán: chờ chốt nguồn giá. |
 | 26/10/2026 | dangth | **Việc 57699 / tài liệu 3485 — góp ý tester:** bảng thuốc/vật tư thẳng cột xóa, bỏ thanh cuộn ngang riêng của từng bảng, cuộn theo thanh cuộn của lưới phải. |
@@ -197,3 +199,7 @@ Kho `HIS_MEDI_STOCK_EXTY.IS_AUTO_APPROVE/IS_AUTO_EXECUTE` + `MOS.EXP_MEST.EXPORT
 - [ ] Bấm "−" → chỉ còn dòng bệnh nhân; tích thêm đơn khác → dòng đó vẫn thu gọn, đơn mới mở sẵn; "+" → hiện lại.
 - [ ] Xóa dòng rồi tích lại: hiện lại, mở sẵn. Mất mạng khi tích: dòng vẫn thêm, chưa có chi tiết; tích tiếp thì tự lấy lại.
 - [ ] Đồng ý: màn Xuất bán nhận đúng các đơn, giá/tồn như cũ. Đóng form không Đồng ý: không giữ tồn.
+- [ ] (26/11) Tích 3 đơn rồi bỏ tích 1 đơn ở lưới trái: lưới phải bỏ đúng đơn đó, các đơn khác giữ trạng thái mở/thu gọn. Tích lại: đơn về cuối lưới phải, mở sẵn.
+- [ ] (26/11) Tìm lại / sang trang khác rồi quay lại: đơn đã chọn vẫn ở lưới phải, lưới trái tích sẵn; bỏ tích ở trang đang xem không ảnh hưởng đơn của trang khác.
+- [ ] (26/11) Bấm X ở lưới phải: dòng bên trái bỏ tích, tích đơn khác thì đơn vừa xóa không quay lại. Ô tích tiêu đề: chọn / bỏ chọn tất cả đơn đang hiện.
+- [ ] (26/11) Lọc / nhóm cột / tìm nhanh ở lưới trái rồi bỏ: lưới phải giữ nguyên, dấu tích bên trái khớp lưới phải.
