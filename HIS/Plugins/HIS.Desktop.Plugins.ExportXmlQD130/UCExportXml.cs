@@ -285,6 +285,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 //vCong XXXXX - Đấu nối MDInsight soát lỗi hồ sơ XML.
                 //Chỉ tạo nút và cột khi viện đã khai đủ cấu hình; chưa khai thì màn hình giữ nguyên.
                 this.InitMdInsight();
+                //Việc 62218/62313 - Nút Gửi Kho DL Lào Cai: chỉ tạo khi viện đã khai HIS.KDL_LAOCAI.CONNECTION_INFO.
+                this.InitKdlLaoCai();
                 //Việc 61380 - Xuất XML hồ sơ đủ 48 giờ: tạo cột khi bật cấu hình; tự động chạy theo Gửi tự động, xuất tay ở menu chuột phải.
                 this.InitXml48h();
                 //Việc 60261 - Cột cảnh báo thiếu/sai thông tin thẻ, hồ sơ chính: chỉ tạo khi bật HIS.QD_130_BYT.XML1.CARD_INFO_WARNING.

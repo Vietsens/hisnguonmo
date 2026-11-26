@@ -285,6 +285,12 @@
     <Compile Include="UCExportXml___MdInsightFlow.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExportXml___KdlLaoCai.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="frmKdlLaoCaiResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UCExportXml___Xml48h.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -326,6 +332,7 @@
     <Compile Include="Base\Csdl4750Worker.cs" />
     <Compile Include="Base\CsdlCt3176Worker.cs" />
     <Compile Include="Base\Hoc3176KcbWorker.cs" />
+    <Compile Include="Base\KdlLaoCaiWorker.cs" />
     <Compile Include="Base\VlgKcbHoanTatWorker.cs" />
     <Compile Include="Base\CustomProvider.cs" />
     <Compile Include="ExportXml\HSTH01BHModels.cs" />
