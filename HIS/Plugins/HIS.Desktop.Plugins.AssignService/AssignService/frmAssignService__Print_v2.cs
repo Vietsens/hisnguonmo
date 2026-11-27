@@ -266,7 +266,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        private void InPhieuYeuCauDichVu(bool isSaveAndShow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null)
+        private void InPhieuYeuCauDichVu(bool isSaveAndShow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null, bool isAfterCreateQr = false)
         {
             try
             {                                
@@ -303,9 +303,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     var PrintServiceReqProcessor = previewType != null ? new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, (currentModule != null ? currentModule.RoomId : 0), previewType.Value, GetDocmentSigned)
                         : new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, (currentModule != null ? currentModule.RoomId : 0));
                     PrintServiceReqProcessor.IsSplitByPatientType = HisConfigCFG.IsPrintSplitByPatientType;
+                    ApplyTransReqQr(PrintServiceReqProcessor);
                     PrintServiceReqProcessor.SaveNPrint(isSaveAndShow);
                                            
-                    if (this.serviceReqComboResultSDO.SereServs != null)
+                    if (this.serviceReqComboResultSDO.SereServs != null && !isAfterCreateQr)
                     {
                         ProcessOpenVoBenhAn(serviceReqComboResultSDO.SereServs);
                         Inventec.Common.Logging.LogSystem.Debug("PRINT NOW serviceReqComboResultSDO.SereServs: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.serviceReqComboResultSDO.SereServs), this.serviceReqComboResultSDO.SereServs));

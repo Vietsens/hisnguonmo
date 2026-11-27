@@ -49,6 +49,8 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
         private const string PlatformOptionCFG = "Inventec.Common.DocumentViewer.PlatformOption";
         private const string ElectronicInvoicePublishingDelayTimeCFG = "HIS.Desktop.Plugins.TransactionBill.ElectronicInvoicePublishingDelayTime";
         private const string DeleteTransactionOnQrCancelCFG = "HIS.HIS_TRANS_REQ.DELETE_TRANSACTION_ON_QR_CANCEL";
+        /// <summary>vCong 58478: 1 = khi mo tu man Chi dinh dich vu thi cho chon dich vu can thu truoc khi tao QR</summary>
+        private const string AllowSelectServiceFromAssignServiceCFG = "HIS.Desktop.Plugins.CreateTransReqQR.AllowSelectServiceFromAssignService";
 
         internal static string TransactionBillSelect;
         internal static string BillTwoOption;
@@ -59,6 +61,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
         internal static int PlatformOption;
         internal static decimal ElectronicInvoicePublishingDelayTime;
         internal static string DeleteTransactionOnQrCancel;
+        internal static bool AllowSelectServiceFromAssignService;
         internal static void LoadConfig()
         {
             try
@@ -77,6 +80,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
                 PatientTypeCode__VP = GetValue(CONFIG_KEY__PATIENT_TYPE_CODE__VP);
                 PatientTypeId__VP = GetPatientTypeByCode(PatientTypeCode__VP).ID;
                 DeleteTransactionOnQrCancel = GetValue(DeleteTransactionOnQrCancelCFG);
+                AllowSelectServiceFromAssignService = GetValue(AllowSelectServiceFromAssignServiceCFG) == "1";
             }
             catch (Exception ex)
             {

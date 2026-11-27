@@ -1032,7 +1032,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 chiDinhDichVuADO.ListSereServDeposit,
                                 chiDinhDichVuADO.ListSereServBill,
                                 transaction,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                 Configs
                                 );
 
@@ -1109,7 +1109,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             chiDinhDichVuADO.ListSereServDeposit,
                             chiDinhDichVuADO.ListSereServBill,
                             transaction,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                 Configs);
 
                         Print.PrintData(printTypeCode, fileName, mps000040RDO, printNow, ref result, roomId, isView, PreviewType, lstSereServ_40.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -1233,7 +1233,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 chiDinhDichVuADO.ListSereServDeposit,
                                 chiDinhDichVuADO.ListSereServBill,
                                 transaction,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                 Configs
                                 );
 
@@ -1309,7 +1309,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             chiDinhDichVuADO.ListSereServDeposit,
                             chiDinhDichVuADO.ListSereServBill,
                             transaction,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                 Configs);
                         Print.PrintData(printTypeCode, fileName, mps000038RDO, printNow, ref result, roomId, isView, PreviewType, lstSereServ_38.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
                     }
@@ -1437,7 +1437,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                         chiDinhDichVuADO.ListSereServDeposit,
                                         chiDinhDichVuADO.ListSereServBill,
                                         transaction,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                 Configs
                                         );
 
@@ -1475,7 +1475,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                     chiDinhDichVuADO.ListSereServDeposit,
                                     chiDinhDichVuADO.ListSereServBill,
                                     transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs
                                     );
 
@@ -1558,7 +1558,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                     chiDinhDichVuADO.ListSereServDeposit,
                                     chiDinhDichVuADO.ListSereServBill,
                                     transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs);
 
                                 Print.PrintData(printTypeCode, fileName, mps000036RDO, printNow, ref result, roomId, isView, PreviewType, Pttt36.ToList().Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -1595,7 +1595,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 chiDinhDichVuADO.ListSereServDeposit,
                                 chiDinhDichVuADO.ListSereServBill,
                                 transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs);
 
                             Print.PrintData(printTypeCode, fileName, mps000036RDO, printNow, ref result, roomId, isView, PreviewType, lstSereServ_36.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -1727,7 +1727,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                         chiDinhDichVuADO.ListSereServDeposit,
                                         chiDinhDichVuADO.ListSereServBill,
                                         transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs
                                         );
 
@@ -1765,7 +1765,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                     chiDinhDichVuADO.ListSereServDeposit,
                                     chiDinhDichVuADO.ListSereServBill,
                                     transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs
                                     );
 
@@ -1849,7 +1849,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                     chiDinhDichVuADO.ListSereServDeposit,
                                     chiDinhDichVuADO.ListSereServBill,
                                     transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs);
                                 Print.PrintData(printTypeCode, fileName, mps000031RDO, printNow, ref result, roomId, isView, PreviewType, pttt31.ToList().Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
                             }
@@ -1885,7 +1885,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 chiDinhDichVuADO.ListSereServDeposit,
                                 chiDinhDichVuADO.ListSereServBill,
                                 transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs);
                             Print.PrintData(printTypeCode, fileName, mps000031RDO, printNow, ref result, roomId, isView, PreviewType, lstSereServ_31.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
                         }
@@ -2018,7 +2018,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 chiDinhDichVuADO.ListSereServDeposit,
                                 chiDinhDichVuADO.ListSereServBill,
                                 transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs
                                 );
 
@@ -2104,7 +2104,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             chiDinhDichVuADO.ListSereServDeposit,
                             chiDinhDichVuADO.ListSereServBill,
                             transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs);
 
                         Print.PrintData(printTypeCode, fileName, mps000030RDO, printNow, ref result, roomId, isView, PreviewType, lstSereServ_30.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -2237,7 +2237,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 chiDinhDichVuADO.ListSereServDeposit,
                                 chiDinhDichVuADO.ListSereServBill,
                                 transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs);
 
                             Print.PrintData(printTypeCode, fileName, mps000029RDO, printNow, ref result, roomId, isView, PreviewType, lstSereServ_29.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -2322,7 +2322,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             chiDinhDichVuADO.ListSereServDeposit,
                             chiDinhDichVuADO.ListSereServBill,
                             transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                                  Configs);
 
                         Print.PrintData(printTypeCode, fileName, mps000029RDO, printNow, ref result, roomId, isView, PreviewType, lstSereServ_29.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -2473,7 +2473,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 chiDinhDichVuADO.ListSereServDeposit,
                                 chiDinhDichVuADO.ListSereServBill,
                                 transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                         Configs
                                 );
 
@@ -2573,7 +2573,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 chiDinhDichVuADO.ListSereServDeposit,
                                 chiDinhDichVuADO.ListSereServBill,
                                 transaction,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                         Configs
 
                             );
@@ -2712,7 +2712,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 lstSereServExt_26,
                                 BackendDataWorker.Get<HIS_SERVICE_CONDITION>(),
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                                 );
 
                             Print.PrintData(printTypeCode, fileName, mps000026RDO, printNow, ref result, roomId, isView, PreviewType, lstSereServ_26.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -2790,7 +2790,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             lstSereServExt_26,
                             BackendDataWorker.Get<HIS_SERVICE_CONDITION>(),
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                             );
 
                         Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReq), serviceReq));
@@ -2910,7 +2910,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                         transaction,
                         treatment,
                         Configs,
-                         TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null);
+                         TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null);
 
                     Print.PrintData(printTypeCode, fileName, rdo, printNow, ref result, roomId, isView, PreviewType, listSereServDic.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
                 }
@@ -3016,7 +3016,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 BackendDataWorker.Get<V_HIS_SERVICE>(),
                                 lstExt,
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                                 );
 
                             Print.PrintData(printTypeCode, fileName, mps000363RDO, printNow, ref result, roomId, isView, PreviewType, item.Value.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -3068,7 +3068,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             BackendDataWorker.Get<V_HIS_SERVICE>(),
                             lstExt, 
                             Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                             );
 
                         Print.PrintData(printTypeCode, fileName, mps000363RDO, printNow, ref result, roomId, isView, PreviewType, dicSereServData[serviceReq.ID].Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -3165,7 +3165,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 BackendDataWorker.Get<V_HIS_SERVICE>(),
                                 lstExt, 
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                                 );
 
                             Print.PrintData(printTypeCode, fileName, mps000364RDO, printNow, ref result, roomId, isView, PreviewType, item.Value.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -3217,7 +3217,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             BackendDataWorker.Get<V_HIS_SERVICE>(),
                             lstExt,
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                             );
 
                         Print.PrintData(printTypeCode, fileName, mps000364RDO, printNow, ref result, roomId, isView, PreviewType, dicSereServData[serviceReq.ID].Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -3314,7 +3314,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 BackendDataWorker.Get<V_HIS_SERVICE>(),
                                 lstExt,
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                                 );
 
                             Print.PrintData(printTypeCode, fileName, mps000365RDO, printNow, ref result, roomId, isView, PreviewType, item.Value.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -3366,7 +3366,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             BackendDataWorker.Get<V_HIS_SERVICE>(),
                             lstExt,
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                             );
 
                         Print.PrintData(printTypeCode, fileName, mps000365RDO, printNow, ref result, roomId, isView, PreviewType, dicSereServData[serviceReq.ID].Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -3460,7 +3460,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 BackendDataWorker.Get<V_HIS_SERVICE>(),
                                 lstExt,
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                                 );
 
                             Print.PrintData(printTypeCode, fileName, mps000366RDO, printNow, ref result, roomId, isView, PreviewType, item.Value.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -3511,7 +3511,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             BackendDataWorker.Get<V_HIS_SERVICE>(),
                             lstExt,
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null);
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null);
                         Print.PrintData(printTypeCode, fileName, mps000366RDO, printNow, ref result, roomId, isView, PreviewType, dicSereServData[serviceReq.ID].Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
                     }
                 }
@@ -3603,7 +3603,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 BackendDataWorker.Get<V_HIS_SERVICE>(),
                                 lstExt,
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                                 );
 
                             Print.PrintData(printTypeCode, fileName, mps000367RDO, printNow, ref result, roomId, isView, PreviewType, item.Value.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -3654,7 +3654,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             BackendDataWorker.Get<V_HIS_SERVICE>(),
                             lstExt,
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null);
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null);
                         Print.PrintData(printTypeCode, fileName, mps000367RDO, printNow, ref result, roomId, isView, PreviewType, dicSereServData[serviceReq.ID].Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
                     }
                 }
@@ -3746,7 +3746,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                                 BackendDataWorker.Get<V_HIS_SERVICE>(),
                                 lstExt,
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null
                                 );
 
                             Print.PrintData(printTypeCode, fileName, mps000368RDO, printNow, ref result, roomId, isView, PreviewType, item.Value.Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
@@ -3797,7 +3797,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                             BackendDataWorker.Get<V_HIS_SERVICE>(),
                             lstExt,
                                 Configs,
-                                TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null);
+                                TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null);
                         Print.PrintData(printTypeCode, fileName, mps000368RDO, printNow, ref result, roomId, isView, PreviewType, dicSereServData[serviceReq.ID].Count, this.SavedData, serviceReq.TREATMENT_CODE, this.DlgSendResultSigned);
                     }
                 }

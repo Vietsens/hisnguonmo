@@ -253,6 +253,9 @@
     <Compile Include="CreateTransReqQR\frmCreateTransReqQR.Designer.cs">
       <DependentUpon>frmCreateTransReqQR.cs</DependentUpon>
     </Compile>
+    <Compile Include="CreateTransReqQR\frmCreateTransReqQR__SelectService.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CreateTransReqQR\frmSubScreen.cs">
       <SubType>Form</SubType>
     </Compile>

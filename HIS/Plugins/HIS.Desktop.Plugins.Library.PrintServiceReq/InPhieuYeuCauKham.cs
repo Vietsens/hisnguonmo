@@ -152,7 +152,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
                         chiDinhDichVuADO.ListSereServBill,
                         transaction,
                         chiDinhDichVuADO.Gate,
-                        TransReq != null && TransReq.Count > 0 ? (Config.HisTranReqQRCodeTreatmentPrint ? TransReq.FirstOrDefault(o=>o.ID == serviceReq.TRANS_REQ_ID) : TransReq.OrderByDescending(o => o.CREATE_TIME).FirstOrDefault()) : null,
+                        TransReq != null && TransReq.Count > 0 ? TransReqSelector.Choose(TransReq, serviceReq.TRANS_REQ_ID) : null,
                         Configs,
                         chiDinhDichVuADO.ListCard);
 
