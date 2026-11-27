@@ -61,10 +61,26 @@ Code ở `UCExportXml___InTreatment.cs` + một chỗ trong `ProcessExportXmlDet
 | Thư viện cũ | Lời gọi `RunInTreatment` nằm trong hàm riêng `[MethodImpl(NoInlining)]` `RunXmlInTreatment`: máy trạm còn thư viện XML130 trước 28/10 (chưa có `RunInTreatment`) thì chỉ hồ sơ đang điều trị báo chuỗi `XmlDangDieuTriThuVienChuaHoTro`, các hồ sơ khác vẫn xuất. Gọi thẳng trong `ProcessExportXmlDetail` thì JIT lỗi `MissingMethodException` cả hàm, mọi lượt Xuất XML hỏng (harness 60262 vai trò V1OLD) |
 | Không gắn | Gửi XML 130 / XML 3176 / thông tuyến (thủ công + tự động), Xuất XML thông tuyến, Xuất gộp, menu Xuất XML giám định y khoa, Xuất XML 130 dưới dạng Excel, Kiểm tra hồ sơ, MDInsight, XML 48 giờ (2b), check-in, Đồng bộ KCB: như cũ |
 
+## 2e. Chuẩn dữ liệu đầu ra sửa đổi QĐ 3176, đợt 1 (file 261116_Chuan du lieu dau ra (sua 3176)_Final)
+
+Phân tích và thiết kế ở `docs/B_KyThuat_ExportXmlQD130_ChuanXml3176SuaDoi.md` và `docs/B_ThietKe_ExportXmlQD130_ChuanXml3176SuaDoi.md` (phương án A, chốt 27/11/2026). Chỉ sửa thư viện `common/HISUTIL/His.Bhyt`, plugin không đổi.
+
+| Thông tin | Giá trị |
+|-----------|---------|
+| Bật | Không có khóa cấu hình. Áp dụng cho mọi lượt chạy chế độ 3176 (nút XML 3176, gửi tự động `isXML3176`) ngay khi deploy DLL thư viện. Chế độ 130 không đổi (đã so từng byte XML1/7/14 trước-sau trên dữ liệu giả lập) |
+| Project mới | `His.Bhyt.ExportXml.XML130.Common`: `TreatmentTypeCodeResolver`, `HeinObjectCodeResolver`, `SignerCodeResolver`, `EfModelReader`, `Xml3176Rules` (giả định GĐ của BA gom một chỗ). Deploy thêm DLL này vào `ReferencedAssemblies` |
+| XML1 | Thêm `MA_BENH_KHAC` (thẻ 29, từ `HIS_TRACKING.ICD_DIFF_CODE`), `T_BNCCT_LK` (thẻ 51, `CO_PAID_ACCUMULATE_AMOUNT` đọc qua PropertyInfo); `MAHUYEN_CU_TRU`, `T_THUOC`, `T_VTYT` bỏ thẻ; `MA_LOAI_KCB` và `MA_DOITUONG_KCB` nhiều mã nối `;` theo thứ tự đổi diện; `SO_NGAY_DTRI` theo mã cuối; `MA_KHOA` mọi khoa, bỏ trùng mã BHYT; `GIAY_CHUYEN_TUYEN` = `TRANSFER_IN_CODE`; `CHAN_DOAN_VAO` dự phòng `IN_ICD_NAME`; `MA_TTDV` = GPHN, không có thì CCCD; `SO_CCCD` bỏ qua chuỗi rỗng |
+| XML7 | Thêm `NGAY_VAO_NOI_TRU` (thẻ 6, theo `NGAY_VAO_NOI_TRU_OPTION` như XML14); `MA_TTDV` = GPHN/CCCD |
+| XML2 | Máu/chế phẩm máu không có `HAM_LUONG`; `MA_CSKCB_THUOC` thêm `C.`; thuốc của DVKT không thực hiện: `MA_DICH_VU` = mã DV cha + `_TB`; `SO_DANG_KY` bỏ khoảng trắng |
+| XML6, 9, 12, 13, 14 | `MAHUYEN_CU_TRU` (6, 9, 12), XML13 `MA_BAC_SI`, XML14 `MA_TTDV` bỏ thẻ; XML14 `NGAY_HEN_KL` 12 ký tự, `MA_DOITUONG_KCB` nhiều mã; XML12 nhận cờ `IS_3176` |
+| XML8, 10, 11 | XML8 `MA_LOAI_KCB` nhiều mã; XML8–11 `MA_TTDV` = GPHN/CCCD; XML10 `CHAN_DOAN_RV` = chẩn đoán ra viện + "dưỡng thai"; XML11 họ tên cha/mẹ chỉ khi trẻ dưới 7 tuổi |
+| Chưa làm | Đợt 2 (tính tiền MUC_HUONG/T_BNCCT/T_BNTT, trần 6 tháng lương cơ sở) chờ BA chốt Q2, Q3, Q7, Q8. Bảng Check-in chưa có cờ `IS_3176` nên chưa áp nhiều mã |
+
 ## 3. Changelog
 
 | Ngày | Người sửa | Mô tả thay đổi |
 |------|-----------|-----------------|
+| 27/11/2026 | vuongnd | Chuẩn dữ liệu đầu ra sửa đổi QĐ 3176, đợt 1 (mục 2e), chỉ sửa thư viện His.Bhyt. Kèm sửa lỗi sẵn có toàn cục: XML3 ưu tiên toán tử khi ghép `_GT` (cấu hình gây tê khác 1 vẫn ghép do `A \|\| B && C`), Check-in `SO_CCCD` lặp CCCD thay vì lùi sang CMND, chặn lỗi null/vượt chỉ số ở XML2, XML3, XML11, XML13 (`OUT_CODE` ngắn/không phải số), Check-in. Chạy thử dữ liệu giả lập: chế độ 130 giống từng byte bản trước, chế độ 3176 chỉ khác đúng các trường trên. |
 | 06/11/2026 | dangth | Việc 60262 sau phản biện độc lập 2 hướng (không lỗi mức cao/trung bình): tệp hồ sơ đang điều trị không đi qua bước ký chữ ký đơn vị (trước đó bật Ký file/HSM thì tệp kiểm tra cũng bị ký, trông như nộp cổng được và tốn lượt ký); log chọn chế độ hồ sơ đang điều trị hạ xuống Debug (trong vòng lặp). Harness thêm ca ký số với máy chủ EMR giả (bản trước khi sửa ký cả tệp kiểm tra) - tổng 101/101. |
 | 06/11/2026 | dangth | Việc 60262 (BV Đa khoa tỉnh Điện Biên): khóa `HIS.QD_130_BYT.EXPORT_XML_IN_TREATMENT = 1` thì hồ sơ chưa kết thúc điều trị xuất được XML 130 để kiểm tra (mục 2d): `ProcessExportXmlDetail` chọn `RunInTreatment` của thư viện cho hồ sơ `IS_PAUSE` khác 1, tên tệp thêm đuôi `_DANG_DIEU_TRI`, bỏ XML12 cho hồ sơ này; lời gọi thư viện tách hàm riêng không inline + bắt `MissingMethodException` (chuỗi mới `XmlDangDieuTriThuVienChuaHoTro`). Harness `PTTK\60262\harness_test` (dữ liệu thật CSDL test, gọi thẳng hàm sinh tệp trên DLL thật) 94/94: bản sửa 42, bản gốc 26, thư viện cũ 20, đối chứng v1 1, so sánh chéo 5 - khóa tắt sinh y hệt bản gốc. |
 | 04/11/2026 | dangth | Việc 60261, sửa theo phản biện bản vá 2.412: (1) `ConfirmCardInfoAsync` khóa UC trong lúc nạp lại hồ sơ. Trước đây người dùng đổi dòng chọn/ô XML 3176/bấm Tìm kiếm trong lúc chờ thì thao tác sau cổng xuất/gửi danh sách chưa kiểm, khóa = 2 bị lách; Develop và bản 2.412 cùng lỗi. (2) Chuỗi `CardInfoTongKet` bỏ câu "Đây là cảnh báo, không chặn xuất/gửi XML", vì câu này sai khi khóa = 2. Harness 104/104 (thêm B8; đối chứng DLL trước sửa trượt đúng B8a, B8b). |
