@@ -242,10 +242,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 && (int)tongCong != tongCong
                                 )
                             {
-                                emteMedicineType.AMOUNT = (item.CONVERT_RATIO ?? 0) > 0 ? (decimal)tongCong / (item.CONVERT_RATIO ?? 1) : (decimal)tongCong;
+                                emteMedicineType.AMOUNT = (item.CONVERT_RATIO ?? 0) > 0 ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((decimal)tongCong, (item.CONVERT_RATIO ?? 1)) : (decimal)tongCong;
                             }
                             else
-                                emteMedicineType.AMOUNT = (item.CONVERT_RATIO ?? 0) > 0 ? ((item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1)) : (item.AMOUNT ?? 0);
+                                emteMedicineType.AMOUNT = (item.CONVERT_RATIO ?? 0) > 0 ? (HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1))) : (item.AMOUNT ?? 0);
 
                             emteMedicineType.MEDICINE_TYPE_ID = item.ID;
                             if (service != null)
@@ -281,7 +281,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             MOS.EFMODEL.DataModels.HIS_EMTE_MATERIAL_TYPE emteMaterialType = new MOS.EFMODEL.DataModels.HIS_EMTE_MATERIAL_TYPE();
 
-                            emteMaterialType.AMOUNT = (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1);
+                            emteMaterialType.AMOUNT = HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1));
 
                             emteMaterialType.MATERIAL_TYPE_ID = item.ID;
                             if (service != null)
@@ -308,7 +308,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             MOS.EFMODEL.DataModels.HIS_EMTE_MEDICINE_TYPE emteMedicineType = new MOS.EFMODEL.DataModels.HIS_EMTE_MEDICINE_TYPE();
                             emteMedicineType.MEDICINE_TYPE_ID = item.ID;
-                            emteMedicineType.AMOUNT = (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1);
+                            emteMedicineType.AMOUNT = HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1));
                             emteMedicineType.MEDICINE_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                             emteMedicineType.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                             if (service != null)
@@ -332,7 +332,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         else if (item.DataType == VATTU_DM)
                         {
                             MOS.EFMODEL.DataModels.HIS_EMTE_MATERIAL_TYPE emteMaterialType = new MOS.EFMODEL.DataModels.HIS_EMTE_MATERIAL_TYPE();
-                            emteMaterialType.AMOUNT = (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1);
+                            emteMaterialType.AMOUNT = HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1));
                             emteMaterialType.MATERIAL_TYPE_ID = item.ID;
                             emteMaterialType.MATERIAL_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                             if (service != null)

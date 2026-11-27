@@ -320,8 +320,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
 
                             if (mediExpmestADO.CONVERT_RATIO.HasValue && expMestMedicineGroup.First().USE_ORIGINAL_UNIT_FOR_PRES != 1)
                             {
-                                mediExpmestADO.AMOUNT = mediExpmestADO.AMOUNT * mediExpmestADO.CONVERT_RATIO.Value;
-                                mediExpmestADO.PRES_AMOUNT = mediExpmestADO.PRES_AMOUNT * mediExpmestADO.CONVERT_RATIO.Value;
+                                mediExpmestADO.AMOUNT = Config.ToConvertAmount(mediExpmestADO.AMOUNT, mediExpmestADO.CONVERT_RATIO.Value) ?? 0;
+                                mediExpmestADO.PRES_AMOUNT = Config.ToConvertAmount(mediExpmestADO.PRES_AMOUNT, mediExpmestADO.CONVERT_RATIO.Value);
                                 mediExpmestADO.PRICE = mediExpmestADO.PRICE / mediExpmestADO.CONVERT_RATIO.Value;
                                 mediExpmestADO.SERVICE_UNIT_NAME = mediExpmestADO.CONVERT_UNIT_NAME;
                             }
@@ -480,8 +480,8 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
 
                             if (mateExpmestADO.CONVERT_RATIO.HasValue && expMestMaterialGroup.First().USE_ORIGINAL_UNIT_FOR_PRES != 1)
                             {
-                                mateExpmestADO.AMOUNT = mateExpmestADO.AMOUNT * mateExpmestADO.CONVERT_RATIO.Value;
-                                mateExpmestADO.PRES_AMOUNT = mateExpmestADO.PRES_AMOUNT * mateExpmestADO.CONVERT_RATIO.Value;
+                                mateExpmestADO.AMOUNT = Config.ToConvertAmount(mateExpmestADO.AMOUNT, mateExpmestADO.CONVERT_RATIO.Value) ?? 0;
+                                mateExpmestADO.PRES_AMOUNT = Config.ToConvertAmount(mateExpmestADO.PRES_AMOUNT, mateExpmestADO.CONVERT_RATIO.Value);
                                 mateExpmestADO.PRICE = mateExpmestADO.PRICE / mateExpmestADO.CONVERT_RATIO.Value;
                                 mateExpmestADO.SERVICE_UNIT_NAME = mateExpmestADO.CONVERT_UNIT_NAME;
                             }

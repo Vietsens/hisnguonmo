@@ -109,6 +109,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal const string IS_CHOOSE_DRUGSTORE = "HIS.Desktop.Plugins.AssignPrescription.DefaultDrugStoreCode"; // co chọn nhà thuoc hay khong//Se bo sau
         internal const string CONFIG_KEY__DONT_PRES_EXPIRED_ITEM = "MOS.HIS_MEDI_STOCK.DONT_PRES_EXPIRED_ITEM";
         internal const string CONFIG_KEY__WARNING_ODD_CONVERT_AMOUNT = "HIS.Desktop.Plugins.AssignPrescription.IsWarningOddConvertAmount";
+        internal const string CONFIG_KEY__IsAllowOddConvertUnitAmount = "HIS.Desktop.Plugins.AssignPrescription.IsAllowOddConvertUnitAmount";
         private const string CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION = "HIS.Desktop.Plugins.AssignPrescriptionPK.IsCheckPreviousPrescripton";
         private const string CONFIG_KEY__IsAutoRoundUpByConvertUnitRatio = "HIS.Desktop.Plugins.AssignPrescriptionPK.IsAutoRoundUpByConvertUnitRatio";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_REQ_USER_MUST_HAVE_DIPLOMA = "MOS.HIS_SERVICE_REQ.REQ_USER_MUST_HAVE_DIPLOMA";
@@ -268,6 +269,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static bool IsShowingInTheSameDepartment;
         internal static string BhytColorCode;
         internal static bool IsWarningOddConvertAmount;
+        /// <summary>
+        /// #48132 - 1: Cho phép kê số lượng theo đơn vị quy đổi bị lẻ (phần đơn vị gốc làm tròn 6 chữ số thập phân), hiển thị lại làm tròn đúng số đã kê
+        /// </summary>
+        internal static bool IsAllowOddConvertUnitAmount;
         internal static bool IsDontPresExpiredTime;
         internal static string DefaultDrugStoreCode;//Se bo sau
         internal static string IsUsingWarningHeinFee;
@@ -659,6 +664,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 IsNotAutoGenerateTutorial = GetValue(CONFIG_KEY__HIS_Desktop_Plugins_AssignPrescription_IsNotAutoGenerateTutorial) == GlobalVariables.CommonStringTrue;
                 IsSplitMedicineByHtu = GetValue(CONFIG_KEY__HIS_Desktop_Plugins_AssignPrescription_IsSplitMedicineByHtu) == GlobalVariables.CommonStringTrue;
                 IsWarningOddConvertAmount = GetValue(CONFIG_KEY__WARNING_ODD_CONVERT_AMOUNT) == GlobalVariables.CommonStringTrue;
+                IsAllowOddConvertUnitAmount = GetValue(CONFIG_KEY__IsAllowOddConvertUnitAmount) == GlobalVariables.CommonStringTrue;
                 IsDontPresExpiredTime = GetValue(CONFIG_KEY__DONT_PRES_EXPIRED_ITEM) == GlobalVariables.CommonStringTrue;
                 IsUsingWarningHeinFee = GetValue(CONFIG_KEY__IsUsingWarningHeinFee);
                 InPatientPrescription__ShowRoundAvailableAmount = GetValue(CONFIG_KEY__ShowRoundAvailableAmount) == GlobalVariables.CommonStringTrue;

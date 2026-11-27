@@ -109,9 +109,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                         MestMetyUnitWorker.UpdateUnit(this, GlobalStore.HisMestMetyUnit);
                     }
 
-                    this.AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (this.AMOUNT * inputData.CONVERT_RATIO.Value) : this.AMOUNT;
+                    this.AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, inputData.CONVERT_RATIO.Value)) : this.AMOUNT;
                     this.PRICE = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (this.PRICE / inputData.CONVERT_RATIO.Value) : this.PRICE;
-                    this.RAW_AMOUNT = (this.RAW_AMOUNT.HasValue && (this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (this.RAW_AMOUNT * inputData.CONVERT_RATIO.Value) : this.RAW_AMOUNT;
+                    this.RAW_AMOUNT = (this.RAW_AMOUNT.HasValue && (this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(this.RAW_AMOUNT, inputData.CONVERT_RATIO.Value)) : this.RAW_AMOUNT;
                     if (!String.IsNullOrEmpty(inputData.MORNING))
                     {
                         this.Sang = ConvertNumber.ProcessNumberInterger(inputData.MORNING);
@@ -232,8 +232,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
 
                     if (inputData.CONVERT_RATIO.HasValue)
                     {
-                        this.AMOUNT = this.AMOUNT * inputData.CONVERT_RATIO.Value;
-                        this.RAW_AMOUNT = (this.RAW_AMOUNT.HasValue && (this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (this.RAW_AMOUNT * inputData.CONVERT_RATIO.Value) : this.RAW_AMOUNT;
+                        this.AMOUNT = WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, inputData.CONVERT_RATIO.Value);
+                        this.RAW_AMOUNT = (this.RAW_AMOUNT.HasValue && (this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(this.RAW_AMOUNT, inputData.CONVERT_RATIO.Value)) : this.RAW_AMOUNT;
                     }
                     // Load lại hướng dẫn sử dụng (HDSD) đã lưu khi chọn đơn mẫu vật tư.
                     // Yêu cầu view V_HIS_EMTE_MATERIAL_TYPE có cột TUTORIAL (cần cập nhật EFMODEL).
@@ -353,8 +353,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     MestMetyUnitWorker.UpdateUnit(this, GlobalStore.HisMestMetyUnit);
                 }
 
-                this.PRES_AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (this.PRES_AMOUNT * inputData.CONVERT_RATIO.Value) : this.PRES_AMOUNT;
-                this.AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (this.AMOUNT * inputData.CONVERT_RATIO.Value) : this.AMOUNT;
+                this.PRES_AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(this.PRES_AMOUNT, inputData.CONVERT_RATIO.Value)) : this.PRES_AMOUNT;
+                this.AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, inputData.CONVERT_RATIO.Value)) : this.AMOUNT;
                 this.PRICE = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (this.PRICE / inputData.CONVERT_RATIO.Value) : this.PRICE;
 
                 var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == inputData.MEDICINE_TYPE_ID);
@@ -613,8 +613,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     MestMetyUnitWorker.UpdateUnit(this, GlobalStore.HisMestMetyUnit);
                 }
 
-                this.PRES_AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (this.PRES_AMOUNT * inputData.CONVERT_RATIO.Value) : this.PRES_AMOUNT;
-                this.AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (this.AMOUNT * inputData.CONVERT_RATIO.Value) : this.AMOUNT;
+                this.PRES_AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(this.PRES_AMOUNT, inputData.CONVERT_RATIO.Value)) : this.PRES_AMOUNT;
+                this.AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, inputData.CONVERT_RATIO.Value)) : this.AMOUNT;
                 this.PRICE = ((this.IsUseOrginalUnitForPres ?? false) == false && inputData.CONVERT_RATIO.HasValue) ? (this.PRICE / inputData.CONVERT_RATIO.Value) : this.PRICE;
 
                 if (inputData.OTHER_PAY_SOURCE_ID.HasValue && inputData.OTHER_PAY_SOURCE_ID.Value > 0)
@@ -759,8 +759,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
 
                 if (inputData.CONVERT_RATIO.HasValue)
                 {
-                    this.PRES_AMOUNT = this.PRES_AMOUNT * inputData.CONVERT_RATIO.Value;
-                    this.AMOUNT = this.AMOUNT * inputData.CONVERT_RATIO.Value;
+                    this.PRES_AMOUNT = WarningOddConvertWorker.ToConvertAmount(this.PRES_AMOUNT, inputData.CONVERT_RATIO.Value);
+                    this.AMOUNT = WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, inputData.CONVERT_RATIO.Value);
                     this.PRICE = this.PRICE / inputData.CONVERT_RATIO.Value;
                 }
 
@@ -905,8 +905,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, inputData);
                 if (inputData.CONVERT_RATIO.HasValue)
                 {
-                    this.PRES_AMOUNT = this.PRES_AMOUNT * inputData.CONVERT_RATIO.Value;
-                    this.AMOUNT = this.AMOUNT * inputData.CONVERT_RATIO.Value;
+                    this.PRES_AMOUNT = WarningOddConvertWorker.ToConvertAmount(this.PRES_AMOUNT, inputData.CONVERT_RATIO.Value);
+                    this.AMOUNT = WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, inputData.CONVERT_RATIO.Value);
                     this.PRICE = this.PRICE / inputData.CONVERT_RATIO.Value;
                 }
 
@@ -1080,8 +1080,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     }
 
                     this.AMOUNT = inputData.AMOUNT;
-                    this.PRES_AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && this.CONVERT_RATIO.HasValue) ? (this.PRES_AMOUNT * this.CONVERT_RATIO.Value) : this.PRES_AMOUNT;
-                    this.AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && this.CONVERT_RATIO.HasValue) ? (this.AMOUNT * this.CONVERT_RATIO.Value) : this.AMOUNT;
+                    this.PRES_AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && this.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(this.PRES_AMOUNT, this.CONVERT_RATIO.Value)) : this.PRES_AMOUNT;
+                    this.AMOUNT = ((this.IsUseOrginalUnitForPres ?? false) == false && this.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, this.CONVERT_RATIO.Value)) : this.AMOUNT;
                     this.PRICE = ((this.IsUseOrginalUnitForPres ?? false) == false && this.CONVERT_RATIO.HasValue) ? (this.PRICE / this.CONVERT_RATIO.Value) : this.PRICE;
 
                     //Trường hợp thuốc đang có trong kho
@@ -1142,8 +1142,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     if (this.CONVERT_RATIO.HasValue)
                     {
 
-                        this.PRES_AMOUNT = this.PRES_AMOUNT * this.CONVERT_RATIO.Value;
-                        this.AMOUNT = this.AMOUNT * this.CONVERT_RATIO.Value;
+                        this.PRES_AMOUNT = WarningOddConvertWorker.ToConvertAmount(this.PRES_AMOUNT, this.CONVERT_RATIO.Value);
+                        this.AMOUNT = WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, this.CONVERT_RATIO.Value);
                         this.PRICE = this.PRICE / this.CONVERT_RATIO.Value;
                     }
                     if (this.IS_ALLOW_ODD == 1 && this.IS_ALLOW_EXPORT_ODD != 1)
@@ -1272,8 +1272,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 this.OVER_KIDNEY_REASON = inputData.OVER_KIDNEY_REASON;
                 if (this.CONVERT_RATIO.HasValue)
                 {
-                    this.PRES_AMOUNT = inputData.PRES_AMOUNT * this.CONVERT_RATIO.Value;
-                    this.AMOUNT = this.AMOUNT * this.CONVERT_RATIO.Value;
+                    this.PRES_AMOUNT = WarningOddConvertWorker.ToConvertAmount(inputData.PRES_AMOUNT, this.CONVERT_RATIO.Value);
+                    this.AMOUNT = WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, this.CONVERT_RATIO.Value);
                     this.PRICE = this.PRICE / this.CONVERT_RATIO.Value;
                 }
 
@@ -1411,8 +1411,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 this.PRES_AMOUNT = inputData.PRES_AMOUNT ?? this.AMOUNT;
                 if (this.CONVERT_RATIO.HasValue)
                 {
-                    this.PRES_AMOUNT = inputData.PRES_AMOUNT * this.CONVERT_RATIO.Value;
-                    this.AMOUNT = this.AMOUNT * this.CONVERT_RATIO.Value;
+                    this.PRES_AMOUNT = WarningOddConvertWorker.ToConvertAmount(inputData.PRES_AMOUNT, this.CONVERT_RATIO.Value);
+                    this.AMOUNT = WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, this.CONVERT_RATIO.Value);
                     this.PRICE = this.PRICE / this.CONVERT_RATIO.Value;
                 }
                 this.SERVICE_REQ_ID = inputData.SERVICE_REQ_ID;
@@ -1514,8 +1514,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 if (this.CONVERT_RATIO.HasValue)
                 {
 
-                    this.PRES_AMOUNT = inputData.PRES_AMOUNT * this.CONVERT_RATIO.Value;
-                    this.AMOUNT = this.AMOUNT * this.CONVERT_RATIO.Value;
+                    this.PRES_AMOUNT = WarningOddConvertWorker.ToConvertAmount(inputData.PRES_AMOUNT, this.CONVERT_RATIO.Value);
+                    this.AMOUNT = WarningOddConvertWorker.ToConvertAmount(this.AMOUNT, this.CONVERT_RATIO.Value);
                     this.PRICE = this.PRICE / this.CONVERT_RATIO.Value;
                 }
                 if (this.IS_ALLOW_ODD == 1 && this.IS_ALLOW_EXPORT_ODD != 1)
@@ -1858,11 +1858,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 && (item.RAW_AMOUNT ?? 0) > 0
                 && (item.RAW_AMOUNT ?? 0) < (item.AMOUNT ?? 0))
             {
-                result = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.RAW_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.RAW_AMOUNT ?? 0);
+                result = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.RAW_AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.RAW_AMOUNT ?? 0);
             }
             else
             {
-                result = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
+                result = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.AMOUNT ?? 0);
             }
 
             if ((item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM)
@@ -1885,7 +1885,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 && (item.AMOUNT ?? 0) > (item.RAW_AMOUNT ?? 0))
             {
                 decimal amountDiv = (item.AMOUNT ?? 0) - (item.RAW_AMOUNT ?? 0);
-                result = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? amountDiv / (item.CONVERT_RATIO ?? 1) : amountDiv;
+                result = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount(amountDiv, (item.CONVERT_RATIO ?? 1)) : amountDiv;
             }
             Inventec.Common.Logging.LogSystem.Debug("CalculateAmountNoPres____"
                 + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HisConfigCFG.SplitOffset), HisConfigCFG.SplitOffset)

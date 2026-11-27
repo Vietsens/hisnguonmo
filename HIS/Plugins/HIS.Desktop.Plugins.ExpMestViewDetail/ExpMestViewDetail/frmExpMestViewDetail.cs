@@ -820,7 +820,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         {
                             if (dataRow.CONVERT_RATIO.HasValue)
                             {
-                                e.Value = dataRow.AMOUNT * dataRow.CONVERT_RATIO.Value;
+                                e.Value = ConvertAmount48132(dataRow.AMOUNT, dataRow.CONVERT_RATIO);
 
                             }
                         }
@@ -922,7 +922,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         {
                             if (dataRow.CONVERT_RATIO.HasValue)
                             {
-                                e.Value = dataRow.AMOUNT * dataRow.CONVERT_RATIO.Value;
+                                e.Value = ConvertAmount48132(dataRow.AMOUNT, dataRow.CONVERT_RATIO);
                             }
                         }
                         else if (e.Column.FieldName == "EXPIRED_DATE_DISPLAY")
@@ -1609,7 +1609,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         {
                             if (dataRow.CONVERT_RATIO.HasValue)
                             {
-                                e.Value = dataRow.AMOUNT * dataRow.CONVERT_RATIO.Value;
+                                e.Value = ConvertAmount48132(dataRow.AMOUNT, dataRow.CONVERT_RATIO);
                             }
                         }
                         else if (e.Column.FieldName == "EXP_DATE_STR")
@@ -1710,7 +1710,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                         {
                             if (dataRow.CONVERT_RATIO.HasValue)
                             {
-                                e.Value = dataRow.AMOUNT * dataRow.CONVERT_RATIO.Value;
+                                e.Value = ConvertAmount48132(dataRow.AMOUNT, dataRow.CONVERT_RATIO);
                             }
                         }
                         else if (e.Column.FieldName == "EXP_DATE_STR")
@@ -2448,6 +2448,23 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        /// <summary>
+        /// Viec 48132: bat cau hinh cho phep ke le theo don vi quy doi -> so luong quy doi lam tron (6 - so chu so phan nguyen cua ty le) chu so thap phan, hien dung so da ke (190 thay vi 190,0003)
+        /// </summary>
+        private static decimal? ConvertAmount48132(decimal? amount, decimal? convertRatio)
+        {
+            if (!amount.HasValue || !convertRatio.HasValue)
+                return null;
+            decimal result = amount.Value * convertRatio.Value;
+            if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.AssignPrescription.IsAllowOddConvertUnitAmount") == "1")
+            {
+                decimal intPart = Math.Floor(Math.Abs(convertRatio.Value));
+                int intDigits = intPart >= 1 ? intPart.ToString("0", System.Globalization.CultureInfo.InvariantCulture).Length : 0;
+                int digits = 6 - intDigits;
+                result = Math.Round(result, digits < 0 ? 0 : digits, MidpointRounding.AwayFromZero);
+            }
+            return result;
         }
     }
 }
