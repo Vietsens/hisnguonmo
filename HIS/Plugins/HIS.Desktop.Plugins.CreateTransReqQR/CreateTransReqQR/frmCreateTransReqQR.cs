@@ -101,6 +101,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
             try
             {
                 HisConfigCFG.LoadConfig();
+                InitSelectServiceMode();
                 btnCreate.Enabled = false;
                 loadCauHinhIn();
                 this.InitSereServTree();
@@ -354,7 +355,10 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
 
                 this.FilterSereServDepositAndRepay(ref this.sereServByTreatment, sereServDeposits);
                 this.ssTreeProcessor.Reload(this.ucSereServTree, this.sereServByTreatment);
-                btnCreate_Click(null, null);
+                if (this.isSelectServiceMode)
+                    WaitUserSelectService();
+                else
+                    btnCreate_Click(null, null);
             }
             catch (Exception ex)
             {
@@ -678,6 +682,11 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
         {
             try
             {
+                if (this.isSelectServiceMode)
+                {
+                    CheckAssignServiceNodes(treeListNodes);
+                    return;
+                }
                 if (treeListNodes != null)
                 {
                     foreach (TreeListNode node in treeListNodes)
@@ -1088,6 +1097,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                     ShowQR();
                     SendData();
                     timerReloadTransReq.Start();
+                    NotifyTransReqCreated();
                     //ExportInvoiceIfNeeded();
                 }
 

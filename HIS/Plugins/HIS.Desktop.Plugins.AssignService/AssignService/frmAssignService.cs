@@ -10700,6 +10700,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     adoqr.TransReqId = 0;
                     adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
                     listArgs.Add(adoqr);
+                    AddSelectServiceQrArgs(listArgs);
                     LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
 
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
@@ -10744,6 +10745,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     adoqr.DelegtePrint = this.serviceReqComboResultSDO != null ? (HIS.Desktop.Common.RefeshReference)IN_QR : null;
                                     adoqr.BankName = key;
                                     listArgs.Add(adoqr);
+                                    AddSelectServiceQrArgs(listArgs);
                                     LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
 
                                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
@@ -10783,6 +10785,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                             adoqr.BankName = key;
                             listArgs.Add(adoqr);
+                            AddSelectServiceQrArgs(listArgs);
                             LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
                             HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
 

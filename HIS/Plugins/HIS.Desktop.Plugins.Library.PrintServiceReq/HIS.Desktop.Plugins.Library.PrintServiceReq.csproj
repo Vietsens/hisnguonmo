@@ -230,6 +230,7 @@
   <ItemGroup>
     <Compile Include="InDichVuNgoaiKCB.cs" />
     <Compile Include="PrintServiceReqProcessor.cs" />
+    <Compile Include="TransReqSelector.cs" />
     <Compile Include="ProcessDictionaryData.cs" />
     <Compile Include="ADO\ChiDinhDichVuADO.cs" />
     <Compile Include="AppConfig.cs" />

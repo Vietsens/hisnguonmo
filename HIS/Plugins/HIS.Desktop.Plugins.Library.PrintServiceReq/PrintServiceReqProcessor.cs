@@ -72,6 +72,13 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReq
         private HIS_TRANS_REQ transReqMPS37 { get; set; }
 
         /// <summary>
+        /// (vCong 58478) Payment request just created by the caller. When set, the QR code printed on every
+        /// service request sheet of this print is taken from it instead of being looked up.
+        /// Default null: unchanged behaviour.
+        /// </summary>
+        public HIS_TRANS_REQ TransReqForQrCode { get; set; }
+
+        /// <summary>
         /// true: lưu in. Tất cả  dữ liệu truyền từ ngoài vào.
         /// false: in từng phiếu. phiếu xét nghiệm gộp sẽ lấy thêm dữ liệu
         /// </summary>
@@ -242,6 +249,13 @@ HisTreatmentWithPatientTypeInfoSDO TreatmentWithPatientTypeInfo, List<V_HIS_BED_
                 else
                 {
                     lstConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.PaymentQrCode") && !string.IsNullOrEmpty(o.VALUE)).ToList();
+                }
+                if (this.TransReqForQrCode != null)
+                {
+                    // vCong 58478: use the payment request handed in by the caller, no lookup
+                    if (lstConfig != null && lstConfig.Count > 0)
+                        transReq = new ForcedTransReqList(this.TransReqForQrCode);
+                    return;
                 }
                 if (Config.HisTranReqQRCodeTreatmentPrint)
                 {

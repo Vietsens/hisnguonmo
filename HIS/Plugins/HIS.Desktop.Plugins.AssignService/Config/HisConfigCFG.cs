@@ -129,6 +129,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         /// 1: in phieu chi dinh tu man Chi dinh dich vu tach to theo doi tuong thanh toan trong cung 1 y lenh
         /// </summary>
         private const string CONFIG_KEY__PrintSplitByPatientType = "HIS.Desktop.Plugins.AssignService.PrintSplitByPatientType";
+        /// <summary>vCong 58478: 1 = cho chon dich vu can thu khi tao QR thanh toan tu man Chi dinh dich vu, in phieu chi dinh kem QR vua tao</summary>
+        private const string CONFIG_KEY__AllowSelectServiceFromAssignService = "HIS.Desktop.Plugins.CreateTransReqQR.AllowSelectServiceFromAssignService";
 
         /// <summary>
         /// Hien thi thong bao xac nhan phong xu ly khi luu chi dinh dich vu ky thuat.
@@ -268,6 +270,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         internal static bool IsPrintTemBarcodeBartender;
         internal static bool IsSplitBloodServiceByBag;
         internal static bool IsPrintSplitByPatientType;
+        internal static bool AllowSelectServiceFromAssignService;
         internal static string IsWarningOption;
         internal static string UsageCheckInterval;
         internal static string ServicePatyForServicePackage;
@@ -383,6 +386,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 IsPrintTemBarcodeBartender = GetValue(CONFIG_KEY__IsPrintTemBarcodeBartender) == GlobalVariables.CommonStringTrue;
                 IsSplitBloodServiceByBag = GetValue(CONFIG_KEY__SplitBloodServiceByBag) == GlobalVariables.CommonStringTrue;
                 IsPrintSplitByPatientType = GetValue(CONFIG_KEY__PrintSplitByPatientType) == GlobalVariables.CommonStringTrue;
+                AllowSelectServiceFromAssignService = GetValue(CONFIG_KEY__AllowSelectServiceFromAssignService) == GlobalVariables.CommonStringTrue;
                 IsConfirmExecuteRoomWhenSave = GetValue(CONFIG_KEY__ConfirmExecuteRoomWhenSave) == GlobalVariables.CommonStringTrue;
 
                 IsCheckSubIcdExceedLimit = GetValue(CONFIG_KEY__IS_CHECK_SUB_ICD_EXCEED_LIMIT);

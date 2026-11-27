@@ -44,6 +44,9 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
                 TransReqQRADO ado = null;
+                // vCong 58478: sent only by the service assignment screen
+                List<long> assignServiceSereServIds = null;
+                Action<MOS.EFMODEL.DataModels.HIS_TRANS_REQ> actTransReqCreated = null;
                 if (entity.GetType() == typeof(object[]))
                 {
                     if (entity != null && entity.Count() > 0)
@@ -57,10 +60,20 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR
                             {
                                 ado = (TransReqQRADO)entity[i];
                             }
+                            else if (entity[i] is List<long>)
+                            {
+                                assignServiceSereServIds = (List<long>)entity[i];
+                            }
+                            else if (entity[i] is Action<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>)
+                            {
+                                actTransReqCreated = (Action<MOS.EFMODEL.DataModels.HIS_TRANS_REQ>)entity[i];
+                            }
                         }
                     }
                 }
 
+                if (assignServiceSereServIds != null || actTransReqCreated != null)
+                    return new frmCreateTransReqQR(moduleData, ado, assignServiceSereServIds, actTransReqCreated);
                 return new frmCreateTransReqQR(moduleData, ado);
             }
             catch (Exception ex)
