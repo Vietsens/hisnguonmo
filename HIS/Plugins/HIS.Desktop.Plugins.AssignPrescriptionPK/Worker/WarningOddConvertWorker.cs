@@ -97,6 +97,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Worker
             bool valid = true;
             try
             {
+                //#48132: bat cau hinh cho phep ke le theo don vi quy doi -> khong chan (don vi goc lam tron 6 so khi giu lo/luu)
+                if (HisConfigCFG.IsAllowOddConvertUnitAmount)
+                    return true;
                 decimal? CONVERT_RATIO = currentMedicineTypeADOForEdit != null ? currentMedicineTypeADOForEdit.CONVERT_RATIO : null;
                 string CONVERT_UNIT_NAME = currentMedicineTypeADOForEdit != null ? currentMedicineTypeADOForEdit.CONVERT_UNIT_NAME : "";
                 string SERVICE_UNIT_NAME = currentMedicineTypeADOForEdit != null ? currentMedicineTypeADOForEdit.SERVICE_UNIT_NAME : "";
@@ -128,6 +131,47 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Worker
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return valid;
+        }
+
+        /// <summary>
+        /// #48132: Doi so luong theo don vi quy doi sang don vi goc (= so luong / ty le).
+        /// Bat cau hinh IsAllowOddConvertUnitAmount -> lam tron 6 chu so thap phan (do chinh xac luu tru) de giu lo va luu don dung cung mot gia tri.
+        /// </summary>
+        internal static decimal ToOriginalAmount(decimal convertAmount, decimal convertRatio)
+        {
+            decimal result = convertAmount / convertRatio;
+            if (HisConfigCFG.IsAllowOddConvertUnitAmount)
+                result = Math.Round(result, 6, MidpointRounding.AwayFromZero);
+            return result;
+        }
+
+        internal static decimal? ToOriginalAmount(decimal? convertAmount, decimal convertRatio)
+        {
+            if (!convertAmount.HasValue)
+                return null;
+            return ToOriginalAmount(convertAmount.Value, convertRatio);
+        }
+
+        /// <summary>
+        /// #48132: Doi so luong theo don vi goc sang don vi quy doi (= so luong * ty le).
+        /// Bat cau hinh IsAllowOddConvertUnitAmount -> lam tron (6 - so chu so phan nguyen cua ty le) chu so thap phan de hien thi lai dung so da ke (190 lit thay vi 190,0003).
+        /// </summary>
+        internal static decimal? ToConvertAmount(decimal? originalAmount, decimal convertRatio)
+        {
+            if (!originalAmount.HasValue)
+                return null;
+            decimal result = originalAmount.Value * convertRatio;
+            if (HisConfigCFG.IsAllowOddConvertUnitAmount)
+                result = Math.Round(result, GetConvertDisplayDigits(convertRatio), MidpointRounding.AwayFromZero);
+            return result;
+        }
+
+        internal static int GetConvertDisplayDigits(decimal convertRatio)
+        {
+            decimal intPart = Math.Floor(Math.Abs(convertRatio));
+            int intDigits = intPart >= 1 ? intPart.ToString("0", System.Globalization.CultureInfo.InvariantCulture).Length : 0;
+            int digits = 6 - intDigits;
+            return digits < 0 ? 0 : digits;
         }
     }
 }

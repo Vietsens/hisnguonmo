@@ -2622,9 +2622,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setDefaultMediStockForData(model);
                         MestMetyUnitWorker.UpdateUnit(model, GlobalStore.HisMestMetyUnit);
 
-                        model.AMOUNT = ((model.IsUseOrginalUnitForPres ?? false) == false && model.CONVERT_RATIO.HasValue) ? (model.AMOUNT * model.CONVERT_RATIO.Value) : model.AMOUNT;
+                        model.AMOUNT = ((model.IsUseOrginalUnitForPres ?? false) == false && model.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(model.AMOUNT, model.CONVERT_RATIO.Value)) : model.AMOUNT;
                         model.PRICE = ((model.IsUseOrginalUnitForPres ?? false) == false && model.CONVERT_RATIO.HasValue) ? (model.PRICE / model.CONVERT_RATIO.Value) : model.PRICE;
-                        model.RAW_AMOUNT = (model.RAW_AMOUNT.HasValue && (model.IsUseOrginalUnitForPres ?? false) == false && model.CONVERT_RATIO.HasValue) ? (model.RAW_AMOUNT * model.CONVERT_RATIO.Value) : model.RAW_AMOUNT;
+                        model.RAW_AMOUNT = (model.RAW_AMOUNT.HasValue && (model.IsUseOrginalUnitForPres ?? false) == false && model.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(model.RAW_AMOUNT, model.CONVERT_RATIO.Value)) : model.RAW_AMOUNT;
 
                         if (model.IS_ALLOW_ODD == 1 && model.IS_ALLOW_EXPORT_ODD != 1 && model.AMOUNT != (int)model.AMOUNT)
                         {
@@ -2684,9 +2684,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setDefaultMediStockForData(model);
                         MestMetyUnitWorker.UpdateUnit(model, GlobalStore.HisMestMetyUnit);
 
-                        model.AMOUNT = ((model.IsUseOrginalUnitForPres ?? false) == false && model.CONVERT_RATIO.HasValue) ? (model.AMOUNT * model.CONVERT_RATIO.Value) : model.AMOUNT;
+                        model.AMOUNT = ((model.IsUseOrginalUnitForPres ?? false) == false && model.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(model.AMOUNT, model.CONVERT_RATIO.Value)) : model.AMOUNT;
                         model.PRICE = ((model.IsUseOrginalUnitForPres ?? false) == false && model.CONVERT_RATIO.HasValue) ? (model.PRICE / model.CONVERT_RATIO.Value) : model.PRICE;
-                        model.RAW_AMOUNT = (model.RAW_AMOUNT.HasValue && (model.IsUseOrginalUnitForPres ?? false) == false && model.CONVERT_RATIO.HasValue) ? (model.RAW_AMOUNT * model.CONVERT_RATIO.Value) : model.RAW_AMOUNT;
+                        model.RAW_AMOUNT = (model.RAW_AMOUNT.HasValue && (model.IsUseOrginalUnitForPres ?? false) == false && model.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(model.RAW_AMOUNT, model.CONVERT_RATIO.Value)) : model.RAW_AMOUNT;
 
                         if (model.IS_ALLOW_ODD == 1 && model.IS_ALLOW_EXPORT_ODD != 1 && model.AMOUNT != (int)model.AMOUNT)
                         {
@@ -3827,7 +3827,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 item.AMOUNT = (decimal)Inventec.Common.Number.Convert.RoundUpValue((double)item.AMOUNT, 0);
 
                                 mediMatyTypeADOAdd = new MediMatyTypeADO(item, currentInstructionTime, medicineBeans, serviceReq);
-                                mediMatyTypeADOAdd.RAW_AMOUNT = ((mediMatyTypeADOAdd.IsUseOrginalUnitForPres ?? false) == false && mediMatyTypeADOAdd.CONVERT_RATIO.HasValue) ? (RAW_AMOUNT * mediMatyTypeADOAdd.CONVERT_RATIO.Value) : RAW_AMOUNT;
+                                mediMatyTypeADOAdd.RAW_AMOUNT = ((mediMatyTypeADOAdd.IsUseOrginalUnitForPres ?? false) == false && mediMatyTypeADOAdd.CONVERT_RATIO.HasValue) ? (WarningOddConvertWorker.ToConvertAmount(RAW_AMOUNT, mediMatyTypeADOAdd.CONVERT_RATIO.Value)) : RAW_AMOUNT;
                                 //mediMatyTypeADOAdd.RAW_AMOUNT = RAW_AMOUNT;
 
 

@@ -707,8 +707,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                             mety.MedicineInfoSdos.Add(new MedicineInfoSDO() { IntructionTime = frmAssignPrescription.InstructionTime, IsNoPrescription = false, OverResultTestReason = item.OVER_KIDNEY_REASON });
                     }
                     mety.HtuText = item.HTU_TEXT;
-                    mety.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
-                    mety.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.PRES_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.PRES_AMOUNT ?? 0);
+                    mety.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.AMOUNT ?? 0);
+                    mety.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.PRES_AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.PRES_AMOUNT ?? 0);
                     mety.MedicineTypeId = item.ID;
                     mety.MedicineTypeName = item.MEDICINE_TYPE_NAME;
                     mety.MedicineUseFormId = item.MEDICINE_USE_FORM_ID;
@@ -768,8 +768,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM)
                 {
                     PresOutStockMatySDO maty = new PresOutStockMatySDO();
-                    maty.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
-                    maty.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.PRES_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.PRES_AMOUNT ?? 0);
+                    maty.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.AMOUNT ?? 0);
+                    maty.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.PRES_AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.PRES_AMOUNT ?? 0);
                     maty.MaterialTypeId = item.ID;
                     maty.Tutorial = item.TUTORIAL;
                     maty.ExceedLimitInPresReason = item.EXCEED_LIMIT_IN_PRES_REASON;
@@ -925,8 +925,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     #region
                     //qtcode
                     pres.IsGuaranteed = item.IsGuarantee; 
-                    pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
-                    pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.PRES_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.PRES_AMOUNT ?? 0);
+                    pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.AMOUNT ?? 0);
+                    pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.PRES_AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.PRES_AMOUNT ?? 0);
                     pres.MedicineTypeId = item.ID;
                     pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
                     pres.IsExpend = item.IsExpend;
@@ -1066,8 +1066,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     }
 
                     pres.HtuText = item.HTU_TEXT;
-                    pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
-                    pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.PRES_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.PRES_AMOUNT ?? 0);
+                    pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.AMOUNT ?? 0);
+                    pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.PRES_AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.PRES_AMOUNT ?? 0);
                     pres.MaterialTypeId = item.ID;
                     pres.Tutorial = item.TUTORIAL;
                     pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
@@ -1162,8 +1162,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         pres.MaterialBeanIds = null;
                     }
                     pres.IsGuaranteed = item.IsGuarantee; 
-                    pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
-                    pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.PRES_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.PRES_AMOUNT ?? 0);
+                    pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.AMOUNT ?? 0);
+                    pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.PRES_AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.PRES_AMOUNT ?? 0);
                     pres.MaterialTypeId = item.ID;
                     pres.Tutorial = item.TUTORIAL;
                     pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
@@ -1293,7 +1293,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     pres.UseOriginalUnitForPres = (item.IsUseOrginalUnitForPres ?? false);
                     pres.MedicineId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
                     pres.Amount = item.CalculateAmount(item, this.ActionType);
-                    pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.PRES_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.PRES_AMOUNT ?? 0);
+                    pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.PRES_AMOUNT ?? 0), (item.CONVERT_RATIO ?? 1)) : (item.PRES_AMOUNT ?? 0);
                     pres.MedicineTypeId = item.ID;
                     pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
                     pres.IsExpend = item.IsExpend;

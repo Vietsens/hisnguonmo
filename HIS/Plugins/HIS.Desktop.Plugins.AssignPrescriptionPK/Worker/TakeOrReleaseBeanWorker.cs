@@ -347,7 +347,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
             if (medicineTypeSDO.IsAssignPackage.HasValue && medicineTypeSDO.IsAssignPackage.Value)
             {
                 TakeBeanByMameSDO takeBeanByMameSDO = new TakeBeanByMameSDO();
-                takeBeanByMameSDO.Amount = ((medicineTypeSDO.IsUseOrginalUnitForPres ?? false) == false && (medicineTypeSDO.CONVERT_RATIO ?? 0) > 0) ? (medicineTypeSDO.AMOUNT ?? 0) / medicineTypeSDO.CONVERT_RATIO.Value : (medicineTypeSDO.AMOUNT ?? 0);
+                takeBeanByMameSDO.Amount = ((medicineTypeSDO.IsUseOrginalUnitForPres ?? false) == false && (medicineTypeSDO.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((medicineTypeSDO.AMOUNT ?? 0), medicineTypeSDO.CONVERT_RATIO.Value) : (medicineTypeSDO.AMOUNT ?? 0);
                 takeBeanByMameSDO.BeanIds = beanIds;
                 takeBeanByMameSDO.ClientSessionKey = GlobalStore.ClientSessionKey;
                 takeBeanByMameSDO.MediStockId = medicineTypeSDO.MEDI_STOCK_ID ?? 0;
@@ -368,7 +368,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                 takeBeanSDO.ClientSessionKey = GlobalStore.ClientSessionKey;
                 takeBeanSDO.MediStockId = medicineTypeSDO.MEDI_STOCK_ID ?? 0;
                 takeBeanSDO.TypeId = medicineTypeSDO.ID;
-                takeBeanSDO.Amount = ((medicineTypeSDO.IsUseOrginalUnitForPres ?? false) == false && (medicineTypeSDO.CONVERT_RATIO ?? 0) > 0) ? (medicineTypeSDO.AMOUNT ?? 0) / medicineTypeSDO.CONVERT_RATIO.Value : (medicineTypeSDO.AMOUNT ?? 0);
+                takeBeanSDO.Amount = ((medicineTypeSDO.IsUseOrginalUnitForPres ?? false) == false && (medicineTypeSDO.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((medicineTypeSDO.AMOUNT ?? 0), medicineTypeSDO.CONVERT_RATIO.Value) : (medicineTypeSDO.AMOUNT ?? 0);
                 takeBeanSDO.BeanIds = beanIds;
                 takeBeanSDO.PatientTypeId = medicineTypeSDO.PATIENT_TYPE_ID;
                 if (medicineTypeSDO.ExpMestDetailIds != null && medicineTypeSDO.ExpMestDetailIds.Count > 0)
@@ -398,7 +398,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                 //{
                 //    takeBeanByMameSDO.ExpiredDate = medicineTypeSDO.IntructionTimeSelecteds != null && medicineTypeSDO.IntructionTimeSelecteds.Count > 0 ? (long?)medicineTypeSDO.IntructionTimeSelecteds.OrderByDescending(o => o).First() : intructionTimes.OrderByDescending(o => o).First();
                 //}
-                takeBeanByMameSDO.Amount = ((medicineTypeSDO.IsUseOrginalUnitForPres ?? false) == false && (medicineTypeSDO.CONVERT_RATIO ?? 0) > 0) ? amount / medicineTypeSDO.CONVERT_RATIO.Value : amount;
+                takeBeanByMameSDO.Amount = ((medicineTypeSDO.IsUseOrginalUnitForPres ?? false) == false && (medicineTypeSDO.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount(amount, medicineTypeSDO.CONVERT_RATIO.Value) : amount;
                 takeBeanByMameSDO.BeanIds = beanIds;
                 takeBeanByMameSDO.ClientSessionKey = GlobalStore.ClientSessionKey;
                 takeBeanByMameSDO.MediStockId = medicineTypeSDO.MEDI_STOCK_ID ?? 0;
@@ -419,7 +419,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                 takeBeanSDO.ClientSessionKey = GlobalStore.ClientSessionKey;
                 takeBeanSDO.MediStockId = medicineTypeSDO.MEDI_STOCK_ID ?? 0;
                 takeBeanSDO.TypeId = medicineTypeSDO.ID;
-                takeBeanSDO.Amount = ((medicineTypeSDO.IsUseOrginalUnitForPres ?? false) == false && (medicineTypeSDO.CONVERT_RATIO ?? 0) > 0) ? amount / medicineTypeSDO.CONVERT_RATIO.Value : amount;
+                takeBeanSDO.Amount = ((medicineTypeSDO.IsUseOrginalUnitForPres ?? false) == false && (medicineTypeSDO.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount(amount, medicineTypeSDO.CONVERT_RATIO.Value) : amount;
                 takeBeanSDO.BeanIds = beanIds;
                 takeBeanSDO.PatientTypeId = medicineTypeSDO.PATIENT_TYPE_ID;
                 if (medicineTypeSDO.ExpMestDetailIds != null && medicineTypeSDO.ExpMestDetailIds.Count > 0)
@@ -586,7 +586,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                             //    }
                             //}
 
-                            takeBeanSDO.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / item.CONVERT_RATIO.Value : (item.AMOUNT ?? 0);
+                            takeBeanSDO.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), item.CONVERT_RATIO.Value) : (item.AMOUNT ?? 0);
                             takeBeanSDO.MediStockId = (item.MEDI_STOCK_ID ?? 0);
                             takeBeanSDO.TypeId = item.ID;
                             takeBeanSDO.PatientTypeId = item.PATIENT_TYPE_ID;
@@ -645,7 +645,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                         var mediOne = medis.FirstOrDefault(o => o.ID == mbSDO.Request.TypeId
                             && ((mdst != null && mdst.IS_BUSINESS != 1) || (mdst != null && mdst.IS_BUSINESS == 1 && o.PATIENT_TYPE_ID == mbSDO.Request.PatientTypeId))
                             && o.MEDI_STOCK_ID == mbSDO.Request.MediStockId
-                            && ((o.IsUseOrginalUnitForPres ?? false) == false ? (o.AMOUNT / (o.CONVERT_RATIO ?? 1)) : o.AMOUNT) == mbSDO.Request.Amount);
+                            && ((o.IsUseOrginalUnitForPres ?? false) == false ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount(o.AMOUNT, (o.CONVERT_RATIO ?? 1)) : o.AMOUNT) == mbSDO.Request.Amount);
 
                         if (mediOne != null)
                         {
@@ -738,7 +738,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                         var mediOne = matys.FirstOrDefault(o => o.ID == mbSDO.Request.TypeId
                             && ((mdst != null && mdst.IS_BUSINESS != 1) || (mdst != null && mdst.IS_BUSINESS == 1 && o.PATIENT_TYPE_ID == mbSDO.Request.PatientTypeId))
                             && o.MEDI_STOCK_ID == mbSDO.Request.MediStockId
-                            && ((o.IsUseOrginalUnitForPres ?? false) == false ? (o.AMOUNT / (o.CONVERT_RATIO ?? 1)) : o.AMOUNT) == mbSDO.Request.Amount);
+                            && ((o.IsUseOrginalUnitForPres ?? false) == false ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount(o.AMOUNT, (o.CONVERT_RATIO ?? 1)) : o.AMOUNT) == mbSDO.Request.Amount);
 
                         if (mediOne != null)
                         {
@@ -838,7 +838,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                             //    }
                             //}
 
-                            takeBeanSDO.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / item.CONVERT_RATIO.Value : (item.AMOUNT ?? 0);
+                            takeBeanSDO.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? HIS.Desktop.Plugins.AssignPrescriptionPK.Worker.WarningOddConvertWorker.ToOriginalAmount((item.AMOUNT ?? 0), item.CONVERT_RATIO.Value) : (item.AMOUNT ?? 0);
                             takeBeanSDO.MediStockId = (item.MEDI_STOCK_ID ?? 0);
                             takeBeanSDO.TypeId = item.ID;
                             takeBeanSDO.PatientTypeId = item.PATIENT_TYPE_ID;

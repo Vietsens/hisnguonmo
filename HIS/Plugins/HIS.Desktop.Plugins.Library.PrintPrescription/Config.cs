@@ -42,5 +42,36 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.OptionMergePrint.Ismerge") == "1";
             }
         }
+
+        internal const string CONFIG_KEY__IsAllowOddConvertUnitAmount = "HIS.Desktop.Plugins.AssignPrescription.IsAllowOddConvertUnitAmount";
+
+        /// <summary>
+        /// #48132 - 1: Cho phep ke le theo don vi quy doi; so luong quy doi in ra duoc lam tron de dung so bac si da ke
+        /// </summary>
+        internal static bool IsAllowOddConvertUnitAmount
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IsAllowOddConvertUnitAmount) == "1";
+            }
+        }
+
+        /// <summary>
+        /// #48132: so luong don vi goc * ty le; bat cau hinh -> lam tron (6 - so chu so phan nguyen cua ty le) chu so thap phan
+        /// </summary>
+        internal static decimal? ToConvertAmount(decimal? originalAmount, decimal convertRatio)
+        {
+            if (!originalAmount.HasValue)
+                return null;
+            decimal result = originalAmount.Value * convertRatio;
+            if (IsAllowOddConvertUnitAmount)
+            {
+                decimal intPart = Math.Floor(Math.Abs(convertRatio));
+                int intDigits = intPart >= 1 ? intPart.ToString("0", System.Globalization.CultureInfo.InvariantCulture).Length : 0;
+                int digits = 6 - intDigits;
+                result = Math.Round(result, digits < 0 ? 0 : digits, MidpointRounding.AwayFromZero);
+            }
+            return result;
+        }
     }
 }

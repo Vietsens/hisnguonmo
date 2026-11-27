@@ -58,6 +58,8 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
     {
         protected long? FromDateReq;
         protected long? ToDateReq;
+        //#48132: cac dong dich vu da doi sang don vi quy doi (tranh doi lan 2 khi in lai)
+        private HashSet<HIS_SERE_SERV> convertUnitSereServs = new HashSet<HIS_SERE_SERV>();
         private long roomId { get; set; }
         private long roomTypeId { get; set; }
         private long patientId { get; set; }
@@ -389,6 +391,15 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
                         break;
                     default:
                         break;
+                }
+
+                //#48132: dong thuoc co don vi quy doi hien thi theo don vi quy doi (chi khi bat cau hinh)
+                {
+                    List<HIS_SERE_SERV> convertSereServs;
+                    List<V_HIS_SERVICE> convertServices;
+                    Base.SereServProcessor.ProcessConvertUnit(SereServs, Services, this.convertUnitSereServs, out convertSereServs, out convertServices);
+                    SereServs = convertSereServs;
+                    Services = convertServices;
                 }
 
                 if (GlobalVariables.dicPrinter.ContainsKey(printCode))
