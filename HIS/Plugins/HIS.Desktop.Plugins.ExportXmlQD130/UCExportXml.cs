@@ -296,6 +296,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.Xml130InitSendTimeColumn();
                 //vCong60263 - Ghi nhớ bật gửi tự động: mở lại màn hình thì chạy tiếp theo lịch đã khai.
                 this.Xml130AutoStartIfRemembered();
+                //QĐ 3176 sửa đổi, đợt 2 - lương cơ sở cho trần 6 tháng lương cơ sở ở XML1 (nạp nền 1 lần).
+                this.InitBhytParamForXml3176();
             }
             catch (Exception ex)
             {
